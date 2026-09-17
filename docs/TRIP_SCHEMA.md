@@ -37,6 +37,8 @@ Recommended fields:
   "startDate": "2026-10-03",
   "endDate": "2026-10-05",
   "timezone": "Asia/Tokyo",
+  "updatedAt": "2026-09-17T16:10:00+08:00",
+  "revision": "tokyo-2026-09-17-03",
   "homeLabel": "Tokyo, Japan",
   "center": { "lat": 35.6812, "lng": 139.7671 },
   "accent": "#4f6f5e",
@@ -49,6 +51,7 @@ Rules:
 - use `YYYY-MM-DD` dates
 - use a valid IANA timezone
 - change `trip.id` for a genuinely different trip so browser-local state does not collide
+- set `updatedAt` / `revision` when publishing a new shared itinerary version; they describe shared content, not local checklist changes
 - treat `accent` as trip decoration; important meaning must not depend on that color
 
 ## `ui`
@@ -57,13 +60,20 @@ Rules:
 {
   "defaultView": "now",
   "theme": "system",
+  "locale": "zh-TW",
+  "labels": {
+    "navNow": "現在",
+    "navTrip": "行程"
+  },
   "bottomNav": ["now", "trip", "map", "check", "more"]
 }
 ```
 
-`theme` supports `system`, `light`, and `dark`.
-
-Unused views may be removed from `bottomNav` for simpler trips. Phone and desktop reuse the same view list; responsive layout is handled by the shell, not by separate trip data.
+- `theme` supports `system`, `light`, and `dark`
+- built-in shell/companion labels cover English and Traditional Chinese
+- `labels` is optional and only overrides shell/companion copy; it is not a second itinerary translation
+- unused views may be removed from `bottomNav`
+- phone and desktop reuse the same view list and data
 
 ## `providers`
 
@@ -114,16 +124,14 @@ Keep this section small. It is an overview/decision aid, not a recommendation fe
   "note": "Keep the first afternoon light.",
   "routeLabel": "Arrival day",
   "routeSummary": ["Haneda", "Shibuya", "Ebisu"],
-  "reminders": [
-    "Check the hotel message before check-in."
-  ],
+  "reminders": ["Check the hotel message before check-in."],
   "items": []
 }
 ```
 
 ### Route summary
 
-`routeSummary` is optional. If omitted, the Trip view derives a simple route from item titles. Use it when a shorter human-friendly route is more useful than the raw stop names.
+`routeSummary` is optional. If omitted, the Trip view derives a simple route from item titles. Use it when a shorter human-friendly route is more useful than raw stop names.
 
 `routeLabel` is optional descriptive text such as `East Tokyo`, `Classic route`, or `Departure`.
 
@@ -131,9 +139,7 @@ Do not turn route summaries into live routing. Real-time transit/navigation stay
 
 ### Reminders
 
-Keep `day.reminders` short and operational. They appear as day-of reminder cards.
-
-They can be strings or linkable objects:
+Keep `day.reminders` short and operational. They can be strings or linkable objects:
 
 ```json
 {
@@ -144,7 +150,7 @@ They can be strings or linkable objects:
 
 ## Itinerary item
 
-Common fields:
+A timed item:
 
 ```json
 {
@@ -163,9 +169,30 @@ Common fields:
 Rules:
 
 - use stable IDs
-- times use local trip time in `HH:MM`
-- provide `end` when possible so the `Now` view can derive the current activity
+- timed starts use local trip time in `HH:MM`
+- provide `end` when possible so the Now reference window is more accurate
 - resolve `lat`/`lng` during vibe-time for real planned stops when practical
+
+### Floating / TBD time
+
+If the group intentionally has not assigned a time, use `start: "TBD"` or omit `start`:
+
+```json
+{
+  "id": "d2-lunch",
+  "start": "TBD",
+  "title": "Lunch",
+  "location": "Asakusa / Ueno"
+}
+```
+
+Only valid `HH:MM` starts participate in previous / scheduled-now / next calculations. Floating items:
+
+- are never interpreted as `00:00`
+- never become the current timed activity
+- stay visible in Trip and the Now `Flexible today` section
+
+Do not invent a time solely to make the item fit the timeline.
 
 ### Transfer connector: `transferAfter`
 
@@ -223,7 +250,7 @@ For lightweight nearby/ad-hoc search, link out instead of adding a discovery pro
 }
 ```
 
-The runtime scopes the search around the selected/planned stop when possible. In the Trip timeline these live under the secondary-action overflow rather than as full-size buttons.
+The runtime scopes the search around the selected/planned stop when possible. In the Trip timeline these live under secondary-action overflow rather than as full-size buttons.
 
 ## Static place context: `infoCard`
 
@@ -235,10 +262,7 @@ Use this for stable background researched by the LLM/agent before deployment:
     "label": "Background",
     "title": "Senso-ji",
     "summary": "Short context useful while visiting.",
-    "facts": [
-      "A useful historical fact.",
-      "A useful visit-context fact."
-    ],
+    "facts": ["A useful historical fact.", "A useful visit-context fact."],
     "image": "https://...",
     "sourceLinks": [
       { "label": "Wikipedia", "url": "https://..." },
@@ -259,7 +283,7 @@ Use a decision card only when planning has already narrowed the question to a sm
   "decision": {
     "label": "TBD",
     "prompt": "Eat in Asakusa, or move to Ueno first?",
-    "context": "Choose based on hunger and crowd.",
+    "context": "Choose based on hunger and crowds.",
     "options": [
       { "id": "asakusa", "label": "Eat in Asakusa", "note": "Less travel." },
       { "id": "ueno", "label": "Move to Ueno first", "note": "Eat near the afternoon stop." }

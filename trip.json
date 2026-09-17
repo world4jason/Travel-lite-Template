@@ -6,6 +6,8 @@
     "startDate": "2026-10-03",
     "endDate": "2026-10-05",
     "timezone": "Asia/Tokyo",
+    "updatedAt": "2026-09-17T16:10:00+08:00",
+    "revision": "sample-2026-09-17-01",
     "accent": "#4f6f5e",
     "themeColor": "#0b1020",
     "homeLabel": "Tokyo, Japan",
@@ -14,6 +16,7 @@
   "ui": {
     "defaultView": "now",
     "theme": "system",
+    "locale": "en",
     "bottomNav": ["now", "trip", "map", "check", "more"]
   },
   "providers": {
@@ -126,7 +129,7 @@
       "routeLabel": "East Tokyo",
       "routeSummary": ["Senso-ji", "Asakusa / Ueno lunch", "Ueno Park"],
       "reminders": [
-        "Keep the lunch choice flexible; the shared page does not resolve it locally."
+        "Keep lunch flexible; choose based on crowds, hunger, and how the morning is going."
       ],
       "items": [
         {
@@ -146,27 +149,26 @@
           "infoCard": {
             "label": "Background",
             "title": "Senso-ji",
-            "summary": "A compact, pre-researched note stored in trip.json so it remains available offline.",
+            "summary": "Tokyo's oldest Buddhist temple and one of Asakusa's best-known landmarks.",
             "facts": [
-              "Use info cards for context that helps during the visit, not for live operating data.",
-              "Keep current hours, reviews and navigation in specialist apps."
+              "Use this card for stable visit context rather than live opening-hour or crowd information.",
+              "Use Google Maps or the official site for current details."
             ],
             "sourceLinks": [
-              { "label": "Wikipedia source", "url": "https://en.wikipedia.org/wiki/Sens%C5%8D-ji" }
+              { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Sens%C5%8D-ji" }
             ]
           }
         },
         {
           "id": "d2-lunch",
-          "start": "12:00",
-          "end": "13:00",
+          "start": "TBD",
           "title": "Lunch",
           "type": "food",
           "location": "Asakusa / Ueno",
           "decision": {
             "label": "TBD",
             "prompt": "Eat in Asakusa, or move to Ueno first?",
-            "context": "This is a shared day-of decision. The static page shows the discussed options but does not resolve them locally.",
+            "context": "Choose on the day based on hunger, crowds, and how quickly the morning is moving.",
             "options": [
               { "id": "asakusa", "label": "Eat in Asakusa", "note": "Less travel while hungry." },
               { "id": "ueno", "label": "Move to Ueno first", "note": "Eat closer to the afternoon stop." }

@@ -8,16 +8,17 @@ Planning happens beforehand with people, an LLM, spreadsheets, maps, bookings, o
 
 ## What it does
 
-- **Now** — current activity, next activity, reminders, weather, and open TBDs
+- **Now** — previous / scheduled-now / next reference window, later plans, floating TBDs, reminders, and weather
 - **Trip** — whole-trip overview, daily route summary, compact timeline, highlights, and open decisions
-- **Map** — planned stops on MapLibre/OpenFreeMap with Google Maps handoff
+- **Map** — numbered planned stops on MapLibre/OpenFreeMap with selected-stop emphasis and Google Maps handoff
 - **Check** — todos and checklists stored on this device
 - **More** — reservations, tickets, notes, contacts, links, and a local quick note
-- **Responsive shell** — phone single-column/bottom nav; compact desktop day rail; wide desktop day rail + context rail
+- **Responsive shell** — phone single-column/bottom nav; compact desktop day rail; wide desktop day rail + context-sensitive rail
 - **Appearance** — `Auto` / `Light` / `Dark`, stored per device
-- **Offline/PWA** — app shell and trip snapshot remain usable after the first successful load
+- **Offline/PWA** — app shell and trip snapshot remain usable after the first successful load, with freshness status
+- **Share / deep links** — share or copy the current read-only trip/day/map context without a backend
 
-Travel Lite is **not** a planner, route optimizer, live-transit engine, review database, or collaboration backend.
+Travel Lite is **not** a planner, route optimizer, live-transit engine, review database, booking editor, or collaboration backend.
 
 ## Shared truth vs local state
 
@@ -28,6 +29,20 @@ localStorage = fallback when IndexedDB is unavailable
 ```
 
 Shared TBD decisions are read-only in the page. A group decision becomes authoritative only after `trip.json` is regenerated or updated. `decision.mode: "personal"` may store a personal preference locally.
+
+## Day-of Now view
+
+`Now` is a **schedule reference**, not GPS presence tracking.
+
+```text
+Previous
+Scheduled now
+Next
+```
+
+This deliberately keeps the immediately adjacent itinerary items visible so travellers can orient themselves when they are early, delayed, or between activities.
+
+Only valid local `HH:MM` starts participate in the timed window. An item with `start: "TBD"` (or no start) stays visible as **Flexible today** and is never treated as midnight/current.
 
 ## Information-first Trip view
 
@@ -78,14 +93,76 @@ compact desktop / tablet landscape
 wide desktop
 ├── trip-day / reference rail
 ├── main content
-└── trip context rail (overview, selected-day stops, reminders, quick access)
+└── context-sensitive rail
 ```
 
-The phone still has access to the same information through Trip/Map/More; wide layouts simply expose useful context simultaneously when there is room.
+The wide right rail changes with the current view instead of repeating the same timeline everywhere:
+
+- Now → previous/current/next, reminders, weather
+- Trip overview → stats, open choices, reservations
+- Trip day → weather, reminders, reservations, unresolved decisions
+- Map → selected stop and specialist links
+- Check → completion and important incomplete items
+- More → device/offline freshness
 
 Theme choices are `system`, `light`, and `dark`. The quick header control cycles them, while the full selector remains under **More → Appearance**. The trip accent is data-driven through `trip.accent`; it is decoration, not the product identity.
 
-The planned-stop map also follows the effective light/dark theme by default using OpenFreeMap styles.
+## Offline freshness
+
+Use shared publish metadata when generating a trip:
+
+```json
+{
+  "trip": {
+    "updatedAt": "2026-09-17T16:10:00+08:00",
+    "revision": "trip-2026-09-17-03"
+  }
+}
+```
+
+The header can then distinguish a fresh network copy from an IndexedDB fallback such as:
+
+```text
+Online · updated Sep 17, 16:10
+Offline copy · updated Sep 17, 16:10
+```
+
+Checklist and personal-note changes are local state and do not change the shared trip revision.
+
+## Share and deep links
+
+The share button uses the Web Share API when available and falls back to copying the current URL.
+
+Read-only URL hashes preserve context, for example:
+
+```text
+#now
+#trip/overview
+#trip/day/2026-10-04
+#map/day/2026-10-04/stop/d2-ueno
+#check
+#more
+```
+
+These are navigation links, not collaborative editing sessions.
+
+## Locale / labels
+
+The base template keeps localization lightweight. Set a shell locale and optionally override individual labels:
+
+```json
+{
+  "ui": {
+    "locale": "zh-TW",
+    "labels": {
+      "navNow": "現在",
+      "navTrip": "行程"
+    }
+  }
+}
+```
+
+Built-in companion/shell labels cover English and Traditional Chinese; trip content itself remains whatever language the generating agent writes.
 
 ## Quick start
 
@@ -94,8 +171,9 @@ The planned-stop map also follows the effective light/dark theme by default usin
 3. Keep stable IDs for days, activities, checklist items, todos, and decision options.
 4. Add `lat`/`lng`, useful external links, reminders, TBD cards, and optional static info cards.
 5. Use optional `highlights`, `routeSummary`, and `transferAfter` only when they make the trip easier to scan.
-6. Optionally set `trip.accent` and provider map styles for the trip identity.
-7. Push to `main`.
+6. Set `trip.updatedAt` / `trip.revision` when publishing a new shared version.
+7. Optionally set `ui.locale`, `trip.accent`, and provider map styles.
+8. Push to `main`.
 
 No build step, server, account system, or server database is required.
 
@@ -111,7 +189,7 @@ Enable it once:
 4. Select folder **`/ (root)`**.
 5. Click **Save**.
 
-After that, pushes to `main` publish automatically. GitHub supports publishing directly from a branch root when no custom build process is needed. See [GitHub's publishing-source documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+After that, pushes to `main` publish automatically. See [GitHub's publishing-source documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
 Expected URL pattern:
 
@@ -137,6 +215,7 @@ Then open `http://localhost:8000`.
 
 - [`AGENTS.md`](./AGENTS.md) — concise rules for coding agents
 - [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — product boundaries, runtime architecture, responsive shell, storage, handoff model
+- [`docs/COMPANION_UX.md`](./docs/COMPANION_UX.md) — day-of Now/TBD/map/offline/share/locale interaction contract
 - [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md) — how an LLM/agent should fill `trip.json`
 - [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md) — development, PWA/cache, responsive/theme review, and acceptance checklist
 - [`NOTICE.md`](./NOTICE.md) — TREK attribution/source-reuse notes

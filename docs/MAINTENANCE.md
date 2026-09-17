@@ -19,9 +19,11 @@ Do not rely on opening `index.html` directly with `file://`; the app fetches `tr
 At minimum, before merging template changes:
 
 ```bash
+node --check bootstrap.js
 node --check app.js
 node --check trip-view.js
 node --check responsive-shell.js
+node --check companion-ux.js
 node --check storage.js
 node --check runtime-providers.js
 node --check runtime-features.js
@@ -40,26 +42,87 @@ Also parse:
 
 The base template should continue to satisfy:
 
-- `Now` shows current/next context without requiring live providers
-- reminders remain concise and visible
+- `Now` shows **previous / scheduled-now / next** as a reference window
+- early/delayed travellers can see adjacent scheduled items without pretending GPS presence is known
+- only valid `HH:MM` starts participate in time calculations
+- missing/`TBD` start times remain floating and never become midnight/current
+- reminders and floating/TBD items remain visible
 - shared TBD cards cannot be resolved locally
 - `decision.mode: "personal"` clearly remains device-local
+- traveller-facing text does not mention `trip.json` or implementation instructions
 - `Trip` opens with a whole-trip overview rather than a wall of stop actions
 - Trip overview summarizes days, optional highlights, and unresolved shared decisions
 - a selected day shows route-at-a-glance + compact timeline
 - transfer context is static/pre-researched and never presented as live transit
 - itinerary rows keep an action budget: small map action + optional overflow, not repeated large buttons
-- `Map` only shows already-planned stops
+- `Map` only shows already-planned stops and numbers markers in itinerary order
+- selected map stop is visually distinct
+- no route optimization/live routing is introduced
 - Google Maps/external handoff remains available if the interactive map fails
+- phone Map can use most of the remaining viewport without breaking bottom-nav safe areas
 - `Check` persists completion in IndexedDB with localStorage fallback
 - `More` remains reference-oriented
 - provider failure never blocks core itinerary/reference use
+- header distinguishes network data from an offline snapshot when possible
+- Web Share/copy-link preserves current read-only context
+- deep links can restore Now / Trip overview / Trip day / Map stop / Check / More
+- simple `ui.locale` / `ui.labels` customization does not fork trip data
 - phone layout remains usable on a narrow viewport
 - compact desktop reveals a persistent day rail without squeezing the main view
-- wide desktop may reveal a right context rail without introducing separate data/business logic
+- wide desktop context rail changes with the active view rather than duplicating the same stops everywhere
 - `system`, `light`, and `dark` all remain readable
 - switching theme does not lose local state
 - the map follows the effective theme unless explicitly overridden
+
+## Companion-UX review
+
+After changing day-of behavior, test these cases explicitly:
+
+### Timed window
+
+Use a fixture/current time where the day contains at least three timed items.
+
+Verify:
+
+- previous points to the nearest earlier timed item
+- scheduled-now is only set inside the scheduled window
+- next is the next timed item, including the first item of a later day when today is finished
+- later items do not duplicate the next item
+
+### Floating/TBD
+
+Use an item with either no `start` or `start: "TBD"`.
+
+Verify:
+
+- it does not become current
+- it does not count as 00:00
+- it remains visible in Flexible today / Trip
+- shared decisions remain unresolved unless `resolvedOptionId` is present
+
+### Offline freshness
+
+Test both:
+
+1. successful network `trip.json` load
+2. failed `trip.json` network load after a prior successful snapshot
+
+Verify the header distinguishes `Online` from `Offline copy` and retains the published `updatedAt` context.
+
+### Deep links / share
+
+Test direct loads for at least:
+
+```text
+#now
+#trip/overview
+#trip/day/<date>
+#map/day/<date>/stop/<id>
+#check
+#more
+```
+
+Verify sharing/copying the current URL preserves the selected read-only context.
 
 ## Trip-view review
 
@@ -96,7 +159,7 @@ Verify:
 - single-column content
 - bottom navigation remains available and safe-area friendly
 - Trip keeps its own Overview / day chips because no persistent day rail exists
-- no desktop context rail leaks into the layout
+- Map can expand vertically without desktop rails leaking into the layout
 
 ### Compact desktop `900–1399px`
 
@@ -109,16 +172,17 @@ Verify:
 ### Wide desktop `>= 1400px`
 
 - left trip-day/reference rail, main content, and right context rail are all visible
-- right rail derives overview/selected-day/reminder information from the same `trip.json`
-- duplicated overview blocks may collapse when the same context is already visible in the rail
-- quick-access controls call the same primary views (`Map`, `Check`, `More`)
+- right rail content matches the active view
+- Now rail does not duplicate Trip-day context
+- Map rail shows selected-stop details rather than the whole timeline
+- Check rail shows completion/incomplete items
 
 Across all sizes:
 
 - do not duplicate data loading/storage/decision semantics by breakpoint
 - prefer collapsing a context panel over squeezing the main itinerary/map
 - map and timeline widths remain usable
-- resizing does not lose selected day, checklist state, or theme
+- resizing does not lose selected day, checklist state, theme, or deep-link context
 
 ## Theme review
 
@@ -139,7 +203,7 @@ The quick header control and **More → Appearance** must remain consistent with
 When changing cached shell files or behavior in a way that existing clients must refresh, bump the shell cache name, for example:
 
 ```js
-const CACHE = "travel-lite-shell-v9";
+const CACHE = "travel-lite-shell-v10";
 ```
 
 If this is forgotten, returning users may continue seeing stale JavaScript/CSS until the old cache is replaced.
@@ -166,7 +230,7 @@ Only change them intentionally.
 
 Any URL rendered from trip data should be validated before use.
 
-Current handoff/info-card/trip-view code allows expected safe protocols and rejects unexpected protocols. Preserve that behavior when adding new link surfaces.
+Current handoff/info-card/trip-view/companion code allows expected safe protocols and rejects unexpected protocols. Preserve that behavior when adding new link surfaces.
 
 Never commit secrets or require secret API keys in the base static template.
 
@@ -178,11 +242,12 @@ The base template intentionally keeps runtime providers small:
 - OpenFreeMap/MapLibre for planned-stop map rendering
 - Google Maps URLs for handoff
 
-Do not reintroduce generic place search, POI discovery, or runtime encyclopedia enrichment by default. Prefer:
+Do not reintroduce generic place search, POI discovery, runtime encyclopedia enrichment, live transit, or route optimization by default. Prefer:
 
 - `googleSearches`
 - `externalLinks`
 - vibe-time `infoCard` generation
+- static `routeSummary` / `transferAfter`
 
 If a fork needs a larger provider integration, keep it fork-specific unless it clearly benefits the generic post-planning companion use case.
 
@@ -225,15 +290,17 @@ Before merge, review for:
 
 - Does the core UI still work if weather/map/CDN calls fail?
 - Is `trip.json` still available from the local snapshot after a successful prior load?
+- Does the user understand whether they are looking at a network or offline copy?
 - Did a shell change require a Service Worker cache bump?
 
 ### UX
 
-- Is `Now` still glanceable rather than dense?
+- Is `Now` glanceable and useful when the group is early/delayed?
 - Does Trip communicate information before actions?
 - Are repeated cards/actions avoided?
 - Are touch targets mobile-friendly?
 - Does each breakpoint use its available space intentionally rather than merely scaling the same layout?
+- Does the wide rail add context rather than duplicate the main view?
 - Do light/dark/system all preserve contrast and hierarchy?
 - Are optional modules hidden when their data is absent?
 
@@ -245,7 +312,7 @@ Before merge, review for:
 
 ## When to update documentation
 
-- schema change → update `docs/TRIP_SCHEMA.md`
+- schema change → update `docs/TRIP_SCHEMA.md` or `docs/COMPANION_UX.md` when the contract is specifically day-of UX
 - product/architecture boundary change → update `docs/ARCHITECTURE.md`
 - maintenance/test/deployment change → update this file
 - agent behavior/conventions change → update root `AGENTS.md`

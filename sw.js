@@ -1,4 +1,4 @@
-const CACHE = "travel-lite-shell-v8";
+const CACHE = "travel-lite-shell-v10";
 const RUNTIME_CACHE = "travel-lite-runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -10,6 +10,8 @@ const CORE = [
   "./desktop-theme.css",
   "./trip-view.css",
   "./responsive-shell.css",
+  "./companion-ux.css",
+  "./bootstrap.js",
   "./storage.js",
   "./app.js",
   "./trip-view.js",
@@ -19,6 +21,7 @@ const CORE = [
   "./runtime-google.js",
   "./theme-shell.js",
   "./responsive-shell.js",
+  "./companion-ux.js",
   "./trip.json",
   "./manifest.webmanifest",
   "./icon.svg"
@@ -53,6 +56,17 @@ async function staleWhileRevalidate(request, cacheName) {
   return cached || refresh;
 }
 
+function markCachedResponse(response) {
+  if (!response) return response;
+  const headers = new Headers(response.headers);
+  headers.set("X-Travel-Lite-Source", "cache");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
 self.addEventListener("fetch", (event) => {
   const request = event.request;
   if (request.method !== "GET") return;
@@ -75,10 +89,12 @@ self.addEventListener("fetch", (event) => {
 
   if (url.pathname.endsWith("/trip.json")) {
     event.respondWith(fetch(request).then((response) => {
-      const copy = response.clone();
-      caches.open(CACHE).then((cache) => cache.put(request, copy));
+      if (response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE).then((cache) => cache.put(request, copy));
+      }
       return response;
-    }).catch(() => caches.match(request)));
+    }).catch(async () => markCachedResponse(await caches.match(request))));
     return;
   }
 

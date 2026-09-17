@@ -5,8 +5,9 @@ Travel Lite is a **post-planning trip decision companion** deployed as a static 
 Before making non-trivial changes, read:
 
 1. [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
-2. [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md)
-3. [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md)
+2. [`docs/COMPANION_UX.md`](./docs/COMPANION_UX.md)
+3. [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md)
+4. [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md)
 
 ## Core invariant
 
@@ -24,11 +25,12 @@ Shared TBDs are read-only unless `trip.json` contains `resolvedOptionId`. Only `
 
 The default experience should help a traveller answer quickly:
 
-- What am I doing now?
+- What was the previous scheduled item?
+- What is scheduled now?
 - What is next?
 - What must I remember/check?
 - What is the trip/day overview?
-- Is anything intentionally TBD?
+- Is anything intentionally TBD/floating today?
 - What pre-researched context/options help that decision?
 - Where is this stop?
 - Which specialist app/site should I open next?
@@ -42,8 +44,21 @@ Do not turn the base template into:
 - a review/recommendation database
 - generic place/POI discovery
 - collaboration/account/sync infrastructure
+- booking/expense editing
+- planner undo/redo
 
 Prefer specialist handoff links over rebuilding mature tools.
+
+## Now / time semantics
+
+`Now` is a **schedule reference**, not location tracking.
+
+- show previous / scheduled-now / next so early or delayed travellers can orient themselves
+- say **Scheduled now**, not “you are here”
+- only valid `HH:MM` starts participate in time calculations
+- `start: "TBD"` or missing `start` is floating and must never become 00:00/current
+- floating items stay visible under Flexible today / Trip
+- additional future items may be shown after the three-item reference window
 
 ## Trip information hierarchy
 
@@ -57,6 +72,16 @@ The Trip view is **information first, actions second**.
 - `decision` and `infoCard` are content surfaces, not primary action buttons.
 
 Use optional `highlights`, `routeSummary`, and `transferAfter` only when they improve scanability. Do not fill them with invented detail just because the schema supports them.
+
+## Map invariant
+
+Map is a read-only spatial reference for **already planned stops**.
+
+- number markers in itinerary order
+- emphasize the selected stop
+- keep Google Maps / specialist handoff
+- do not add route optimization, transport-mode editing, live rerouting, or place discovery
+- only render real route geometry if a fork supplies trusted geometry prepared outside the base template
 
 ## Responsive + appearance invariant
 
@@ -76,10 +101,10 @@ compact desktop / tablet landscape
 wide desktop
 ├── trip-day / reference rail
 ├── main content
-└── trip context rail
+└── context-sensitive rail
 ```
 
-Wide layouts may expose context simultaneously (days, selected-day stops, reminders, quick access) that remains reachable through normal views on phone. This is presentation composition, not extra product scope.
+The wide right rail must depend on the current view (Now / Trip / Map / Check / More). Do not fill it with duplicate timeline content just because space exists.
 
 Do not duplicate data loading, storage, decision semantics, or view business logic just to support another breakpoint.
 
@@ -89,6 +114,15 @@ Appearance must support `system`, `light`, and `dark`.
 - `trip.accent` is trip decoration, not a fixed product brand
 - maps should follow the effective light/dark mode unless a trip explicitly overrides the styles
 - never encode important meaning only through color
+
+## Offline / share / locale
+
+- show whether the traveller is seeing a network copy or an offline snapshot
+- prefer `trip.updatedAt` / `trip.revision` as shared publish metadata
+- deep links select read-only context (`#trip/day/...`, `#map/day/.../stop/...`)
+- Web Share / copy-link is allowed; collaborative editing sessions are not
+- shell labels may use `ui.locale` and `ui.labels`; do not introduce a heavy i18n framework unless a fork truly needs it
+- traveller-facing UI must not say “update trip.json” or expose implementation jargon
 
 ## Default trip-generation workflow
 
@@ -105,7 +139,8 @@ When given a planning result, PDF, spreadsheet, notes, or chat transcript:
 9. Use static `infoCard` content for researched place background.
 10. Use `highlights` for flexible/seasonal activities that belong in the trip overview but are not fixed timeline stops.
 11. Use `routeSummary` / `transferAfter` only when the source discussion or research supports them.
-12. Omit optional modules when there is no real data.
+12. Set `updatedAt` / `revision` when publishing a new shared itinerary version.
+13. Omit optional modules when there is no real data.
 
 Never invent URLs, booking details, coordinates, durations, live transit data, or resolved decisions.
 
@@ -133,7 +168,8 @@ If changing template code rather than trip data:
 - preserve offline fallbacks
 - preserve phone, compact-desktop, and wide-desktop usability
 - verify system/light/dark appearance
-- keep Trip scanability high and repeated actions low
+- keep Trip/Now scanability high and repeated actions low
+- test direct deep links and resize without losing selected day/theme/local state
 - bump the Service Worker shell cache version when cached shell behavior/assets materially change
 
 Follow the repeatable review checklist in [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md).
@@ -143,6 +179,7 @@ Follow the repeatable review checklist in [`docs/MAINTENANCE.md`](./docs/MAINTEN
 - human setup/features → `README.md`
 - agent rules → `AGENTS.md`
 - architecture/scope → `docs/ARCHITECTURE.md`
+- day-of interaction contract → `docs/COMPANION_UX.md`
 - trip data contract → `docs/TRIP_SCHEMA.md`
 - development/review/deployment → `docs/MAINTENANCE.md`
 - attribution/license source reuse → `NOTICE.md` / `LICENSE`
