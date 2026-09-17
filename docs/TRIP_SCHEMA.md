@@ -38,7 +38,7 @@ Recommended fields:
   "timezone": "Asia/Tokyo",
   "homeLabel": "Tokyo, Japan",
   "center": { "lat": 35.6812, "lng": 139.7671 },
-  "accent": "#2563eb",
+  "accent": "#4f6f5e",
   "themeColor": "#0b1020"
 }
 ```
@@ -48,6 +48,7 @@ Rules:
 - use `YYYY-MM-DD` dates
 - use a valid IANA timezone
 - change `trip.id` for a genuinely different trip so browser-local state does not collide
+- treat `accent` as trip decoration; important meaning must not depend on that color
 
 ## `ui`
 
@@ -59,7 +60,13 @@ Rules:
 }
 ```
 
-Unused views may be removed from `bottomNav` for simpler trips.
+`theme` supports:
+
+- `system` — follow OS/browser preference
+- `light`
+- `dark`
+
+Unused views may be removed from `bottomNav` for simpler trips. Phone and desktop reuse the same view list; responsive layout is handled by the shell, not by separate trip data.
 
 ## `providers`
 
@@ -68,10 +75,14 @@ The base template only needs small runtime services:
 ```json
 {
   "mapStyle": "https://tiles.openfreemap.org/styles/liberty",
+  "mapStyleLight": "https://tiles.openfreemap.org/styles/liberty",
+  "mapStyleDark": "https://tiles.openfreemap.org/styles/dark",
   "weatherEndpoint": "https://api.open-meteo.com/v1/forecast",
   "googleMapsEmbedKey": ""
 }
 ```
+
+`mapStyleLight` / `mapStyleDark` are optional overrides. If omitted, the template falls back to its built-in OpenFreeMap light/dark defaults.
 
 The Google Maps embed key is optional. Normal Google Maps handoff links do not require it.
 
