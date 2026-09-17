@@ -27,6 +27,7 @@ The default experience should help a traveller answer quickly:
 - What am I doing now?
 - What is next?
 - What must I remember/check?
+- What is the trip/day overview?
 - Is anything intentionally TBD?
 - What pre-researched context/options help that decision?
 - Where is this stop?
@@ -43,6 +44,19 @@ Do not turn the base template into:
 - collaboration/account/sync infrastructure
 
 Prefer specialist handoff links over rebuilding mature tools.
+
+## Trip information hierarchy
+
+The Trip view is **information first, actions second**.
+
+- `Overview` should summarize days, flexible highlights, and unresolved shared choices.
+- A day should show a route-at-a-glance before the detailed timeline.
+- `transferAfter` may show stable transition context between stops, but must not pretend to be live routing.
+- Each itinerary item should normally expose at most one small Google Maps action plus one overflow for secondary links.
+- Do not render every `externalLinks` / `googleSearches` entry as a large button.
+- `decision` and `infoCard` are content surfaces, not primary action buttons.
+
+Use optional `highlights`, `routeSummary`, and `transferAfter` only when they improve scanability. Do not fill them with invented detail just because the schema supports them.
 
 ## Responsive + appearance invariant
 
@@ -72,9 +86,11 @@ When given a planning result, PDF, spreadsheet, notes, or chat transcript:
 7. Use `externalLinks` for concrete Tabelog/booking/operator/transit/etc. pages.
 8. Use `googleSearches` for lightweight Google Maps queries rather than adding discovery APIs.
 9. Use static `infoCard` content for researched place background.
-10. Omit optional modules when there is no real data.
+10. Use `highlights` for flexible/seasonal activities that belong in the trip overview but are not fixed timeline stops.
+11. Use `routeSummary` / `transferAfter` only when the source discussion or research supports them.
+12. Omit optional modules when there is no real data.
 
-Never invent URLs, booking details, coordinates, or resolved decisions.
+Never invent URLs, booking details, coordinates, durations, live transit data, or resolved decisions.
 
 ## Runtime boundary
 
@@ -100,6 +116,7 @@ If changing template code rather than trip data:
 - preserve offline fallbacks
 - preserve both phone and desktop usability
 - verify system/light/dark appearance
+- keep Trip scanability high and repeated actions low
 - bump the Service Worker shell cache version when cached shell behavior/assets materially change
 
 Follow the repeatable review checklist in [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md).

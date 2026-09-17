@@ -20,6 +20,7 @@ At minimum, before merging template changes:
 
 ```bash
 node --check app.js
+node --check trip-view.js
 node --check storage.js
 node --check runtime-providers.js
 node --check runtime-features.js
@@ -42,7 +43,11 @@ The base template should continue to satisfy:
 - reminders remain concise and visible
 - shared TBD cards cannot be resolved locally
 - `decision.mode: "personal"` clearly remains device-local
-- `Trip` is read-focused rather than an editor
+- `Trip` opens with a whole-trip overview rather than a wall of stop actions
+- Trip overview summarizes days, optional highlights, and unresolved shared decisions
+- a selected day shows route-at-a-glance + compact timeline
+- transfer context is static/pre-researched and never presented as live transit
+- itinerary rows keep an action budget: small map action + optional overflow, not repeated large buttons
 - `Map` only shows already-planned stops
 - Google Maps/external handoff remains available if the interactive map fails
 - `Check` persists completion in IndexedDB with localStorage fallback
@@ -53,6 +58,22 @@ The base template should continue to satisfy:
 - `system`, `light`, and `dark` all remain readable
 - switching theme does not lose local state
 - the map follows the effective theme unless explicitly overridden
+
+## Trip-view review
+
+After changing Trip rendering, test both the Overview and at least one populated day.
+
+Verify:
+
+- Overview has clear day-level hierarchy before detailed stops
+- route summaries do not invent routing facts
+- `highlights` stay small and useful rather than becoming a recommendation feed
+- open shared decisions remain visibly unresolved
+- Google Maps is a small handoff, not the visual focus of each stop
+- `externalLinks` / `googleSearches` live under overflow unless they are true primary information
+- `decision` and `infoCard` remain content surfaces
+- `transferAfter` appears between the correct stops and disappears cleanly when absent
+- a dense item still scans well on mobile
 
 ## Responsive-shell review
 
@@ -93,7 +114,7 @@ The quick header control and **More → Appearance** must remain consistent with
 When changing cached shell files or behavior in a way that existing clients must refresh, bump the shell cache name, for example:
 
 ```js
-const CACHE = "travel-lite-shell-v7";
+const CACHE = "travel-lite-shell-v8";
 ```
 
 If this is forgotten, returning users may continue seeing stale JavaScript/CSS until the old cache is replaced.
@@ -120,7 +141,7 @@ Only change them intentionally.
 
 Any URL rendered from trip data should be validated before use.
 
-Current handoff/info-card code allows expected safe protocols and rejects unexpected protocols. Preserve that behavior when adding new link surfaces.
+Current handoff/info-card/trip-view code allows expected safe protocols and rejects unexpected protocols. Preserve that behavior when adding new link surfaces.
 
 Never commit secrets or require secret API keys in the base static template.
 
@@ -184,6 +205,7 @@ Before merge, review for:
 ### UX
 
 - Is `Now` still glanceable rather than dense?
+- Does Trip communicate information before actions?
 - Are repeated cards/actions avoided?
 - Are touch targets mobile-friendly?
 - Does desktop use width effectively without adding extra product scope?

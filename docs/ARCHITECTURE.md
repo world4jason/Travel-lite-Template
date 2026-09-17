@@ -24,7 +24,7 @@ Travel Lite should answer these quickly:
 
 - What am I doing now?
 - What is next?
-- What is today's plan?
+- What is the whole-trip/day overview?
 - What must I remember/check?
 - Is anything intentionally TBD?
 - What pre-researched options/context help that decision?
@@ -41,6 +41,34 @@ Do **not** turn the base template into:
 - a recommendation/discovery engine
 - a collaboration/account backend
 - cross-device synchronization
+
+## Trip information hierarchy
+
+The Trip view is intentionally **information first, actions second**.
+
+```text
+Trip
+├── Overview
+│   ├── daily summaries
+│   ├── flexible highlights / activities
+│   └── open shared decisions
+└── Day
+    ├── route at a glance
+    ├── compact timeline
+    ├── optional transfer context
+    └── small specialist handoff actions
+```
+
+This avoids the anti-pattern where every itinerary row becomes a cluster of large buttons.
+
+Default action budget per itinerary item:
+
+- one small Google Maps action
+- one overflow menu for secondary external/search links
+
+`decision` and `infoCard` are content surfaces, not primary action buttons.
+
+`routeSummary`, `highlights`, and `transferAfter` are static/vibe-time structures. They support scanability and decision-making but must not be used to imitate live routing or recommendations.
 
 ## Responsive shell
 
@@ -104,6 +132,9 @@ Because GitHub Pages has no shared synchronization backend:
 
 - itinerary and times
 - places and coordinates
+- day route summaries
+- flexible trip highlights
+- stable transfer context
 - reminders
 - shared TBD options
 - reservations/tickets/reference links
@@ -171,7 +202,9 @@ index.html             static shell
 styles.css             base UI
 runtime.css            runtime companion/map/info-card UI
 desktop-theme.css      responsive desktop shell + neutral theme tokens
+trip-view.css          Trip overview / compact timeline / transfer UI
 app.js                 core views and trip rendering
+trip-view.js           Trip overview and information-first day rendering
 storage.js             IndexedDB + localStorage fallback
 runtime-features.js    weather + planned-stop MapLibre overview
 runtime-google.js      Google Maps URL/embed helpers
@@ -202,5 +235,6 @@ Before adding a new capability, ask:
 5. Will the core site still work if the external service fails?
 6. Can phone and desktop share the same data/runtime logic?
 7. Does the feature work in system/light/dark without encoding meaning only in color?
+8. Does it improve information density without turning every row into actions?
 
 If the answer pushes toward planning, synchronization, or a large provider integration, keep it out of the base template.
