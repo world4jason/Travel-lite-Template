@@ -12,6 +12,7 @@ The guiding rule is:
 
 - Style default: `https://tiles.openfreemap.org/styles/liberty`
 - No Travel Lite account, token, or server is required.
+- OpenFreeMap's public instance currently advertises no registration, API key, map-view limit, or request limit.
 - The map renderer is dynamically loaded only when Map is opened.
 - If MapLibre/CDN/map tiles are unavailable, Google Maps links still work.
 
@@ -24,8 +25,11 @@ OpenFreeMap: https://openfreemap.org/
 - Travel Lite asks for up to 16 forecast days.
 - Results are cached in IndexedDB for 30 minutes.
 - A failed refresh may use cached data; otherwise the weather card simply disappears.
+- **Hosted free API caveat:** Open-Meteo's free endpoint is for non-commercial use, currently limited to 10,000 calls/day, 5,000/hour, and 600/minute, with no uptime guarantee. Its returned weather data is CC BY 4.0 and requires attribution.
+- Commercial/high-volume forks should configure Open-Meteo's customer endpoint or a self-hosted/replacement weather provider instead of silently relying on the free public endpoint.
 
 Docs: https://open-meteo.com/en/docs
+Pricing/terms: https://open-meteo.com/en/pricing · https://open-meteo.com/en/terms
 
 ### Place search — Photon
 
@@ -34,7 +38,7 @@ Docs: https://open-meteo.com/en/docs
 - Travel Lite uses explicit submit-to-search, not continuous typeahead, to keep public-demo traffic low.
 - Searches are location-biased when the current trip day has coordinates.
 - Results are cached for six hours.
-- The public demo has no SLA and may throttle extensive use; self-host or replace the endpoint for heavier deployments.
+- The public demo has no SLA and may throttle or ban extensive use; self-host or replace the endpoint for heavier deployments.
 
 Project/API docs: https://github.com/komoot/photon
 
@@ -72,7 +76,7 @@ Default behavior is a normal Google Maps URL:
 https://www.google.com/maps/search/?api=1&query=PLACE_NAME,ADDRESS
 ```
 
-No API key is needed. Travel Lite prefers place name + address/location to coordinates because Google Maps can then open the actual listing and its details more reliably. When a `googlePlaceId` is known, Travel Lite also supplies `query_place_id`.
+Google Maps URLs do not require an API key. Travel Lite prefers place name + address/location to coordinates because Google Maps can then open the actual listing and its details more reliably. When a `googlePlaceId` is known, Travel Lite also supplies `query_place_id` for a precise listing handoff.
 
 Google Maps URLs docs:
 https://developers.google.com/maps/documentation/urls/get-started
