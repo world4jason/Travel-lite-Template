@@ -7,8 +7,9 @@ Before making non-trivial changes, read:
 1. [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
 2. [`docs/COMPANION_UX.md`](./docs/COMPANION_UX.md)
 3. [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md)
-4. [`docs/TIMEZONE.md`](./docs/TIMEZONE.md)
-5. [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md)
+4. [`docs/SOURCE_NORMALIZATION.md`](./docs/SOURCE_NORMALIZATION.md)
+5. [`docs/TIMEZONE.md`](./docs/TIMEZONE.md)
+6. [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md)
 
 ## Core invariant
 
@@ -80,6 +81,27 @@ item.timezone
 - prefer separate departure/arrival entries when transport crosses dates/zones
 
 See [`docs/TIMEZONE.md`](./docs/TIMEZONE.md).
+
+## Source normalization / route summaries
+
+Vibe-time conversion is **source-faithful compression**, not replanning.
+
+When generating `day.routeSummary`, use this source priority:
+
+```text
+1. explicit source route / route chain
+2. source subtitle / structured route field
+3. ordered item.routeLabel / item.title values
+4. day.title only as a last-resort fallback
+```
+
+- stop at the first source that already expresses a useful route/order
+- preserve the source order; do not optimize it
+- do not infer missing transfers, transport modes, durations, or places
+- use `item.routeLabel` only to shorten a verbose operational title without changing its meaning
+- if evidence is weak, omit `routeSummary`; the UI can derive a simple fallback from item titles
+
+See [`docs/SOURCE_NORMALIZATION.md`](./docs/SOURCE_NORMALIZATION.md).
 
 ## Trip information hierarchy
 
@@ -160,11 +182,11 @@ When given a planning result, PDF, spreadsheet, notes, or chat transcript:
 9. Use `googleSearches` for lightweight Google Maps queries rather than adding discovery APIs.
 10. Use static `infoCard` content for researched place background.
 11. Use `highlights` for flexible/seasonal activities that belong in the trip overview but are not fixed timeline stops.
-12. Use `routeSummary` / `transferAfter` only when the source discussion or research supports them.
+12. Build `routeSummary` with the source-priority rule above; use `transferAfter` only when the source discussion or research supports it.
 13. Set `updatedAt` / `revision` when publishing a new shared itinerary version.
 14. Omit optional modules when there is no real data.
 
-Never invent URLs, booking details, coordinates, durations, timezone conversions, live transit data, or resolved decisions.
+Never invent URLs, booking details, coordinates, durations, timezone conversions, live transit data, route details, or resolved decisions.
 
 ## Runtime boundary
 
@@ -204,6 +226,7 @@ Follow the repeatable review checklist in [`docs/MAINTENANCE.md`](./docs/MAINTEN
 - architecture/scope → `docs/ARCHITECTURE.md`
 - day-of interaction contract → `docs/COMPANION_UX.md`
 - trip data contract → `docs/TRIP_SCHEMA.md`
+- source-to-trip normalization → `docs/SOURCE_NORMALIZATION.md`
 - timezone contract → `docs/TIMEZONE.md`
 - development/review/deployment → `docs/MAINTENANCE.md`
 - attribution/license source reuse → `NOTICE.md` / `LICENSE`
