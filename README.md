@@ -61,7 +61,7 @@ Enable it once:
 4. Select folder **`/ (root)`**.
 5. Click **Save**.
 
-After that, pushes to `main` publish automatically. GitHub supports publishing directly from a branch root when no custom build process is needed. See the official Pages documentation for publishing-source details.
+After that, pushes to `main` publish automatically. GitHub supports publishing directly from a branch root when no custom build process is needed. See [GitHub's publishing-source documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
 Expected URL pattern:
 
