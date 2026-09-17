@@ -5,7 +5,7 @@
 .weather-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 16px; background: var(--accent-soft); font-size: 1.6rem; }
 
 .map-handoff { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 17px 18px; }
-.map-handoff.compact { box-shadow: var(--shadow); }
+.map-handoff.compact { display: none; }
 .map-handoff strong { display: block; margin-bottom: 5px; }
 .map-handoff p { margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.4; }
 
