@@ -15,7 +15,7 @@
   const baseRenderTrip = renderTrip;
   const baseItemActions = itemActions;
 
-  state.decisionSelections ||= {};
+  state.personalDecisionSelections ||= {};
   let decisionsLoaded = false;
   let decisionsLoading = false;
 
@@ -51,20 +51,34 @@
     const options = decisionOptions(item);
     if (!decision || !options.length || !item?.id) return "";
 
-    const selectedId = state.decisionSelections[item.id] || "";
-    const selected = options.find((option) => option.id === selectedId);
-    const buttons = options.map((option) => {
-      const active = option.id === selectedId;
-      return `<button class="button-link ${active ? "primary" : ""}" type="button" data-decision-item="${escapeAttr(item.id)}" data-decision-option="${escapeAttr(option.id)}">${active ? "✓ " : ""}${escapeHtml(option.label)}</button>`;
-    }).join("");
+    const resolvedId = decision.resolvedOptionId || "";
+    const resolved = options.find((option) => option.id === resolvedId);
+    const personalMode = decision.mode === "personal";
+    const personalSelectedId = personalMode ? (state.personalDecisionSelections[item.id] || "") : "";
+    const personalSelected = options.find((option) => option.id === personalSelectedId);
+
+    let optionHtml = "";
+    if (resolved) {
+      optionHtml = `<div class="action-row"><span class="button-link primary">✓ ${escapeHtml(resolved.label)}</span></div>${resolved.note ? `<p class="helper-text">${escapeHtml(resolved.note)}</p>` : ""}`;
+    } else if (personalMode) {
+      optionHtml = `<div class="action-row">${options.map((option) => {
+        const active = option.id === personalSelectedId;
+        return `<button class="button-link ${active ? "primary" : ""}" type="button" data-personal-decision-item="${escapeAttr(item.id)}" data-personal-decision-option="${escapeAttr(option.id)}">${active ? "✓ " : ""}${escapeHtml(option.label)}</button>`;
+      }).join("")}</div><p class="helper-text">Personal preference · saved only on this device.</p>${personalSelected?.note ? `<p class="helper-text">${escapeHtml(personalSelected.note)}</p>` : ""}`;
+    } else {
+      optionHtml = `<div class="decision-options">${options.map((option) => `<div class="text-card"><strong>${escapeHtml(option.label)}</strong>${option.note ? `<p>${escapeHtml(option.note)}</p>` : ""}${option.url ? `<a class="inline-link" href="${escapeAttr(option.url)}" target="_blank" rel="noreferrer">Open option ↗</a>` : ""}</div>`).join("")}</div><p class="helper-text">Shared TBD · this page does not resolve it locally. Update trip.json after the group decides.</p>`;
+    }
+
+    const resolutionLink = decision.resolutionLink?.url && decision.resolutionLink?.label
+      ? `<a class="inline-link" href="${escapeAttr(decision.resolutionLink.url)}" target="_blank" rel="noreferrer">${escapeHtml(decision.resolutionLink.label)} ↗</a>`
+      : "";
 
     return `<div class="decision-card${compact ? " compact" : ""}">
-      <p class="eyebrow">${escapeHtml(decision.label || "Decide on the day")}</p>
-      <strong>${escapeHtml(decision.prompt || item.title || "Choose an option")}</strong>
+      <p class="eyebrow">${escapeHtml(resolved ? "Resolved" : (decision.label || "TBD"))}</p>
+      <strong>${escapeHtml(decision.prompt || item.title || "Decision")}</strong>
       ${decision.context ? `<p class="timeline-note">${escapeHtml(decision.context)}</p>` : ""}
-      <div class="action-row">${buttons}</div>
-      ${selected?.note ? `<p class="helper-text">${escapeHtml(selected.note)}</p>` : ""}
-      ${selected?.url ? `<a class="inline-link" href="${escapeAttr(selected.url)}" target="_blank" rel="noreferrer">Open selected option ↗</a>` : ""}
+      ${optionHtml}
+      ${resolutionLink}
     </div>`;
   }
 
@@ -76,7 +90,7 @@
     if (decisionsLoaded || decisionsLoading || !state.data) return;
     decisionsLoading = true;
     try {
-      state.decisionSelections = (await TravelLiteStorage.get(tripKey("decisions"))) || {};
+      state.personalDecisionSelections = (await TravelLiteStorage.get(tripKey("personalDecisions"))) || {};
       decisionsLoaded = true;
       render();
     } catch {
@@ -87,10 +101,10 @@
   }
 
   root.addEventListener("click", async (event) => {
-    const button = event.target.closest("[data-decision-item][data-decision-option]");
+    const button = event.target.closest("[data-personal-decision-item][data-personal-decision-option]");
     if (!button || !state.data) return;
-    state.decisionSelections[button.dataset.decisionItem] = button.dataset.decisionOption;
-    await TravelLiteStorage.set(tripKey("decisions"), state.decisionSelections);
+    state.personalDecisionSelections[button.dataset.personalDecisionItem] = button.dataset.personalDecisionOption;
+    await TravelLiteStorage.set(tripKey("personalDecisions"), state.personalDecisionSelections);
     render();
   });
 
@@ -124,7 +138,7 @@
   }
 
   function decisionSummaryCard(day) {
-    const items = (day?.items || []).filter((item) => decisionOptions(item).length && !state.decisionSelections[item.id]);
+    const items = (day?.items || []).filter((item) => decisionOptions(item).length && !item.decision?.resolvedOptionId);
     if (!items.length) return null;
     const card = document.createElement("section");
     card.className = "panel day-summary trip-decision-summary";
@@ -159,8 +173,6 @@
       return;
     }
 
-    // Keep the itinerary map but suppress automatic public-data enrichment and
-    // discovery panels. These are optional conveniences, not core travel flow.
     const originalWikipediaNearby = TravelLiteProviders.wikipediaNearby;
     TravelLiteProviders.wikipediaNearby = async () => [];
     try {
