@@ -1,0 +1,84 @@
+/* Responsive-shell theme controls. SPDX-License-Identifier: AGPL-3.0-or-later */
+(() => {
+  const MODES = ["system", "light", "dark"];
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  let button = null;
+
+  function currentMode() {
+    const mode = document.documentElement.dataset.theme;
+    return MODES.includes(mode) ? mode : "system";
+  }
+
+  function effectiveMode() {
+    const mode = currentMode();
+    if (mode !== "system") return mode;
+    return media.matches ? "dark" : "light";
+  }
+
+  function updateThemeColor() {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) return;
+    meta.setAttribute("content", effectiveMode() === "dark" ? "#111411" : "#f5f6f2");
+  }
+
+  function updateButton() {
+    if (!button) return;
+    const mode = currentMode();
+    const effective = effectiveMode();
+    const icon = effective === "dark" ? "☾" : "☀";
+    const label = mode === "system" ? "Auto" : mode[0].toUpperCase() + mode.slice(1);
+    button.innerHTML = `<span class="quick-theme-icon" aria-hidden="true">${icon}</span><span class="quick-theme-label">${label}</span>`;
+    button.setAttribute("aria-label", `Theme: ${label}. Switch theme.`);
+    button.title = `Theme: ${label}`;
+    updateThemeColor();
+  }
+
+  async function setMode(mode) {
+    if (!MODES.includes(mode)) return;
+    document.documentElement.dataset.theme = mode;
+    document.documentElement.style.colorScheme = mode === "system" ? "light dark" : mode;
+
+    if (typeof state !== "undefined") state.theme = mode;
+    if (typeof TravelLiteStorage !== "undefined" && typeof tripKey === "function" && state?.data) {
+      await TravelLiteStorage.set(tripKey("theme"), mode).catch(() => {});
+    }
+
+    updateButton();
+    if (typeof state !== "undefined" && state?.view === "map" && typeof renderMap === "function") renderMap();
+    else if (typeof state !== "undefined" && state?.view === "more" && typeof renderMore === "function") renderMore();
+  }
+
+  function install() {
+    if (document.querySelector("#quick-theme-toggle")) return;
+    const header = document.querySelector(".trip-header");
+    if (!header) return;
+
+    const liveTime = header.querySelector(".live-time");
+    const actions = document.createElement("div");
+    actions.className = "header-actions";
+
+    button = document.createElement("button");
+    button.id = "quick-theme-toggle";
+    button.className = "quick-theme-toggle";
+    button.type = "button";
+    button.addEventListener("click", () => {
+      const mode = currentMode();
+      const next = MODES[(MODES.indexOf(mode) + 1) % MODES.length];
+      setMode(next);
+    });
+
+    actions.appendChild(button);
+    if (liveTime) actions.appendChild(liveTime);
+    header.appendChild(actions);
+
+    new MutationObserver(updateButton).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+    media.addEventListener?.("change", updateButton);
+    updateButton();
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
+  else install();
+})();
