@@ -50,6 +50,10 @@
     syncMapStyle();
   }
 
+  function rerenderMapIfVisible() {
+    if (typeof state !== "undefined" && state?.view === "map" && typeof renderMap === "function") renderMap();
+  }
+
   async function setMode(mode) {
     if (!MODES.includes(mode)) return;
     document.documentElement.dataset.theme = mode;
@@ -61,8 +65,8 @@
     }
 
     updateButton();
-    if (typeof state !== "undefined" && state?.view === "map" && typeof renderMap === "function") renderMap();
-    else if (typeof state !== "undefined" && state?.view === "more" && typeof renderMore === "function") renderMore();
+    if (typeof state !== "undefined" && state?.view === "more" && typeof renderMore === "function") renderMore();
+    else rerenderMapIfVisible();
   }
 
   function install() {
@@ -94,7 +98,7 @@
     });
     media.addEventListener?.("change", () => {
       updateButton();
-      if (currentMode() === "system" && typeof state !== "undefined" && state?.view === "map" && typeof renderMap === "function") renderMap();
+      if (currentMode() === "system") rerenderMapIfVisible();
     });
 
     updateButton();
@@ -102,6 +106,7 @@
       if (typeof state !== "undefined" && state?.data) {
         window.clearInterval(waitForTrip);
         updateButton();
+        rerenderMapIfVisible();
       }
     }, 100);
     window.setTimeout(() => window.clearInterval(waitForTrip), 5000);
