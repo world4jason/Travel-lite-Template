@@ -2,6 +2,7 @@
 (() => {
   const MODES = ["system", "light", "dark"];
   const media = window.matchMedia("(prefers-color-scheme: dark)");
+  const DEFAULT_ACCENT = "#4f6f5e";
   let button = null;
   let rememberedLightMapStyle = null;
 
@@ -20,6 +21,11 @@
     const meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) return;
     meta.setAttribute("content", effectiveMode() === "dark" ? "#111411" : "#f5f6f2");
+  }
+
+  function syncAccent() {
+    if (typeof state === "undefined" || !state?.data) return;
+    if (!state.data.trip?.accent) document.documentElement.style.setProperty("--accent", DEFAULT_ACCENT);
   }
 
   function syncMapStyle() {
@@ -47,6 +53,7 @@
     button.setAttribute("aria-label", `Theme: ${label}. Switch theme.`);
     button.title = `Theme: ${label}`;
     updateThemeColor();
+    syncAccent();
     syncMapStyle();
   }
 
