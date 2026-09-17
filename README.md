@@ -19,7 +19,7 @@ Think **infographic + info cards + small dashboard**, not itinerary editor.
 
 ## Shared truth vs local state
 
-This distinction is a core invariant because a static GitHub Pages site has no shared synchronization backend:
+A static GitHub Pages site has no shared synchronization backend:
 
 ```text
 trip.json   = shared truth everyone should see
@@ -31,16 +31,14 @@ Therefore:
 - a shared TBD is read-only in the generated page
 - the card may show 2–3 pre-discussed options, context, and links needed to decide
 - a shared decision becomes authoritative only when `trip.json` is regenerated/updated with `resolvedOptionId`
-- `decision.mode: "personal"` is the only case where a choice may be stored locally; the UI labels it **Personal preference · this device only**
-- local state must never pretend that the group itinerary has been changed
-
-This avoids different travellers silently ending up with conflicting "resolved" itineraries.
+- `decision.mode: "personal"` is the only case where a preference may be stored locally, clearly labelled **this device only**
+- local state must never pretend that the group itinerary changed
 
 ## Default views
 
 - **Now** — current activity, next activity, reminders, unresolved day-of decisions, trip-local time, small weather context
 - **Trip** — read-focused daily itinerary; fixed, optional, and TBD items can coexist
-- **Map** — today's already-planned stops on MapLibre/OpenFreeMap + specialist map handoff
+- **Map** — today's already-planned stops on MapLibre/OpenFreeMap + Google Maps handoff
 - **Check** — to-dos + packing/checklists stored locally
 - **More** — reservation/ticket/note/contact references and device-local note/settings
 
@@ -54,40 +52,11 @@ Need to remember  → reminder / checklist
 Decide on the day → decision card with pre-discussed options
 ```
 
-Shared decision example:
-
-```json
-{
-  "id": "d2-lunch",
-  "title": "Lunch",
-  "decision": {
-    "prompt": "Eat before moving, or head to Kichijoji first?",
-    "context": "Choose based on crowd and energy.",
-    "options": [
-      { "id": "here", "label": "Eat here", "note": "Less transit." },
-      { "id": "move", "label": "Move first", "note": "Eat near the afternoon stop." }
-    ]
-  }
-}
-```
-
-After the group decides, the generated/shared data can become:
-
-```json
-{
-  "decision": {
-    "resolvedOptionId": "move",
-    "options": [
-      { "id": "here", "label": "Eat here" },
-      { "id": "move", "label": "Move first" }
-    ]
-  }
-}
-```
+Shared decisions are informational until the shared file changes. Personal preferences may be device-local.
 
 ## Handoff-first
 
-Travel Lite should help users decide and remember; specialized tools should execute specialized jobs.
+Travel Lite helps users **remember and decide**; specialized tools execute specialized jobs.
 
 Examples:
 
@@ -97,7 +66,7 @@ Examples:
 - reservation changes → original booking service
 - ticket/status → attraction, airline, or rail operator
 
-Activities can carry arbitrary concrete `externalLinks`:
+Activities can carry concrete `externalLinks`:
 
 ```json
 {
@@ -111,19 +80,55 @@ Activities can carry arbitrary concrete `externalLinks`:
 
 Do not invent URLs. See [`HANDOFF_PRINCIPLE.md`](./HANDOFF_PRINCIPLE.md).
 
-## Optional explore tools
+### Google Maps query handoff
 
-Photon place search, Wikipedia/Wikidata enrichment, and Overpass nearby discovery are implemented but **hidden by default**:
+For lightweight "what is nearby?" needs, do not call a discovery API. Let the agent add small Google Maps query shortcuts:
 
 ```json
 {
-  "ui": {
-    "enableExploreTools": false
+  "title": "Dinner",
+  "location": "Ebisu, Tokyo",
+  "googleSearches": [
+    { "label": "Nearby restaurants", "query": "restaurants" },
+    { "label": "Nearby cafes", "query": "cafe" }
+  ]
+}
+```
+
+Travel Lite turns these into Google Maps search URLs scoped around the selected stop.
+
+## Static info cards
+
+Place context is prepared **during vibe-time**, not fetched at runtime. An LLM/agent may research Wikipedia, official sites, guide material, or other appropriate sources and write a compact card into `trip.json`:
+
+```json
+{
+  "title": "Senso-ji",
+  "infoCard": {
+    "label": "Background",
+    "title": "Senso-ji",
+    "summary": "Short context useful while visiting.",
+    "facts": ["One useful fact", "Another useful fact"],
+    "sourceLinks": [
+      { "label": "Wikipedia", "url": "https://en.wikipedia.org/..." },
+      { "label": "Official site", "url": "https://..." }
+    ]
   }
 }
 ```
 
-They are conveniences, not part of the normal travel flow. They are also the first candidates to remove if maintenance simplicity matters more.
+This keeps the card offline-capable and avoids runtime entity-matching mistakes. Live hours, reviews and navigation stay in specialist apps.
+
+## Runtime providers
+
+The base template intentionally has only two runtime infrastructure dependencies:
+
+- **Weather:** Open-Meteo, cached in IndexedDB and allowed to fail silently
+- **Map:** MapLibre + OpenFreeMap for planned-stop overview; Google Maps URLs remain the fallback/handoff
+
+There is **no Photon, Overpass, Wikipedia or Wikidata runtime code** in the base template.
+
+See [`PROVIDERS.md`](./PROVIDERS.md).
 
 ## Storage model
 
@@ -132,7 +137,8 @@ trip.json                    shared planning output
    ├── itinerary / locations
    ├── reminders / shared TBD cards
    ├── resolved shared decisions
-   ├── reservations / tickets / links
+   ├── static info cards / source links
+   ├── reservations / tickets / handoff links
    └── optional reference modules
 
 IndexedDB                   private device-local state
@@ -141,33 +147,29 @@ IndexedDB                   private device-local state
    ├── personal note
    ├── selected day/view/theme
    ├── trip snapshot
-   └── small provider caches
+   └── weather cache
 
 localStorage                fallback only
 ```
 
 No application server, login, server database, or build step is required.
 
-## Weather
-
-Open-Meteo supplies small current/day weather context and is cached locally. Weather failure never blocks the itinerary. See [`PROVIDERS.md`](./PROVIDERS.md) for provider limits and replacement points.
-
 ## Offline behavior
 
-After the first successful visit, the app shell and trip snapshot remain available offline. Checklist/todo/personal state is stored in IndexedDB with localStorage fallback. External specialist apps/sites and live provider refreshes require connectivity.
+After the first successful visit, the app shell and trip snapshot remain available offline. Checklist/todo/personal state is stored in IndexedDB with localStorage fallback. Static info cards remain readable offline. External specialist apps/sites and live weather refresh require connectivity.
 
 ## Quick start
 
 1. Turn the output of planning/discussion into `trip.json`.
 2. Preserve intentional TBDs as small decision cards instead of inventing an answer.
-3. Prefer stable IDs and explicit `lat`/`lng` for planned stops.
-4. Add concrete specialist links where useful.
+3. Resolve stable places and useful context during vibe-time.
+4. Add concrete specialist links and optional Google Maps query shortcuts.
 5. Push to `main`; GitHub Pages serves the repository root.
 6. Open the site once online before travelling.
 
 ## Scope guardrail
 
-Do not expand the base template into drag/drop itinerary planning, route optimization, review databases, live-transit engines, generic recommendations, collaboration, or account/server infrastructure.
+Do not expand the base template into drag/drop itinerary planning, route optimization, review databases, live-transit engines, generic recommendations, runtime place discovery, collaboration, or account/server infrastructure.
 
 See [`AGENTS.md`](./AGENTS.md), [`TREK_CLIENT_PARITY.md`](./TREK_CLIENT_PARITY.md), and [`HANDOFF_PRINCIPLE.md`](./HANDOFF_PRINCIPLE.md).
 

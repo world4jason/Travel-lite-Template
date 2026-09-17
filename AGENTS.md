@@ -1,6 +1,6 @@
 # Agent instructions
 
-Travel Lite is a **post-planning travel decision companion** for GitHub Pages. The trip has already been discussed and mostly planned before this template is generated. The traveller opens it during the trip to quickly check what is happening now, what is next, reminders, tickets/notes, any small unresolved choices, and where to hand off to a specialist app.
+Travel Lite is a **post-planning travel decision companion** for GitHub Pages. The trip has already been discussed and mostly planned before this template is generated.
 
 It is intentionally **not a trip planner** and must not grow into an all-in-one travel super app.
 
@@ -8,71 +8,71 @@ It is intentionally **not a trip planner** and must not grow into an all-in-one 
 
 The default experience should answer these questions in a few seconds:
 
-1. `Now` — What am I doing now? What is next? What must I remember? Is there a useful weather context?
+1. `Now` — What am I doing now? What is next? What must I remember? Is there useful weather context?
 2. `Trip` — What is today's already-discussed schedule? Which items are fixed, optional, or still TBD?
 3. `Map` — Where are today's planned stops? Open the user's normal map app for details/navigation/reviews.
 4. `Check` — What still needs to be done/packed?
 5. `More` — Where are my reservation/ticket/note/contact links?
 
-`ui.bottomNav` may hide unused views. Do not introduce a backend merely to support a small trip.
+## Shared-state rule
+
+```text
+trip.json = shared truth
+IndexedDB = private state on one device
+```
+
+Shared TBDs are **read-only** in the generated site. A shared choice becomes authoritative only when `resolvedOptionId` is written into shared `trip.json`.
+
+Only `decision.mode: "personal"` may store a device-local preference. The UI must label that state as local/personal and never imply other travellers see it.
 
 ## Decision-support rule
 
-A trip may still contain small decisions that were intentionally left open during planning. Represent those as **decision cards**, not as a planner/editor.
+Use `item.decision` only when planning has already narrowed the choice to a small number of concrete options. Do not add a generic itinerary editor.
 
-Use `item.decision` when the planning discussion has already narrowed the choice to a small number of concrete options:
-
-```json
-{
-  "id": "d2-lunch",
-  "title": "Lunch",
-  "decision": {
-    "prompt": "Eat before moving, or head to Kichijoji first?",
-    "context": "Choose based on crowd and energy.",
-    "options": [
-      { "id": "a", "label": "Eat here", "note": "Less transit." },
-      { "id": "b", "label": "Move first", "note": "Eat near the afternoon stop." }
-    ]
-  }
-}
-```
-
-The selected option is device-local state in IndexedDB. It does **not** rewrite, reorder, or reschedule the itinerary. Do not add a generic itinerary editor to support this.
-
-Good decision-card examples:
+Good examples:
 - lunch option A vs B after considering weather/crowd/energy
 - indoor vs outdoor optional stop
-- take the scenic route vs direct route
-- choose which already-researched restaurant to use
+- choose one of two already-researched restaurants
 
-Bad uses:
+Bad examples:
 - open-ended destination planning
 - searching hundreds of recommendations
 - drag/drop scheduling
-- automatically rebuilding the day's itinerary
+- automatically rebuilding the day
 
 ## Handoff-first rule
 
-Prefer a link to the authoritative/specialist app over rebuilding its functionality.
+Prefer an authoritative/specialist app over rebuilding its functionality.
 
-Examples:
+- ratings/reviews/photos/navigation → Google Maps or the traveller's map app
+- destination-specific restaurant reviews → direct Tabelog/etc. link when known
+- live train/transit → local timetable/operator app/site
+- reservations → original booking page
+- ticket/status → carrier/operator/provider page
 
-- ratings/reviews/opening details/photos/navigation -> Google Maps or the traveller's chosen map app
-- destination-specific restaurant reviews -> direct link such as Tabelog when supplied by the itinerary
-- live train/transit times/disruptions -> local timetable/transit app or operator site
-- reservations -> original booking page
-- attraction tickets -> official/provider page
-- airline/train status -> carrier/operator page
+Use `externalLinks` for concrete destinations. Do not scrape or mirror specialist services.
 
-Activities may use `externalLinks` for these handoffs. Do not scrape or mirror specialist services.
+For lightweight nearby lookup, use `googleSearches` to generate Google Maps search URLs. Do not add a runtime discovery provider.
+
+## Vibe-time enrichment
+
+Resolve stable information before deployment:
+
+- `lat` / `lng`
+- title and human-readable location
+- useful official/specialist links
+- compact `infoCard` context
+- `infoCard.sourceLinks`
+
+Wikipedia, Wikidata, official sites, guide material, or other sources may be used by the coding agent **during research**. Do not fetch or entity-match them at runtime in the base template.
 
 ## Data/storage boundaries
 
-- `trip.json` is the shared, version-controlled source of truth.
-- IndexedDB is the preferred device-local store for checklist/todo state, decision selections, personal notes, UI state, snapshots, and small runtime caches.
-- localStorage is only a fallback when IndexedDB is unavailable.
-- The service worker caches the app shell, `trip.json`, and bounded runtime assets.
-- Never put secrets, passport data, private credentials, or sensitive booking codes in a public repository.
+- `trip.json` is shared, version-controlled truth.
+- IndexedDB stores checklist/todo state, personal decision preferences, personal notes, UI state, trip snapshots, and small weather caches.
+- localStorage is fallback only.
+- The service worker caches the app shell, `trip.json`, and bounded map/runtime assets.
+- Never put secrets, passport data, credentials, or sensitive booking codes in a public repository.
 
 ## Default change strategy
 
@@ -80,66 +80,64 @@ When given a finalized or mostly-final itinerary, PDF, spreadsheet, notes, or a 
 
 1. Normalize it into `trip.json`.
 2. Preserve stable IDs for days, activities, todos, checklists, and decision options.
-3. Resolve stable locations at vibe-time: prefer explicit `lat`/`lng`, title, address/location, and useful external links.
-4. Preserve intentional ambiguity as small `decision` cards or TBD labels instead of inventing a decision.
-5. Keep the app shell stable.
-6. Add only trip-reference modules that have real data (`reservations`, `notes`, `files`, `contacts`, links). Optional modules such as costs/journal should be omitted when unused.
-7. Use runtime providers only for small changing context such as weather. Discovery helpers are optional and off by default.
-8. Do not introduce auth, SSR, a server database, paid services, secret API keys, itinerary-planning workflows, route optimizers, or live-transit engines unless explicitly requested for a fork.
+3. Resolve stable locations and context at vibe-time.
+4. Preserve intentional ambiguity as small shared decision cards instead of inventing a decision.
+5. Add direct handoff links and optional Google Maps query shortcuts where useful.
+6. Keep the app shell stable.
+7. Add optional reference modules only when real data exists.
+8. Do not introduce auth, SSR, server databases, secret API keys, planning workflows, route optimizers, live-transit engines, runtime discovery APIs, or shared local mutations.
 
 ## Trip data rules
 
 - Dates: `YYYY-MM-DD`.
-- Activity times: local trip time, `HH:MM`.
+- Activity times: trip-local `HH:MM`.
 - Prefer explicit `end` times so `Now` can determine the active activity.
-- Every day and activity should have a stable `id`.
-- Prefer `lat`/`lng` for real places; runtime geocoding is not required for normal use.
-- `day.reminders` contains concise day-of reminders; do not bury operational reminders in long prose.
-- For Google Maps handoff, use `googlePlaceId` when known; otherwise title + address/location is preferred over coordinates alone.
-- `externalLinks` should point to concrete useful pages and must never be invented.
-- Checklist, todo, and decision-option IDs must remain stable or local state may reset.
-- Change `trip.id` for a genuinely different trip so local browser state is isolated.
+- Every day/activity/decision option should have a stable `id`.
+- Prefer `lat`/`lng` for real places.
+- `day.reminders` contains concise day-of reminders.
+- `externalLinks` must be concrete and not invented.
+- `googleSearches` contains only `{label, query}` and hands off to Google Maps.
+- `infoCard` contains static, sourced context useful during the visit; do not put live operational facts there unless explicitly marked as non-live.
+- Change `trip.id` for a genuinely different trip.
 
 ## Runtime-provider rules
 
 ### Weather
 - Default: Open-Meteo.
-- Cache responses in IndexedDB; failure must never break itinerary rendering.
-- Forecast UI disappears gracefully outside the returned forecast window.
+- Cache in IndexedDB.
+- Failure must never block itinerary rendering.
+- Hide forecast UI gracefully outside the returned forecast window.
 
-### Optional explore tools
-- Photon place search, Wikipedia/Wikidata enrichment, and Overpass nearby POIs are **not part of the default travel flow**.
-- They render only when `ui.enableExploreTools === true`.
-- Keep them user-triggered, cached, and provider-replaceable.
-- Never let optional discovery make the template harder to use or maintain.
-
-### Maps and Google
-- Default map overview: MapLibre + OpenFreeMap for already-planned stops.
-- Google Maps URL is the normal reviews/details/navigation handoff and requires no key.
+### Map
+- Planned-stop overview: MapLibre + OpenFreeMap.
+- Google Maps URL is the normal reviews/details/navigation/search handoff.
 - Official Maps Embed API remains optional.
+
+### No runtime discovery in base
+Do not add Photon, Overpass, Wikipedia/Wikidata runtime lookups, generic nearby recommendation APIs, or equivalent discovery providers to the base template. Use vibe-time research or specialist-app links instead.
 
 ## Scope boundary
 
 Do not add these to the base template:
 
-- itinerary planning/editor workflow, drag/drop scheduling, undo/redo planning
-- route optimization or a built-in navigation engine
+- itinerary planning/editor workflow
+- route optimization or built-in navigation
 - ratings/review database or scraping
 - live transit timetable/disruption engine
-- generic recommendation engine
-- accounts, permissions, real-time collaboration, cross-device sync
+- generic recommendation/discovery engine
+- shared mutation state without a real sync backend
+- accounts, permissions, collaboration, cross-device sync
 - server uploads, booking extraction, plugins, MCP server, admin panel
-
-A specialist link is usually the correct solution.
 
 ## Acceptance checks
 
 - `trip.json` and `manifest.webmanifest` are valid JSON.
 - `node --check` passes for all local JavaScript files.
-- Core views render without any runtime provider succeeding.
-- `ui.enableExploreTools` defaults to false/absent and no discovery UI appears by default.
-- Map view still offers external map handoff if MapLibre fails.
-- Checklist/todo/decision/personal-note state survives reload via IndexedDB (or localStorage fallback).
+- Core views render without weather or map providers succeeding.
+- No runtime Photon/Overpass/Wikipedia/Wikidata code remains.
+- Map view still offers Google Maps handoff if MapLibre fails.
+- Shared TBDs cannot be resolved in IndexedDB.
+- Personal preferences/checklist/todo/note state survives reload via IndexedDB (or localStorage fallback).
 - The app opens after a reload with network disabled once loaded successfully online.
 - Layout remains usable at 320px width; touch targets stay approximately 44px or larger.
 - The project remains deployable as plain static files on GitHub Pages.

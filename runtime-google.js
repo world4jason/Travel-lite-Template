@@ -2,7 +2,9 @@
 (() => {
   function googleTextQuery(item) {
     if (!item) return "";
-    const text = item.googleQuery || item.mapQuery || [item.title, item.location].filter(Boolean).join(", ") || item.location || item.title;
+    const text = item.googleQuery || item.mapQuery
+      || [item.title, item.location].filter(Boolean).join(", ")
+      || item.location || item.title;
     if (text) return text;
     if (item.lat != null && item.lng != null) return `${item.lat},${item.lng}`;
     return "";
@@ -15,7 +17,16 @@
     if (!query) return "";
     const params = new URLSearchParams({ api: "1", query });
     if (item.googlePlaceId) params.set("query_place_id", item.googlePlaceId);
-    return `https://www.google.com/maps/search/?${params}`;
+    return `https://www.google.com/maps/search/?${params.toString()}`;
+  };
+
+  window.googleMapsSearchUrl = function googleMapsSearchUrl(query, contextItem = null) {
+    const search = String(query || "").trim();
+    if (!search) return "";
+    const context = googleTextQuery(contextItem);
+    const fullQuery = context ? `${search} near ${context}` : search;
+    const params = new URLSearchParams({ api: "1", query: fullQuery });
+    return `https://www.google.com/maps/search/?${params.toString()}`;
   };
 
   googleMapsEmbedUrl = function officialGoogleMapsEmbedUrl(item) {

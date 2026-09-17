@@ -8,8 +8,9 @@ The page should answer the small set of questions that are annoying to reconstru
 - What is next?
 - What is the plan today?
 - What did I need to remember or pack?
+- Is there a small TBD I need to decide now?
 - Where is this stop?
-- Which external app/site should I open for the authoritative/live detail?
+- Which external app/site should I open for authoritative/live detail?
 
 ## Prefer handoff over reimplementation
 
@@ -17,27 +18,32 @@ Do not rebuild mature destination-specific products inside Travel Lite.
 
 Examples:
 
-- ratings, reviews, opening details, photos, navigation -> Google Maps or another map app
-- Japan restaurant reviews/discovery -> Tabelog when the itinerary provides a direct link
-- live railway/transit timetable and disruption information -> the traveller's preferred local transit app/site (for example Jorudan or NAVITIME in Japan)
-- restaurant booking -> the original booking/service page
-- attraction tickets -> the official ticket/provider page
-- airline/train live status -> carrier/operator page or app
+- ratings, reviews, opening details, photos, navigation → Google Maps or another map app
+- Japan restaurant reviews/discovery → Tabelog when a concrete link is known
+- live railway/transit timetable/disruption → traveller's preferred local transit/operator app
+- restaurant booking → original booking/service page
+- attraction tickets → official ticket/provider page
+- airline/train live status → carrier/operator page or app
 
-Travel Lite may store and display links to these services. It should not scrape, mirror, proxy, or try to become a weaker copy of them.
+Travel Lite stores links to these services. It should not scrape, mirror, proxy, or become a weaker copy of them.
 
-## Runtime provider hierarchy
+## Handoff hierarchy
 
-1. **Core trip data** (`trip.json`) — required and offline-capable.
-2. **Small changing context** (weather) — useful enough to fetch live and cache locally.
-3. **Optional discovery helpers** (place search, public knowledge, nearby POIs) — opt-in convenience only.
-4. **Authoritative/live specialist information** — hand off to the user's chosen app/site.
+1. **Shared trip data** (`trip.json`) — required and offline-capable.
+2. **Small changing context** (weather) — fetched live and cached locally.
+3. **Static researched context** (`infoCard`) — prepared by the LLM/agent during vibe-time.
+4. **Ad-hoc search / nearby lookup** — Google Maps query links or user's specialist app.
+5. **Authoritative/live specialist information** — hand off to the chosen app/site.
 
-## Default UI rule
+## Prefer links and queries over providers
 
-The default experience must stay simple. Optional discovery tools are hidden unless `ui.enableExploreTools` is explicitly enabled.
+A coding agent should prefer:
 
-A coding agent should prefer adding an `externalLinks` entry to an activity over adding a new provider integration.
+- `externalLinks` for concrete pages
+- `googleSearches` for lightweight nearby/search handoff
+- `infoCard` for researched background/context
+
+over adding a new runtime API integration.
 
 Example:
 
@@ -49,6 +55,9 @@ Example:
   "externalLinks": [
     { "label": "Tabelog", "url": "https://tabelog.com/..." },
     { "label": "Reservation", "url": "https://..." }
+  ],
+  "googleSearches": [
+    { "label": "Nearby cafes", "query": "cafe" }
   ]
 }
 ```

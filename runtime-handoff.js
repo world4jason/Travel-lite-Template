@@ -1,16 +1,14 @@
 /*
- * Handoff-first scope guard for Travel Lite.
+ * Handoff-first companion layer for Travel Lite.
  *
- * The default trip UI stays small: itinerary, current/next context, weather,
- * trip map, checklists, reminders, lightweight day-of decisions, and links out
- * to the tools travellers already trust.
- * Advanced place discovery/enrichment remains available only when explicitly
- * enabled with ui.enableExploreTools=true.
+ * Shared trip.json is authoritative. IndexedDB is device-local only.
+ * Specialist apps handle reviews, live transport, booking changes and ad-hoc
+ * discovery. Vibe-time research can add static info cards to trip.json.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 (() => {
-  const fullRenderMap = renderMap;
+  const baseRenderMap = renderMap;
   const baseRenderNow = renderNow;
   const baseRenderTrip = renderTrip;
   const baseItemActions = itemActions;
@@ -19,25 +17,70 @@
   let decisionsLoaded = false;
   let decisionsLoading = false;
 
-  function externalLinks(item) {
-    const links = Array.isArray(item?.externalLinks) ? item.externalLinks : [];
-    return links.filter((link) => {
-      if (!link?.label || !link?.url) return false;
-      try {
-        const url = new URL(link.url, window.location.href);
-        return url.protocol === "https:" || url.protocol === "http:";
-      } catch {
-        return false;
-      }
+  function safeUrl(rawUrl, protocols = ["http:", "https:"]) {
+    if (!rawUrl) return "";
+    try {
+      const url = new URL(rawUrl, window.location.href);
+      return protocols.includes(url.protocol) ? url.href : "";
+    } catch {
+      return "";
+    }
+  }
+
+  function safeLinks(links) {
+    return (Array.isArray(links) ? links : []).flatMap((link) => {
+      if (!link?.label || !link?.url) return [];
+      const url = safeUrl(link.url, ["http:", "https:", "tel:", "mailto:"]);
+      return url ? [{ label: String(link.label), url }] : [];
     });
   }
 
-  function externalLinksHtml(item) {
-    const links = externalLinks(item);
-    if (!links.length) return "";
-    return `<div class="action-row handoff-actions">${links.map((link) =>
+  function linkButtonsHtml(links, className = "handoff-actions") {
+    const safe = safeLinks(links);
+    if (!safe.length) return "";
+    return `<div class="action-row ${className}">${safe.map((link) =>
       `<a class="button-link" href="${escapeAttr(link.url)}" target="_blank" rel="noreferrer">${escapeHtml(link.label)} ↗</a>`
     ).join("")}</div>`;
+  }
+
+  function externalLinksHtml(item) {
+    return linkButtonsHtml(item?.externalLinks);
+  }
+
+  function googleSearchLinksHtml(item) {
+    const searches = Array.isArray(item?.googleSearches) ? item.googleSearches : [];
+    const links = searches.flatMap((search) => {
+      if (!search?.label || !search?.query || typeof googleMapsSearchUrl !== "function") return [];
+      const url = googleMapsSearchUrl(search.query, item);
+      return url ? [{ label: search.label, url }] : [];
+    });
+    return linkButtonsHtml(links, "google-search-handoffs");
+  }
+
+  function infoCardHtml(item) {
+    const card = item?.infoCard;
+    if (!card || (!card.title && !card.summary && !Array.isArray(card.facts))) return "";
+
+    const facts = (Array.isArray(card.facts) ? card.facts : [])
+      .filter(Boolean)
+      .map((fact) => `<li>${escapeHtml(fact)}</li>`)
+      .join("");
+
+    const sources = linkButtonsHtml(card.sourceLinks, "info-source-links");
+    const imageUrl = safeUrl(card.image);
+    const image = imageUrl
+      ? `<img class="info-card-image" src="${escapeAttr(imageUrl)}" alt="" loading="lazy">`
+      : "";
+
+    return `<details class="info-card">
+      <summary>${escapeHtml(card.label || "About this stop")}</summary>
+      <div class="info-card-body">${image}<div>
+        ${card.title ? `<h3>${escapeHtml(card.title)}</h3>` : ""}
+        ${card.summary ? `<p>${escapeHtml(card.summary)}</p>` : ""}
+        ${facts ? `<ul>${facts}</ul>` : ""}
+        ${sources}
+      </div></div>
+    </details>`;
   }
 
   function decisionOptions(item) {
@@ -66,11 +109,15 @@
         return `<button class="button-link ${active ? "primary" : ""}" type="button" data-personal-decision-item="${escapeAttr(item.id)}" data-personal-decision-option="${escapeAttr(option.id)}">${active ? "✓ " : ""}${escapeHtml(option.label)}</button>`;
       }).join("")}</div><p class="helper-text">Personal preference · saved only on this device.</p>${personalSelected?.note ? `<p class="helper-text">${escapeHtml(personalSelected.note)}</p>` : ""}`;
     } else {
-      optionHtml = `<div class="decision-options">${options.map((option) => `<div class="text-card"><strong>${escapeHtml(option.label)}</strong>${option.note ? `<p>${escapeHtml(option.note)}</p>` : ""}${option.url ? `<a class="inline-link" href="${escapeAttr(option.url)}" target="_blank" rel="noreferrer">Open option ↗</a>` : ""}</div>`).join("")}</div><p class="helper-text">Shared TBD · this page does not resolve it locally. Update trip.json after the group decides.</p>`;
+      optionHtml = `<div class="decision-options">${options.map((option) => {
+        const optionUrl = safeUrl(option.url);
+        return `<div class="text-card"><strong>${escapeHtml(option.label)}</strong>${option.note ? `<p>${escapeHtml(option.note)}</p>` : ""}${optionUrl ? `<a class="inline-link" href="${escapeAttr(optionUrl)}" target="_blank" rel="noreferrer">Open option ↗</a>` : ""}</div>`;
+      }).join("")}</div><p class="helper-text">Shared TBD · this page does not resolve it locally. Update trip.json after the group decides.</p>`;
     }
 
-    const resolutionLink = decision.resolutionLink?.url && decision.resolutionLink?.label
-      ? `<a class="inline-link" href="${escapeAttr(decision.resolutionLink.url)}" target="_blank" rel="noreferrer">${escapeHtml(decision.resolutionLink.label)} ↗</a>`
+    const resolutionUrl = safeUrl(decision.resolutionLink?.url);
+    const resolutionLink = resolutionUrl && decision.resolutionLink?.label
+      ? `<a class="inline-link" href="${escapeAttr(resolutionUrl)}" target="_blank" rel="noreferrer">${escapeHtml(decision.resolutionLink.label)} ↗</a>`
       : "";
 
     return `<div class="decision-card${compact ? " compact" : ""}">
@@ -83,7 +130,7 @@
   }
 
   itemActions = function handoffFirstItemActions(item) {
-    return `${baseItemActions(item)}${externalLinksHtml(item)}${decisionHtml(item, true)}`;
+    return `${baseItemActions(item)}${externalLinksHtml(item)}${googleSearchLinksHtml(item)}${decisionHtml(item, true)}${infoCardHtml(item)}`;
   };
 
   async function ensureDecisionState() {
@@ -124,21 +171,20 @@
     card.className = "panel day-summary trip-reminder-card";
     card.innerHTML = `<p class="eyebrow">Today</p><h2>Remember</h2>${reminders.map((reminder) => {
       let link = "";
-      if (reminder.url) {
-        try {
-          const url = new URL(reminder.url, window.location.href);
-          if (url.protocol === "https:" || url.protocol === "http:") {
-            link = ` <a class="inline-link" href="${escapeAttr(url.href)}" target="_blank" rel="noreferrer">Open ↗</a>`;
-          }
-        } catch {}
-      }
+      const url = safeUrl(reminder.url);
+      if (url) link = ` <a class="inline-link" href="${escapeAttr(url)}" target="_blank" rel="noreferrer">Open ↗</a>`;
       return `<p class="timeline-note">! ${escapeHtml(reminder.text)}${link}</p>`;
     }).join("")}`;
     return card;
   }
 
-  function decisionSummaryCard(day) {
-    const items = (day?.items || []).filter((item) => decisionOptions(item).length && !item.decision?.resolvedOptionId);
+  function decisionSummaryCard(day, excludeIds = []) {
+    const excluded = new Set(excludeIds.filter(Boolean));
+    const items = (day?.items || []).filter((item) =>
+      decisionOptions(item).length
+      && !item.decision?.resolvedOptionId
+      && !excluded.has(item.id)
+    );
     if (!items.length) return null;
     const card = document.createElement("section");
     card.className = "panel day-summary trip-decision-summary";
@@ -158,7 +204,7 @@
     const reminders = reminderCard(context.today);
     if (reminders && !stack.querySelector(".trip-reminder-card")) stack.appendChild(reminders);
 
-    const decisions = decisionSummaryCard(context.today);
+    const decisions = decisionSummaryCard(context.today, [context.current?.id, context.next?.id]);
     if (decisions && !stack.querySelector(".trip-decision-summary")) stack.appendChild(decisions);
   };
 
@@ -168,37 +214,15 @@
   };
 
   renderMap = function handoffFirstRenderMap() {
-    if (state.data?.ui?.enableExploreTools === true) {
-      fullRenderMap();
-      return;
-    }
-
-    const originalWikipediaNearby = TravelLiteProviders.wikipediaNearby;
-    TravelLiteProviders.wikipediaNearby = async () => [];
-    try {
-      fullRenderMap();
-    } finally {
-      TravelLiteProviders.wikipediaNearby = originalWikipediaNearby;
-    }
-
-    root.querySelector(".place-search-panel")?.remove();
-    root.querySelector(".nearby-panel")?.remove();
-    root.querySelector("#place-enrichment")?.remove();
-
-    const heading = root.querySelector(".runtime-map-panel .map-heading .eyebrow");
-    if (heading) heading.textContent = "Trip map";
-
-    const fallback = root.querySelector(".map-library-fallback");
-    if (fallback?.textContent?.includes("place search")) {
-      fallback.textContent = "No coordinates are available yet. Add lat/lng to trip.json or let the coding agent resolve the itinerary locations.";
-    }
+    baseRenderMap();
 
     const selectedDay = state.data.days.find((day) => day.date === state.selectedDate) || state.data.days[0];
     const selected = selectedDay?.items?.find((item) => item.id === state.selectedMapItemId)
       || selectedDay?.items?.find((item) => Number.isFinite(Number(item.lat)) && Number.isFinite(Number(item.lng)))
       || selectedDay?.items?.[0];
-    const handoffs = externalLinksHtml(selected);
+
+    const extras = `${externalLinksHtml(selected)}${googleSearchLinksHtml(selected)}${infoCardHtml(selected)}`;
     const card = root.querySelector(".selected-place-card");
-    if (card && handoffs) card.insertAdjacentHTML("beforeend", handoffs);
+    if (card && extras) card.insertAdjacentHTML("beforeend", extras);
   };
 })();
