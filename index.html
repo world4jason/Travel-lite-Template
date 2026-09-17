@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./runtime.css" />
     <link rel="stylesheet" href="./desktop-theme.css" />
     <link rel="stylesheet" href="./trip-view.css" />
+    <link rel="stylesheet" href="./responsive-shell.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -21,7 +22,9 @@
         <div><p class="eyebrow" id="trip-location">Travel Lite</p><h1 id="trip-title">Loading trip…</h1><p class="trip-meta" id="trip-meta"></p></div>
         <div class="live-time" aria-label="Trip local time"><span id="local-time">--:--</span><small id="timezone-label"></small></div>
       </header>
+      <aside class="shell-context shell-context-left" id="shell-left" aria-label="Trip days"></aside>
       <main id="view-root" aria-live="polite"><section class="panel loading-card"><div class="skeleton short"></div><div class="skeleton"></div><div class="skeleton medium"></div></section></main>
+      <aside class="shell-context shell-context-right" id="shell-right" aria-label="Trip context"></aside>
       <nav class="bottom-nav" id="bottom-nav" aria-label="Primary navigation"></nav>
     </div>
     <template id="error-template"><section class="panel empty-state"><p class="eyebrow">Could not load trip data</p><h2>Open this site through a web server or GitHub Pages.</h2><p>Travel Lite reads <code>trip.json</code> and keeps a local IndexedDB snapshot after the first successful visit.</p></section></template>
@@ -33,5 +36,6 @@
     <script src="./runtime-handoff.js" defer></script>
     <script src="./runtime-google.js" defer></script>
     <script src="./theme-shell.js" defer></script>
+    <script src="./responsive-shell.js" defer></script>
   </body>
 </html>

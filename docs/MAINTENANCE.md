@@ -21,6 +21,7 @@ At minimum, before merging template changes:
 ```bash
 node --check app.js
 node --check trip-view.js
+node --check responsive-shell.js
 node --check storage.js
 node --check runtime-providers.js
 node --check runtime-features.js
@@ -54,7 +55,8 @@ The base template should continue to satisfy:
 - `More` remains reference-oriented
 - provider failure never blocks core itinerary/reference use
 - phone layout remains usable on a narrow viewport
-- desktop layout uses the wider surface without becoming a separate application
+- compact desktop reveals a persistent day rail without squeezing the main view
+- wide desktop may reveal a right context rail without introducing separate data/business logic
 - `system`, `light`, and `dark` all remain readable
 - switching theme does not lose local state
 - the map follows the effective theme unless explicitly overridden
@@ -77,23 +79,46 @@ Verify:
 
 ## Responsive-shell review
 
-Test at least one phone and one desktop viewport after shell/layout changes.
+Responsive changes must be tested across all three compositions, not just one phone and one desktop.
 
 Suggested minimum:
 
 ```text
-390 × 844   phone
-1440 × 900  desktop
+390 × 844    phone
+1100 × 900   compact desktop / tablet landscape
+1600 × 900   wide desktop
 ```
 
 Verify:
 
-- phone keeps the bottom navigation
-- desktop uses the left navigation at `>= 900px`
-- the same views/data appear on both form factors
-- no feature exists only because of duplicated desktop/mobile business logic
+### Phone `< 900px`
+
+- single-column content
+- bottom navigation remains available and safe-area friendly
+- Trip keeps its own Overview / day chips because no persistent day rail exists
+- no desktop context rail leaks into the layout
+
+### Compact desktop `900–1399px`
+
+- persistent left trip-day/reference rail is visible
+- right context rail is hidden
+- primary navigation is horizontal above the main content
+- Trip day chips are hidden because the persistent day rail replaces them
+- clicking a day in the rail updates the same Trip renderer/state used on phone
+
+### Wide desktop `>= 1400px`
+
+- left trip-day/reference rail, main content, and right context rail are all visible
+- right rail derives overview/selected-day/reminder information from the same `trip.json`
+- duplicated overview blocks may collapse when the same context is already visible in the rail
+- quick-access controls call the same primary views (`Map`, `Check`, `More`)
+
+Across all sizes:
+
+- do not duplicate data loading/storage/decision semantics by breakpoint
+- prefer collapsing a context panel over squeezing the main itinerary/map
 - map and timeline widths remain usable
-- safe-area/mobile touch targets remain intact
+- resizing does not lose selected day, checklist state, or theme
 
 ## Theme review
 
@@ -114,7 +139,7 @@ The quick header control and **More → Appearance** must remain consistent with
 When changing cached shell files or behavior in a way that existing clients must refresh, bump the shell cache name, for example:
 
 ```js
-const CACHE = "travel-lite-shell-v8";
+const CACHE = "travel-lite-shell-v9";
 ```
 
 If this is forgotten, returning users may continue seeing stale JavaScript/CSS until the old cache is replaced.
@@ -208,7 +233,7 @@ Before merge, review for:
 - Does Trip communicate information before actions?
 - Are repeated cards/actions avoided?
 - Are touch targets mobile-friendly?
-- Does desktop use width effectively without adding extra product scope?
+- Does each breakpoint use its available space intentionally rather than merely scaling the same layout?
 - Do light/dark/system all preserve contrast and hierarchy?
 - Are optional modules hidden when their data is absent?
 

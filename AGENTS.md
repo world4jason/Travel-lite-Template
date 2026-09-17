@@ -60,11 +60,28 @@ Use optional `highlights`, `routeSummary`, and `transferAfter` only when they im
 
 ## Responsive + appearance invariant
 
-Phone and desktop are **different shells over the same data/runtime**, not separate apps.
+Responsive design may **rearrange, reveal, or collapse the same information**, but must not fork trip data or business logic by form factor.
 
-- phone → bottom navigation, touch-first spacing
-- desktop (`>= 900px`) → sticky left navigation, wider content/map surface
-- do not duplicate business logic by form factor
+```text
+< 900px
+phone
+└── single-column content + bottom navigation
+
+900–1399px
+compact desktop / tablet landscape
+├── persistent trip-day rail
+└── main content + horizontal primary navigation
+
+>= 1400px
+wide desktop
+├── trip-day / reference rail
+├── main content
+└── trip context rail
+```
+
+Wide layouts may expose context simultaneously (days, selected-day stops, reminders, quick access) that remains reachable through normal views on phone. This is presentation composition, not extra product scope.
+
+Do not duplicate data loading, storage, decision semantics, or view business logic just to support another breakpoint.
 
 Appearance must support `system`, `light`, and `dark`.
 
@@ -114,7 +131,7 @@ If changing template code rather than trip data:
 - avoid server/backend requirements
 - keep links sanitized
 - preserve offline fallbacks
-- preserve both phone and desktop usability
+- preserve phone, compact-desktop, and wide-desktop usability
 - verify system/light/dark appearance
 - keep Trip scanability high and repeated actions low
 - bump the Service Worker shell cache version when cached shell behavior/assets materially change
