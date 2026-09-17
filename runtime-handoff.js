@@ -17,16 +17,21 @@
   let decisionsLoaded = false;
   let decisionsLoading = false;
 
+  function safeUrl(rawUrl, protocols = ["http:", "https:"]) {
+    if (!rawUrl) return "";
+    try {
+      const url = new URL(rawUrl, window.location.href);
+      return protocols.includes(url.protocol) ? url.href : "";
+    } catch {
+      return "";
+    }
+  }
+
   function safeLinks(links) {
     return (Array.isArray(links) ? links : []).flatMap((link) => {
       if (!link?.label || !link?.url) return [];
-      try {
-        const url = new URL(link.url, window.location.href);
-        if (!["http:", "https:", "tel:", "mailto:"].includes(url.protocol)) return [];
-        return [{ label: String(link.label), url: url.href }];
-      } catch {
-        return [];
-      }
+      const url = safeUrl(link.url, ["http:", "https:", "tel:", "mailto:"]);
+      return url ? [{ label: String(link.label), url }] : [];
     });
   }
 
@@ -62,8 +67,9 @@
       .join("");
 
     const sources = linkButtonsHtml(card.sourceLinks, "info-source-links");
-    const image = card.image
-      ? `<img class="info-card-image" src="${escapeAttr(card.image)}" alt="" loading="lazy">`
+    const imageUrl = safeUrl(card.image);
+    const image = imageUrl
+      ? `<img class="info-card-image" src="${escapeAttr(imageUrl)}" alt="" loading="lazy">`
       : "";
 
     return `<details class="info-card">
@@ -103,13 +109,15 @@
         return `<button class="button-link ${active ? "primary" : ""}" type="button" data-personal-decision-item="${escapeAttr(item.id)}" data-personal-decision-option="${escapeAttr(option.id)}">${active ? "✓ " : ""}${escapeHtml(option.label)}</button>`;
       }).join("")}</div><p class="helper-text">Personal preference · saved only on this device.</p>${personalSelected?.note ? `<p class="helper-text">${escapeHtml(personalSelected.note)}</p>` : ""}`;
     } else {
-      optionHtml = `<div class="decision-options">${options.map((option) =>
-        `<div class="text-card"><strong>${escapeHtml(option.label)}</strong>${option.note ? `<p>${escapeHtml(option.note)}</p>` : ""}${option.url ? `<a class="inline-link" href="${escapeAttr(option.url)}" target="_blank" rel="noreferrer">Open option ↗</a>` : ""}</div>`
-      ).join("")}</div><p class="helper-text">Shared TBD · this page does not resolve it locally. Update trip.json after the group decides.</p>`;
+      optionHtml = `<div class="decision-options">${options.map((option) => {
+        const optionUrl = safeUrl(option.url);
+        return `<div class="text-card"><strong>${escapeHtml(option.label)}</strong>${option.note ? `<p>${escapeHtml(option.note)}</p>` : ""}${optionUrl ? `<a class="inline-link" href="${escapeAttr(optionUrl)}" target="_blank" rel="noreferrer">Open option ↗</a>` : ""}</div>`;
+      }).join("")}</div><p class="helper-text">Shared TBD · this page does not resolve it locally. Update trip.json after the group decides.</p>`;
     }
 
-    const resolutionLink = decision.resolutionLink?.url && decision.resolutionLink?.label
-      ? `<a class="inline-link" href="${escapeAttr(decision.resolutionLink.url)}" target="_blank" rel="noreferrer">${escapeHtml(decision.resolutionLink.label)} ↗</a>`
+    const resolutionUrl = safeUrl(decision.resolutionLink?.url);
+    const resolutionLink = resolutionUrl && decision.resolutionLink?.label
+      ? `<a class="inline-link" href="${escapeAttr(resolutionUrl)}" target="_blank" rel="noreferrer">${escapeHtml(decision.resolutionLink.label)} ↗</a>`
       : "";
 
     return `<div class="decision-card${compact ? " compact" : ""}">
@@ -163,14 +171,8 @@
     card.className = "panel day-summary trip-reminder-card";
     card.innerHTML = `<p class="eyebrow">Today</p><h2>Remember</h2>${reminders.map((reminder) => {
       let link = "";
-      if (reminder.url) {
-        try {
-          const url = new URL(reminder.url, window.location.href);
-          if (url.protocol === "https:" || url.protocol === "http:") {
-            link = ` <a class="inline-link" href="${escapeAttr(url.href)}" target="_blank" rel="noreferrer">Open ↗</a>`;
-          }
-        } catch {}
-      }
+      const url = safeUrl(reminder.url);
+      if (url) link = ` <a class="inline-link" href="${escapeAttr(url)}" target="_blank" rel="noreferrer">Open ↗</a>`;
       return `<p class="timeline-note">! ${escapeHtml(reminder.text)}${link}</p>`;
     }).join("")}`;
     return card;
