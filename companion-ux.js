@@ -230,22 +230,26 @@
 
   function cleanTravelerCopy() {
     root.querySelectorAll(".helper-text").forEach((node) => {
-      if (/Shared TBD|update trip\.json/i.test(node.textContent)) node.textContent = t("notDecided");
-      else if (/Personal preference/i.test(node.textContent)) node.textContent = `${t("myPreference")} · ${t("deviceOnly")}`;
+      const next = /Shared TBD|update trip\.json/i.test(node.textContent) ? t("notDecided") : (/Personal preference/i.test(node.textContent) ? `${t("myPreference")} · ${t("deviceOnly")}` : "");
+      if (next && node.textContent !== next) node.textContent = next;
     });
-    root.querySelectorAll(".decision-card .eyebrow").forEach((node) => { if (/^TBD$/i.test(node.textContent.trim())) node.textContent = t("notDecided"); });
+    root.querySelectorAll(".decision-card .eyebrow").forEach((node) => {
+      if (/^TBD$/i.test(node.textContent.trim()) && node.textContent !== t("notDecided")) node.textContent = t("notDecided");
+    });
     const overview = root.querySelector("[data-trip-mode='overview']");
     if (overview) {
-      overview.querySelector("strong")?.replaceChildren(t("overview"));
-      overview.querySelector("small")?.replaceChildren(t("trip"));
+      const strong = overview.querySelector("strong"), small = overview.querySelector("small");
+      if (strong && strong.textContent !== t("overview")) strong.textContent = t("overview");
+      if (small && small.textContent !== t("trip")) small.textContent = t("trip");
     }
   }
 
   function numberMapMarkers() {
     [...root.querySelectorAll(".map-marker")].forEach((marker, index) => {
-      marker.textContent = String(index + 1);
-      marker.dataset.sequence = String(index + 1);
-      marker.setAttribute("aria-label", `Stop ${index + 1}: ${marker.title || "trip stop"}`);
+      const expected = String(index + 1);
+      if (marker.textContent !== expected) marker.textContent = expected;
+      marker.dataset.sequence = expected;
+      marker.setAttribute("aria-label", `Stop ${expected}: ${marker.title || "trip stop"}`);
     });
   }
 
@@ -347,7 +351,17 @@
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
     try {
       const data = await TravelLiteProviders.weather(lat, lng);
-      if (document.contains(container)) container.innerHTML = `<strong>${escapeHtml(t("weather"))}</strong><span>${Math.round(data.current?.temperature_2m ?? 0)}° · ${Math.round(data.current?.wind_speed_10m ?? 0)} km/h${data.__stale ? " · cached" : ""}</span>`;
+      if (!document.contains(container)) return;
+      const today = zonedNow(state.data.trip.timezone).date;
+      if (day?.date && day.date !== today) {
+        const idx = data.daily?.time?.indexOf(day.date) ?? -1;
+        if (idx >= 0) {
+          const hi = Math.round(data.daily.temperature_2m_max?.[idx] ?? 0), lo = Math.round(data.daily.temperature_2m_min?.[idx] ?? 0), rain = data.daily.precipitation_probability_max?.[idx] ?? 0;
+          container.innerHTML = `<strong>${escapeHtml(t("weather"))}</strong><span>${hi}° / ${lo}° · rain ${rain}%${data.__stale ? " · cached" : ""}</span>`;
+          return;
+        }
+      }
+      container.innerHTML = `<strong>${escapeHtml(t("weather"))}</strong><span>${Math.round(data.current?.temperature_2m ?? 0)}° · ${Math.round(data.current?.wind_speed_10m ?? 0)} km/h${data.__stale ? " · cached" : ""}</span>`;
     } catch {}
   }
 
@@ -398,16 +412,21 @@
 
   let contextFrame = 0;
   function scheduleContextRail() { cancelAnimationFrame(contextFrame); contextFrame = requestAnimationFrame(renderContextRail); }
-
-  function afterRender() {
-    cleanTravelerCopy(); numberMapMarkers(); scheduleContextRail(); syncHash();
-  }
+  function afterRender() { cleanTravelerCopy(); numberMapMarkers(); scheduleContextRail(); syncHash(); }
 
   const baseSetView = setView;
   setView = function companionSetView(view) { baseSetView(view); requestAnimationFrame(afterRender); };
 
-  const rootObserver = new MutationObserver(() => { cleanTravelerCopy(); numberMapMarkers(); scheduleContextRail(); });
-  rootObserver.observe(root, { childList: true, subtree: true });
+  let rootObserver;
+  const observeRoot = () => rootObserver.observe(root, { childList: true, subtree: true });
+  rootObserver = new MutationObserver(() => {
+    rootObserver.disconnect();
+    cleanTravelerCopy();
+    numberMapMarkers();
+    scheduleContextRail();
+    observeRoot();
+  });
+  observeRoot();
 
   root.addEventListener("click", () => requestAnimationFrame(() => { syncHash(); scheduleContextRail(); }));
   document.querySelector("#shell-left")?.addEventListener("click", () => requestAnimationFrame(() => { syncHash(); scheduleContextRail(); }));
