@@ -48,7 +48,7 @@
     const open = googleMapsOpenUrl(item);
     const hasPlace = Boolean(
       Number.isFinite(Number(item.lat)) && Number.isFinite(Number(item.lng))
-      || item.location || item.mapQuery || item.title
+      || item.location || item.mapQuery
     );
     return `<div class="action-row">
       ${hasPlace ? `<button class="button-link primary" type="button" data-map-item="${escapeAttr(item.id)}">Trip map</button>` : ""}
