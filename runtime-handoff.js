@@ -178,8 +178,13 @@
     return card;
   }
 
-  function decisionSummaryCard(day) {
-    const items = (day?.items || []).filter((item) => decisionOptions(item).length && !item.decision?.resolvedOptionId);
+  function decisionSummaryCard(day, excludeIds = []) {
+    const excluded = new Set(excludeIds.filter(Boolean));
+    const items = (day?.items || []).filter((item) =>
+      decisionOptions(item).length
+      && !item.decision?.resolvedOptionId
+      && !excluded.has(item.id)
+    );
     if (!items.length) return null;
     const card = document.createElement("section");
     card.className = "panel day-summary trip-decision-summary";
@@ -199,7 +204,7 @@
     const reminders = reminderCard(context.today);
     if (reminders && !stack.querySelector(".trip-reminder-card")) stack.appendChild(reminders);
 
-    const decisions = decisionSummaryCard(context.today);
+    const decisions = decisionSummaryCard(context.today, [context.current?.id, context.next?.id]);
     if (decisions && !stack.querySelector(".trip-decision-summary")) stack.appendChild(decisions);
   };
 
