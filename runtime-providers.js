@@ -8,6 +8,8 @@ const TravelLiteProviders = (() => {
   const DEFAULTS = {
     weatherEndpoint: "https://api.open-meteo.com/v1/forecast",
     mapStyle: "https://tiles.openfreemap.org/styles/liberty",
+    mapStyleLight: "https://tiles.openfreemap.org/styles/liberty",
+    mapStyleDark: "https://tiles.openfreemap.org/styles/dark",
   };
 
   const memory = new Map();
