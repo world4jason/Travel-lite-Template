@@ -3,6 +3,7 @@
   const MODES = ["system", "light", "dark"];
   const media = window.matchMedia("(prefers-color-scheme: dark)");
   let button = null;
+  let rememberedLightMapStyle = null;
 
   function currentMode() {
     const mode = document.documentElement.dataset.theme;
@@ -21,6 +22,21 @@
     meta.setAttribute("content", effectiveMode() === "dark" ? "#111411" : "#f5f6f2");
   }
 
+  function syncMapStyle() {
+    if (typeof state === "undefined" || !state?.data) return;
+    state.data.providers ||= {};
+    const providers = state.data.providers;
+    const defaults = typeof TravelLiteProviders !== "undefined" ? TravelLiteProviders.config() : {};
+    if (!rememberedLightMapStyle) {
+      rememberedLightMapStyle = providers.mapStyleLight || providers.mapStyle || defaults.mapStyleLight || defaults.mapStyle;
+    }
+    if (effectiveMode() === "dark") {
+      providers.mapStyle = providers.mapStyleDark || defaults.mapStyleDark || rememberedLightMapStyle;
+    } else {
+      providers.mapStyle = providers.mapStyleLight || rememberedLightMapStyle || defaults.mapStyleLight || defaults.mapStyle;
+    }
+  }
+
   function updateButton() {
     if (!button) return;
     const mode = currentMode();
@@ -31,6 +47,7 @@
     button.setAttribute("aria-label", `Theme: ${label}. Switch theme.`);
     button.title = `Theme: ${label}`;
     updateThemeColor();
+    syncMapStyle();
   }
 
   async function setMode(mode) {
@@ -75,8 +92,19 @@
       attributes: true,
       attributeFilter: ["data-theme"],
     });
-    media.addEventListener?.("change", updateButton);
+    media.addEventListener?.("change", () => {
+      updateButton();
+      if (currentMode() === "system" && typeof state !== "undefined" && state?.view === "map" && typeof renderMap === "function") renderMap();
+    });
+
     updateButton();
+    const waitForTrip = window.setInterval(() => {
+      if (typeof state !== "undefined" && state?.data) {
+        window.clearInterval(waitForTrip);
+        updateButton();
+      }
+    }, 100);
+    window.setTimeout(() => window.clearInterval(waitForTrip), 5000);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
