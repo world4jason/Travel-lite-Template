@@ -3,23 +3,23 @@
   const dictionaries = {
     en: {
       navNow: "Now", navTrip: "Trip", navMap: "Map", navCheck: "Check", navMore: "More",
-      overview: "Overview", trip: "Trip", reference: "Reference", previous: "Previous",
-      scheduledNow: "Scheduled now", next: "Next", laterToday: "Later today", flexibleToday: "Flexible today",
-      remember: "Remember", notDecided: "Not decided yet", myPreference: "My preference", deviceOnly: "this device only",
-      online: "Online", offlineCopy: "Offline copy", updated: "updated", share: "Share", selectedStop: "Selected stop",
-      openInMaps: "Open in Google Maps", noScheduledNow: "No scheduled item right now", betweenPlans: "Between plans",
-      tripOverview: "Trip overview", openChoices: "Open choices", reservations: "Reservations", weather: "Weather",
-      incomplete: "Incomplete", deviceStatus: "Device status", today: "Today", tomorrow: "Tomorrow", tbd: "TBD"
+      overview: "Overview", trip: "Trip", previous: "Previous", scheduledNow: "Scheduled now", next: "Next",
+      laterToday: "Later today", flexibleToday: "Flexible today", remember: "Remember", notDecided: "Not decided yet",
+      myPreference: "My preference", deviceOnly: "this device only", online: "Online", offlineCopy: "Offline copy",
+      updated: "updated", share: "Share", selectedStop: "Selected stop", openInMaps: "Open in Google Maps",
+      noScheduledNow: "No scheduled item right now", betweenPlans: "Between plans", tripOverview: "Trip overview",
+      openChoices: "Open choices", reservations: "Reservations", weather: "Weather", incomplete: "Incomplete",
+      deviceStatus: "Device status", today: "Today", tomorrow: "Tomorrow", tbd: "TBD"
     },
     "zh-TW": {
       navNow: "現在", navTrip: "行程", navMap: "地圖", navCheck: "清單", navMore: "更多",
-      overview: "總覽", trip: "行程", reference: "參考", previous: "前一個",
-      scheduledNow: "目前排定", next: "下一個", laterToday: "稍後", flexibleToday: "今天彈性安排",
-      remember: "記得", notDecided: "尚未定案", myPreference: "我的偏好", deviceOnly: "僅此裝置",
-      online: "線上", offlineCopy: "離線副本", updated: "更新", share: "分享", selectedStop: "目前地點",
-      openInMaps: "Google Maps", noScheduledNow: "目前沒有排定行程", betweenPlans: "行程空檔",
-      tripOverview: "旅程總覽", openChoices: "待決定", reservations: "預約 / 票券", weather: "天氣",
-      incomplete: "未完成", deviceStatus: "裝置狀態", today: "今天", tomorrow: "明天", tbd: "未定"
+      overview: "總覽", trip: "行程", previous: "前一個", scheduledNow: "目前排定", next: "下一個",
+      laterToday: "稍後", flexibleToday: "今天彈性安排", remember: "記得", notDecided: "尚未定案",
+      myPreference: "我的偏好", deviceOnly: "僅此裝置", online: "線上", offlineCopy: "離線副本",
+      updated: "更新", share: "分享", selectedStop: "目前地點", openInMaps: "Google Maps",
+      noScheduledNow: "目前沒有排定行程", betweenPlans: "行程空檔", tripOverview: "旅程總覽",
+      openChoices: "待決定", reservations: "預約 / 票券", weather: "天氣", incomplete: "未完成",
+      deviceStatus: "裝置狀態", today: "今天", tomorrow: "明天", tbd: "未定"
     }
   };
 
@@ -36,8 +36,7 @@
   };
 
   function svgIcon(name, className = "companion-icon") {
-    const body = iconPaths[name] || iconPaths.more;
-    return `<svg class="${className}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${body}</svg>`;
+    return `<svg class="${className}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${iconPaths[name] || iconPaths.more}</svg>`;
   }
 
   function currentLocale() {
@@ -47,8 +46,7 @@
 
   function t(key, fallback = "") {
     const overrides = state?.data?.ui?.labels || {};
-    if (overrides[key]) return String(overrides[key]);
-    return dictionaries[currentLocale()]?.[key] || dictionaries.en[key] || fallback || key;
+    return String(overrides[key] || dictionaries[currentLocale()]?.[key] || dictionaries.en[key] || fallback || key);
   }
 
   function safeUrl(rawUrl, protocols = ["http:", "https:"]) {
@@ -64,16 +62,11 @@
     if (!match) return null;
     const hour = Number(match[1]);
     const minute = Number(match[2]);
-    if (hour > 23 || minute > 59) return null;
-    return hour * 60 + minute;
+    return hour <= 23 && minute <= 59 ? hour * 60 + minute : null;
   }
 
   function isTimed(item) { return minuteValue(item?.start) != null; }
-
-  toMinutes = function companionToMinutes(raw) {
-    const value = minuteValue(raw);
-    return value == null ? Number.NaN : value;
-  };
+  toMinutes = (raw) => minuteValue(raw) ?? Number.NaN;
 
   getDayProgress = function companionDayProgress(day, minuteOfDay) {
     const timed = (day?.items || []).filter(isTimed);
@@ -82,27 +75,22 @@
     let active = false;
     timed.forEach((item, index) => {
       const start = minuteValue(item.start);
-      const nextStart = minuteValue(timed[index + 1]?.start);
-      const explicitEnd = minuteValue(item.end);
-      const end = explicitEnd ?? nextStart ?? Math.min(1440, start + 120);
+      const end = minuteValue(item.end) ?? minuteValue(timed[index + 1]?.start) ?? Math.min(1440, start + 120);
       if (end <= minuteOfDay) completed += 1;
       else if (start <= minuteOfDay && minuteOfDay < end) active = true;
     });
     return Math.min(100, Math.round(((completed + (active ? 0.5 : 0)) / timed.length) * 100));
   };
 
-  function decoratedDayItems(day) {
+  function decoratedItems(day) {
     return (day?.items || []).map((item, index) => ({ ...item, date: day.date, dayId: day.id, dayTitle: day.title, index }));
   }
 
-  function futureTimedAcrossDays(nowDate, minuteOfDay) {
+  function futureTimed(nowDate, minuteOfDay) {
     const result = [];
-    (state.data.days || []).forEach((day) => {
-      decoratedDayItems(day).filter(isTimed).forEach((item) => {
-        const start = minuteValue(item.start);
-        if (day.date > nowDate || (day.date === nowDate && start > minuteOfDay)) result.push(item);
-      });
-    });
+    (state.data.days || []).forEach((day) => decoratedItems(day).filter(isTimed).forEach((item) => {
+      if (day.date > nowDate || (day.date === nowDate && minuteValue(item.start) > minuteOfDay)) result.push(item);
+    }));
     return result.sort((a, b) => a.date.localeCompare(b.date) || minuteValue(a.start) - minuteValue(b.start));
   }
 
@@ -111,35 +99,28 @@
     const now = zonedNow(trip.timezone);
     const today = days.find((day) => day.date === now.date) || null;
     const all = flattenItems();
-    if (now.date < trip.startDate) {
-      const first = all.find(isTimed) || all[0] || null;
-      return { phase: "before", now, daysUntil: dayDiff(now.date, trip.startDate), next: first };
-    }
+    if (now.date < trip.startDate) return { phase: "before", now, daysUntil: dayDiff(now.date, trip.startDate), next: all.find(isTimed) || all[0] || null };
     if (now.date > trip.endDate) return { phase: "after", now, today: null, previous: null, current: null, next: null, later: [], floating: [] };
 
-    const timed = decoratedDayItems(today).filter(isTimed).sort((a, b) => minuteValue(a.start) - minuteValue(b.start));
+    const timed = decoratedItems(today).filter(isTimed).sort((a, b) => minuteValue(a.start) - minuteValue(b.start));
     let current = null;
     timed.forEach((item, index) => {
       const start = minuteValue(item.start);
-      const nextStart = minuteValue(timed[index + 1]?.start);
-      const explicitEnd = minuteValue(item.end);
-      const end = explicitEnd ?? nextStart ?? Math.min(1440, start + 120);
+      const end = minuteValue(item.end) ?? minuteValue(timed[index + 1]?.start) ?? Math.min(1440, start + 120);
       if (start <= now.minuteOfDay && now.minuteOfDay < end) current = item;
     });
-
     let previous = null;
     if (current) {
-      const currentIndex = timed.findIndex((item) => item.id === current.id);
-      previous = currentIndex > 0 ? timed[currentIndex - 1] : null;
-    } else {
-      previous = [...timed].reverse().find((item) => minuteValue(item.start) <= now.minuteOfDay) || null;
-    }
+      const idx = timed.findIndex((item) => item.id === current.id);
+      previous = idx > 0 ? timed[idx - 1] : null;
+    } else previous = [...timed].reverse().find((item) => minuteValue(item.start) <= now.minuteOfDay) || null;
 
-    const future = futureTimedAcrossDays(now.date, now.minuteOfDay);
-    const next = future[0] || null;
-    const later = future.slice(1, 3);
-    const floating = decoratedDayItems(today).filter((item) => !isTimed(item));
-    return { phase: "during", now, today, previous, current, next, later, floating };
+    const future = futureTimed(now.date, now.minuteOfDay);
+    return {
+      phase: "during", now, today, previous, current,
+      next: future[0] || null, later: future.slice(1, 3),
+      floating: decoratedItems(today).filter((item) => !isTimed(item))
+    };
   };
 
   function compactLinks(item) {
@@ -168,14 +149,13 @@
 
   function relativeDay(item, nowDate) {
     if (!item?.date || item.date === nowDate) return "";
-    const diff = dayDiff(nowDate, item.date);
-    if (diff === 1) return t("tomorrow");
-    return prettyDate(item.date, { weekday: "short" });
+    return dayDiff(nowDate, item.date) === 1 ? t("tomorrow") : prettyDate(item.date, { weekday: "short" });
   }
 
   function windowCard(label, item, tone = "") {
     if (!item) return `<article class="companion-window-card empty"><span>${escapeHtml(label)}</span><strong>—</strong></article>`;
-    const when = [relativeDay(item, getNowContext().now.date), item.start || t("tbd")].filter(Boolean).join(" · ");
+    const nowDate = zonedNow(state.data.trip.timezone).date;
+    const when = [relativeDay(item, nowDate), item.start || t("tbd")].filter(Boolean).join(" · ");
     return `<article class="companion-window-card ${tone}"><div><span>${escapeHtml(label)}</span><small>${escapeHtml(when)}</small></div><strong>${escapeHtml(item.title || "")}</strong><p>${escapeHtml(item.location || item.dayTitle || "")}</p>${compactLinks(item)}</article>`;
   }
 
@@ -196,46 +176,50 @@
 
   function laterHtml(items) {
     if (!items?.length) return "";
-    return `<section class="panel companion-section"><div class="companion-section-heading"><p class="eyebrow">${escapeHtml(t("today"))}</p><h2>${escapeHtml(t("laterToday"))}</h2></div><div class="companion-later-list">${items.map((item) => `<article><time>${escapeHtml([relativeDay(item, getNowContext().now.date), item.start].filter(Boolean).join(" · "))}</time><div><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.location || item.dayTitle || "")}</p></div>${compactLinks(item)}</article>`).join("")}</div></section>`;
+    const nowDate = zonedNow(state.data.trip.timezone).date;
+    return `<section class="panel companion-section"><div class="companion-section-heading"><p class="eyebrow">${escapeHtml(t("today"))}</p><h2>${escapeHtml(t("laterToday"))}</h2></div><div class="companion-later-list">${items.map((item) => `<article><time>${escapeHtml([relativeDay(item, nowDate), item.start].filter(Boolean).join(" · "))}</time><div><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.location || item.dayTitle || "")}</p></div>${compactLinks(item)}</article>`).join("")}</div></section>`;
   }
 
-  const previousRenderNow = renderNow;
+  async function injectMainWeather(context) {
+    const slot = root.querySelector("#companion-now-weather");
+    if (!slot || typeof TravelLiteProviders === "undefined") return;
+    const item = context.current || context.next || context.today?.items?.find((candidate) => Number.isFinite(Number(candidate.lat)) && Number.isFinite(Number(candidate.lng)));
+    const lat = Number(item?.lat ?? state.data.trip.center?.lat);
+    const lng = Number(item?.lng ?? state.data.trip.center?.lng);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) { slot.remove(); return; }
+    try {
+      const data = await TravelLiteProviders.weather(lat, lng);
+      if (!document.contains(slot)) return;
+      const current = data.current || {};
+      slot.innerHTML = `<div class="weather-icon">◐</div><div><p class="eyebrow">${escapeHtml(t("weather"))}</p><h2>${Math.round(current.temperature_2m ?? 0)}°</h2><p>Feels ${Math.round(current.apparent_temperature ?? current.temperature_2m ?? 0)}° · Wind ${Math.round(current.wind_speed_10m ?? 0)} km/h${data.__stale ? " · cached" : ""}</p></div>`;
+    } catch { slot.remove(); }
+  }
+
   renderNow = function companionRenderNow() {
-    previousRenderNow();
     const context = getNowContext();
     if (context.phase === "before") {
       root.innerHTML = `<div class="view-stack companion-now"><section class="panel companion-focus"><p class="eyebrow">${escapeHtml(state.data.trip.title)}</p><h2>Trip starts in ${context.daysUntil} day${context.daysUntil === 1 ? "" : "s"}</h2><p>${escapeHtml(dateRangeLabel(state.data.trip))}</p></section>${context.next ? `<section class="panel companion-section"><h2>${escapeHtml(t("next"))}</h2>${windowCard(t("next"), context.next, "next")}</section>` : ""}</div>`;
-      afterRender();
-      return;
+      afterRender(); return;
     }
     if (context.phase === "after") {
       root.innerHTML = `<section class="panel empty-state"><p class="eyebrow">Trip complete</p><h2>${escapeHtml(state.data.trip.title)}</h2><p>${escapeHtml(dateRangeLabel(state.data.trip))}</p></section>`;
-      afterRender();
-      return;
+      afterRender(); return;
     }
 
     const focus = context.current;
-    const focusLabel = focus ? t("scheduledNow") : t("betweenPlans");
     const today = context.today;
     const progress = today ? getDayProgress(today, context.now.minuteOfDay) : 0;
     root.innerHTML = `<div class="view-stack companion-now">
-      <section class="panel companion-focus">
-        <div class="status-row"><span class="status-dot ${focus ? "" : "upcoming"}"></span>${escapeHtml(focusLabel)}</div>
-        <div class="companion-focus-top"><div><h2>${escapeHtml(focus?.title || today?.title || t("today"))}</h2><p>${focus ? `${escapeHtml(focus.start || "")} ${focus.end ? `–${escapeHtml(focus.end)}` : ""}${focus.location ? ` · ${escapeHtml(focus.location)}` : ""}` : escapeHtml(t("noScheduledNow"))}</p></div>${compactLinks(focus)}</div>
-        ${focus?.note ? `<p class="companion-focus-note">${escapeHtml(focus.note)}</p>` : ""}
-        ${supplementary(focus)}
-        ${today ? `<div class="progress-wrap"><div class="progress-meta"><span>${escapeHtml(today.label)} · ${escapeHtml(today.title)}</span><span>${progress}%</span></div><div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div></div>` : ""}
-      </section>
+      <section class="panel companion-focus"><div class="status-row"><span class="status-dot ${focus ? "" : "upcoming"}"></span>${escapeHtml(focus ? t("scheduledNow") : t("betweenPlans"))}</div><div class="companion-focus-top"><div><h2>${escapeHtml(focus?.title || today?.title || t("today"))}</h2><p>${focus ? `${escapeHtml(focus.start || "")} ${focus.end ? `–${escapeHtml(focus.end)}` : ""}${focus.location ? ` · ${escapeHtml(focus.location)}` : ""}` : escapeHtml(t("noScheduledNow"))}</p></div>${compactLinks(focus)}</div>${focus?.note ? `<p class="companion-focus-note">${escapeHtml(focus.note)}</p>` : ""}${supplementary(focus)}${today ? `<div class="progress-wrap"><div class="progress-meta"><span>${escapeHtml(today.label)} · ${escapeHtml(today.title)}</span><span>${progress}%</span></div><div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div></div>` : ""}</section>
+      <section id="companion-now-weather" class="panel weather-card"><div class="weather-icon">◌</div><div><p class="eyebrow">${escapeHtml(t("weather"))}</p><p>Loading…</p></div></section>
       <section class="companion-window" aria-label="Schedule reference window">${windowCard(t("previous"), context.previous, "previous")}${windowCard(t("scheduledNow"), context.current, "current")}${windowCard(t("next"), context.next, "next")}</section>
-      ${laterHtml(context.later)}
-      ${floatingHtml(context.floating)}
-      ${remindersHtml(today)}
+      ${laterHtml(context.later)}${floatingHtml(context.floating)}${remindersHtml(today)}
     </div>`;
+    injectMainWeather(context);
     afterRender();
   };
 
   function localeSetup() {
-    if (!state?.data) return;
     document.documentElement.lang = currentLocale();
     VIEW_META.now.label = t("navNow"); VIEW_META.now.icon = svgIcon("now", "nav-svg");
     VIEW_META.trip.label = t("navTrip"); VIEW_META.trip.icon = svgIcon("trip", "nav-svg");
@@ -249,33 +233,28 @@
       if (/Shared TBD|update trip\.json/i.test(node.textContent)) node.textContent = t("notDecided");
       else if (/Personal preference/i.test(node.textContent)) node.textContent = `${t("myPreference")} · ${t("deviceOnly")}`;
     });
-    root.querySelectorAll(".decision-card .eyebrow").forEach((node) => {
-      if (/^TBD$/i.test(node.textContent.trim())) node.textContent = t("notDecided");
-    });
+    root.querySelectorAll(".decision-card .eyebrow").forEach((node) => { if (/^TBD$/i.test(node.textContent.trim())) node.textContent = t("notDecided"); });
     const overview = root.querySelector("[data-trip-mode='overview']");
     if (overview) {
-      const strong = overview.querySelector("strong"); if (strong) strong.textContent = t("overview");
-      const small = overview.querySelector("small"); if (small) small.textContent = t("trip");
+      overview.querySelector("strong")?.replaceChildren(t("overview"));
+      overview.querySelector("small")?.replaceChildren(t("trip"));
     }
   }
 
   function numberMapMarkers() {
-    const markers = [...document.querySelectorAll(".map-marker")];
-    markers.forEach((marker, index) => {
+    [...root.querySelectorAll(".map-marker")].forEach((marker, index) => {
       marker.textContent = String(index + 1);
       marker.dataset.sequence = String(index + 1);
       marker.setAttribute("aria-label", `Stop ${index + 1}: ${marker.title || "trip stop"}`);
     });
-    root.querySelectorAll(".trip-icon-action span").forEach((span) => { span.innerHTML = svgIcon("pin"); });
   }
 
-  function formatFreshness() {
+  function freshnessText() {
     const runtime = window.TravelLiteRuntimeStatus || {};
     const raw = state?.data?.trip?.updatedAt || runtime.lastNetworkAt || "";
     if (!raw) return "";
     const date = new Date(raw);
-    if (Number.isNaN(date.getTime())) return String(raw);
-    return new Intl.DateTimeFormat(currentLocale(), { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }).format(date);
+    return Number.isNaN(date.getTime()) ? String(raw) : new Intl.DateTimeFormat(currentLocale(), { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }).format(date);
   }
 
   function isFreshNetwork() {
@@ -287,7 +266,7 @@
     const chip = document.querySelector("#companion-runtime-status");
     if (!chip || !state?.data) return;
     const online = isFreshNetwork();
-    const freshness = formatFreshness();
+    const freshness = freshnessText();
     chip.classList.toggle("offline", !online);
     chip.innerHTML = `${svgIcon(online ? "wifi" : "offline")}<span>${escapeHtml(online ? t("online") : t("offlineCopy"))}${freshness ? ` · ${escapeHtml(t("updated"))} ${escapeHtml(freshness)}` : ""}</span>`;
   }
@@ -297,9 +276,7 @@
     try {
       if (navigator.share) await navigator.share(data);
       else if (navigator.clipboard) await navigator.clipboard.writeText(data.url);
-    } catch (error) {
-      if (error?.name !== "AbortError") console.warn("Share failed", error);
-    }
+    } catch (error) { if (error?.name !== "AbortError") console.warn("Share failed", error); }
   }
 
   function installHeaderControls() {
@@ -307,26 +284,13 @@
     const header = document.querySelector(".trip-header");
     if (!header) return;
     let actions = header.querySelector(".header-actions");
-    if (!actions) {
-      actions = document.createElement("div");
-      actions.className = "header-actions";
-      header.appendChild(actions);
-    }
+    if (!actions) { actions = document.createElement("div"); actions.className = "header-actions"; header.appendChild(actions); }
     const status = document.createElement("div");
-    status.id = "companion-runtime-status";
-    status.className = "companion-runtime-status";
-    status.setAttribute("aria-live", "polite");
+    status.id = "companion-runtime-status"; status.className = "companion-runtime-status"; status.setAttribute("aria-live", "polite");
     const share = document.createElement("button");
-    share.id = "companion-share";
-    share.className = "companion-header-button";
-    share.type = "button";
-    share.title = t("share");
-    share.setAttribute("aria-label", t("share"));
-    share.innerHTML = `${svgIcon("share")}<span>${escapeHtml(t("share"))}</span>`;
-    share.addEventListener("click", shareCurrent);
-    actions.prepend(status);
-    actions.appendChild(share);
-    updateStatusChip();
+    share.id = "companion-share"; share.className = "companion-header-button"; share.type = "button"; share.title = t("share"); share.setAttribute("aria-label", t("share"));
+    share.innerHTML = `${svgIcon("share")}<span>${escapeHtml(t("share"))}</span>`; share.addEventListener("click", shareCurrent);
+    actions.prepend(status); actions.appendChild(share); updateStatusChip();
   }
 
   function currentTripMode() {
@@ -341,153 +305,109 @@
     if (state.view === "trip") {
       const mode = currentTripMode();
       hash = mode === "overview" ? "#trip/overview" : `#trip/day/${encodeURIComponent(mode || state.selectedDate || "")}`;
-    } else if (state.view === "map") {
-      hash = `#map/day/${encodeURIComponent(state.selectedDate || "")}${state.selectedMapItemId ? `/stop/${encodeURIComponent(state.selectedMapItemId)}` : ""}`;
-    }
+    } else if (state.view === "map") hash = `#map/day/${encodeURIComponent(state.selectedDate || "")}${state.selectedMapItemId ? `/stop/${encodeURIComponent(state.selectedMapItemId)}` : ""}`;
     if (window.location.hash !== hash) history.replaceState(null, "", `${window.location.pathname}${window.location.search}${hash}`);
   }
 
   let applyingHash = false;
   function applyHash() {
     if (applyingHash || !state?.data) return;
-    const raw = window.location.hash.replace(/^#/, "");
-    if (!raw) return;
-    const parts = raw.split("/").map(decodeURIComponent);
+    const parts = window.location.hash.replace(/^#/, "").split("/").filter(Boolean).map(decodeURIComponent);
+    if (!parts.length) return;
     applyingHash = true;
-    try {
-      if (parts[0] === "trip") {
-        state.view = "trip";
-        if (parts[1] === "day" && state.data.days.some((day) => day.date === parts[2])) state.selectedDate = parts[2];
-        render();
-        queueMicrotask(() => {
-          const selector = parts[1] === "overview" ? "[data-trip-mode='overview']" : `[data-trip-day='${CSS.escape(parts[2] || "")}']`;
-          root.querySelector(selector)?.click();
-        });
-      } else if (parts[0] === "map") {
-        state.view = "map";
-        if (parts[1] === "day" && state.data.days.some((day) => day.date === parts[2])) state.selectedDate = parts[2];
-        if (parts[3] === "stop") state.selectedMapItemId = parts[4] || null;
-        render();
-      } else if (VIEW_META[parts[0]]) {
-        state.view = parts[0];
-        render();
-      }
-    } finally {
-      window.setTimeout(() => { applyingHash = false; }, 0);
-    }
+    if (parts[0] === "trip") {
+      state.view = "trip";
+      if (parts[1] === "day" && state.data.days.some((day) => day.date === parts[2])) state.selectedDate = parts[2];
+      render();
+      queueMicrotask(() => {
+        const button = parts[1] === "overview" ? root.querySelector("[data-trip-mode='overview']") : [...root.querySelectorAll("[data-trip-day]")].find((node) => node.dataset.tripDay === parts[2]);
+        button?.click();
+      });
+    } else if (parts[0] === "map") {
+      state.view = "map";
+      if (parts[1] === "day" && state.data.days.some((day) => day.date === parts[2])) state.selectedDate = parts[2];
+      if (parts[3] === "stop") state.selectedMapItemId = parts[4] || null;
+      render();
+    } else if (VIEW_META[parts[0]]) { state.view = parts[0]; render(); }
+    window.setTimeout(() => { applyingHash = false; }, 0);
   }
 
-  function contextItemsHtml(items) {
+  function contextRows(items) {
     return items.filter(Boolean).map((item) => `<article class="companion-context-row"><span>${escapeHtml(item.start || t("tbd"))}</span><div><strong>${escapeHtml(item.title || "")}</strong><small>${escapeHtml(item.location || item.dayTitle || "")}</small></div></article>`).join("");
   }
 
-  function reservationRows(filterDate = "") {
-    const rows = (state.data.reservations || []).filter((item) => !filterDate || item.date === filterDate).slice(0, 3);
-    return rows.map((item) => `<article class="companion-context-row"><span>${escapeHtml(item.type || "•")}</span><div><strong>${escapeHtml(item.title || "")}</strong><small>${escapeHtml([item.time || "", item.location || ""].filter(Boolean).join(" · "))}</small></div></article>`).join("");
+  function reservationRows(date = "") {
+    return (state.data.reservations || []).filter((item) => !date || item.date === date).slice(0, 3).map((item) => `<article class="companion-context-row"><span>${escapeHtml(item.type || "•")}</span><div><strong>${escapeHtml(item.title || "")}</strong><small>${escapeHtml([item.time || "", item.location || ""].filter(Boolean).join(" · "))}</small></div></article>`).join("");
   }
 
   async function injectContextWeather(container, day, context) {
     if (!container || typeof TravelLiteProviders === "undefined") return;
     const item = context?.current || context?.next || day?.items?.find((candidate) => Number.isFinite(Number(candidate.lat)) && Number.isFinite(Number(candidate.lng)));
-    const lat = Number(item?.lat ?? state.data.trip.center?.lat);
-    const lng = Number(item?.lng ?? state.data.trip.center?.lng);
+    const lat = Number(item?.lat ?? state.data.trip.center?.lat), lng = Number(item?.lng ?? state.data.trip.center?.lng);
     if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
     try {
       const data = await TravelLiteProviders.weather(lat, lng);
-      if (!document.contains(container)) return;
-      const current = data.current || {};
-      container.innerHTML = `<strong>${escapeHtml(t("weather"))}</strong><span>${Math.round(current.temperature_2m ?? 0)}° · ${Math.round(current.wind_speed_10m ?? 0)} km/h${data.__stale ? " · cached" : ""}</span>`;
+      if (document.contains(container)) container.innerHTML = `<strong>${escapeHtml(t("weather"))}</strong><span>${Math.round(data.current?.temperature_2m ?? 0)}° · ${Math.round(data.current?.wind_speed_10m ?? 0)} km/h${data.__stale ? " · cached" : ""}</span>`;
     } catch {}
   }
 
-  function contextRail() {
+  function renderContextRail() {
     const right = document.querySelector("#shell-right");
     if (!right || !state?.data) return;
-    const view = state.view;
     const context = getNowContext();
     const day = state.data.days.find((candidate) => candidate.date === state.selectedDate) || context.today || state.data.days[0];
-    let html = "";
 
-    if (view === "now") {
+    if (state.view === "now") {
       const reminders = Array.isArray(context.today?.reminders) ? context.today.reminders.slice(0, 3) : [];
-      html = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(t("scheduledNow"))}</strong><span>${escapeHtml(context.now.time)}</span></div><div class="companion-context-list">${contextItemsHtml([context.previous, context.current, context.next])}</div></section>
-        <section class="shell-context-section companion-context-weather" id="companion-context-weather"><strong>${escapeHtml(t("weather"))}</strong><span>…</span></section>
-        ${reminders.length ? `<section class="shell-context-section"><div class="shell-context-heading"><strong>${escapeHtml(t("remember"))}</strong><span>${reminders.length}</span></div><ul class="shell-reminder-list">${reminders.map((entry) => `<li>${escapeHtml(typeof entry === "string" ? entry : entry?.text || entry?.label || "")}</li>`).join("")}</ul></section>` : ""}`;
-      right.innerHTML = html;
-      injectContextWeather(right.querySelector("#companion-context-weather"), context.today, context);
-      return;
+      right.innerHTML = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(t("scheduledNow"))}</strong><span>${escapeHtml(context.now.time)}</span></div><div class="companion-context-list">${contextRows([context.previous, context.current, context.next])}</div></section><section class="shell-context-section companion-context-weather" id="companion-context-weather"><strong>${escapeHtml(t("weather"))}</strong><span>…</span></section>${reminders.length ? `<section class="shell-context-section"><div class="shell-context-heading"><strong>${escapeHtml(t("remember"))}</strong><span>${reminders.length}</span></div><ul class="shell-reminder-list">${reminders.map((entry) => `<li>${escapeHtml(typeof entry === "string" ? entry : entry?.text || entry?.label || "")}</li>`).join("")}</ul></section>` : ""}`;
+      injectContextWeather(right.querySelector("#companion-context-weather"), context.today, context); return;
     }
 
-    if (view === "trip") {
-      const mode = currentTripMode();
-      if (mode === "overview") {
-        const open = (state.data.days || []).flatMap((d) => (d.items || []).filter((item) => item.decision?.options?.length && !item.decision.resolvedOptionId));
-        html = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(t("tripOverview"))}</strong><span>${escapeHtml(state.data.trip.subtitle || "")}</span></div><div class="shell-stat-grid"><span><b>${state.data.days.length}</b> days</span><span><b>${flattenItems().length}</b> stops</span><span><b>${open.length}</b> ${escapeHtml(t("openChoices"))}</span></div></section>
-          ${reservationRows() ? `<section class="shell-context-section"><div class="shell-context-heading"><strong>${escapeHtml(t("reservations"))}</strong></div><div class="companion-context-list">${reservationRows()}</div></section>` : ""}`;
+    if (state.view === "trip") {
+      if (currentTripMode() === "overview") {
+        const open = state.data.days.flatMap((d) => (d.items || []).filter((item) => item.decision?.options?.length && !item.decision.resolvedOptionId));
+        const reservations = reservationRows();
+        right.innerHTML = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(t("tripOverview"))}</strong><span>${escapeHtml(state.data.trip.subtitle || "")}</span></div><div class="shell-stat-grid"><span><b>${state.data.days.length}</b> days</span><span><b>${flattenItems().length}</b> stops</span><span><b>${open.length}</b> ${escapeHtml(t("openChoices"))}</span></div></section>${reservations ? `<section class="shell-context-section"><div class="shell-context-heading"><strong>${escapeHtml(t("reservations"))}</strong></div><div class="companion-context-list">${reservations}</div></section>` : ""}`;
       } else {
         const open = (day?.items || []).filter((item) => item.decision?.options?.length && !item.decision.resolvedOptionId);
         const reminders = Array.isArray(day?.reminders) ? day.reminders.slice(0, 3) : [];
-        html = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(day?.title || t("today"))}</strong><span>${day ? prettyDate(day.date, { weekday: "short" }) : ""}</span></div>${open.length ? `<p class="shell-context-route">${open.length} ${escapeHtml(t("openChoices"))}</p>` : ""}</section>
-          <section class="shell-context-section companion-context-weather" id="companion-context-weather"><strong>${escapeHtml(t("weather"))}</strong><span>…</span></section>
-          ${reminders.length ? `<section class="shell-context-section"><div class="shell-context-heading"><strong>${escapeHtml(t("remember"))}</strong><span>${reminders.length}</span></div><ul class="shell-reminder-list">${reminders.map((entry) => `<li>${escapeHtml(typeof entry === "string" ? entry : entry?.text || entry?.label || "")}</li>`).join("")}</ul></section>` : ""}
-          ${reservationRows(day?.date) ? `<section class="shell-context-section"><div class="shell-context-heading"><strong>${escapeHtml(t("reservations"))}</strong></div><div class="companion-context-list">${reservationRows(day.date)}</div></section>` : ""}`;
+        const reservations = reservationRows(day?.date);
+        right.innerHTML = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(day?.title || t("today"))}</strong><span>${day ? prettyDate(day.date, { weekday: "short" }) : ""}</span></div>${open.length ? `<p class="shell-context-route">${open.length} ${escapeHtml(t("openChoices"))}</p>` : ""}</section><section class="shell-context-section companion-context-weather" id="companion-context-weather"><strong>${escapeHtml(t("weather"))}</strong><span>…</span></section>${reminders.length ? `<section class="shell-context-section"><div class="shell-context-heading"><strong>${escapeHtml(t("remember"))}</strong><span>${reminders.length}</span></div><ul class="shell-reminder-list">${reminders.map((entry) => `<li>${escapeHtml(typeof entry === "string" ? entry : entry?.text || entry?.label || "")}</li>`).join("")}</ul></section>` : ""}${reservations ? `<section class="shell-context-section"><div class="shell-context-heading"><strong>${escapeHtml(t("reservations"))}</strong></div><div class="companion-context-list">${reservations}</div></section>` : ""}`;
+        injectContextWeather(right.querySelector("#companion-context-weather"), day, context);
       }
-      right.innerHTML = html;
-      injectContextWeather(right.querySelector("#companion-context-weather"), day, context);
       return;
     }
 
-    if (view === "map") {
+    if (state.view === "map") {
       const item = (day?.items || []).find((candidate) => candidate.id === state.selectedMapItemId) || day?.items?.[0];
       const map = item ? safeUrl(googleMapsOpenUrl(item)) : "";
-      const external = (item?.externalLinks || []).slice(0, 3).map((link) => {
-        const url = safeUrl(link?.url, ["http:", "https:", "tel:", "mailto:"]);
-        return link?.label && url ? `<a class="companion-context-link" href="${escapeAttr(url)}" target="_blank" rel="noreferrer">${escapeHtml(link.label)} ↗</a>` : "";
-      }).join("");
-      html = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(t("selectedStop"))}</strong><span>${escapeHtml(item?.start || t("tbd"))}</span></div><h3>${escapeHtml(item?.title || day?.title || "")}</h3><p class="shell-context-route">${escapeHtml(item?.location || "")}</p>${item?.note ? `<p class="shell-context-muted">${escapeHtml(item.note)}</p>` : ""}${map ? `<a class="companion-context-link" href="${escapeAttr(map)}" target="_blank" rel="noreferrer">${svgIcon("pin")} ${escapeHtml(t("openInMaps"))} ↗</a>` : ""}${external}</section>`;
-      right.innerHTML = html;
-      return;
+      const external = (item?.externalLinks || []).slice(0, 3).map((link) => { const url = safeUrl(link?.url, ["http:", "https:", "tel:", "mailto:"]); return link?.label && url ? `<a class="companion-context-link" href="${escapeAttr(url)}" target="_blank" rel="noreferrer">${escapeHtml(link.label)} ↗</a>` : ""; }).join("");
+      right.innerHTML = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(t("selectedStop"))}</strong><span>${escapeHtml(item?.start || t("tbd"))}</span></div><h3>${escapeHtml(item?.title || day?.title || "")}</h3><p class="shell-context-route">${escapeHtml(item?.location || "")}</p>${item?.note ? `<p class="shell-context-muted">${escapeHtml(item.note)}</p>` : ""}${map ? `<a class="companion-context-link" href="${escapeAttr(map)}" target="_blank" rel="noreferrer">${svgIcon("pin")} ${escapeHtml(t("openInMaps"))} ↗</a>` : ""}${external}</section>`; return;
     }
 
-    if (view === "check") {
-      const todoTotal = state.data.todos.length;
+    if (state.view === "check") {
       const todoDone = state.data.todos.filter((item) => state.todos[item.id]).length;
-      const allChecks = state.data.checklists.flatMap((group) => group.items.map((item) => ({ ...item, groupId: group.id })));
-      const checkDone = allChecks.filter((item) => state.checks[`${item.groupId}:${item.id}`]).length;
-      const incomplete = [...state.data.todos.filter((item) => !state.todos[item.id]).map((item) => item.label || item.title), ...allChecks.filter((item) => !state.checks[`${item.groupId}:${item.id}`]).map((item) => item.label)].slice(0, 5);
-      html = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(t("navCheck"))}</strong></div><div class="shell-stat-grid"><span><b>${todoDone}/${todoTotal}</b> todo</span><span><b>${checkDone}/${allChecks.length}</b> check</span></div></section>${incomplete.length ? `<section class="shell-context-section"><div class="shell-context-heading"><strong>${escapeHtml(t("incomplete"))}</strong><span>${incomplete.length}</span></div><ul class="shell-reminder-list">${incomplete.map((label) => `<li>${escapeHtml(label)}</li>`).join("")}</ul></section>` : ""}`;
-      right.innerHTML = html;
-      return;
+      const checks = state.data.checklists.flatMap((group) => group.items.map((item) => ({ ...item, groupId: group.id })));
+      const checkDone = checks.filter((item) => state.checks[`${item.groupId}:${item.id}`]).length;
+      const incomplete = [...state.data.todos.filter((item) => !state.todos[item.id]).map((item) => item.label || item.title), ...checks.filter((item) => !state.checks[`${item.groupId}:${item.id}`]).map((item) => item.label)].slice(0, 5);
+      right.innerHTML = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(t("navCheck"))}</strong></div><div class="shell-stat-grid"><span><b>${todoDone}/${state.data.todos.length}</b> todo</span><span><b>${checkDone}/${checks.length}</b> check</span></div></section>${incomplete.length ? `<section class="shell-context-section"><div class="shell-context-heading"><strong>${escapeHtml(t("incomplete"))}</strong><span>${incomplete.length}</span></div><ul class="shell-reminder-list">${incomplete.map((label) => `<li>${escapeHtml(label)}</li>`).join("")}</ul></section>` : ""}`; return;
     }
 
-    right.innerHTML = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(t("deviceStatus"))}</strong></div><p class="shell-context-muted">${escapeHtml(isFreshNetwork() ? t("online") : t("offlineCopy"))}${formatFreshness() ? ` · ${escapeHtml(formatFreshness())}` : ""}</p></section>`;
+    right.innerHTML = `<section class="shell-context-card"><div class="shell-context-heading"><strong>${escapeHtml(t("deviceStatus"))}</strong></div><p class="shell-context-muted">${escapeHtml(isFreshNetwork() ? t("online") : t("offlineCopy"))}${freshnessText() ? ` · ${escapeHtml(freshnessText())}` : ""}</p></section>`;
   }
 
   let contextFrame = 0;
-  function scheduleContextRail() {
-    cancelAnimationFrame(contextFrame);
-    contextFrame = requestAnimationFrame(contextRail);
-  }
+  function scheduleContextRail() { cancelAnimationFrame(contextFrame); contextFrame = requestAnimationFrame(renderContextRail); }
 
   function afterRender() {
-    cleanTravelerCopy();
-    numberMapMarkers();
-    scheduleContextRail();
-    syncHash();
+    cleanTravelerCopy(); numberMapMarkers(); scheduleContextRail(); syncHash();
   }
 
   const baseSetView = setView;
-  setView = function companionSetView(view) {
-    baseSetView(view);
-    requestAnimationFrame(() => { afterRender(); });
-  };
+  setView = function companionSetView(view) { baseSetView(view); requestAnimationFrame(afterRender); };
 
-  const observer = new MutationObserver(() => {
-    cleanTravelerCopy();
-    numberMapMarkers();
-    scheduleContextRail();
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
+  const rootObserver = new MutationObserver(() => { cleanTravelerCopy(); numberMapMarkers(); scheduleContextRail(); });
+  rootObserver.observe(root, { childList: true, subtree: true });
 
   root.addEventListener("click", () => requestAnimationFrame(() => { syncHash(); scheduleContextRail(); }));
   document.querySelector("#shell-left")?.addEventListener("click", () => requestAnimationFrame(() => { syncHash(); scheduleContextRail(); }));
@@ -495,13 +415,12 @@
   window.addEventListener("hashchange", applyHash);
   window.addEventListener("travel-lite-runtime-status", updateStatusChip);
 
-  const waitForData = window.setInterval(() => {
+  const waitForData = window.setInterval(async () => {
     if (!state?.data) return;
     window.clearInterval(waitForData);
-    localeSetup();
-    installHeaderControls();
-    renderNav();
-    applyHash();
+    state.personalDecisionSelections = (await TravelLiteStorage.get(tripKey("personalDecisions"))) || state.personalDecisionSelections || {};
+    localeSetup(); installHeaderControls(); renderNav();
+    if (window.location.hash) applyHash(); else render();
     requestAnimationFrame(() => { afterRender(); updateStatusChip(); });
   }, 50);
   window.setTimeout(() => window.clearInterval(waitForData), 5000);
