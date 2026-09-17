@@ -1,0 +1,186 @@
+/* Desktop shell + neutral light/dark theme tokens. */
+:root {
+  --bg: #111411;
+  --bg-top: #151915;
+  --surface: #191d19;
+  --surface-2: #222722;
+  --text: #f4f7f2;
+  --muted: #9da79f;
+  --line: rgba(244, 247, 242, 0.10);
+  --accent: #4f6f5e;
+  --accent-soft: color-mix(in srgb, var(--accent) 18%, transparent);
+  --success: #65b98a;
+  --shadow: 0 16px 44px rgba(0, 0, 0, 0.22);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f5f6f2;
+    --bg-top: #f0f2ed;
+    --surface: #ffffff;
+    --surface-2: #f0f2ee;
+    --text: #1b211d;
+    --muted: #68716b;
+    --line: rgba(27, 33, 29, 0.11);
+    --success: #347a55;
+    --shadow: 0 12px 34px rgba(35, 43, 38, 0.08);
+  }
+}
+
+:root[data-theme="light"] {
+  --bg: #f5f6f2;
+  --bg-top: #f0f2ed;
+  --surface: #ffffff;
+  --surface-2: #f0f2ee;
+  --text: #1b211d;
+  --muted: #68716b;
+  --line: rgba(27, 33, 29, 0.11);
+  --success: #347a55;
+  --shadow: 0 12px 34px rgba(35, 43, 38, 0.08);
+}
+
+:root[data-theme="dark"] {
+  --bg: #111411;
+  --bg-top: #151915;
+  --surface: #191d19;
+  --surface-2: #222722;
+  --text: #f4f7f2;
+  --muted: #9da79f;
+  --line: rgba(244, 247, 242, 0.10);
+  --success: #65b98a;
+  --shadow: 0 16px 44px rgba(0, 0, 0, 0.22);
+}
+
+body {
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg) 46%);
+}
+
+.panel {
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
+
+.header-actions {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.quick-theme-toggle {
+  appearance: none;
+  min-width: 48px;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 740;
+}
+
+.quick-theme-toggle:hover { background: var(--surface-2); }
+.quick-theme-toggle:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 2px; }
+.quick-theme-icon { font-size: 1rem; line-height: 1; }
+.quick-theme-label { display: none; font-size: .76rem; }
+
+@media (min-width: 900px) {
+  .app-shell {
+    width: min(100%, 1280px);
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    gap: 24px 30px;
+    align-items: start;
+  }
+
+  .trip-header {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+    min-width: 0;
+  }
+
+  #view-root {
+    grid-column: 2;
+    grid-row: 2;
+    min-width: 0;
+  }
+
+  .bottom-nav {
+    position: sticky;
+    z-index: 20;
+    top: 32px;
+    left: auto;
+    bottom: auto;
+    transform: none;
+    width: 100%;
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    border-radius: 20px;
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(16px);
+  }
+
+  .bottom-nav::before {
+    content: "TRAVEL LITE";
+    display: block;
+    padding: 8px 12px 12px;
+    color: var(--muted);
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .14em;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 4px;
+  }
+
+  .nav-item {
+    min-height: 48px;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 11px;
+    padding: 0 13px;
+    border-radius: 13px;
+    font-size: .82rem;
+  }
+
+  .nav-icon {
+    width: 22px;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .day-tabs {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .hero-card { padding: 30px; }
+  .now-title { max-width: 18ch; }
+  .interactive-map { min-height: 520px; height: min(68vh, 720px); }
+  .map-frame { min-height: 520px; }
+  .quick-theme-label { display: inline; }
+}
+
+@media (min-width: 1180px) {
+  #view-root > .view-stack { max-width: 940px; }
+  #view-root .timeline,
+  #view-root .day-summary { max-width: 980px; }
+  #view-root .runtime-map-panel { max-width: none; }
+}

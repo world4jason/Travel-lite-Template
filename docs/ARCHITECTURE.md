@@ -42,6 +42,43 @@ Do **not** turn the base template into:
 - a collaboration/account backend
 - cross-device synchronization
 
+## Responsive shell
+
+Travel Lite uses one data/state model with different presentation shells.
+
+```text
+trip.json + local state
+        ↓
+ shared rendering/runtime
+        ↓
+ ┌───────────────┬────────────────┐
+ │ phone shell   │ desktop shell  │
+ │ bottom nav    │ left nav       │
+ │ touch-first   │ wider dashboard│
+ └───────────────┴────────────────┘
+```
+
+The breakpoint is intentionally simple: desktop layout starts at `900px`.
+
+This is **not** two applications. Do not fork view logic, data loading, storage, or decision semantics by form factor. Prefer CSS/layout changes and small shell helpers.
+
+## Appearance / theme
+
+Appearance is a device-local preference with three modes:
+
+- `system` — follows the operating system/browser preference
+- `light`
+- `dark`
+
+Theme uses semantic CSS tokens (`--bg`, `--surface`, `--text`, `--muted`, `--line`, etc.). `trip.accent` is a trip-specific accent, not the product's fixed brand color.
+
+The planned-stop map follows the effective theme by default:
+
+- light → OpenFreeMap Liberty
+- dark → OpenFreeMap Dark
+
+A trip/fork may override `mapStyleLight` / `mapStyleDark` in provider configuration.
+
 ## Shared truth vs local state
 
 This is the most important architectural invariant:
@@ -72,6 +109,7 @@ Because GitHub Pages has no shared synchronization backend:
 - reservations/tickets/reference links
 - static place `infoCard` content
 - Google Maps search shortcuts
+- optional accent/map-style configuration
 
 ### Local mutable state
 
@@ -132,12 +170,14 @@ Source links should remain attached to the card.
 index.html             static shell
 styles.css             base UI
 runtime.css            runtime companion/map/info-card UI
+desktop-theme.css      responsive desktop shell + neutral theme tokens
 app.js                 core views and trip rendering
 storage.js             IndexedDB + localStorage fallback
 runtime-features.js    weather + planned-stop MapLibre overview
 runtime-google.js      Google Maps URL/embed helpers
 runtime-handoff.js     external links, Google searches, decisions, info cards
-runtime-providers.js   small live providers (currently weather + map config)
+runtime-providers.js   small live providers (weather + map config)
+theme-shell.js         quick theme control + effective light/dark map style
 sw.js                  PWA/offline cache
 trip.json              shared trip data
 manifest.webmanifest   installable PWA metadata
@@ -145,7 +185,7 @@ manifest.webmanifest   installable PWA metadata
 
 ## TREK relationship
 
-Travel Lite inherits useful **client-side travel patterns** from TREK: mobile shell, current/next context, day itinerary, map, packing/todos, offline/PWA, and local storage patterns.
+Travel Lite inherits useful **client-side travel patterns** from TREK: responsive desktop/mobile shells, current/next context, day itinerary, map, packing/todos, appearance modes, offline/PWA, and local storage patterns.
 
 It deliberately drops TREK's server/multi-user scope. Source reuse is allowed under AGPL when applicable notices and modification obligations are preserved. See `NOTICE.md`.
 
@@ -160,5 +200,7 @@ Before adding a new capability, ask:
 3. Does it require shared synchronization? If yes, it does not belong in the base template without a real backend.
 4. Does a mature specialist app already do it better? If yes, hand off instead.
 5. Will the core site still work if the external service fails?
+6. Can phone and desktop share the same data/runtime logic?
+7. Does the feature work in system/light/dark without encoding meaning only in color?
 
 If the answer pushes toward planning, synchronization, or a large provider integration, keep it out of the base template.

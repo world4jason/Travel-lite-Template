@@ -44,6 +44,21 @@ Do not turn the base template into:
 
 Prefer specialist handoff links over rebuilding mature tools.
 
+## Responsive + appearance invariant
+
+Phone and desktop are **different shells over the same data/runtime**, not separate apps.
+
+- phone → bottom navigation, touch-first spacing
+- desktop (`>= 900px`) → sticky left navigation, wider content/map surface
+- do not duplicate business logic by form factor
+
+Appearance must support `system`, `light`, and `dark`.
+
+- style with semantic theme tokens rather than hard-coded light/dark colors
+- `trip.accent` is trip decoration, not a fixed product brand
+- maps should follow the effective light/dark mode unless a trip explicitly overrides the styles
+- never encode important meaning only through color
+
 ## Default trip-generation workflow
 
 When given a planning result, PDF, spreadsheet, notes, or chat transcript:
@@ -83,7 +98,8 @@ If changing template code rather than trip data:
 - avoid server/backend requirements
 - keep links sanitized
 - preserve offline fallbacks
-- preserve mobile usability
+- preserve both phone and desktop usability
+- verify system/light/dark appearance
 - bump the Service Worker shell cache version when cached shell behavior/assets materially change
 
 Follow the repeatable review checklist in [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md).

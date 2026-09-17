@@ -25,6 +25,7 @@ node --check runtime-providers.js
 node --check runtime-features.js
 node --check runtime-google.js
 node --check runtime-handoff.js
+node --check theme-shell.js
 node --check sw.js
 ```
 
@@ -47,7 +48,43 @@ The base template should continue to satisfy:
 - `Check` persists completion in IndexedDB with localStorage fallback
 - `More` remains reference-oriented
 - provider failure never blocks core itinerary/reference use
-- layout remains usable on a narrow mobile viewport
+- phone layout remains usable on a narrow viewport
+- desktop layout uses the wider surface without becoming a separate application
+- `system`, `light`, and `dark` all remain readable
+- switching theme does not lose local state
+- the map follows the effective theme unless explicitly overridden
+
+## Responsive-shell review
+
+Test at least one phone and one desktop viewport after shell/layout changes.
+
+Suggested minimum:
+
+```text
+390 × 844   phone
+1440 × 900  desktop
+```
+
+Verify:
+
+- phone keeps the bottom navigation
+- desktop uses the left navigation at `>= 900px`
+- the same views/data appear on both form factors
+- no feature exists only because of duplicated desktop/mobile business logic
+- map and timeline widths remain usable
+- safe-area/mobile touch targets remain intact
+
+## Theme review
+
+Appearance is a local preference. Verify all three modes:
+
+- `system`
+- `light`
+- `dark`
+
+Theme styling should come from semantic tokens rather than scattered hard-coded colors. `trip.accent` may tint buttons/status elements, but should not become a fixed product identity or the sole carrier of meaning.
+
+The quick header control and **More → Appearance** must remain consistent with the same stored theme value.
 
 ## PWA / Service Worker rule
 
@@ -56,7 +93,7 @@ The base template should continue to satisfy:
 When changing cached shell files or behavior in a way that existing clients must refresh, bump the shell cache name, for example:
 
 ```js
-const CACHE = "travel-lite-shell-v6";
+const CACHE = "travel-lite-shell-v7";
 ```
 
 If this is forgotten, returning users may continue seeing stale JavaScript/CSS until the old cache is replaced.
@@ -149,6 +186,8 @@ Before merge, review for:
 - Is `Now` still glanceable rather than dense?
 - Are repeated cards/actions avoided?
 - Are touch targets mobile-friendly?
+- Does desktop use width effectively without adding extra product scope?
+- Do light/dark/system all preserve contrast and hierarchy?
 - Are optional modules hidden when their data is absent?
 
 ### Security/privacy

@@ -1,6 +1,6 @@
 # Travel Lite Template
 
-A mobile-first, local-first **trip decision companion** for turning a mostly-planned itinerary into one static GitHub Pages site.
+A responsive, local-first **trip decision companion** for turning a mostly-planned itinerary into one static GitHub Pages site.
 
 Planning happens beforehand with people, an LLM, spreadsheets, maps, bookings, or other specialist tools. Travel Lite is the compact result people carry during the trip.
 
@@ -13,6 +13,8 @@ Planning happens beforehand with people, an LLM, spreadsheets, maps, bookings, o
 - **Map** — planned stops on MapLibre/OpenFreeMap with Google Maps handoff
 - **Check** — todos and checklists stored on this device
 - **More** — reservations, tickets, notes, contacts, links, and a local quick note
+- **Responsive shell** — phone bottom navigation; desktop left navigation with a wider content area
+- **Appearance** — `Auto` / `Light` / `Dark`, stored per device
 - **Offline/PWA** — app shell and trip snapshot remain usable after the first successful load
 
 Travel Lite is **not** a planner, route optimizer, live-transit engine, review database, or collaboration backend.
@@ -39,13 +41,26 @@ Use specialist tools for specialist jobs:
 
 Activities can carry direct `externalLinks` and small `googleSearches` shortcuts. Stable place background can be prepared by the LLM/agent at vibe-time and stored as a static `infoCard` in `trip.json`.
 
+## Responsive + theme behavior
+
+Travel Lite follows the same architectural idea as modern responsive travel apps: **one data model, different shells**.
+
+- phone: compact bottom navigation and touch-first layout
+- desktop (`>= 900px`): sticky left navigation and a wider dashboard/content surface
+- no duplicated desktop/mobile data or business logic
+
+Theme choices are `system`, `light`, and `dark`. The quick header control cycles them, while the full selector remains under **More → Appearance**. The trip accent is data-driven through `trip.accent`; it is decoration, not the product identity.
+
+The planned-stop map also follows the effective light/dark theme by default using OpenFreeMap styles.
+
 ## Quick start
 
 1. Fork/use this repository as a base.
 2. Replace `trip.json` with the output of your planning/discussion.
 3. Keep stable IDs for days, activities, checklist items, todos, and decision options.
 4. Add `lat`/`lng`, useful external links, reminders, TBD cards, and optional static info cards.
-5. Push to `main`.
+5. Optionally set `trip.accent` and provider map styles for the trip identity.
+6. Push to `main`.
 
 No build step, server, account system, or server database is required.
 
@@ -86,14 +101,14 @@ Then open `http://localhost:8000`.
 ## Documentation
 
 - [`AGENTS.md`](./AGENTS.md) — concise rules for coding agents
-- [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — product boundaries, runtime architecture, storage, handoff model
+- [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — product boundaries, runtime architecture, responsive shell, storage, handoff model
 - [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md) — how an LLM/agent should fill `trip.json`
-- [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md) — development, PWA/cache, review and acceptance checklist
+- [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md) — development, PWA/cache, responsive/theme review, and acceptance checklist
 - [`NOTICE.md`](./NOTICE.md) — TREK attribution/source-reuse notes
 
 ## Runtime services
 
-- Map: MapLibre + OpenFreeMap
+- Map: MapLibre + OpenFreeMap (light/dark styles)
 - Weather: Open-Meteo, cached locally
 - Details/reviews/navigation: Google Maps URL handoff
 
