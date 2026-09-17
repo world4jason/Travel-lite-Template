@@ -6,7 +6,7 @@
     "startDate": "2026-10-03",
     "endDate": "2026-10-05",
     "timezone": "Asia/Tokyo",
-    "accent": "#2563eb",
+    "accent": "#4f6f5e",
     "themeColor": "#0b1020",
     "homeLabel": "Tokyo, Japan",
     "center": { "lat": 35.6812, "lng": 139.7671 }
@@ -18,6 +18,8 @@
   },
   "providers": {
     "mapStyle": "https://tiles.openfreemap.org/styles/liberty",
+    "mapStyleLight": "https://tiles.openfreemap.org/styles/liberty",
+    "mapStyleDark": "https://tiles.openfreemap.org/styles/dark",
     "weatherEndpoint": "https://api.open-meteo.com/v1/forecast",
     "googleMapsEmbedKey": ""
   },
