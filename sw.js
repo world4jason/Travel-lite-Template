@@ -11,6 +11,7 @@ const CORE = [
   "./app.js",
   "./runtime-providers.js",
   "./runtime-features.js",
+  "./runtime-google.js",
   "./trip.json",
   "./manifest.webmanifest",
   "./icon.svg"
