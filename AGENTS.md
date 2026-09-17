@@ -58,7 +58,24 @@ Prefer specialist handoff links over rebuilding mature tools.
 - only valid `HH:MM` starts participate in time calculations
 - `start: "TBD"` or missing `start` is floating and must never become 00:00/current
 - floating items stay visible under Flexible today / Trip
-- additional future items may be shown after the three-item reference window
+- `Later today` must only contain items from the active local day; `Next` may cross into a later day
+- if a day has no timed items, prefer a compact **Today brief** instead of three empty time-window cards
+
+### Multi-timezone trips
+
+Use IANA timezone identifiers.
+
+```text
+item.timezone
+    ↓ fallback
+day.timezone
+    ↓ fallback
+trip.timezone
+```
+
+For a trip that crosses countries/timezones, set `day.timezone` whenever the local day is not in the trip default timezone. Use `item.timezone` only when one item genuinely uses a different local clock from the rest of its day.
+
+Do not convert source times into the computer/user timezone. Preserve the published local time and attach the correct IANA timezone instead.
 
 ## Trip information hierarchy
 
@@ -72,6 +89,21 @@ The Trip view is **information first, actions second**.
 - `decision` and `infoCard` are content surfaces, not primary action buttons.
 
 Use optional `highlights`, `routeSummary`, and `transferAfter` only when they improve scanability. Do not fill them with invented detail just because the schema supports them.
+
+For `routeSummary`, use this source priority:
+
+1. explicit route/sequence from the source itinerary
+2. source day subtitle or route field when it clearly expresses the sequence
+3. normalized item titles
+4. day title only as the final fallback
+
+Do not fabricate a more specific route than the source supports.
+
+## Long-trip navigation
+
+The template automatically replaces the long mobile day-chip strip with a compact day selector for trips longer than 12 days.
+
+Do not create a second navigation data model. It must select the same Trip day state used by deep links, desktop day rail, and the normal timeline.
 
 ## Map invariant
 
@@ -132,17 +164,19 @@ When given a planning result, PDF, spreadsheet, notes, or chat transcript:
 2. Keep the application shell unchanged unless reusable behavior genuinely needs to change.
 3. Preserve stable IDs.
 4. Resolve stable places at vibe-time (`title`, `location`, `lat`, `lng`).
-5. Add concise `day.reminders` for operational reminders.
-6. Preserve small shared TBDs as `decision` cards instead of inventing an answer.
-7. Use `externalLinks` for concrete Tabelog/booking/operator/transit/etc. pages.
-8. Use `googleSearches` for lightweight Google Maps queries rather than adding discovery APIs.
-9. Use static `infoCard` content for researched place background.
-10. Use `highlights` for flexible/seasonal activities that belong in the trip overview but are not fixed timeline stops.
-11. Use `routeSummary` / `transferAfter` only when the source discussion or research supports them.
-12. Set `updatedAt` / `revision` when publishing a new shared itinerary version.
-13. Omit optional modules when there is no real data.
+5. Preserve source-local times; add `day.timezone` / `item.timezone` rather than converting clocks.
+6. If the source gives sequence but no reliable clock time, keep the item floating (`start: "TBD"` or omit `start`) instead of inventing a time.
+7. Add concise `day.reminders` for operational reminders.
+8. Preserve small shared TBDs as `decision` cards instead of inventing an answer.
+9. Use `externalLinks` for concrete Tabelog/booking/operator/transit/etc. pages.
+10. Use `googleSearches` for lightweight Google Maps queries rather than adding discovery APIs.
+11. Use static `infoCard` content for researched place background.
+12. Use `highlights` for flexible/seasonal activities that belong in the trip overview but are not fixed timeline stops.
+13. Build `routeSummary` using the source-priority rule above; use `transferAfter` only when supported by the source/research.
+14. Set `updatedAt` / `revision` when publishing a new shared itinerary version.
+15. Omit optional modules when there is no real data.
 
-Never invent URLs, booking details, coordinates, durations, live transit data, or resolved decisions.
+Never invent URLs, booking details, coordinates, durations, live transit data, clock times, or resolved decisions.
 
 ## Runtime boundary
 
@@ -170,6 +204,7 @@ If changing template code rather than trip data:
 - verify system/light/dark appearance
 - keep Trip/Now scanability high and repeated actions low
 - test direct deep links and resize without losing selected day/theme/local state
+- test at least one multi-timezone trip, one long trip, and one untimed day after time/navigation changes
 - bump the Service Worker shell cache version when cached shell behavior/assets materially change
 
 Follow the repeatable review checklist in [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md).
