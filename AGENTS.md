@@ -7,7 +7,8 @@ Before making non-trivial changes, read:
 1. [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
 2. [`docs/COMPANION_UX.md`](./docs/COMPANION_UX.md)
 3. [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md)
-4. [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md)
+4. [`docs/TIMEZONE.md`](./docs/TIMEZONE.md)
+5. [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md)
 
 ## Core invariant
 
@@ -59,6 +60,26 @@ Prefer specialist handoff links over rebuilding mature tools.
 - `start: "TBD"` or missing `start` is floating and must never become 00:00/current
 - floating items stay visible under Flexible today / Trip
 - additional future items may be shown after the three-item reference window
+
+## Timezone semantics
+
+Multi-country trips may override the default trip timezone without adding planner UI.
+
+```text
+item.timezone
+→ day.timezone
+→ trip.timezone
+```
+
+- use valid IANA timezone identifiers
+- interpret each `day.date` in the day timezone
+- interpret each timed item in its effective item/day/trip timezone
+- compare timed items as absolute instants, not raw `HH:MM` strings across countries
+- preserve source-local clock times; do not invent converted flight schedules
+- keep `TBD` / missing times floating
+- prefer separate departure/arrival entries when transport crosses dates/zones
+
+See [`docs/TIMEZONE.md`](./docs/TIMEZONE.md).
 
 ## Trip information hierarchy
 
@@ -132,17 +153,18 @@ When given a planning result, PDF, spreadsheet, notes, or chat transcript:
 2. Keep the application shell unchanged unless reusable behavior genuinely needs to change.
 3. Preserve stable IDs.
 4. Resolve stable places at vibe-time (`title`, `location`, `lat`, `lng`).
-5. Add concise `day.reminders` for operational reminders.
-6. Preserve small shared TBDs as `decision` cards instead of inventing an answer.
-7. Use `externalLinks` for concrete Tabelog/booking/operator/transit/etc. pages.
-8. Use `googleSearches` for lightweight Google Maps queries rather than adding discovery APIs.
-9. Use static `infoCard` content for researched place background.
-10. Use `highlights` for flexible/seasonal activities that belong in the trip overview but are not fixed timeline stops.
-11. Use `routeSummary` / `transferAfter` only when the source discussion or research supports them.
-12. Set `updatedAt` / `revision` when publishing a new shared itinerary version.
-13. Omit optional modules when there is no real data.
+5. Preserve source-local dates/times; set `day.timezone` / `item.timezone` only when the source crosses timezone boundaries or explicitly requires an override.
+6. Add concise `day.reminders` for operational reminders.
+7. Preserve small shared TBDs as `decision` cards instead of inventing an answer.
+8. Use `externalLinks` for concrete Tabelog/booking/operator/transit/etc. pages.
+9. Use `googleSearches` for lightweight Google Maps queries rather than adding discovery APIs.
+10. Use static `infoCard` content for researched place background.
+11. Use `highlights` for flexible/seasonal activities that belong in the trip overview but are not fixed timeline stops.
+12. Use `routeSummary` / `transferAfter` only when the source discussion or research supports them.
+13. Set `updatedAt` / `revision` when publishing a new shared itinerary version.
+14. Omit optional modules when there is no real data.
 
-Never invent URLs, booking details, coordinates, durations, live transit data, or resolved decisions.
+Never invent URLs, booking details, coordinates, durations, timezone conversions, live transit data, or resolved decisions.
 
 ## Runtime boundary
 
@@ -170,6 +192,7 @@ If changing template code rather than trip data:
 - verify system/light/dark appearance
 - keep Trip/Now scanability high and repeated actions low
 - test direct deep links and resize without losing selected day/theme/local state
+- test multi-timezone date rollover when changing time semantics
 - bump the Service Worker shell cache version when cached shell behavior/assets materially change
 
 Follow the repeatable review checklist in [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md).
@@ -181,6 +204,7 @@ Follow the repeatable review checklist in [`docs/MAINTENANCE.md`](./docs/MAINTEN
 - architecture/scope → `docs/ARCHITECTURE.md`
 - day-of interaction contract → `docs/COMPANION_UX.md`
 - trip data contract → `docs/TRIP_SCHEMA.md`
+- timezone contract → `docs/TIMEZONE.md`
 - development/review/deployment → `docs/MAINTENANCE.md`
 - attribution/license source reuse → `NOTICE.md` / `LICENSE`
 
