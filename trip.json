@@ -1,0 +1,157 @@
+{
+  "trip": {
+    "id": "sample-tokyo-2026",
+    "title": "Tokyo Autumn",
+    "subtitle": "4 days · sample trip",
+    "startDate": "2026-10-03",
+    "endDate": "2026-10-06",
+    "timezone": "Asia/Tokyo",
+    "accent": "#2563eb",
+    "homeLabel": "Tokyo, Japan"
+  },
+  "days": [
+    {
+      "date": "2026-10-03",
+      "label": "Day 1",
+      "title": "Arrival & Shibuya",
+      "items": [
+        {
+          "start": "10:30",
+          "end": "12:00",
+          "title": "Arrive at Haneda",
+          "type": "transport",
+          "location": "Haneda Airport",
+          "note": "Pick up IC card and head into the city.",
+          "mapsUrl": "https://maps.google.com/?q=Haneda+Airport"
+        },
+        {
+          "start": "14:00",
+          "end": "15:00",
+          "title": "Hotel check-in",
+          "type": "stay",
+          "location": "Shibuya",
+          "note": "Leave luggage and reset before heading out."
+        },
+        {
+          "start": "16:00",
+          "end": "18:30",
+          "title": "Shibuya walk",
+          "type": "place",
+          "location": "Shibuya Crossing → Miyashita Park",
+          "mapsUrl": "https://maps.google.com/?q=Shibuya+Crossing"
+        },
+        {
+          "start": "19:00",
+          "end": "20:30",
+          "title": "Dinner",
+          "type": "food",
+          "location": "Ebisu",
+          "note": "Reservation sample · replace with your real booking."
+        }
+      ]
+    },
+    {
+      "date": "2026-10-04",
+      "label": "Day 2",
+      "title": "West Tokyo",
+      "items": [
+        {
+          "start": "09:00",
+          "end": "11:00",
+          "title": "Meiji Jingu",
+          "type": "place",
+          "location": "Harajuku",
+          "mapsUrl": "https://maps.google.com/?q=Meiji+Jingu"
+        },
+        {
+          "start": "11:15",
+          "end": "13:00",
+          "title": "Harajuku & Omotesando",
+          "type": "place",
+          "location": "Harajuku"
+        },
+        {
+          "start": "14:00",
+          "end": "17:00",
+          "title": "Kichijoji & Inokashira Park",
+          "type": "place",
+          "location": "Kichijoji",
+          "mapsUrl": "https://maps.google.com/?q=Inokashira+Park"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-05",
+      "label": "Day 3",
+      "title": "East Tokyo",
+      "items": [
+        {
+          "start": "09:00",
+          "end": "11:30",
+          "title": "Asakusa",
+          "type": "place",
+          "location": "Senso-ji",
+          "mapsUrl": "https://maps.google.com/?q=Senso-ji"
+        },
+        {
+          "start": "12:00",
+          "end": "13:00",
+          "title": "Lunch",
+          "type": "food",
+          "location": "Asakusa"
+        },
+        {
+          "start": "14:00",
+          "end": "17:00",
+          "title": "Ueno museums",
+          "type": "place",
+          "location": "Ueno Park"
+        }
+      ]
+    },
+    {
+      "date": "2026-10-06",
+      "label": "Day 4",
+      "title": "Departure",
+      "items": [
+        {
+          "start": "09:30",
+          "end": "11:30",
+          "title": "Last coffee & shopping",
+          "type": "food",
+          "location": "Shibuya"
+        },
+        {
+          "start": "13:00",
+          "end": "14:00",
+          "title": "Head to Haneda",
+          "type": "transport",
+          "location": "Haneda Airport",
+          "mapsUrl": "https://maps.google.com/?q=Haneda+Airport"
+        }
+      ]
+    }
+  ],
+  "checklists": [
+    {
+      "id": "before",
+      "title": "Before you go",
+      "items": [
+        { "id": "passport", "label": "Passport" },
+        { "id": "insurance", "label": "Travel insurance" },
+        { "id": "esim", "label": "eSIM / roaming" },
+        { "id": "tickets", "label": "Flight & hotel confirmations" }
+      ]
+    },
+    {
+      "id": "packing",
+      "title": "Packing",
+      "items": [
+        { "id": "charger", "label": "Phone charger" },
+        { "id": "camera", "label": "Camera + battery" },
+        { "id": "jacket", "label": "Light jacket" },
+        { "id": "meds", "label": "Personal medicine" }
+      ]
+    }
+  ]
+}
