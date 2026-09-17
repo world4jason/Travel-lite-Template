@@ -4,7 +4,7 @@ Travel Lite is a **post-planning travel companion**. Planning happens before the
 
 ## Now: schedule reference, not location tracking
 
-`Now` is based on the trip timezone and the published itinerary. It does **not** claim the traveller has actually arrived at a stop.
+`Now` is based on the published itinerary. It does **not** claim the traveller has actually arrived at a stop.
 
 The default day-of reference window is:
 
@@ -37,6 +37,31 @@ or an item with no `start`.
 
 Floating items remain visible in Trip and in the Now **Flexible today** section.
 
+## Today Brief fallback
+
+Some itineraries intentionally contain a day/order plan without reliable clock times, especially group tours or flexible days.
+
+If the current trip day has itinerary items but **zero valid timed items**, `Now` switches from previous/current/next to a read-only **Today Brief**:
+
+```text
+TODAY · DAY 6
+Vatican → Spanish Steps → Rome
+
+1  Vatican / St. Peter's
+2  Spanish Steps free time
+
+No fixed times in this itinerary.
+```
+
+Rules:
+
+- preserve the published order; never synthesize times
+- prefer `day.routeSummary`, otherwise derive a simple order from existing item labels
+- keep reminders, weather, map/specialist handoff, decisions, and info cards available
+- do not show yesterday/tomorrow timed entries as if they were today's previous/next window
+- mixed days with at least one timed item stay on the normal previous/scheduled-now/next model; untimed entries remain under **Flexible today**
+- this is presentation only, not a planning mode
+
 ## Shared decisions
 
 A shared `decision` is informational until `resolvedOptionId` exists in shared `trip.json`.
@@ -56,7 +81,7 @@ Recommended composition:
 
 | Main view | Right rail |
 | --- | --- |
-| Now | previous/current/next, reminders, weather |
+| Now | previous/current/next, reminders, weather; or Today Brief context on a fully untimed day |
 | Trip overview | trip stats, open decisions, reservations |
 | Trip day | weather, reminders, day reservations, unresolved decisions |
 | Map | selected stop details and specialist links |
