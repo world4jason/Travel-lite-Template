@@ -9,7 +9,8 @@ Before making non-trivial changes, read:
 3. [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md)
 4. [`docs/SOURCE_NORMALIZATION.md`](./docs/SOURCE_NORMALIZATION.md)
 5. [`docs/TIMEZONE.md`](./docs/TIMEZONE.md)
-6. [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md)
+6. [`docs/REAL_TRIP_VALIDATION.md`](./docs/REAL_TRIP_VALIDATION.md)
+7. [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md)
 
 ## Core invariant
 
@@ -102,6 +103,20 @@ When generating `day.routeSummary`, use this source priority:
 - if evidence is weak, omit `routeSummary`; the UI can derive a simple fallback from item titles
 
 See [`docs/SOURCE_NORMALIZATION.md`](./docs/SOURCE_NORMALIZATION.md).
+
+## Real-trip validation discipline
+
+Realistic/private itineraries are validation inputs, not template content.
+
+- keep fixture `trip.json` files outside this repository
+- use [`tools/build_fixture.py`](./tools/build_fixture.py) to copy the current runtime into an external fixture directory
+- use `--now <ISO-8601 instant>` only in the generated fixture copy when historical day-of behavior must be reproduced
+- test phone / compact desktop / wide desktop when a generic UI behavior changes
+- if a fixture exposes a reusable gap, **open a GitHub issue first** with scope, non-goals, and acceptance criteria
+- solve one accepted issue per branch/PR; do not expand the PR when another independent fixture gap appears
+- do not merge Tina/Italy/personal fixture data, screenshots, fixed clocks, or fixture-specific UI into the base template
+
+See [`docs/REAL_TRIP_VALIDATION.md`](./docs/REAL_TRIP_VALIDATION.md).
 
 ## Trip information hierarchy
 
@@ -228,6 +243,7 @@ Follow the repeatable review checklist in [`docs/MAINTENANCE.md`](./docs/MAINTEN
 - trip data contract → `docs/TRIP_SCHEMA.md`
 - source-to-trip normalization → `docs/SOURCE_NORMALIZATION.md`
 - timezone contract → `docs/TIMEZONE.md`
+- real-trip regression workflow → `docs/REAL_TRIP_VALIDATION.md`
 - development/review/deployment → `docs/MAINTENANCE.md`
 - attribution/license source reuse → `NOTICE.md` / `LICENSE`
 
