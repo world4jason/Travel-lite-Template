@@ -1,8 +1,8 @@
 # TREK client-side scope matrix
 
-Travel Lite reuses useful **single-user, post-planning, local-first** ideas from TREK. It does not target full TREK parity.
+Travel Lite reuses useful **single-user / read-mostly / local-first** ideas from TREK. It does not target full TREK parity.
 
-The itinerary is assumed to be finalized before Travel Lite is generated. This document exists to stop future coding agents from expanding the base template into a planner.
+The trip is assumed to be mostly planned before Travel Lite is generated. Small intentional TBDs may remain, but the template is a travel-time decision companion, not a planner.
 
 ## Core base-template scope
 
@@ -11,10 +11,12 @@ The itinerary is assumed to be finalized before Travel Lite is generated. This d
 | mobile shell / bottom navigation | mobile-first shell + safe areas |
 | current / What's Next | derived `Now` view |
 | day itinerary | read-focused `Trip` timeline |
+| day reminders | concise operational reminders from `trip.json` |
+| small TBD decisions | read-only shared decision cards; optional device-local personal preference |
 | planned-place map | MapLibre/OpenFreeMap pins for itinerary stops |
 | Google Maps handoff | reviews/details/navigation in the user's normal map app |
 | weather | small Open-Meteo context card with local cache |
-| day/activity notes | static reminders from `trip.json` |
+| day/activity notes | static context from `trip.json` |
 | packing/checklists | definitions in `trip.json`, completion in IndexedDB |
 | to-dos | definitions in `trip.json`, completion in IndexedDB |
 | reservations | read-only structured reference |
@@ -25,9 +27,27 @@ The itinerary is assumed to be finalized before Travel Lite is generated. This d
 | appearance | system/light/dark preference |
 | external specialist links | arbitrary `externalLinks` per activity |
 
+## Shared-state boundary
+
+Travel Lite has no synchronization backend.
+
+```text
+trip.json = shared truth
+IndexedDB = private state on one device
+```
+
+Therefore:
+
+- shared TBD cards do not allow a local click to resolve the group decision
+- a shared decision is resolved only when `resolvedOptionId` is written into shared `trip.json`
+- `decision.mode: "personal"` may record a device-local preference, explicitly labelled as such
+- no local mutation may imply that other travellers see the same result
+
+This is a deliberate product boundary, not a missing collaboration feature.
+
 ## Optional, implemented, off by default
 
-These capabilities are complete enough to use but are not part of the default travel flow. They appear only when explicitly enabled or when the data/module is present.
+These capabilities are complete enough to use but are not part of the default travel flow.
 
 | Capability | Default | Reason |
 | --- | --- | --- |
@@ -38,13 +58,14 @@ These capabilities are complete enough to use but are not part of the default tr
 | costs | shown only when data exists | useful for some trips, not core |
 | journal | shown only when data exists | optional memory feature, not core |
 
-If maintenance cost becomes undesirable, the optional discovery providers are the first candidates to remove from the base template.
+If maintenance cost becomes undesirable, Photon/Overpass/Wikipedia-Wikidata runtime discovery is the first removal candidate.
 
 ## Intentionally not part of the base template
 
 Do not port these merely because TREK supports them:
 
 - itinerary planner/editor, drag/reorder, move-between-days, undo/redo
+- shared mutation state without a real synchronization backend
 - route optimization or built-in turn-by-turn/navigation
 - live transit planner/timetable/disruption engine
 - ratings/review database, scraping, or mirrored Google/Tabelog content
@@ -66,4 +87,4 @@ For live/specialist information, add a handoff link to the service the traveller
 
 Travel Lite is AGPL-3.0-or-later. TREK client source may be copied/adapted when useful, provided applicable copyright/license notices and meaningful modification notices are preserved.
 
-Source reuse is not a reason to copy product scope. Prefer the smallest implementation that supports the post-planning companion workflow.
+Source reuse is not a reason to copy product scope. Prefer the smallest implementation that supports the travel-time decision companion workflow.
