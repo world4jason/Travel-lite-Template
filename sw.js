@@ -1,4 +1,4 @@
-const CACHE = "travel-lite-shell-v3";
+const CACHE = "travel-lite-shell-v4";
 const RUNTIME_CACHE = "travel-lite-runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -11,6 +11,7 @@ const CORE = [
   "./app.js",
   "./runtime-providers.js",
   "./runtime-features.js",
+  "./runtime-handoff.js",
   "./runtime-google.js",
   "./trip.json",
   "./manifest.webmanifest",
