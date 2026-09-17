@@ -1,4 +1,4 @@
-const CACHE = "travel-lite-shell-v10";
+const CACHE = "travel-lite-shell-v11";
 const RUNTIME_CACHE = "travel-lite-runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -11,6 +11,7 @@ const CORE = [
   "./trip-view.css",
   "./responsive-shell.css",
   "./companion-ux.css",
+  "./real-trip-hardening.css",
   "./bootstrap.js",
   "./storage.js",
   "./app.js",
@@ -22,6 +23,7 @@ const CORE = [
   "./theme-shell.js",
   "./responsive-shell.js",
   "./companion-ux.js",
+  "./real-trip-hardening.js",
   "./trip.json",
   "./manifest.webmanifest",
   "./icon.svg"
