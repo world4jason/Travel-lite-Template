@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b1020" />
+    <meta name="description" content="A tiny, data-driven travel companion for GitHub Pages." />
+    <title>Travel Lite</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="trip-header">
+        <div>
+          <p class="eyebrow" id="trip-location">Travel Lite</p>
+          <h1 id="trip-title">Loading trip…</h1>
+          <p class="trip-meta" id="trip-meta"></p>
+        </div>
+        <div class="live-time" aria-label="Trip local time">
+          <span id="local-time">--:--</span>
+          <small id="timezone-label"></small>
+        </div>
+      </header>
+
+      <main id="view-root" aria-live="polite">
+        <section class="panel loading-card">
+          <div class="skeleton short"></div>
+          <div class="skeleton"></div>
+          <div class="skeleton medium"></div>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Primary navigation">
+        <button class="nav-item active" data-view="now" type="button">
+          <span class="nav-icon">●</span>
+          <span>Now</span>
+        </button>
+        <button class="nav-item" data-view="trip" type="button">
+          <span class="nav-icon">≡</span>
+          <span>Trip</span>
+        </button>
+        <button class="nav-item" data-view="check" type="button">
+          <span class="nav-icon">✓</span>
+          <span>Check</span>
+        </button>
+      </nav>
+    </div>
+
+    <template id="error-template">
+      <section class="panel empty-state">
+        <p class="eyebrow">Could not load trip.json</p>
+        <h2>Open this site through a web server or GitHub Pages.</h2>
+        <p>Travel Lite loads its content from <code>trip.json</code>, so opening <code>index.html</code> directly with <code>file://</code> may be blocked by the browser.</p>
+      </section>
+    </template>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>

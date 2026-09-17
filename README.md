@@ -18,8 +18,10 @@ Travel Lite borrows high-level mobile travel UX ideas (current/next context, bot
 
 1. Edit `trip.json`.
 2. Commit and push.
-3. In **Settings → Pages → Build and deployment**, choose **GitHub Actions** once.
-4. The included workflow publishes the repository root as a GitHub Pages site.
+3. In **Settings → Pages → Build and deployment**, choose **Deploy from a branch**.
+4. Select `main` and `/ (root)` after this prototype is merged.
+
+The repository includes `.nojekyll`, so GitHub Pages can serve the static files directly without a build step.
 
 For local preview, use any tiny static server instead of opening `index.html` with `file://`:
 
