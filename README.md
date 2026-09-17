@@ -13,7 +13,7 @@ Planning happens beforehand with people, an LLM, spreadsheets, maps, bookings, o
 - **Map** — planned stops on MapLibre/OpenFreeMap with Google Maps handoff
 - **Check** — todos and checklists stored on this device
 - **More** — reservations, tickets, notes, contacts, links, and a local quick note
-- **Responsive shell** — phone bottom navigation; desktop left navigation with a wider content area
+- **Responsive shell** — phone single-column/bottom nav; compact desktop day rail; wide desktop day rail + context rail
 - **Appearance** — `Auto` / `Light` / `Dark`, stored per device
 - **Offline/PWA** — app shell and trip snapshot remain usable after the first successful load
 
@@ -62,11 +62,26 @@ Activities can carry direct `externalLinks` and small `googleSearches` shortcuts
 
 ## Responsive + theme behavior
 
-Travel Lite uses **one data model, different shells**.
+Travel Lite uses **one data model, different information compositions**. Responsive design may rearrange, reveal, or collapse existing information, but must not fork trip data or business logic.
 
-- phone: compact bottom navigation and touch-first layout
-- desktop (`>= 900px`): sticky left navigation and a wider dashboard/content surface
-- no duplicated desktop/mobile data or business logic
+```text
+< 900px
+phone
+└── single-column content + bottom navigation
+
+900–1399px
+compact desktop / tablet landscape
+├── persistent trip-day rail
+└── main content with horizontal primary navigation
+
+>= 1400px
+wide desktop
+├── trip-day / reference rail
+├── main content
+└── trip context rail (overview, selected-day stops, reminders, quick access)
+```
+
+The phone still has access to the same information through Trip/Map/More; wide layouts simply expose useful context simultaneously when there is room.
 
 Theme choices are `system`, `light`, and `dark`. The quick header control cycles them, while the full selector remains under **More → Appearance**. The trip accent is data-driven through `trip.accent`; it is decoration, not the product identity.
 
