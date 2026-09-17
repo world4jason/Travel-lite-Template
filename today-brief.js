@@ -3,6 +3,7 @@
   const baseGetNowContext = getNowContext;
   const baseRenderNow = renderNow;
   const rootNode = document.querySelector("#view-root");
+  const rightRail = document.querySelector("#shell-right");
 
   function minuteValue(raw) {
     const match = /^(\d{1,2}):(\d{2})$/.exec(String(raw || "").trim());
@@ -117,7 +118,7 @@
 
   function enhanceRightRail(context) {
     if (!isUntimedDay(context) || state.view !== "now") return;
-    const right = document.querySelector("#shell-right");
+    const right = rightRail;
     if (!right || getComputedStyle(right).display === "none") return;
     const card = right.querySelector(".shell-context-card");
     if (!card || card.dataset.todayBrief === "true") return;
@@ -126,8 +127,10 @@
     card.innerHTML = `<div class="shell-context-heading"><strong>${escapeHtml(day.title || label("todayBriefTitle", "Today at a glance", "今日摘要"))}</strong><span>${escapeHtml(day.label || prettyDate(day.date, { weekday: "short" }))}</span></div>${route.length ? `<p class="shell-context-route">${route.map(escapeHtml).join(" → ")}</p>` : ""}<p class="shell-context-muted">${escapeHtml(label("todayBriefNoFixedTimeShort", "No fixed times published for today.", "今天沒有固定時間。"))}</p>`;
   }
 
-  function scheduleRightRail(context) {
-    requestAnimationFrame(() => requestAnimationFrame(() => enhanceRightRail(context)));
+  let railFrame = 0;
+  function scheduleRightRail(context = getNowContext()) {
+    cancelAnimationFrame(railFrame);
+    railFrame = requestAnimationFrame(() => enhanceRightRail(context));
   }
 
   renderNow = function todayBriefRenderNow() {
@@ -137,6 +140,13 @@
     enhanceMain(context);
     scheduleRightRail(context);
   };
+
+  if (rightRail) {
+    new MutationObserver(() => {
+      const context = getNowContext();
+      if (isUntimedDay(context)) scheduleRightRail(context);
+    }).observe(rightRail, { childList: true, subtree: true });
+  }
 
   window.addEventListener("resize", () => {
     const context = getNowContext();
