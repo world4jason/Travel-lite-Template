@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="./desktop-theme.css" />
     <link rel="stylesheet" href="./trip-view.css" />
     <link rel="stylesheet" href="./responsive-shell.css" />
+    <link rel="stylesheet" href="./companion-ux.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -28,6 +29,7 @@
       <nav class="bottom-nav" id="bottom-nav" aria-label="Primary navigation"></nav>
     </div>
     <template id="error-template"><section class="panel empty-state"><p class="eyebrow">Could not load trip data</p><h2>Open this site through a web server or GitHub Pages.</h2><p>Travel Lite reads <code>trip.json</code> and keeps a local IndexedDB snapshot after the first successful visit.</p></section></template>
+    <script src="./bootstrap.js" defer></script>
     <script src="./storage.js" defer></script>
     <script src="./app.js" defer></script>
     <script src="./trip-view.js" defer></script>
@@ -37,5 +39,6 @@
     <script src="./runtime-google.js" defer></script>
     <script src="./theme-shell.js" defer></script>
     <script src="./responsive-shell.js" defer></script>
+    <script src="./companion-ux.js" defer></script>
   </body>
 </html>
