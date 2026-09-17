@@ -8,12 +8,21 @@
     "timezone": "Asia/Tokyo",
     "accent": "#2563eb",
     "themeColor": "#0b1020",
-    "homeLabel": "Tokyo, Japan"
+    "homeLabel": "Tokyo, Japan",
+    "center": { "lat": 35.6812, "lng": 139.7671 }
   },
   "ui": {
     "defaultView": "now",
     "theme": "system",
     "bottomNav": ["now", "trip", "map", "check", "more"]
+  },
+  "providers": {
+    "mapStyle": "https://tiles.openfreemap.org/styles/liberty",
+    "weatherEndpoint": "https://api.open-meteo.com/v1/forecast",
+    "photonEndpoint": "https://photon.komoot.io/api/",
+    "overpassEndpoint": "https://overpass-api.de/api/interpreter",
+    "wikipediaLanguage": "en",
+    "googleMapsEmbedKey": ""
   },
   "days": [
     {
@@ -23,10 +32,10 @@
       "title": "Arrival & Shibuya",
       "note": "Keep the first afternoon intentionally light after the flight.",
       "items": [
-        { "id": "d1-haneda", "start": "10:30", "end": "12:00", "title": "Arrive at Haneda", "type": "transport", "location": "Haneda Airport", "note": "Pick up IC card and head into the city.", "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Haneda+Airport" },
-        { "id": "d1-hotel", "start": "14:00", "end": "15:00", "title": "Hotel check-in", "type": "stay", "location": "Shibuya, Tokyo", "note": "Leave luggage and reset before heading out." },
-        { "id": "d1-shibuya", "start": "16:00", "end": "18:30", "title": "Shibuya walk", "type": "place", "location": "Shibuya Crossing, Tokyo", "note": "Continue to Miyashita Park if energy is good." },
-        { "id": "d1-dinner", "start": "19:00", "end": "20:30", "title": "Dinner", "type": "food", "location": "Ebisu, Tokyo", "note": "Reservation sample · replace with your real booking." }
+        { "id": "d1-haneda", "start": "10:30", "end": "12:00", "title": "Arrive at Haneda", "type": "transport", "location": "Haneda Airport", "lat": 35.5494, "lng": 139.7798, "note": "Pick up IC card and head into the city." },
+        { "id": "d1-hotel", "start": "14:00", "end": "15:00", "title": "Hotel check-in", "type": "stay", "location": "Shibuya, Tokyo", "lat": 35.6580, "lng": 139.7016, "note": "Leave luggage and reset before heading out." },
+        { "id": "d1-shibuya", "start": "16:00", "end": "18:30", "title": "Shibuya walk", "type": "place", "location": "Shibuya Crossing, Tokyo", "lat": 35.6595, "lng": 139.7005, "note": "Continue to Miyashita Park if energy is good." },
+        { "id": "d1-dinner", "start": "19:00", "end": "20:30", "title": "Dinner", "type": "food", "location": "Ebisu, Tokyo", "lat": 35.6467, "lng": 139.7101, "note": "Reservation sample · replace with your real booking." }
       ]
     },
     {
@@ -35,9 +44,9 @@
       "label": "Day 2",
       "title": "West Tokyo",
       "items": [
-        { "id": "d2-meiji", "start": "09:00", "end": "11:00", "title": "Meiji Jingu", "type": "place", "location": "Meiji Jingu, Tokyo" },
-        { "id": "d2-harajuku", "start": "11:15", "end": "13:00", "title": "Harajuku & Omotesando", "type": "place", "location": "Omotesando, Tokyo" },
-        { "id": "d2-kichijoji", "start": "14:00", "end": "17:00", "title": "Kichijoji & Inokashira Park", "type": "place", "location": "Inokashira Park, Tokyo" }
+        { "id": "d2-meiji", "start": "09:00", "end": "11:00", "title": "Meiji Jingu", "type": "place", "location": "Meiji Jingu, Tokyo", "lat": 35.6764, "lng": 139.6993 },
+        { "id": "d2-harajuku", "start": "11:15", "end": "13:00", "title": "Harajuku & Omotesando", "type": "place", "location": "Omotesando, Tokyo", "lat": 35.6650, "lng": 139.7124 },
+        { "id": "d2-kichijoji", "start": "14:00", "end": "17:00", "title": "Kichijoji & Inokashira Park", "type": "place", "location": "Inokashira Park, Tokyo", "lat": 35.7006, "lng": 139.5748 }
       ]
     },
     {
@@ -46,9 +55,9 @@
       "label": "Day 3",
       "title": "East Tokyo",
       "items": [
-        { "id": "d3-asakusa", "start": "09:00", "end": "11:30", "title": "Asakusa", "type": "place", "location": "Senso-ji, Tokyo" },
-        { "id": "d3-lunch", "start": "12:00", "end": "13:00", "title": "Lunch", "type": "food", "location": "Asakusa, Tokyo" },
-        { "id": "d3-ueno", "start": "14:00", "end": "17:00", "title": "Ueno museums", "type": "place", "location": "Ueno Park, Tokyo" }
+        { "id": "d3-asakusa", "start": "09:00", "end": "11:30", "title": "Asakusa", "type": "place", "location": "Senso-ji, Tokyo", "lat": 35.7148, "lng": 139.7967 },
+        { "id": "d3-lunch", "start": "12:00", "end": "13:00", "title": "Lunch", "type": "food", "location": "Asakusa, Tokyo", "lat": 35.7119, "lng": 139.7967 },
+        { "id": "d3-ueno", "start": "14:00", "end": "17:00", "title": "Ueno museums", "type": "place", "location": "Ueno Park, Tokyo", "lat": 35.7148, "lng": 139.7731 }
       ]
     },
     {
@@ -57,8 +66,8 @@
       "label": "Day 4",
       "title": "Departure",
       "items": [
-        { "id": "d4-coffee", "start": "09:30", "end": "11:30", "title": "Last coffee & shopping", "type": "food", "location": "Shibuya, Tokyo" },
-        { "id": "d4-haneda", "start": "13:00", "end": "14:00", "title": "Head to Haneda", "type": "transport", "location": "Haneda Airport" }
+        { "id": "d4-coffee", "start": "09:30", "end": "11:30", "title": "Last coffee & shopping", "type": "food", "location": "Shibuya, Tokyo", "lat": 35.6595, "lng": 139.7005 },
+        { "id": "d4-haneda", "start": "13:00", "end": "14:00", "title": "Head to Haneda", "type": "transport", "location": "Haneda Airport", "lat": 35.5494, "lng": 139.7798 }
       ]
     }
   ],

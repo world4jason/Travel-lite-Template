@@ -11,6 +11,7 @@
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./icon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./runtime.css" />
   </head>
   <body>
     <div class="app-shell">
@@ -24,5 +25,8 @@
     <template id="error-template"><section class="panel empty-state"><p class="eyebrow">Could not load trip data</p><h2>Open this site through a web server or GitHub Pages.</h2><p>Travel Lite reads <code>trip.json</code> and keeps a local IndexedDB snapshot after the first successful visit.</p></section></template>
     <script src="./storage.js" defer></script>
     <script src="./app.js" defer></script>
+    <script src="./runtime-providers.js" defer></script>
+    <script src="./runtime-features.js" defer></script>
+    <script src="./runtime-google.js" defer></script>
   </body>
 </html>
