@@ -1,29 +1,85 @@
 # Travel Lite Template
 
-A tiny, mobile-first trip companion designed for **one itinerary → one GitHub Pages site**.
+A mobile-first, offline-ready trip companion for **one itinerary → one GitHub Pages site**.
 
-It intentionally keeps the product surface small:
+Travel Lite keeps the deployment model intentionally small: no server, login, framework, build step, or API key is required. Repository data lives in `trip.json`; browser-local state lives in IndexedDB with a localStorage fallback.
 
-- **Now** — current activity, next activity, trip-local time, daily progress
-- **Trip** — day tabs + compact itinerary timeline
-- **Check** — reusable checklists persisted in `localStorage`
+## Views
 
-There is no backend, login, database, build tool, or framework. The trip itself lives in `trip.json`.
+- **Now** — current activity, next activity, trip-local time, progress, map preview
+- **Trip** — day tabs + complete itinerary timeline
+- **Map** — embedded Google Maps for the selected day/place
+- **Check** — to-dos + packing/checklists
+- **More** — reservations, costs, trip notes, file/ticket links, contacts, journal, links, personal note, appearance
 
-## Why this shape
+The bottom bar is data-driven through `ui.bottomNav`, so a trip can hide views it does not need.
 
-Travel Lite borrows high-level mobile travel UX ideas (current/next context, bottom navigation, day plans) but is implemented from scratch as a static site. It is intended to stay easy for humans and coding agents to modify.
+## Storage model
+
+```text
+trip.json                      versioned shared trip data
+     │
+     ├── fetch / service-worker cache
+     └── IndexedDB snapshot    offline fallback
+
+IndexedDB                     device-local mutable state
+├── checklist completion
+├── todo completion
+├── personal note
+├── selected day/view
+└── theme preference
+
+localStorage                  fallback only when IndexedDB is unavailable
+```
+
+After the first successful visit, the service worker precaches the app shell and `trip.json`. Google Maps embeds still need network access; the itinerary itself remains available offline.
+
+## TREK-inspired static client scope
+
+Travel Lite is a clean-room implementation of travel UI patterns rather than a TREK source-code fork.
+
+Supported as static/client-only counterparts:
+
+- day plans and current/next context
+- places and embedded maps
+- day notes
+- reservations display
+- costs display
+- packing lists and to-dos with local completion state
+- files/tickets as static links
+- journal entries
+- installable/offline PWA shell
+- IndexedDB local state + cached trip snapshot
+- mobile bottom navigation and safe-area layout
+- light/dark/system appearance
+
+Intentionally server-side/out of scope: accounts, permissions, real-time collaboration, uploads, booking extraction, live place search/enrichment, route optimization, live weather, transit APIs, plugins, MCP/AI, cross-device sync, or server-backed mutation replay.
+
+## Google Maps
+
+No Maps JavaScript SDK or API key is required. Each itinerary item can use any of:
+
+```json
+{
+  "location": "Senso-ji, Tokyo",
+  "mapQuery": "Senso-ji Tokyo",
+  "lat": 35.7148,
+  "lng": 139.7967,
+  "mapsUrl": "https://www.google.com/maps/...",
+  "mapEmbedUrl": "https://www.google.com/maps?...&output=embed"
+}
+```
+
+`mapEmbedUrl` wins when present; otherwise Travel Lite derives an iframe URL from latitude/longitude, `mapQuery`, `location`, or title.
 
 ## Quick start
 
 1. Edit `trip.json`.
-2. Commit and push.
-3. In **Settings → Pages → Build and deployment**, choose **Deploy from a branch**.
-4. Select `main` and `/ (root)` after this prototype is merged.
+2. Commit and push to `main`.
+3. GitHub Pages serves the repository root directly.
+4. Open the page once online before travel so the PWA shell and trip snapshot are cached.
 
-The repository includes `.nojekyll`, so GitHub Pages can serve the static files directly without a build step.
-
-For local preview, use any tiny static server instead of opening `index.html` with `file://`:
+For local preview:
 
 ```bash
 python3 -m http.server 8000
@@ -31,44 +87,8 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000`.
 
-## Data model
+## Vibe-coding rule
 
-The important file is `trip.json`:
+For a new trip, prefer changing only `trip.json` and optionally visual tokens in `styles.css`. Keep stable IDs for checklist/todo items so local state survives itinerary edits.
 
-```json
-{
-  "trip": {
-    "id": "my-trip-2026",
-    "title": "My Trip",
-    "startDate": "2026-10-03",
-    "endDate": "2026-10-06",
-    "timezone": "Asia/Tokyo",
-    "accent": "#2563eb"
-  },
-  "days": [
-    {
-      "date": "2026-10-03",
-      "label": "Day 1",
-      "title": "Arrival",
-      "items": [
-        {
-          "start": "14:00",
-          "end": "15:00",
-          "title": "Hotel check-in",
-          "location": "Shibuya",
-          "mapsUrl": "https://maps.google.com/..."
-        }
-      ]
-    }
-  ],
-  "checklists": []
-}
-```
-
-`Now` is derived from the itinerary plus the trip timezone; it is not a separate data set.
-
-## Vibe-coding rule of thumb
-
-For a new trip, prefer changing **only `trip.json`** and optional visual tokens in `styles.css`. Keep the app shell stable unless the product behavior genuinely needs to change.
-
-See [`AGENTS.md`](./AGENTS.md) for guardrails.
+See [`AGENTS.md`](./AGENTS.md) for implementation guardrails.

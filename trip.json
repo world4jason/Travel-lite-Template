@@ -7,151 +7,103 @@
     "endDate": "2026-10-06",
     "timezone": "Asia/Tokyo",
     "accent": "#2563eb",
+    "themeColor": "#0b1020",
     "homeLabel": "Tokyo, Japan"
+  },
+  "ui": {
+    "defaultView": "now",
+    "theme": "system",
+    "bottomNav": ["now", "trip", "map", "check", "more"]
   },
   "days": [
     {
+      "id": "d1",
       "date": "2026-10-03",
       "label": "Day 1",
       "title": "Arrival & Shibuya",
+      "note": "Keep the first afternoon intentionally light after the flight.",
       "items": [
-        {
-          "start": "10:30",
-          "end": "12:00",
-          "title": "Arrive at Haneda",
-          "type": "transport",
-          "location": "Haneda Airport",
-          "note": "Pick up IC card and head into the city.",
-          "mapsUrl": "https://maps.google.com/?q=Haneda+Airport"
-        },
-        {
-          "start": "14:00",
-          "end": "15:00",
-          "title": "Hotel check-in",
-          "type": "stay",
-          "location": "Shibuya",
-          "note": "Leave luggage and reset before heading out."
-        },
-        {
-          "start": "16:00",
-          "end": "18:30",
-          "title": "Shibuya walk",
-          "type": "place",
-          "location": "Shibuya Crossing → Miyashita Park",
-          "mapsUrl": "https://maps.google.com/?q=Shibuya+Crossing"
-        },
-        {
-          "start": "19:00",
-          "end": "20:30",
-          "title": "Dinner",
-          "type": "food",
-          "location": "Ebisu",
-          "note": "Reservation sample · replace with your real booking."
-        }
+        { "id": "d1-haneda", "start": "10:30", "end": "12:00", "title": "Arrive at Haneda", "type": "transport", "location": "Haneda Airport", "note": "Pick up IC card and head into the city.", "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Haneda+Airport" },
+        { "id": "d1-hotel", "start": "14:00", "end": "15:00", "title": "Hotel check-in", "type": "stay", "location": "Shibuya, Tokyo", "note": "Leave luggage and reset before heading out." },
+        { "id": "d1-shibuya", "start": "16:00", "end": "18:30", "title": "Shibuya walk", "type": "place", "location": "Shibuya Crossing, Tokyo", "note": "Continue to Miyashita Park if energy is good." },
+        { "id": "d1-dinner", "start": "19:00", "end": "20:30", "title": "Dinner", "type": "food", "location": "Ebisu, Tokyo", "note": "Reservation sample · replace with your real booking." }
       ]
     },
     {
+      "id": "d2",
       "date": "2026-10-04",
       "label": "Day 2",
       "title": "West Tokyo",
       "items": [
-        {
-          "start": "09:00",
-          "end": "11:00",
-          "title": "Meiji Jingu",
-          "type": "place",
-          "location": "Harajuku",
-          "mapsUrl": "https://maps.google.com/?q=Meiji+Jingu"
-        },
-        {
-          "start": "11:15",
-          "end": "13:00",
-          "title": "Harajuku & Omotesando",
-          "type": "place",
-          "location": "Harajuku"
-        },
-        {
-          "start": "14:00",
-          "end": "17:00",
-          "title": "Kichijoji & Inokashira Park",
-          "type": "place",
-          "location": "Kichijoji",
-          "mapsUrl": "https://maps.google.com/?q=Inokashira+Park"
-        }
+        { "id": "d2-meiji", "start": "09:00", "end": "11:00", "title": "Meiji Jingu", "type": "place", "location": "Meiji Jingu, Tokyo" },
+        { "id": "d2-harajuku", "start": "11:15", "end": "13:00", "title": "Harajuku & Omotesando", "type": "place", "location": "Omotesando, Tokyo" },
+        { "id": "d2-kichijoji", "start": "14:00", "end": "17:00", "title": "Kichijoji & Inokashira Park", "type": "place", "location": "Inokashira Park, Tokyo" }
       ]
     },
     {
+      "id": "d3",
       "date": "2026-10-05",
       "label": "Day 3",
       "title": "East Tokyo",
       "items": [
-        {
-          "start": "09:00",
-          "end": "11:30",
-          "title": "Asakusa",
-          "type": "place",
-          "location": "Senso-ji",
-          "mapsUrl": "https://maps.google.com/?q=Senso-ji"
-        },
-        {
-          "start": "12:00",
-          "end": "13:00",
-          "title": "Lunch",
-          "type": "food",
-          "location": "Asakusa"
-        },
-        {
-          "start": "14:00",
-          "end": "17:00",
-          "title": "Ueno museums",
-          "type": "place",
-          "location": "Ueno Park"
-        }
+        { "id": "d3-asakusa", "start": "09:00", "end": "11:30", "title": "Asakusa", "type": "place", "location": "Senso-ji, Tokyo" },
+        { "id": "d3-lunch", "start": "12:00", "end": "13:00", "title": "Lunch", "type": "food", "location": "Asakusa, Tokyo" },
+        { "id": "d3-ueno", "start": "14:00", "end": "17:00", "title": "Ueno museums", "type": "place", "location": "Ueno Park, Tokyo" }
       ]
     },
     {
+      "id": "d4",
       "date": "2026-10-06",
       "label": "Day 4",
       "title": "Departure",
       "items": [
-        {
-          "start": "09:30",
-          "end": "11:30",
-          "title": "Last coffee & shopping",
-          "type": "food",
-          "location": "Shibuya"
-        },
-        {
-          "start": "13:00",
-          "end": "14:00",
-          "title": "Head to Haneda",
-          "type": "transport",
-          "location": "Haneda Airport",
-          "mapsUrl": "https://maps.google.com/?q=Haneda+Airport"
-        }
+        { "id": "d4-coffee", "start": "09:30", "end": "11:30", "title": "Last coffee & shopping", "type": "food", "location": "Shibuya, Tokyo" },
+        { "id": "d4-haneda", "start": "13:00", "end": "14:00", "title": "Head to Haneda", "type": "transport", "location": "Haneda Airport" }
       ]
     }
   ],
+  "todos": [
+    { "id": "esim", "label": "Activate eSIM", "dueDate": "2026-10-02", "priority": "high" },
+    { "id": "offline", "label": "Open Travel Lite once to cache it offline", "dueDate": "2026-10-02", "priority": "normal" }
+  ],
   "checklists": [
-    {
-      "id": "before",
-      "title": "Before you go",
-      "items": [
-        { "id": "passport", "label": "Passport" },
-        { "id": "insurance", "label": "Travel insurance" },
-        { "id": "esim", "label": "eSIM / roaming" },
-        { "id": "tickets", "label": "Flight & hotel confirmations" }
-      ]
-    },
-    {
-      "id": "packing",
-      "title": "Packing",
-      "items": [
-        { "id": "charger", "label": "Phone charger" },
-        { "id": "camera", "label": "Camera + battery" },
-        { "id": "jacket", "label": "Light jacket" },
-        { "id": "meds", "label": "Personal medicine" }
-      ]
-    }
+    { "id": "before", "title": "Before you go", "items": [
+      { "id": "passport", "label": "Passport" },
+      { "id": "insurance", "label": "Travel insurance" },
+      { "id": "tickets", "label": "Flight & hotel confirmations" }
+    ]},
+    { "id": "packing", "title": "Packing", "items": [
+      { "id": "charger", "label": "Phone charger" },
+      { "id": "camera", "label": "Camera + battery" },
+      { "id": "jacket", "label": "Light jacket" },
+      { "id": "meds", "label": "Personal medicine" }
+    ]}
+  ],
+  "reservations": [
+    { "id": "hotel", "type": "stay", "title": "Shibuya hotel", "date": "2026-10-03", "time": "14:00 check-in", "location": "Shibuya", "status": "confirmed" },
+    { "id": "dinner", "type": "food", "title": "Ebisu dinner", "date": "2026-10-03", "time": "19:00", "location": "Ebisu", "status": "sample" }
+  ],
+  "costs": {
+    "currency": "JPY",
+    "entries": [
+      { "id": "hotel-cost", "title": "Hotel", "category": "stay", "amount": 48000, "date": "2026-10-03" },
+      { "id": "transport-cost", "title": "Airport transport", "category": "transport", "amount": 1600, "date": "2026-10-03" }
+    ]
+  },
+  "notes": [
+    { "id": "transit", "title": "Transit", "body": "Use IC card for normal city transport. Keep the airport route saved separately." },
+    { "id": "public-data", "title": "Public site reminder", "body": "Do not put passport numbers, full booking codes, or other secrets in trip.json." }
+  ],
+  "files": [
+    { "id": "sample-ticket", "title": "Sample ticket link", "type": "ticket", "url": "https://example.com/replace-me" }
+  ],
+  "contacts": [
+    { "id": "hotel-contact", "name": "Hotel front desk", "role": "Sample contact", "phone": "+81-00-0000-0000" }
+  ],
+  "journal": [
+    { "id": "journal-placeholder", "date": "2026-10-03", "title": "Arrival day", "body": "Optional static trip memory. Replace or remove for a pure itinerary site." }
+  ],
+  "links": [
+    { "id": "jr", "label": "JR East", "url": "https://www.jreast.co.jp/multi/en/" }
   ]
 }
