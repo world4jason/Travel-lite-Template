@@ -32,8 +32,25 @@
       "label": "Day 1",
       "title": "Arrival & Shibuya",
       "note": "Keep the first afternoon intentionally light after the flight.",
+      "reminders": [
+        "Top up the IC card before leaving the airport if the balance is low.",
+        "Check the hotel message for the latest check-in instructions."
+      ],
       "items": [
-        { "id": "d1-haneda", "start": "10:30", "end": "12:00", "title": "Arrive at Haneda", "type": "transport", "location": "Haneda Airport", "lat": 35.5494, "lng": 139.7798, "note": "Pick up IC card and head into the city." },
+        {
+          "id": "d1-haneda",
+          "start": "10:30",
+          "end": "12:00",
+          "title": "Arrive at Haneda",
+          "type": "transport",
+          "location": "Haneda Airport",
+          "lat": 35.5494,
+          "lng": 139.7798,
+          "note": "Pick up IC card and head into the city.",
+          "externalLinks": [
+            { "label": "Haneda Airport", "url": "https://tokyo-haneda.com/en/" }
+          ]
+        },
         { "id": "d1-hotel", "start": "14:00", "end": "15:00", "title": "Hotel check-in", "type": "stay", "location": "Shibuya, Tokyo", "lat": 35.6580, "lng": 139.7016, "note": "Leave luggage and reset before heading out." },
         { "id": "d1-shibuya", "start": "16:00", "end": "18:30", "title": "Shibuya walk", "type": "place", "location": "Shibuya Crossing, Tokyo", "lat": 35.6595, "lng": 139.7005, "note": "Continue to Miyashita Park if energy is good." },
         { "id": "d1-dinner", "start": "19:00", "end": "20:30", "title": "Dinner", "type": "food", "location": "Ebisu, Tokyo", "lat": 35.6467, "lng": 139.7101, "note": "Reservation sample · replace with your real booking." }
@@ -44,9 +61,42 @@
       "date": "2026-10-04",
       "label": "Day 2",
       "title": "West Tokyo",
+      "reminders": [
+        "Meiji Jingu closes earlier than many city attractions; check the official opening time if the morning slips."
+      ],
       "items": [
-        { "id": "d2-meiji", "start": "09:00", "end": "11:00", "title": "Meiji Jingu", "type": "place", "location": "Meiji Jingu, Tokyo", "lat": 35.6764, "lng": 139.6993 },
+        {
+          "id": "d2-meiji",
+          "start": "09:00",
+          "end": "11:00",
+          "title": "Meiji Jingu",
+          "type": "place",
+          "location": "Meiji Jingu, Tokyo",
+          "lat": 35.6764,
+          "lng": 139.6993,
+          "externalLinks": [
+            { "label": "Official site", "url": "https://www.meijijingu.or.jp/en/" }
+          ]
+        },
         { "id": "d2-harajuku", "start": "11:15", "end": "13:00", "title": "Harajuku & Omotesando", "type": "place", "location": "Omotesando, Tokyo", "lat": 35.6650, "lng": 139.7124 },
+        {
+          "id": "d2-lunch-choice",
+          "start": "13:00",
+          "end": "14:00",
+          "title": "Lunch",
+          "type": "food",
+          "location": "Harajuku / Kichijoji",
+          "note": "Keep this flexible and decide based on crowd, hunger, and energy.",
+          "decision": {
+            "label": "Decide on the day",
+            "prompt": "Eat before moving, or head to Kichijoji first?",
+            "context": "The itinerary is already fixed after lunch; this is only a small day-of choice.",
+            "options": [
+              { "id": "harajuku", "label": "Eat in Harajuku", "note": "Less transit while hungry." },
+              { "id": "kichijoji", "label": "Go to Kichijoji", "note": "Eat closer to the afternoon stop." }
+            ]
+          }
+        },
         { "id": "d2-kichijoji", "start": "14:00", "end": "17:00", "title": "Kichijoji & Inokashira Park", "type": "place", "location": "Inokashira Park, Tokyo", "lat": 35.7006, "lng": 139.5748 }
       ]
     },
@@ -66,6 +116,7 @@
       "date": "2026-10-06",
       "label": "Day 4",
       "title": "Departure",
+      "reminders": ["Check the airline/operator app for live flight status before leaving for Haneda."],
       "items": [
         { "id": "d4-coffee", "start": "09:30", "end": "11:30", "title": "Last coffee & shopping", "type": "food", "location": "Shibuya, Tokyo", "lat": 35.6595, "lng": 139.7005 },
         { "id": "d4-haneda", "start": "13:00", "end": "14:00", "title": "Head to Haneda", "type": "transport", "location": "Haneda Airport", "lat": 35.5494, "lng": 139.7798 }
