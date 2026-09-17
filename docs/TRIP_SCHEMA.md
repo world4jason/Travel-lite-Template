@@ -49,10 +49,51 @@ Recommended fields:
 Rules:
 
 - use `YYYY-MM-DD` dates
-- use a valid IANA timezone
+- use valid IANA timezone names such as `Asia/Taipei`, `Europe/Rome`, or `Atlantic/Reykjavik`
+- `trip.timezone` is the **default**, not a promise that every day of a multi-country trip uses the same local clock
 - change `trip.id` for a genuinely different trip so browser-local state does not collide
 - set `updatedAt` / `revision` when publishing a new shared itinerary version; they describe shared content, not local checklist changes
 - treat `accent` as trip decoration; important meaning must not depend on that color
+
+### Timezone hierarchy
+
+For multi-country travel, timezone resolution is:
+
+```text
+item.timezone
+    ↓ fallback
+day.timezone
+    ↓ fallback
+trip.timezone
+```
+
+Example:
+
+```json
+{
+  "trip": { "timezone": "Europe/Vienna" },
+  "days": [
+    {
+      "date": "2026-08-25",
+      "timezone": "Asia/Taipei",
+      "items": [
+        { "start": "23:10", "title": "Flight from Taipei" }
+      ]
+    },
+    {
+      "date": "2026-09-25",
+      "timezone": "Asia/Taipei",
+      "items": [
+        { "start": "05:30", "title": "Arrive in Taipei" }
+      ]
+    }
+  ]
+}
+```
+
+Keep the source-local clock time and attach the correct timezone. Do not convert itinerary clocks into the generating machine's timezone.
+
+Use `item.timezone` only when one item genuinely uses a different local clock from the rest of its day. `item.date` may override the containing day date for that special case.
 
 ## `ui`
 
@@ -119,9 +160,10 @@ Keep this section small. It is an overview/decision aid, not a recommendation fe
 {
   "id": "d1",
   "date": "2026-10-03",
+  "timezone": "Asia/Tokyo",
   "label": "Day 1",
   "title": "Arrival & Shibuya",
-  "note": "Keep the first afternoon light.",
+  "subtitle": "Keep the first afternoon light.",
   "routeLabel": "Arrival day",
   "routeSummary": ["Haneda", "Shibuya", "Ebisu"],
   "reminders": ["Check the hotel message before check-in."],
@@ -131,11 +173,16 @@ Keep this section small. It is an overview/decision aid, not a recommendation fe
 
 ### Route summary
 
-`routeSummary` is optional. If omitted, the Trip view derives a simple route from item titles. Use it when a shorter human-friendly route is more useful than raw stop names.
+`routeSummary` is optional. If omitted, the Trip view derives a simple route from item titles. For generated trips, build it in this priority order:
+
+1. explicit route/sequence from the source itinerary
+2. source day subtitle or route field when it clearly expresses the sequence
+3. normalized item titles
+4. day title only as the last fallback
 
 `routeLabel` is optional descriptive text such as `East Tokyo`, `Classic route`, or `Departure`.
 
-Do not turn route summaries into live routing. Real-time transit/navigation stays in specialist apps.
+Do not fabricate a more specific route than the source supports, and do not turn route summaries into live routing. Real-time transit/navigation stays in specialist apps.
 
 ### Reminders
 
@@ -169,13 +216,14 @@ A timed item:
 Rules:
 
 - use stable IDs
-- timed starts use local trip time in `HH:MM`
+- timed starts use the **local clock for the resolved item/day timezone** in `HH:MM`
 - provide `end` when possible so the Now reference window is more accurate
 - resolve `lat`/`lng` during vibe-time for real planned stops when practical
+- if an item needs a different local date/timezone from its day, use `item.date` / `item.timezone` rather than silently converting the clock
 
 ### Floating / TBD time
 
-If the group intentionally has not assigned a time, use `start: "TBD"` or omit `start`:
+If the group intentionally has not assigned a time, or the source only gives sequence without a reliable clock, use `start: "TBD"` or omit `start`:
 
 ```json
 {
@@ -191,6 +239,7 @@ Only valid `HH:MM` starts participate in previous / scheduled-now / next calcula
 - are never interpreted as `00:00`
 - never become the current timed activity
 - stay visible in Trip and the Now `Flexible today` section
+- on a fully untimed day, contribute to the Now **Today brief** instead of producing empty schedule cards
 
 Do not invent a time solely to make the item fit the timeline.
 
@@ -211,6 +260,12 @@ Use `transferAfter` only for stable, pre-researched transition context between t
 ```
 
 All fields are optional. Do not invent duration or live timetable data. If the exact transit plan is not known, omit it and let the user open their normal transit/map app.
+
+## Long-trip navigation
+
+No extra schema is required. On phone, trips longer than 12 days automatically replace the full day-chip strip with a compact day selector plus previous/next and Today navigation when applicable.
+
+The selector uses the same `days[]` data, selected date, and deep-link state as the desktop day rail.
 
 ## Action budget
 
