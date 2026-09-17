@@ -1,176 +1,104 @@
 # Travel Lite Template
 
-A mobile-first, local-first **trip decision companion** for **one mostly-planned itinerary → one GitHub Pages site**.
+A mobile-first, local-first **trip decision companion** for turning a mostly-planned itinerary into one static GitHub Pages site.
 
-Travel Lite is not a trip planner. Planning happens beforehand with people, an LLM, spreadsheets, maps, bookings, or whatever tools fit the trip. The generated site is the compact result everyone carries during the trip.
+Planning happens beforehand with people, an LLM, spreadsheets, maps, bookings, or other specialist tools. Travel Lite is the compact result people carry during the trip.
 
-It should answer, quickly:
+**Live site:** https://world4jason.github.io/Travel-lite-Template/
 
-- What am I doing now?
-- What is next?
-- What is today's discussed plan?
-- What must I remember or check?
-- Is anything intentionally TBD today?
-- What are the already-researched options for that decision?
-- Where is this stop?
-- Which specialist app/site should I open next?
+## What it does
 
-Think **infographic + info cards + small dashboard**, not itinerary editor.
+- **Now** — current activity, next activity, reminders, weather, and open TBDs
+- **Trip** — read-focused daily itinerary
+- **Map** — planned stops on MapLibre/OpenFreeMap with Google Maps handoff
+- **Check** — todos and checklists stored on this device
+- **More** — reservations, tickets, notes, contacts, links, and a local quick note
+- **Offline/PWA** — app shell and trip snapshot remain usable after the first successful load
+
+Travel Lite is **not** a planner, route optimizer, live-transit engine, review database, or collaboration backend.
 
 ## Shared truth vs local state
 
-A static GitHub Pages site has no shared synchronization backend:
-
 ```text
-trip.json   = shared truth everyone should see
-IndexedDB   = this device's private/local state
+trip.json    = shared truth for everyone using the site
+IndexedDB    = private state on this device
+localStorage = fallback when IndexedDB is unavailable
 ```
 
-Therefore:
-
-- a shared TBD is read-only in the generated page
-- the card may show 2–3 pre-discussed options, context, and links needed to decide
-- a shared decision becomes authoritative only when `trip.json` is regenerated/updated with `resolvedOptionId`
-- `decision.mode: "personal"` is the only case where a preference may be stored locally, clearly labelled **this device only**
-- local state must never pretend that the group itinerary changed
-
-## Default views
-
-- **Now** — current activity, next activity, reminders, unresolved day-of decisions, trip-local time, small weather context
-- **Trip** — read-focused daily itinerary; fixed, optional, and TBD items can coexist
-- **Map** — today's already-planned stops on MapLibre/OpenFreeMap + Google Maps handoff
-- **Check** — to-dos + packing/checklists stored locally
-- **More** — reservation/ticket/note/contact references and device-local note/settings
-
-The bottom bar is controlled by `ui.bottomNav`, so unused views can be removed per trip.
-
-## Three kinds of trip information
-
-```text
-Fixed plan        → itinerary card
-Need to remember  → reminder / checklist
-Decide on the day → decision card with pre-discussed options
-```
-
-Shared decisions are informational until the shared file changes. Personal preferences may be device-local.
+Shared TBD decisions are read-only in the page. A group decision becomes authoritative only after `trip.json` is regenerated or updated. `decision.mode: "personal"` may store a personal preference locally.
 
 ## Handoff-first
 
-Travel Lite helps users **remember and decide**; specialized tools execute specialized jobs.
+Use specialist tools for specialist jobs:
 
-Examples:
+- reviews, photos, navigation → Google Maps
+- restaurant-specific research → Tabelog or another local service
+- live transit → NAVITIME, Jorudan, operator apps/sites, etc.
+- booking changes → original booking service
+- tickets/status → carrier or attraction operator
 
-- reviews/photos/navigation → Google Maps or the user's preferred map app
-- Japan restaurant reviews → Tabelog link when known
-- live train times/disruptions → NAVITIME, Jorudan, operator app/site, etc.
-- reservation changes → original booking service
-- ticket/status → attraction, airline, or rail operator
-
-Activities can carry concrete `externalLinks`:
-
-```json
-{
-  "title": "Dinner",
-  "externalLinks": [
-    { "label": "Tabelog", "url": "https://tabelog.com/..." },
-    { "label": "Reservation", "url": "https://..." }
-  ]
-}
-```
-
-Do not invent URLs. See [`HANDOFF_PRINCIPLE.md`](./HANDOFF_PRINCIPLE.md).
-
-### Google Maps query handoff
-
-For lightweight "what is nearby?" needs, do not call a discovery API. Let the agent add small Google Maps query shortcuts:
-
-```json
-{
-  "title": "Dinner",
-  "location": "Ebisu, Tokyo",
-  "googleSearches": [
-    { "label": "Nearby restaurants", "query": "restaurants" },
-    { "label": "Nearby cafes", "query": "cafe" }
-  ]
-}
-```
-
-Travel Lite turns these into Google Maps search URLs scoped around the selected stop.
-
-## Static info cards
-
-Place context is prepared **during vibe-time**, not fetched at runtime. An LLM/agent may research Wikipedia, official sites, guide material, or other appropriate sources and write a compact card into `trip.json`:
-
-```json
-{
-  "title": "Senso-ji",
-  "infoCard": {
-    "label": "Background",
-    "title": "Senso-ji",
-    "summary": "Short context useful while visiting.",
-    "facts": ["One useful fact", "Another useful fact"],
-    "sourceLinks": [
-      { "label": "Wikipedia", "url": "https://en.wikipedia.org/..." },
-      { "label": "Official site", "url": "https://..." }
-    ]
-  }
-}
-```
-
-This keeps the card offline-capable and avoids runtime entity-matching mistakes. Live hours, reviews and navigation stay in specialist apps.
-
-## Runtime providers
-
-The base template intentionally has only two runtime infrastructure dependencies:
-
-- **Weather:** Open-Meteo, cached in IndexedDB and allowed to fail silently
-- **Map:** MapLibre + OpenFreeMap for planned-stop overview; Google Maps URLs remain the fallback/handoff
-
-There is **no Photon, Overpass, Wikipedia or Wikidata runtime code** in the base template.
-
-See [`PROVIDERS.md`](./PROVIDERS.md).
-
-## Storage model
-
-```text
-trip.json                    shared planning output
-   ├── itinerary / locations
-   ├── reminders / shared TBD cards
-   ├── resolved shared decisions
-   ├── static info cards / source links
-   ├── reservations / tickets / handoff links
-   └── optional reference modules
-
-IndexedDB                   private device-local state
-   ├── checklist/todo completion
-   ├── personal decision preferences only
-   ├── personal note
-   ├── selected day/view/theme
-   ├── trip snapshot
-   └── weather cache
-
-localStorage                fallback only
-```
-
-No application server, login, server database, or build step is required.
-
-## Offline behavior
-
-After the first successful visit, the app shell and trip snapshot remain available offline. Checklist/todo/personal state is stored in IndexedDB with localStorage fallback. Static info cards remain readable offline. External specialist apps/sites and live weather refresh require connectivity.
+Activities can carry direct `externalLinks` and small `googleSearches` shortcuts. Stable place background can be prepared by the LLM/agent at vibe-time and stored as a static `infoCard` in `trip.json`.
 
 ## Quick start
 
-1. Turn the output of planning/discussion into `trip.json`.
-2. Preserve intentional TBDs as small decision cards instead of inventing an answer.
-3. Resolve stable places and useful context during vibe-time.
-4. Add concrete specialist links and optional Google Maps query shortcuts.
-5. Push to `main`; GitHub Pages serves the repository root.
-6. Open the site once online before travelling.
+1. Fork/use this repository as a base.
+2. Replace `trip.json` with the output of your planning/discussion.
+3. Keep stable IDs for days, activities, checklist items, todos, and decision options.
+4. Add `lat`/`lng`, useful external links, reminders, TBD cards, and optional static info cards.
+5. Push to `main`.
 
-## Scope guardrail
+No build step, server, account system, or server database is required.
 
-Do not expand the base template into drag/drop itinerary planning, route optimization, review databases, live-transit engines, generic recommendations, runtime place discovery, collaboration, or account/server infrastructure.
+## GitHub Pages
 
-See [`AGENTS.md`](./AGENTS.md), [`TREK_CLIENT_PARITY.md`](./TREK_CLIENT_PARITY.md), and [`HANDOFF_PRINCIPLE.md`](./HANDOFF_PRINCIPLE.md).
+This repository is a plain static site and includes `.nojekyll`, so GitHub Pages can publish the repository root directly.
 
-Travel Lite is AGPL-3.0-or-later. See `LICENSE` and `NOTICE.md` when adapting TREK code.
+Enable it once:
+
+1. Open **Settings → Pages**.
+2. Under **Build and deployment**, choose **Deploy from a branch**.
+3. Select branch **`main`**.
+4. Select folder **`/ (root)`**.
+5. Click **Save**.
+
+After that, pushes to `main` publish automatically. GitHub supports publishing directly from a branch root when no custom build process is needed. See [GitHub's publishing-source documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+
+Expected URL pattern:
+
+```text
+https://<github-user>.github.io/<repo-name>/
+```
+
+For this repository:
+
+```text
+https://world4jason.github.io/Travel-lite-Template/
+```
+
+## Local preview
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000`.
+
+## Documentation
+
+- [`AGENTS.md`](./AGENTS.md) — concise rules for coding agents
+- [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) — product boundaries, runtime architecture, storage, handoff model
+- [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md) — how an LLM/agent should fill `trip.json`
+- [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md) — development, PWA/cache, review and acceptance checklist
+- [`NOTICE.md`](./NOTICE.md) — TREK attribution/source-reuse notes
+
+## Runtime services
+
+- Map: MapLibre + OpenFreeMap
+- Weather: Open-Meteo, cached locally
+- Details/reviews/navigation: Google Maps URL handoff
+
+External services are enhancements. The itinerary, reminders, checklist, reservations, and local notes should remain useful when they are unavailable.
+
+## License
+
+Travel Lite is AGPL-3.0-or-later. See `LICENSE` and `NOTICE.md` for attribution notes when adapting TREK code.
