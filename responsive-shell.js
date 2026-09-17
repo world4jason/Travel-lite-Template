@@ -16,7 +16,9 @@
   }
 
   function currentTripMode() {
-    return window.TravelLiteTripView?.getMode?.() || "overview";
+    if (state.view !== "trip") return "";
+    if (rootNode?.querySelector("[data-trip-mode='overview'].active")) return "overview";
+    return rootNode?.querySelector("[data-trip-day].active")?.dataset.tripDay || state.selectedDate || "";
   }
 
   function selectedDay() {
@@ -110,12 +112,17 @@
       <section class="shell-context-section"><div class="shell-context-heading"><strong>Quick access</strong></div><div class="shell-quick-grid"><button type="button" data-shell-view="map">Map</button><button type="button" data-shell-view="check">Check</button><button type="button" data-shell-view="more">More</button></div></section>`;
   }
 
+  function activateTripControl(predicate) {
+    const button = [...rootNode.querySelectorAll("[data-trip-day], [data-trip-mode]")].find(predicate);
+    button?.click();
+  }
+
   function goOverview() {
     state.view = "trip";
     TravelLiteStorage.set(tripKey("ui:view"), "trip");
     renderNav();
-    if (window.TravelLiteTripView?.openOverview) window.TravelLiteTripView.openOverview();
-    else renderTrip();
+    renderTrip();
+    queueMicrotask(() => activateTripControl((button) => button.dataset.tripMode === "overview"));
   }
 
   function goDay(date) {
@@ -124,8 +131,8 @@
     TravelLiteStorage.set(tripKey("ui:view"), "trip");
     TravelLiteStorage.set(tripKey("ui:selectedDate"), date);
     renderNav();
-    if (window.TravelLiteTripView?.openDay) window.TravelLiteTripView.openDay(date);
-    else renderTrip();
+    renderTrip();
+    queueMicrotask(() => activateTripControl((button) => button.dataset.tripDay === date));
   }
 
   function attachHandlers() {
