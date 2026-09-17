@@ -14,7 +14,8 @@
   "ui": {
     "defaultView": "now",
     "theme": "system",
-    "bottomNav": ["now", "trip", "map", "check", "more"]
+    "bottomNav": ["now", "trip", "map", "check", "more"],
+    "enableExploreTools": false
   },
   "providers": {
     "mapStyle": "https://tiles.openfreemap.org/styles/liberty",
