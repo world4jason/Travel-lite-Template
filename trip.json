@@ -23,12 +23,32 @@
     "weatherEndpoint": "https://api.open-meteo.com/v1/forecast",
     "googleMapsEmbedKey": ""
   },
+  "highlights": [
+    {
+      "id": "autumn-illumination",
+      "dateLabel": "Oct 3–5",
+      "title": "Autumn illumination",
+      "icon": "✦",
+      "status": "optional",
+      "note": "A flexible evening idea if energy and weather are good."
+    },
+    {
+      "id": "museum-backup",
+      "dateLabel": "Oct 4",
+      "title": "Indoor museum backup",
+      "icon": "◫",
+      "status": "backup",
+      "note": "Keep one indoor option ready instead of over-planning the day."
+    }
+  ],
   "days": [
     {
       "id": "d1",
       "date": "2026-10-03",
       "label": "Day 1",
       "title": "Arrival & Shibuya",
+      "routeLabel": "Arrival day",
+      "routeSummary": ["Haneda", "Shibuya", "Ebisu"],
       "reminders": [
         "Open the airline/operator app if the arrival time changes.",
         "Check the hotel message before heading to check-in."
@@ -44,6 +64,11 @@
           "lat": 35.5494,
           "lng": 139.7798,
           "note": "Pick up the IC card and head into the city.",
+          "transferAfter": {
+            "label": "Transfer",
+            "mode": "Train",
+            "summary": "Use the live route in your normal transit/map app before leaving the airport."
+          },
           "externalLinks": [
             { "label": "Haneda Airport", "url": "https://tokyo-haneda.com/en/" }
           ]
@@ -56,7 +81,11 @@
           "type": "stay",
           "location": "Shibuya, Tokyo",
           "lat": 35.658,
-          "lng": 139.7016
+          "lng": 139.7016,
+          "transferAfter": {
+            "label": "Walk / local transit",
+            "summary": "Reset at the hotel, then continue only when ready."
+          }
         },
         {
           "id": "d1-shibuya",
@@ -66,7 +95,12 @@
           "type": "place",
           "location": "Shibuya Crossing, Tokyo",
           "lat": 35.6595,
-          "lng": 139.7005
+          "lng": 139.7005,
+          "transferAfter": {
+            "label": "Transfer",
+            "mode": "Train / walk",
+            "summary": "Head to Ebisu when ready for dinner."
+          }
         },
         {
           "id": "d1-dinner",
@@ -89,6 +123,8 @@
       "date": "2026-10-04",
       "label": "Day 2",
       "title": "Asakusa & Ueno",
+      "routeLabel": "East Tokyo",
+      "routeSummary": ["Senso-ji", "Asakusa / Ueno lunch", "Ueno Park"],
       "reminders": [
         "Keep the lunch choice flexible; the shared page does not resolve it locally."
       ],
@@ -102,6 +138,11 @@
           "location": "Senso-ji, Tokyo",
           "lat": 35.7148,
           "lng": 139.7967,
+          "transferAfter": {
+            "label": "Lunch decision",
+            "mode": "Walk / train",
+            "summary": "Decide whether to eat nearby or move toward Ueno first."
+          },
           "infoCard": {
             "label": "Background",
             "title": "Senso-ji",
@@ -134,7 +175,12 @@
           "googleSearches": [
             { "label": "Asakusa lunch", "query": "lunch" },
             { "label": "Ueno lunch", "query": "restaurants Ueno" }
-          ]
+          ],
+          "transferAfter": {
+            "label": "Transfer",
+            "mode": "Train / walk",
+            "summary": "Continue to Ueno after the lunch choice is settled."
+          }
         },
         {
           "id": "d2-ueno",
@@ -153,6 +199,8 @@
       "date": "2026-10-05",
       "label": "Day 3",
       "title": "Departure",
+      "routeLabel": "Departure",
+      "routeSummary": ["Shibuya", "Haneda"],
       "reminders": [
         "Check live flight status in the airline/operator app before leaving for the airport."
       ],
@@ -165,7 +213,12 @@
           "type": "food",
           "location": "Shibuya, Tokyo",
           "lat": 35.6595,
-          "lng": 139.7005
+          "lng": 139.7005,
+          "transferAfter": {
+            "label": "Airport transfer",
+            "mode": "Train",
+            "summary": "Check the live airport route before leaving."
+          }
         },
         {
           "id": "d3-haneda",
