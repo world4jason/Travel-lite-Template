@@ -9,7 +9,7 @@ Planning happens beforehand with people, an LLM, spreadsheets, maps, bookings, o
 ## What it does
 
 - **Now** — current activity, next activity, reminders, weather, and open TBDs
-- **Trip** — read-focused daily itinerary
+- **Trip** — whole-trip overview, daily route summary, compact timeline, highlights, and open decisions
 - **Map** — planned stops on MapLibre/OpenFreeMap with Google Maps handoff
 - **Check** — todos and checklists stored on this device
 - **More** — reservations, tickets, notes, contacts, links, and a local quick note
@@ -29,6 +29,25 @@ localStorage = fallback when IndexedDB is unavailable
 
 Shared TBD decisions are read-only in the page. A group decision becomes authoritative only after `trip.json` is regenerated or updated. `decision.mode: "personal"` may store a personal preference locally.
 
+## Information-first Trip view
+
+The Trip view is designed like an itinerary dashboard, not an action launcher:
+
+```text
+Overview
+├── daily summaries
+├── flexible highlights / activities
+└── unresolved shared decisions
+
+Day
+├── route at a glance
+├── compact timeline
+├── optional transfer context
+└── small specialist handoff actions
+```
+
+Each stop normally exposes only a small Google Maps action plus an overflow for secondary links. Large repeated `Trip map / Google Maps / Nearby...` button rows are intentionally avoided.
+
 ## Handoff-first
 
 Use specialist tools for specialist jobs:
@@ -43,7 +62,7 @@ Activities can carry direct `externalLinks` and small `googleSearches` shortcuts
 
 ## Responsive + theme behavior
 
-Travel Lite follows the same architectural idea as modern responsive travel apps: **one data model, different shells**.
+Travel Lite uses **one data model, different shells**.
 
 - phone: compact bottom navigation and touch-first layout
 - desktop (`>= 900px`): sticky left navigation and a wider dashboard/content surface
@@ -59,8 +78,9 @@ The planned-stop map also follows the effective light/dark theme by default usin
 2. Replace `trip.json` with the output of your planning/discussion.
 3. Keep stable IDs for days, activities, checklist items, todos, and decision options.
 4. Add `lat`/`lng`, useful external links, reminders, TBD cards, and optional static info cards.
-5. Optionally set `trip.accent` and provider map styles for the trip identity.
-6. Push to `main`.
+5. Use optional `highlights`, `routeSummary`, and `transferAfter` only when they make the trip easier to scan.
+6. Optionally set `trip.accent` and provider map styles for the trip identity.
+7. Push to `main`.
 
 No build step, server, account system, or server database is required.
 
