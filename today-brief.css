@@ -1,0 +1,26 @@
+/* Today Brief fallback for untimed itinerary days. */
+.today-brief-card { padding: 22px; }
+.today-brief-heading { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; }
+.today-brief-heading h2 { margin: 3px 0 0; font-size: clamp(1.35rem, 5vw, 2rem); }
+.today-brief-heading > span { flex: 0 0 auto; color: var(--muted); font-size: .72rem; }
+.today-brief-route { margin: 16px 0 0; color: var(--text); font-size: .9rem; font-weight: 720; line-height: 1.55; }
+.today-brief-day-note { margin: 10px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.5; }
+.today-brief-timing { margin: 14px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--surface-2); color: var(--muted); font-size: .76rem; line-height: 1.45; }
+.today-brief-list { display: grid; gap: 0; margin-top: 18px; border-top: 1px solid var(--line); }
+.today-brief-item { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 11px; padding: 15px 0; border-bottom: 1px solid var(--line); }
+.today-brief-item:last-child { border-bottom: 0; padding-bottom: 2px; }
+.today-brief-sequence { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: var(--accent-soft); color: color-mix(in srgb, var(--accent) 82%, var(--text)); font-size: .68rem; font-weight: 820; }
+.today-brief-copy { min-width: 0; }
+.today-brief-copy h3 { margin: 2px 0 4px; font-size: .95rem; }
+.today-brief-copy > p { margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.45; }
+.today-brief-note { margin-top: 5px !important; color: var(--text) !important; }
+.today-brief-links { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 9px; }
+.today-brief-links a { display: inline-flex; align-items: center; min-height: 32px; padding: 0 9px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2); color: var(--text); text-decoration: none; font-size: .72rem; font-weight: 700; }
+.today-brief-copy .decision-card,
+.today-brief-copy .info-card { margin-top: 11px; }
+
+@media (max-width: 520px) {
+  .today-brief-card { padding: 18px; }
+  .today-brief-heading { gap: 10px; }
+  .today-brief-route { font-size: .84rem; }
+}
