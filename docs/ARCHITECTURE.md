@@ -70,25 +70,42 @@ Default action budget per itinerary item:
 
 `routeSummary`, `highlights`, and `transferAfter` are static/vibe-time structures. They support scanability and decision-making but must not be used to imitate live routing or recommendations.
 
-## Responsive shell
+## Responsive composition
 
-Travel Lite uses one data/state model with different presentation shells.
+Travel Lite uses one data/state/runtime model, but **re-composes the same information** depending on available width.
 
 ```text
-trip.json + local state
-        ↓
- shared rendering/runtime
-        ↓
- ┌───────────────┬────────────────┐
- │ phone shell   │ desktop shell  │
- │ bottom nav    │ left nav       │
- │ touch-first   │ wider dashboard│
- └───────────────┴────────────────┘
+< 900px
+phone
+└── single-column content + bottom navigation
+
+900–1399px
+compact desktop / tablet landscape
+├── persistent trip-day / reference rail
+└── main content + horizontal primary navigation
+
+>= 1400px
+wide desktop
+├── trip-day / reference rail
+├── main content
+└── trip context rail
+    ├── trip overview
+    ├── selected-day stops
+    ├── reminders
+    └── quick access
 ```
 
-The breakpoint is intentionally simple: desktop layout starts at `900px`.
+This is not three applications. The responsive shell may reveal information side by side on a wide display that the phone reaches by switching views, but it must reuse the same:
 
-This is **not** two applications. Do not fork view logic, data loading, storage, or decision semantics by form factor. Prefer CSS/layout changes and small shell helpers.
+- `trip.json`
+- view renderers
+- IndexedDB/localStorage state
+- decision semantics
+- provider/handoff behavior
+
+Do not create desktop-only business logic just because there is more space. Prefer CSS grid plus small shell/context helpers.
+
+A useful principle is **collapse before squeeze**: if a viewport cannot comfortably hold a context panel, hide/collapse that panel instead of shrinking the main itinerary or map into an unusable strip.
 
 ## Appearance / theme
 
@@ -201,10 +218,12 @@ Source links should remain attached to the card.
 index.html             static shell
 styles.css             base UI
 runtime.css            runtime companion/map/info-card UI
-desktop-theme.css      responsive desktop shell + neutral theme tokens
+desktop-theme.css      neutral theme tokens + legacy desktop shell overrides
 trip-view.css          Trip overview / compact timeline / transfer UI
+responsive-shell.css   three-stage responsive composition
 app.js                 core views and trip rendering
 trip-view.js           Trip overview and information-first day rendering
+responsive-shell.js    derived day/context rails for wider viewports
 storage.js             IndexedDB + localStorage fallback
 runtime-features.js    weather + planned-stop MapLibre overview
 runtime-google.js      Google Maps URL/embed helpers
@@ -233,7 +252,7 @@ Before adding a new capability, ask:
 3. Does it require shared synchronization? If yes, it does not belong in the base template without a real backend.
 4. Does a mature specialist app already do it better? If yes, hand off instead.
 5. Will the core site still work if the external service fails?
-6. Can phone and desktop share the same data/runtime logic?
+6. Can phone, compact desktop, and wide desktop share the same data/runtime logic?
 7. Does the feature work in system/light/dark without encoding meaning only in color?
 8. Does it improve information density without turning every row into actions?
 
