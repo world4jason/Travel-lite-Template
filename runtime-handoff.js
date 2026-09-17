@@ -2,7 +2,7 @@
  * Handoff-first scope guard for Travel Lite.
  *
  * The default trip UI stays small: itinerary, current/next context, weather,
- * trip map, checklists, and links out to the tools travellers already trust.
+ * trip map, checklists, reminders, and links out to the tools travellers already trust.
  * Advanced place discovery/enrichment remains available only when explicitly
  * enabled with ui.enableExploreTools=true.
  *
@@ -10,6 +10,7 @@
  */
 (() => {
   const fullRenderMap = renderMap;
+  const baseRenderNow = renderNow;
   const baseItemActions = itemActions;
 
   function externalLinks(item) {
@@ -35,6 +36,43 @@
 
   itemActions = function handoffFirstItemActions(item) {
     return `${baseItemActions(item)}${externalLinksHtml(item)}`;
+  };
+
+  function normalizedReminders(day) {
+    const raw = Array.isArray(day?.reminders) ? day.reminders : (Array.isArray(day?.must) ? day.must : []);
+    return raw.flatMap((entry) => {
+      if (typeof entry === "string") return [{ text: entry }];
+      if (entry?.text || entry?.label) return [{ text: entry.text || entry.label, url: entry.url || "" }];
+      return [];
+    });
+  }
+
+  function reminderCard(day) {
+    const reminders = normalizedReminders(day);
+    if (!reminders.length) return null;
+    const card = document.createElement("section");
+    card.className = "panel day-summary trip-reminder-card";
+    card.innerHTML = `<p class="eyebrow">Today</p><h2>Remember</h2>${reminders.map((reminder) => {
+      let link = "";
+      if (reminder.url) {
+        try {
+          const url = new URL(reminder.url, window.location.href);
+          if (url.protocol === "https:" || url.protocol === "http:") {
+            link = ` <a class="inline-link" href="${escapeAttr(url.href)}" target="_blank" rel="noreferrer">Open ↗</a>`;
+          }
+        } catch {}
+      }
+      return `<p class="timeline-note">! ${escapeHtml(reminder.text)}${link}</p>`;
+    }).join("")}`;
+    return card;
+  }
+
+  renderNow = function handoffFirstRenderNow() {
+    baseRenderNow();
+    const context = getNowContext();
+    const card = context.phase === "during" ? reminderCard(context.today) : null;
+    const stack = root.querySelector(".view-stack");
+    if (card && stack && !stack.querySelector(".trip-reminder-card")) stack.appendChild(card);
   };
 
   renderMap = function handoffFirstRenderMap() {
