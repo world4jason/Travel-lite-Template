@@ -7,6 +7,7 @@
       tripOverview: "Trip overview",
       chooseDay: "Choose day",
       today: "Today",
+      yesterday: "Yesterday",
       previousDay: "Previous day",
       nextDay: "Next day",
       route: "Route",
@@ -17,6 +18,7 @@
       tripOverview: "旅程總覽",
       chooseDay: "選擇日期",
       today: "今天",
+      yesterday: "昨天",
       previousDay: "前一天",
       nextDay: "後一天",
       route: "今日動線",
@@ -179,8 +181,10 @@
     const past = statuses.filter((row) => row.status === "past").map((row) => row.entry);
     const future = statuses.filter((row) => row.status === "future").map((row) => row.entry);
     const previous = past[past.length - 1] || null;
-    const next = future[0] || null;
-    const today = activeDay || current?.__day || next?.__day || previous?.__day || null;
+    const today = activeDay || current?.__day || future[0]?.__day || previous?.__day || null;
+    const futureToday = today ? future.filter((entry) => entry.__day === today) : [];
+    const next = futureToday[0] || future[0] || null;
+    const later = next && next.__day === today ? futureToday.slice(1, 3) : [];
     const floating = entries.filter((entry) => entry.__day === today && !isTimed(entry));
 
     return {
@@ -190,7 +194,7 @@
       previous,
       current,
       next,
-      later: future.slice(1, 3),
+      later,
       floating,
     };
   };
@@ -242,11 +246,39 @@
     root.querySelector(".companion-later-list")?.closest(".companion-section")?.remove();
   }
 
+  function relativeLabel(fromDate, toDate) {
+    if (!fromDate || !toDate || fromDate === toDate) return "";
+    const delta = dayDiff(fromDate, toDate);
+    if (delta === 1) return locale() === "zh-TW" ? "明天" : "Tomorrow";
+    if (delta === -1) return h("yesterday");
+    return prettyDate(toDate, { weekday: "short" });
+  }
+
+  function fixWindowDateLabels(context) {
+    if (!context?.today) return;
+    const cards = [...root.querySelectorAll(".companion-window-card")];
+    [context.previous, context.current, context.next].forEach((item, index) => {
+      const small = cards[index]?.querySelector("small");
+      if (!small || !item) return;
+      const dayLabel = relativeLabel(context.today.date, item.date);
+      small.textContent = [dayLabel, item.start || (locale() === "zh-TW" ? "未定" : "TBD")].filter(Boolean).join(" · ");
+    });
+    const later = [...root.querySelectorAll(".companion-later-list time")];
+    (context.later || []).forEach((item, index) => {
+      if (!later[index]) return;
+      const dayLabel = relativeLabel(context.today.date, item.date);
+      later[index].textContent = [dayLabel, item.start || ""].filter(Boolean).join(" · ");
+    });
+  }
+
   const baseRenderNow = renderNow;
   renderNow = function hardeningRenderNow() {
     baseRenderNow();
     const context = getNowContext();
-    if (context.phase === "during") enhanceUntimedDayBrief(context);
+    if (context.phase === "during") {
+      fixWindowDateLabels(context);
+      enhanceUntimedDayBrief(context);
+    }
     updateClock();
   };
 
@@ -284,7 +316,7 @@
         <option value="overview" ${mode === "overview" ? "selected" : ""}>${escapeHtml(h("tripOverview"))}</option>
         ${days.map((day) => `<option value="${escapeAttr(day.date)}" ${mode === day.date ? "selected" : ""}>${escapeHtml(day.label || prettyDate(day.date))} · ${escapeHtml(prettyDate(day.date))} · ${escapeHtml(day.title || "")}</option>`).join("")}
       </select></label>
-      <button type="button" data-hardening-next aria-label="${escapeAttr(h("nextDay"))}" ${currentIndex < 0 || currentIndex >= days.length - 1 ? "disabled" : ""}>›</button>
+      <button type="button" data-hardening-next aria-label="${escapeAttr(h("nextDay"))}" ${currentIndex >= days.length - 1 && currentIndex >= 0 ? "disabled" : ""}>›</button>
       ${currentDayForTripNav() ? `<button type="button" class="hardening-today" data-hardening-today>${escapeHtml(h("today"))}</button>` : ""}`;
     tabs.before(nav);
     tabs.classList.add("hardening-long-tabs");
