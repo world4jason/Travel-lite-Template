@@ -20,7 +20,8 @@
 
     try {
       const response = await nativeFetch(...args);
-      if (response.ok) {
+      const servedFromCache = response.headers.get("X-Travel-Lite-Source") === "cache";
+      if (response.ok && !servedFromCache) {
         status.tripSource = "network";
         status.lastNetworkAt = new Date().toISOString();
         try { localStorage.setItem(lastNetworkKey, status.lastNetworkAt); } catch {}
