@@ -168,7 +168,7 @@ Source links should remain attached to the card.
 
 ```text
 index.html             static shell
-a styles.css             base UI
+styles.css             base UI
 runtime.css            runtime companion/map/info-card UI
 desktop-theme.css      responsive desktop shell + neutral theme tokens
 app.js                 core views and trip rendering
