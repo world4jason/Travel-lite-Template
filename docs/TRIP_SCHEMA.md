@@ -9,6 +9,7 @@
   "trip": {},
   "ui": {},
   "providers": {},
+  "highlights": [],
   "days": [],
   "todos": [],
   "checklists": [],
@@ -60,11 +61,7 @@ Rules:
 }
 ```
 
-`theme` supports:
-
-- `system` — follow OS/browser preference
-- `light`
-- `dark`
+`theme` supports `system`, `light`, and `dark`.
 
 Unused views may be removed from `bottomNav` for simpler trips. Phone and desktop reuse the same view list; responsive layout is handled by the shell, not by separate trip data.
 
@@ -82,9 +79,29 @@ The base template only needs small runtime services:
 }
 ```
 
-`mapStyleLight` / `mapStyleDark` are optional overrides. If omitted, the template falls back to its built-in OpenFreeMap light/dark defaults.
+`mapStyleLight` / `mapStyleDark` are optional overrides. The Google Maps embed key is optional; normal Google Maps handoff links do not require it.
 
-The Google Maps embed key is optional. Normal Google Maps handoff links do not require it.
+## Trip overview highlights: `highlights`
+
+Use `highlights` for flexible activities, seasonal events, backup ideas, or notable options that matter to the trip but are not fixed timeline stops.
+
+```json
+{
+  "highlights": [
+    {
+      "id": "night-lights",
+      "dateLabel": "Oct 3–5",
+      "title": "Autumn illumination",
+      "icon": "✦",
+      "status": "optional",
+      "note": "Use as an evening option if energy and weather are good.",
+      "url": "https://..."
+    }
+  ]
+}
+```
+
+Keep this section small. It is an overview/decision aid, not a recommendation feed.
 
 ## `days`
 
@@ -95,12 +112,22 @@ The Google Maps embed key is optional. Normal Google Maps handoff links do not r
   "label": "Day 1",
   "title": "Arrival & Shibuya",
   "note": "Keep the first afternoon light.",
+  "routeLabel": "Arrival day",
+  "routeSummary": ["Haneda", "Shibuya", "Ebisu"],
   "reminders": [
     "Check the hotel message before check-in."
   ],
   "items": []
 }
 ```
+
+### Route summary
+
+`routeSummary` is optional. If omitted, the Trip view derives a simple route from item titles. Use it when a shorter human-friendly route is more useful than the raw stop names.
+
+`routeLabel` is optional descriptive text such as `East Tokyo`, `Classic route`, or `Departure`.
+
+Do not turn route summaries into live routing. Real-time transit/navigation stays in specialist apps.
 
 ### Reminders
 
@@ -140,6 +167,33 @@ Rules:
 - provide `end` when possible so the `Now` view can derive the current activity
 - resolve `lat`/`lng` during vibe-time for real planned stops when practical
 
+### Transfer connector: `transferAfter`
+
+Use `transferAfter` only for stable, pre-researched transition context between this stop and the next one.
+
+```json
+{
+  "transferAfter": {
+    "label": "Transfer",
+    "mode": "Train / walk",
+    "duration": "about 30 min",
+    "summary": "Use the saved route; check live timing in the local transit app.",
+    "url": "https://..."
+  }
+}
+```
+
+All fields are optional. Do not invent duration or live timetable data. If the exact transit plan is not known, omit it and let the user open their normal transit/map app.
+
+## Action budget
+
+Trip rows are information-first. The default item surface should expose at most:
+
+- one small Google Maps action
+- one overflow menu for secondary links
+
+Do not turn every `externalLinks` / `googleSearches` entry into a large button. Decision cards and info cards are content, not primary actions.
+
 ## Specialist handoff: `externalLinks`
 
 Use direct links when a known service/page is authoritative:
@@ -169,7 +223,7 @@ For lightweight nearby/ad-hoc search, link out instead of adding a discovery pro
 }
 ```
 
-The runtime scopes the search around the selected/planned stop when possible.
+The runtime scopes the search around the selected/planned stop when possible. In the Trip timeline these live under the secondary-action overflow rather than as full-size buttons.
 
 ## Static place context: `infoCard`
 
@@ -251,51 +305,12 @@ The UI must identify this as device-local, not shared state.
 
 ## Checklists and todos
 
-Definitions live in `trip.json`; completion state is local.
-
-```json
-{
-  "todos": [
-    { "id": "esim", "label": "Activate eSIM", "dueDate": "2026-10-02", "priority": "high" }
-  ],
-  "checklists": [
-    {
-      "id": "packing",
-      "title": "Packing",
-      "items": [
-        { "id": "passport", "label": "Passport" },
-        { "id": "charger", "label": "Phone charger" }
-      ]
-    }
-  ]
-}
-```
-
-Never casually change checklist/todo IDs after users may have stored completion state.
+Definitions live in `trip.json`; completion state is local. Never casually change checklist/todo IDs after users may have stored completion state.
 
 ## Reference modules
 
-Useful read-only structures include:
-
-- `reservations`
-- `notes`
-- `files`
-- `contacts`
-- `links`
-- optionally `costs`
-- optionally `journal`
-
-Omit empty/unneeded modules when generating a lightweight trip.
+Useful read-only structures include `reservations`, `notes`, `files`, `contacts`, `links`, and optionally `costs` / `journal`. Omit empty/unneeded modules when generating a lightweight trip.
 
 ## Privacy and public hosting
 
-GitHub Pages and a public repository are not a place for secrets.
-
-Do not commit:
-
-- passport numbers
-- passwords/tokens/API secrets
-- sensitive personal identifiers
-- private booking credentials/codes that should not be public
-
-Prefer links to authoritative/private systems rather than copying sensitive data into `trip.json`.
+GitHub Pages and a public repository are not a place for secrets. Do not commit passport numbers, passwords/tokens/API secrets, sensitive identifiers, or private booking credentials. Prefer links to authoritative/private systems rather than copying sensitive data into `trip.json`.
