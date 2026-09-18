@@ -37,6 +37,44 @@
 .companion-header-button span { display: none; font-size: .72rem; }
 .companion-header-button:hover { background: var(--surface-2); }
 
+.companion-more-utilities {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px;
+}
+.companion-more-utility-copy { min-width: 0; }
+.companion-more-utility-copy .eyebrow { margin-bottom: 6px; }
+.companion-more-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: .78rem;
+  overflow-wrap: anywhere;
+}
+.companion-more-status .companion-icon { width: 16px; height: 16px; flex: 0 0 auto; color: var(--success); }
+.companion-more-status.offline .companion-icon { color: var(--muted); }
+.companion-more-share {
+  appearance: none;
+  min-height: 42px;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--surface-2);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 740;
+}
+.companion-more-share .companion-icon { width: 17px; height: 17px; }
+
 .companion-now { gap: 12px; }
 .companion-focus { padding: 22px; }
 .companion-focus-top {
@@ -171,9 +209,15 @@
 @media (min-width: 900px) {
   .companion-header-button span { display: inline; }
   .companion-focus { padding: 28px; }
+  .companion-more-utilities { display: none; }
 }
 
 @media (max-width: 899px) {
+  .trip-header .companion-runtime-status,
+  .trip-header .quick-theme-toggle,
+  .trip-header .companion-header-button { display: none; }
+  .trip-header .header-actions { margin-left: auto; flex: 0 0 auto; }
+
   .companion-runtime-status span { max-width: 98px; overflow: hidden; text-overflow: ellipsis; }
   .companion-window { grid-template-columns: 1fr; }
   .companion-window-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; }
@@ -202,6 +246,8 @@
 }
 
 @media (max-width: 520px) {
+  .trip-header h1 { font-size: clamp(1.45rem, 7vw, 1.8rem); line-height: 1.08; }
+  .companion-more-utilities { align-items: flex-start; }
   .companion-focus { padding: 19px; }
   .companion-focus-top { gap: 8px; }
   .companion-section { padding: 16px; }
