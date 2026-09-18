@@ -196,6 +196,17 @@ Theme styling should come from semantic tokens rather than scattered hard-coded 
 
 The quick header control and **More → Appearance** must remain consistent with the same stored theme value.
 
+## Mobile reflow / overflow acceptance
+
+For phone-facing template changes, validate the page shell at **320 / 360 / 375 / 390 / 430 CSS px**.
+
+- readable page content must reflow without document-level horizontal scrolling
+- explicit horizontal rails such as day chips / route chips may scroll inside their own component
+- long generated titles, place names, URLs, and mixed CJK/Latin strings must wrap rather than widen the page
+- check `document.documentElement.scrollWidth <= window.innerWidth` on Now, Trip, Check, More, and the non-map shell around Map
+- full-bleed mobile surfaces must derive their negative margin from `--shell-gutter`; do not hard-code a different gutter
+- do not use page-level overflow clipping as the only fix for an overflowing child
+
 ## PWA / Service Worker rule
 
 `sw.js` precaches the application shell.
