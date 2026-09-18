@@ -170,6 +170,14 @@ Deep links select an existing read-only view; they are not edit/share-session li
 
 On phone, Map may use most of the remaining viewport and place selected-stop details below it like a lightweight bottom sheet. On wider screens, the map shares space with persistent trip/context rails.
 
+For the mobile shell:
+
+- use dynamic viewport height rather than a fixed tall card
+- normal portrait phones should keep a useful map without forcing a 480px minimum
+- short-height/landscape mobile-shell layouts may reduce the map toward ~220px so selected-stop details remain reachable
+- selected-stop content stays below the map rather than being permanently overlaid on it
+- shell classification for very wide phone landscape is a separate responsive concern; do not solve it by distorting Map geometry
+
 Collapse context panels before squeezing the map into an unusably narrow area.
 
 ## Icons
