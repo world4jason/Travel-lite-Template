@@ -38,6 +38,44 @@ Also parse:
 - `trip.json`
 - `manifest.webmanifest`
 
+## Repeatable mobile layout regression
+
+The repository includes a local Playwright/Chromium layout harness. It does not depend on GitHub Actions.
+
+One-time setup:
+
+```bash
+npm install
+npx playwright install chromium
+```
+
+Run the mobile/read-only companion matrix:
+
+```bash
+npm run test:mobile
+```
+
+Use the headed variant for visual review:
+
+```bash
+npm run test:mobile:headed
+```
+
+The harness freezes time against an isolated 32-day stress fixture and covers:
+
+- 320 / 360 / 375 / 390 / 430 phone widths
+- 820 tablet portrait
+- 1100 compact desktop
+- 1600 wide desktop
+- Now / Trip / Map / Check / More
+- long-trip navigation
+- fully untimed Today Brief
+- long mixed-language/generated strings
+- responsive deep-link persistence
+- enlarged-text reflow
+
+The primary invariant is that the document shell never becomes wider than the viewport. Explicit component-level horizontal rails remain allowed.
+
 ## Product acceptance
 
 The base template should continue to satisfy:
