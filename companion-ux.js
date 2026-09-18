@@ -267,12 +267,22 @@
   }
 
   function updateStatusChip() {
-    const chip = document.querySelector("#companion-runtime-status");
-    if (!chip || !state?.data) return;
+    if (!state?.data) return;
     const online = isFreshNetwork();
     const freshness = freshnessText();
-    chip.classList.toggle("offline", !online);
-    chip.innerHTML = `${svgIcon(online ? "wifi" : "offline")}<span>${escapeHtml(online ? t("online") : t("offlineCopy"))}${freshness ? ` · ${escapeHtml(t("updated"))} ${escapeHtml(freshness)}` : ""}</span>`;
+    const label = `${escapeHtml(online ? t("online") : t("offlineCopy"))}${freshness ? ` · ${escapeHtml(t("updated"))} ${escapeHtml(freshness)}` : ""}`;
+
+    const chip = document.querySelector("#companion-runtime-status");
+    if (chip) {
+      chip.classList.toggle("offline", !online);
+      chip.innerHTML = `${svgIcon(online ? "wifi" : "offline")}<span>${label}</span>`;
+    }
+
+    const moreStatus = root.querySelector("#companion-more-status");
+    if (moreStatus) {
+      moreStatus.classList.toggle("offline", !online);
+      moreStatus.innerHTML = `${svgIcon(online ? "wifi" : "offline")}<span>${label}</span>`;
+    }
   }
 
   async function shareCurrent() {
@@ -413,6 +423,27 @@
   let contextFrame = 0;
   function scheduleContextRail() { cancelAnimationFrame(contextFrame); contextFrame = requestAnimationFrame(renderContextRail); }
   function afterRender() { cleanTravelerCopy(); numberMapMarkers(); scheduleContextRail(); syncHash(); }
+
+  const baseRenderMore = renderMore;
+  renderMore = function companionRenderMore() {
+    baseRenderMore();
+    const stack = root.querySelector(".view-stack");
+    if (stack && !stack.querySelector(".companion-more-utilities")) {
+      const utilities = document.createElement("section");
+      utilities.className = "panel companion-more-utilities";
+      utilities.innerHTML = `
+        <div class="companion-more-utility-copy">
+          <p class="eyebrow">${escapeHtml(t("deviceStatus"))}</p>
+          <div id="companion-more-status" class="companion-more-status" aria-live="polite"></div>
+        </div>
+        <button class="companion-more-share" type="button" data-companion-share-more>
+          ${svgIcon("share")}<span>${escapeHtml(t("share"))}</span>
+        </button>`;
+      stack.prepend(utilities);
+      utilities.querySelector("[data-companion-share-more]")?.addEventListener("click", shareCurrent);
+      updateStatusChip();
+    }
+  };
 
   const baseSetView = setView;
   setView = function companionSetView(view) { baseSetView(view); requestAnimationFrame(afterRender); };
