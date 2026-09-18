@@ -232,8 +232,8 @@
   .runtime-map-panel .place-chips { padding-left: 14px; padding-right: 14px; }
   .runtime-map-panel .place-chips { margin-left: 0; margin-right: 0; }
   .runtime-map-panel .interactive-map {
-    min-height: 480px;
-    height: calc(100dvh - 300px);
+    min-height: 320px;
+    height: clamp(320px, calc(100dvh - 300px), 720px);
     max-height: 720px;
     border-radius: 0;
   }
@@ -243,6 +243,16 @@
     border-top: 1px solid var(--line);
     background: var(--surface);
   }
+}
+
+@media (max-width: 899px) and (max-height: 600px) {
+  .runtime-map-panel .interactive-map {
+    min-height: 220px;
+    height: clamp(220px, calc(100dvh - 180px), 420px);
+    max-height: 420px;
+  }
+  .runtime-map-panel .map-heading { margin-bottom: 8px; }
+  .runtime-map-panel .place-chips { margin-bottom: 10px; }
 }
 
 @media (max-width: 520px) {
