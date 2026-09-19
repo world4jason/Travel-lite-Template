@@ -19,6 +19,18 @@ Do not crowd the phone header with every utility control.
 - desktop/tablet may keep richer header utilities where width permits
 - these are composition changes only; they must not fork shared trip data or business logic
 
+### Responsive shell classification
+
+Shell-level breakpoints follow one contract:
+
+- **desktop/rail shell:** `min-width: 900px` **and** `min-height: 601px`
+- any viewport that fails either dimension stays in the touch-first/mobile shell
+- representative phone-landscape layouts such as **844×390** and **932×430** must remain mobile
+- **1100×900** and wider/taller desktop layouts keep the desktop shell
+- component CSS must not reintroduce a width-only 900px desktop switch
+
+This classification is about usable space, not device detection. Shared trip state and deep links must survive moving between shell modes.
+
 ## Now: schedule reference, not location tracking
 
 `Now` is based on the published itinerary. It does **not** claim the traveller has actually arrived at a stop.
