@@ -1,7 +1,7 @@
 /* Compact long-trip navigation. */
 .long-trip-nav { display: none; }
 
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 600px) {
   .trip-v2[data-long-trip="true"] > .trip-v2-tabs { display: none; }
 
   .trip-v2[data-long-trip="true"] > .long-trip-nav {
@@ -114,6 +114,6 @@
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 601px) {
   .long-trip-nav { display: none !important; }
 }
