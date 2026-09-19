@@ -1,0 +1,12 @@
+{
+  "name": "travel-lite-template",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:mobile": "playwright test --project=chromium",
+    "test:mobile:headed": "playwright test --project=chromium --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0"
+  }
+}
