@@ -46,7 +46,8 @@
   gap: 14px;
   margin-top: 16px;
 }
-.companion-focus h2 { margin: 0 0 7px; font-size: clamp(1.7rem, 7vw, 2.55rem); line-height: 1.05; }
+.companion-focus-top > div:first-child { min-width: 0; }
+.companion-focus h2 { margin: 0 0 7px; font-size: clamp(1.7rem, 7vw, 2.55rem); line-height: 1.05; overflow-wrap: anywhere; }
 .companion-focus-top p,
 .companion-focus-note { margin: 0; color: var(--muted); line-height: 1.5; }
 .companion-focus-note { margin-top: 12px; }
@@ -181,7 +182,7 @@
   .companion-window-card p { grid-column: 1; }
   .companion-window-card .companion-compact-actions { grid-column: 2; grid-row: 1 / span 3; align-self: center; margin-top: 0; }
 
-  #view-root:has(.runtime-map-panel) { margin-left: -18px; margin-right: -18px; }
+  #view-root:has(.runtime-map-panel) { margin-left: calc(-1 * var(--shell-gutter)); margin-right: calc(-1 * var(--shell-gutter)); }
   .runtime-map-panel { border-radius: 0; border-left: 0; border-right: 0; padding: 12px 0 0; box-shadow: none; }
   .runtime-map-panel .map-heading,
   .runtime-map-panel .place-chips { padding-left: 14px; padding-right: 14px; }
@@ -208,4 +209,14 @@
   .companion-runtime-status span { display: none; }
   .companion-header-button { padding: 0 9px; }
   .companion-later-list article { grid-template-columns: 56px minmax(0, 1fr) auto; }
+}
+
+/* User-authored trip content must never widen the page shell. */
+.companion-window-card,
+.companion-later-list article > div,
+.companion-floating-list article > div,
+.companion-context-row > div,
+.companion-reminders p {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
