@@ -1,4 +1,4 @@
-const CACHE = "travel-lite-shell-v16";
+const CACHE = "travel-lite-shell-v17";
 const RUNTIME_CACHE = "travel-lite-runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
