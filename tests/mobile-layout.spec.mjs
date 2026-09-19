@@ -209,6 +209,25 @@ async function openView(page, view) {
   await page.waitForTimeout(30);
 }
 
+async function assertMapFullBleed(page) {
+  const metrics = await page.evaluate(() => {
+    const panel = document.querySelector(".runtime-map-panel");
+    const shell = document.querySelector(".app-shell");
+    if (!panel || !shell) return null;
+    const panelBox = panel.getBoundingClientRect();
+    const shellBox = shell.getBoundingClientRect();
+    return {
+      panelLeft: panelBox.left,
+      panelRight: panelBox.right,
+      shellLeft: shellBox.left,
+      shellRight: shellBox.right,
+    };
+  });
+  expect(metrics).not.toBeNull();
+  expect(Math.abs(metrics.panelLeft - metrics.shellLeft), JSON.stringify(metrics)).toBeLessThanOrEqual(1);
+  expect(Math.abs(metrics.panelRight - metrics.shellRight), JSON.stringify(metrics)).toBeLessThanOrEqual(1);
+}
+
 for (const viewport of FULL_MATRIX) {
   test(`page shell reflows at ${viewport.width}x${viewport.height}`, async ({ page }) => {
     await boot(page, viewport);
@@ -216,6 +235,11 @@ for (const viewport of FULL_MATRIX) {
     for (const view of ["now", "trip", "map", "check", "more"]) {
       await openView(page, view);
       await assertNoDocumentOverflow(page);
+      if (view === "map" && MOBILE_VIEWPORTS.some((candidate) =>
+        candidate.width === viewport.width && candidate.height === viewport.height
+      )) {
+        await assertMapFullBleed(page);
+      }
     }
 
     if (isMobileShell(viewport)) {
@@ -230,6 +254,23 @@ for (const viewport of FULL_MATRIX) {
       await expect(page.locator(".shell-context-left")).toBeVisible();
     }
   });
+}
+
+for (const theme of ["light", "dark"]) {
+  for (const viewport of MOBILE_VIEWPORTS) {
+    test(`${theme} theme reflows at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+      await boot(page, viewport);
+      await openView(page, "more");
+      await page.locator(`[data-theme="${theme}"]`).click();
+      await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
+
+      for (const view of ["now", "trip", "map", "check", "more"]) {
+        await openView(page, view);
+        await assertNoDocumentOverflow(page);
+        if (view === "map") await assertMapFullBleed(page);
+      }
+    });
+  }
 }
 
 test("fully untimed current day renders Today Brief without widening the phone", async ({ page }) => {
