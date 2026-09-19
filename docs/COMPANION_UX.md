@@ -2,6 +2,23 @@
 
 Travel Lite is a **post-planning travel companion**. Planning happens before the trip with people, an LLM, maps, spreadsheets, booking tools, or another planner. The deployed site should help travellers orient themselves and make small day-of decisions without becoming a planner.
 
+## Mobile shell: travel context first
+
+On phone widths, the header prioritizes the information a traveller needs immediately:
+
+```text
+trip / day context                         local trip time
+```
+
+Do not crowd the phone header with every utility control.
+
+- local trip time remains persistent
+- Share is available from **More** on phone
+- network/offline freshness is available from **More** on phone
+- Appearance remains under **More → Theme**
+- desktop/tablet may keep richer header utilities where width permits
+- these are composition changes only; they must not fork shared trip data or business logic
+
 ## Now: schedule reference, not location tracking
 
 `Now` is based on the published itinerary. It does **not** claim the traveller has actually arrived at a stop.
