@@ -12,10 +12,16 @@ const MOBILE_VIEWPORTS = [
 ];
 const FULL_MATRIX = [
   ...MOBILE_VIEWPORTS,
+  { width: 844, height: 390 },
+  { width: 932, height: 430 },
   { width: 820, height: 1180 },
   { width: 1100, height: 900 },
   { width: 1600, height: 900 },
 ];
+
+function isMobileShell(viewport) {
+  return viewport.width < 900 || viewport.height <= 600;
+}
 
 function dateAt(index) {
   const date = new Date(Date.UTC(2026, 8, 1 + index));
@@ -212,12 +218,16 @@ for (const viewport of FULL_MATRIX) {
       await assertNoDocumentOverflow(page);
     }
 
-    if (viewport.width < 900) {
+    if (isMobileShell(viewport)) {
       await openView(page, "trip");
       await expect(page.locator(".long-trip-nav")).toBeVisible();
+      await expect(page.locator(".shell-context-left")).toBeHidden();
+      await expect(page.locator(".shell-context-right")).toBeHidden();
       await page.locator("[data-long-trip-select]").selectOption(TODAY);
       await expect(page.locator(`[data-trip-day="${TODAY}"].active`)).toHaveCount(1);
       await assertNoDocumentOverflow(page);
+    } else {
+      await expect(page.locator(".shell-context-left")).toBeVisible();
     }
   });
 }
@@ -228,11 +238,13 @@ test("fully untimed current day renders Today Brief without widening the phone",
   await assertNoDocumentOverflow(page);
 });
 
-test("trip-day deep link survives phone -> compact -> wide -> phone resize", async ({ page }) => {
+test("trip-day deep link survives portrait -> landscape phone -> desktop -> portrait resize", async ({ page }) => {
   await boot(page, { width: 390, height: 844 }, { hash: `#trip/day/${TODAY}` });
   await expect(page.locator(`[data-trip-day="${TODAY}"].active`)).toHaveCount(1);
 
   for (const viewport of [
+    { width: 844, height: 390 },
+    { width: 932, height: 430 },
     { width: 1100, height: 900 },
     { width: 1600, height: 900 },
     { width: 390, height: 844 },

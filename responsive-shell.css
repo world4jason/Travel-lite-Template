@@ -1,7 +1,7 @@
-/* Three-stage responsive composition: mobile, compact desktop, wide desktop. */
+/* Three-stage responsive composition. Desktop shell requires width >= 900px and height >= 601px. */
 .shell-context { display: none; }
 
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 601px) {
   .app-shell {
     width: min(100%, 1500px);
     min-height: 100vh;
@@ -170,7 +170,7 @@
   #view-root .day-summary { max-width: none; }
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1400px) and (min-height: 601px) {
   .app-shell {
     width: min(100%, 1800px);
     grid-template-columns: 260px minmax(640px, 1fr) 320px;
@@ -305,6 +305,6 @@
   .trip-overview-days { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (min-width: 1650px) {
+@media (min-width: 1650px) and (min-height: 601px) {
   .trip-overview-days { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }

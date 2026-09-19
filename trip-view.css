@@ -79,7 +79,7 @@
 .trip-transfer-copy p { flex-basis: 100%; margin: 1px 0 0; font-size: .74rem; line-height: 1.4; }
 .trip-transfer-link { color: var(--accent); text-decoration: none; font-weight: 800; }
 
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 601px) {
   .trip-overview-days { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .trip-highlight-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .trip-overview-hero { padding: 28px; }

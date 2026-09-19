@@ -206,13 +206,13 @@
   box-shadow: 0 0 0 5px var(--accent-soft), 0 7px 24px rgba(0,0,0,.28);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 900px) and (min-height: 601px) {
   .companion-header-button span { display: inline; }
   .companion-focus { padding: 28px; }
   .companion-more-utilities { display: none; }
 }
 
-@media (max-width: 899px) {
+@media (max-width: 899px), (max-height: 600px) {
   .trip-header .companion-runtime-status,
   .trip-header .quick-theme-toggle,
   .trip-header .companion-header-button { display: none; }
@@ -245,7 +245,7 @@
   }
 }
 
-@media (max-width: 899px) and (max-height: 600px) {
+@media (max-height: 600px) {
   .runtime-map-panel .interactive-map {
     min-height: 220px;
     height: clamp(220px, calc(100dvh - 180px), 420px);
