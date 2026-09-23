@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const host = "127.0.0.1";
-const port = 4173;
+const port = Number(process.env.TRAVEL_LITE_TEST_PORT) || 4317;
 const mime = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
