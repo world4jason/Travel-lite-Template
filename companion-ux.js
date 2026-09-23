@@ -313,7 +313,7 @@
     return root.querySelector("[data-trip-day].active")?.dataset.tripDay || state.selectedDate || "";
   }
 
-  // The base app renders Now before the incoming deep link is applied; don't overwrite it until then.
+  // app.js renders its stored/default view before the incoming deep link is applied; don't overwrite it until then.
   let initialHashHandled = false;
   function syncHash() {
     if (!state?.data || !initialHashHandled) return;
@@ -467,14 +467,15 @@
   window.addEventListener("hashchange", applyHash);
   window.addEventListener("travel-lite-runtime-status", updateStatusChip);
 
-  const waitForData = window.setInterval(async () => {
-    if (!state?.data) return;
-    window.clearInterval(waitForData);
+  // Wait for app.js to finish loading trip data and hydrating stored view/date (no timeout: slow or
+  // offline loads must still apply the incoming deep link).
+  async function onAppReady() {
     state.personalDecisionSelections = (await TravelLiteStorage.get(tripKey("personalDecisions"))) || state.personalDecisionSelections || {};
     localeSetup(); installHeaderControls(); renderNav();
     initialHashHandled = true;
     if (window.location.hash) applyHash(); else render();
     requestAnimationFrame(() => { afterRender(); updateStatusChip(); });
-  }, 50);
-  window.setTimeout(() => window.clearInterval(waitForData), 5000);
+  }
+  if (state?.ready) onAppReady();
+  else window.addEventListener("travel-lite-ready", onAppReady, { once: true });
 })();

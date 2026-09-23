@@ -161,7 +161,7 @@ function makeStressTrip({ untimedToday = false } = {}) {
   };
 }
 
-async function boot(page, viewport, { untimedToday = false, hash = "" } = {}) {
+async function boot(page, viewport, { untimedToday = false, hash = "", tripDelayMs = 0 } = {}) {
   await page.setViewportSize(viewport);
   await page.addInitScript(({ now }) => {
     const RealDate = Date;
@@ -176,6 +176,7 @@ async function boot(page, viewport, { untimedToday = false, hash = "" } = {}) {
 
   const trip = makeStressTrip({ untimedToday });
   await page.route("**/trip.json", async (route) => {
+    if (tripDelayMs) await new Promise((resolve) => setTimeout(resolve, tripDelayMs));
     await route.fulfill({
       status: 200,
       contentType: "application/json",
@@ -184,7 +185,7 @@ async function boot(page, viewport, { untimedToday = false, hash = "" } = {}) {
   });
 
   await page.goto(`/${hash}`, { waitUntil: "domcontentloaded" });
-  await expect(page.locator("#trip-title")).toContainText("32-day");
+  await expect(page.locator("#trip-title")).toContainText("32-day", { timeout: 5_000 + tripDelayMs });
   await expect(page.locator("#bottom-nav .nav-item")).toHaveCount(5);
   await page.waitForTimeout(60);
 }
@@ -295,6 +296,13 @@ test("trip-day deep link survives portrait -> landscape phone -> desktop -> port
     await expect(page.locator(`[data-trip-day="${TODAY}"].active`)).toHaveCount(1);
     await assertNoDocumentOverflow(page);
   }
+});
+
+test("trip-day deep link is applied even when trip.json takes longer than 5s", async ({ page }) => {
+  test.setTimeout(45_000);
+  await boot(page, { width: 390, height: 844 }, { hash: `#trip/day/${TODAY}`, tripDelayMs: 6_000 });
+  await expect(page.locator(`[data-trip-day="${TODAY}"].active`)).toHaveCount(1);
+  await expect(page).toHaveURL(new RegExp(`#trip/day/${TODAY}$`));
 });
 
 test("enlarged text keeps core read-only views inside a 320px shell", async ({ page }) => {
