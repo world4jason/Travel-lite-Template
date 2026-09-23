@@ -1,5 +1,5 @@
 /* Trip overview + compact itinerary information hierarchy. */
-.trip-v2 { display: grid; gap: 14px; }
+.trip-v2 { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .trip-v2-tabs { margin-bottom: 0; }
 .trip-overview-chip { min-width: 92px; }
 
