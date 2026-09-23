@@ -76,7 +76,7 @@ The harness freezes time against an isolated 32-day stress fixture and covers:
 - Now / Trip / Map / Check / More
 - long-trip navigation
 - fully untimed Today Brief
-- long mixed-language/generated strings
+- long mixed-language/generated strings: every `title` / `label` / `location` / `prompt` / `subtitle` / `name` / `note` in the fixture carries an unbroken token, so a new component cannot escape coverage by having short sample text
 - responsive deep-link persistence
 - enlarged-text reflow
 

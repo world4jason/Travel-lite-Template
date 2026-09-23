@@ -28,6 +28,17 @@ function dateAt(index) {
   return date.toISOString().slice(0, 10);
 }
 
+// Every generated display string gets an unbroken token, so no single component can be missed by the fixture.
+const LONG_TEXT_FIELDS = new Set(["title", "label", "location", "prompt", "subtitle", "name", "note"]);
+function withLongText(value, key) {
+  if (Array.isArray(value)) return value.map((item) => withLongText(item));
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([childKey, child]) => [childKey, withLongText(child, childKey)]));
+  }
+  if (typeof value === "string" && LONG_TEXT_FIELDS.has(key) && !value.includes(LONG_TOKEN)) return `${value} ${LONG_TOKEN}`;
+  return value;
+}
+
 function makeStressTrip({ untimedToday = false } = {}) {
   const days = Array.from({ length: 32 }, (_, index) => {
     const date = dateAt(index);
@@ -132,7 +143,7 @@ function makeStressTrip({ untimedToday = false } = {}) {
     checklists: [
       {
         id: "packing",
-        title: "Before leaving the hotel",
+        title: `出發前確認 Before leaving the hotel ${LONG_TOKEN}`,
         items: [
           { id: "passport", label: "Passport" },
           { id: "ticket", label: `Ticket ${LONG_TOKEN}` },
@@ -174,7 +185,7 @@ async function boot(page, viewport, { untimedToday = false, hash = "", tripDelay
     globalThis.Date = FixedDate;
   }, { now: FIXED_NOW });
 
-  const trip = makeStressTrip({ untimedToday });
+  const trip = withLongText(makeStressTrip({ untimedToday }));
   await page.route("**/trip.json", async (route) => {
     if (tripDelayMs) await new Promise((resolve) => setTimeout(resolve, tripDelayMs));
     await route.fulfill({
