@@ -66,8 +66,8 @@
 .trip-action-menu { position: relative; }
 .trip-action-menu > summary { list-style: none; font-weight: 800; letter-spacing: .05em; }
 .trip-action-menu > summary::-webkit-details-marker { display: none; }
-.trip-action-menu-body { position: absolute; z-index: 20; top: calc(100% + 7px); right: 0; min-width: 190px; padding: 6px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); box-shadow: var(--shadow); }
-.trip-action-menu-body a { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 40px; padding: 8px 10px; border-radius: 9px; color: var(--text); text-decoration: none; font-size: .78rem; }
+.trip-action-menu-body { position: absolute; z-index: 20; top: calc(100% + 7px); right: 0; min-width: 190px; max-width: min(280px, calc(100vw - 32px)); padding: 6px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); box-shadow: var(--shadow); }
+.trip-action-menu-body a { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 40px; padding: 8px 10px; border-radius: 9px; color: var(--text); text-decoration: none; font-size: .78rem; overflow-wrap: anywhere; }
 .trip-action-menu-body a:hover { background: var(--surface-2); }
 .trip-v2-item .decision-card, .trip-v2-item .info-card { margin-top: 12px; }
 
