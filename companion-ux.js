@@ -313,8 +313,10 @@
     return root.querySelector("[data-trip-day].active")?.dataset.tripDay || state.selectedDate || "";
   }
 
+  // The base app renders Now before the incoming deep link is applied; don't overwrite it until then.
+  let initialHashHandled = false;
   function syncHash() {
-    if (!state?.data) return;
+    if (!state?.data || !initialHashHandled) return;
     let hash = `#${state.view}`;
     if (state.view === "trip") {
       const mode = currentTripMode();
@@ -470,6 +472,7 @@
     window.clearInterval(waitForData);
     state.personalDecisionSelections = (await TravelLiteStorage.get(tripKey("personalDecisions"))) || state.personalDecisionSelections || {};
     localeSetup(); installHeaderControls(); renderNav();
+    initialHashHandled = true;
     if (window.location.hash) applyHash(); else render();
     requestAnimationFrame(() => { afterRender(); updateStatusChip(); });
   }, 50);
