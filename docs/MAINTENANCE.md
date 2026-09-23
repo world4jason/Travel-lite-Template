@@ -61,6 +61,12 @@ Use the headed variant for visual review:
 npm run test:mobile:headed
 ```
 
+The harness serves the repository on `127.0.0.1:4317` and never reuses an existing server, so an unrelated local dev server cannot be tested by mistake. If that port is busy, pick another:
+
+```bash
+TRAVEL_LITE_TEST_PORT=4400 npm run test:mobile
+```
+
 The harness freezes time against an isolated 32-day stress fixture and covers:
 
 - 320 / 360 / 375 / 390 / 430 phone widths
@@ -70,7 +76,7 @@ The harness freezes time against an isolated 32-day stress fixture and covers:
 - Now / Trip / Map / Check / More
 - long-trip navigation
 - fully untimed Today Brief
-- long mixed-language/generated strings
+- long mixed-language/generated strings: every `title` / `label` / `location` / `prompt` / `subtitle` / `name` / `note` in the fixture carries an unbroken token, so a new component cannot escape coverage by having short sample text
 - responsive deep-link persistence
 - enlarged-text reflow
 

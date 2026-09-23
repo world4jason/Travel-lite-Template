@@ -438,6 +438,9 @@ async function boot() {
     hydrateHeader();
     updateClock();
     render();
+    // Trip data and stored view/date are final from here; enhancement layers may now apply deep links.
+    state.ready = true;
+    window.dispatchEvent(new Event("travel-lite-ready"));
     registerServiceWorker();
     TravelLiteStorage.requestPersistentStorage();
     setInterval(() => {

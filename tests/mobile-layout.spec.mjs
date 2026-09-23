@@ -28,6 +28,22 @@ function dateAt(index) {
   return date.toISOString().slice(0, 10);
 }
 
+// Every generated display string gets an unbroken token, so no single component can be missed by the fixture.
+// Enum-like fields (status, type, icon) and times stay untouched so rendering logic still recognises them.
+const LONG_TEXT_FIELDS = new Set([
+  "title", "label", "location", "prompt", "subtitle", "name", "note", "summary",
+  "routeLabel", "routeSummary", "reminders", "facts", "dateLabel", "mode", "duration",
+]);
+function withLongText(value, key) {
+  // Arrays of strings (routeSummary, reminders, facts) inherit their parent key.
+  if (Array.isArray(value)) return value.map((item) => withLongText(item, key));
+  if (value && typeof value === "object") {
+    return Object.fromEntries(Object.entries(value).map(([childKey, child]) => [childKey, withLongText(child, childKey)]));
+  }
+  if (typeof value === "string" && LONG_TEXT_FIELDS.has(key) && !value.includes(LONG_TOKEN)) return `${value} ${LONG_TOKEN}`;
+  return value;
+}
+
 function makeStressTrip({ untimedToday = false } = {}) {
   const days = Array.from({ length: 32 }, (_, index) => {
     const date = dateAt(index);
@@ -95,7 +111,28 @@ function makeStressTrip({ untimedToday = false } = {}) {
             ],
           },
         },
-        { id: "today-current", start: "12:00", end: "13:30", title: "Dürnstein lunch and walk", location: "Dürnstein", lat: 48.395, lng: 15.52 },
+        {
+          id: "today-current",
+          start: "12:00",
+          end: "13:30",
+          title: "Dürnstein lunch and walk",
+          location: "Dürnstein",
+          lat: 48.395,
+          lng: 15.52,
+          externalLinks: [
+            { label: "Official site", url: "https://example.com/official" },
+            { label: "Reservation", url: "https://example.com/reservation" },
+          ],
+          googleSearches: [{ label: "Nearby cafes", query: "cafe" }],
+          transferAfter: { label: "Transfer", mode: "Train / walk", duration: "about 30 min", summary: "Use the saved route; check live timing in the operator app." },
+          infoCard: {
+            label: "Background",
+            title: "Dürnstein",
+            summary: "Short context useful while visiting.",
+            facts: ["A useful historical fact.", "A useful visit-context fact."],
+            sourceLinks: [{ label: "Wikipedia", url: "https://example.com/wiki" }],
+          },
+        },
         { id: "today-late", start: "16:00", end: "18:00", title: "Return to Vienna", location: "Vienna", lat: 48.2082, lng: 16.3738 },
       ];
 
@@ -126,13 +163,16 @@ function makeStressTrip({ untimedToday = false } = {}) {
       googleMapsEmbedKey: "",
     },
     days,
+    highlights: [
+      { id: "night-lights", dateLabel: "Sep 18–20", title: "Autumn illumination", icon: "✦", status: "optional", note: "Use as an evening option if energy and weather are good." },
+    ],
     todos: [
       { id: "todo-1", label: `Confirm ${LONG_TOKEN} before leaving`, priority: "high" },
     ],
     checklists: [
       {
         id: "packing",
-        title: "Before leaving the hotel",
+        title: `出發前確認 Before leaving the hotel ${LONG_TOKEN}`,
         items: [
           { id: "passport", label: "Passport" },
           { id: "ticket", label: `Ticket ${LONG_TOKEN}` },
@@ -161,7 +201,7 @@ function makeStressTrip({ untimedToday = false } = {}) {
   };
 }
 
-async function boot(page, viewport, { untimedToday = false, hash = "" } = {}) {
+async function boot(page, viewport, { untimedToday = false, hash = "", tripDelayMs = 0 } = {}) {
   await page.setViewportSize(viewport);
   await page.addInitScript(({ now }) => {
     const RealDate = Date;
@@ -174,8 +214,9 @@ async function boot(page, viewport, { untimedToday = false, hash = "" } = {}) {
     globalThis.Date = FixedDate;
   }, { now: FIXED_NOW });
 
-  const trip = makeStressTrip({ untimedToday });
+  const trip = withLongText(makeStressTrip({ untimedToday }));
   await page.route("**/trip.json", async (route) => {
+    if (tripDelayMs) await new Promise((resolve) => setTimeout(resolve, tripDelayMs));
     await route.fulfill({
       status: 200,
       contentType: "application/json",
@@ -184,7 +225,7 @@ async function boot(page, viewport, { untimedToday = false, hash = "" } = {}) {
   });
 
   await page.goto(`/${hash}`, { waitUntil: "domcontentloaded" });
-  await expect(page.locator("#trip-title")).toContainText("32-day");
+  await expect(page.locator("#trip-title")).toContainText("32-day", { timeout: 5_000 + tripDelayMs });
   await expect(page.locator("#bottom-nav .nav-item")).toHaveCount(5);
   await page.waitForTimeout(60);
 }
@@ -295,6 +336,24 @@ test("trip-day deep link survives portrait -> landscape phone -> desktop -> port
     await expect(page.locator(`[data-trip-day="${TODAY}"].active`)).toHaveCount(1);
     await assertNoDocumentOverflow(page);
   }
+});
+
+test("trip-day deep link is applied even when trip.json takes longer than 5s", async ({ page }) => {
+  test.setTimeout(45_000);
+  await boot(page, { width: 390, height: 844 }, { hash: `#trip/day/${TODAY}`, tripDelayMs: 6_000 });
+  await expect(page.locator(`[data-trip-day="${TODAY}"].active`)).toHaveCount(1);
+  await expect(page).toHaveURL(new RegExp(`#trip/day/${TODAY}$`));
+});
+
+test("opened secondary-link menu stays inside a 320px shell", async ({ page }) => {
+  await boot(page, { width: 320, height: 568 }, { hash: `#trip/day/${TODAY}` });
+  const menu = page.locator(".trip-action-menu").first();
+  await menu.locator("summary").click();
+  await expect(menu.locator(".trip-action-menu-body")).toBeVisible();
+  await assertNoDocumentOverflow(page);
+  const box = await menu.locator(".trip-action-menu-body").boundingBox();
+  expect(box.x).toBeGreaterThanOrEqual(-1);
+  expect(box.x + box.width).toBeLessThanOrEqual(321);
 });
 
 test("enlarged text keeps core read-only views inside a 320px shell", async ({ page }) => {
