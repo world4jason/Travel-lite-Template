@@ -269,6 +269,62 @@ async function assertNoDocumentOverflow(page) {
   expect(nav.x + nav.width).toBeLessThanOrEqual(metrics.width + 1);
 }
 
+// Interactive controls must be horizontally inside the viewport and must not overlap each other.
+// Controls are compared only within the same layer: fixed/sticky chrome (header, bottom nav) and open
+// popovers (absolute with a z-index, e.g. overflow menus) legitimately sit above scrolling content.
+// Controls inside explicit horizontal scroll rails are exempt.
+async function assertControlsReachable(page) {
+  const problems = await page.evaluate(() => {
+    const SELECTOR = "a[href], button, select, summary, input:not([type=hidden]), textarea";
+    const width = window.innerWidth;
+    const isRendered = (el) => {
+      // checkVisibility() also excludes content-visibility:hidden subtrees, e.g. a closed <details> body.
+      if (!el.checkVisibility({ visibilityProperty: true })) return false;
+      const box = el.getBoundingClientRect();
+      return box.width > 1 && box.height > 1;
+    };
+    const inScrollRail = (el) => {
+      for (let node = el.parentElement; node; node = node.parentElement) {
+        const overflowX = getComputedStyle(node).overflowX;
+        if (overflowX === "auto" || overflowX === "scroll") return true;
+      }
+      return false;
+    };
+    const layerOf = (el) => {
+      for (let node = el; node; node = node.parentElement) {
+        const { position, zIndex } = getComputedStyle(node);
+        if (position === "fixed" || position === "sticky") return node;
+        if (position === "absolute" && zIndex !== "auto") return node;
+      }
+      return null;
+    };
+    const describe = (el) => {
+      const text = (el.getAttribute("aria-label") || el.textContent || "").trim().replace(/\s+/g, " ").slice(0, 24);
+      return `${el.tagName.toLowerCase()}${el.className ? "." + String(el.className).trim().split(/\s+/).join(".") : ""}[${text}]`;
+    };
+
+    const controls = [...document.querySelectorAll(SELECTOR)]
+      .filter((el) => isRendered(el) && !inScrollRail(el))
+      .map((el) => ({ el, box: el.getBoundingClientRect(), layer: layerOf(el) }));
+    const found = [];
+    for (const { el, box } of controls) {
+      if (box.left < -1 || box.right > width + 1) found.push(`outside viewport: ${describe(el)} ${Math.round(box.left)}..${Math.round(box.right)}`);
+    }
+    for (let i = 0; i < controls.length; i += 1) {
+      for (let j = i + 1; j < controls.length; j += 1) {
+        const a = controls[i];
+        const b = controls[j];
+        if (a.layer !== b.layer || a.el.contains(b.el) || b.el.contains(a.el)) continue;
+        const overlapX = Math.min(a.box.right, b.box.right) - Math.max(a.box.left, b.box.left);
+        const overlapY = Math.min(a.box.bottom, b.box.bottom) - Math.max(a.box.top, b.box.top);
+        if (overlapX > 1 && overlapY > 1) found.push(`overlap: ${describe(a.el)} × ${describe(b.el)} (${Math.round(overlapX)}x${Math.round(overlapY)})`);
+      }
+    }
+    return found;
+  });
+  expect(problems, problems.join("\n")).toEqual([]);
+}
+
 async function openView(page, view) {
   await page.locator(`#bottom-nav [data-view="${view}"]`).click();
   await page.waitForTimeout(30);
@@ -300,6 +356,7 @@ for (const viewport of FULL_MATRIX) {
     for (const view of ["now", "trip", "map", "check", "more"]) {
       await openView(page, view);
       await assertNoDocumentOverflow(page);
+      await assertControlsReachable(page);
       if (view === "map" && MOBILE_VIEWPORTS.some((candidate) =>
         candidate.width === viewport.width && candidate.height === viewport.height
       )) {
@@ -380,6 +437,24 @@ test("opened secondary-link menu stays inside a 320px shell", async ({ page }) =
   expect(box.x + box.width).toBeLessThanOrEqual(321);
 });
 
+test("opened disclosure menus and cards keep controls reachable at 320px", async ({ page }) => {
+  await boot(page, { width: 320, height: 568 });
+  await openView(page, "now");
+  for (const details of await page.locator("details.companion-overflow").all()) {
+    await details.locator("summary").click();
+    await assertNoDocumentOverflow(page);
+    await assertControlsReachable(page);
+    await details.locator("summary").click();
+  }
+
+  await page.goto(`/#trip/day/${TODAY}`);
+  await expect(page.locator(".trip-v2-item .info-card").first()).toBeVisible();
+  const infoCard = page.locator(".trip-v2-item .info-card").first();
+  await infoCard.locator("summary").click();
+  await assertNoDocumentOverflow(page);
+  await assertControlsReachable(page);
+});
+
 test("long-text fixture keeps enum fields intact: personal decisions stay personal", async ({ page }) => {
   await boot(page, { width: 320, height: 568 }, { hash: `#trip/day/${TODAY}` });
   await expect(page.locator('[data-personal-decision-item="today-personal"]')).toHaveCount(2);
@@ -395,5 +470,6 @@ test("enlarged text keeps core read-only views inside a 320px shell", async ({ p
   for (const view of ["now", "trip", "check", "more"]) {
     await openView(page, view);
     await assertNoDocumentOverflow(page);
+    await assertControlsReachable(page);
   }
 });

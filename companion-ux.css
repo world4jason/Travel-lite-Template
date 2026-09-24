@@ -133,13 +133,14 @@
   top: calc(100% + 6px);
   right: 0;
   min-width: 190px;
+  max-width: min(280px, calc(100vw - 32px));
   padding: 6px;
   border: 1px solid var(--line);
   border-radius: 13px;
   background: var(--surface);
   box-shadow: var(--shadow);
 }
-.companion-overflow a { display: flex; justify-content: space-between; gap: 10px; min-height: 40px; align-items: center; padding: 8px 10px; border-radius: 9px; color: var(--text); text-decoration: none; font-size: .76rem; }
+.companion-overflow a { display: flex; justify-content: space-between; gap: 10px; min-height: 40px; align-items: center; padding: 8px 10px; border-radius: 9px; color: var(--text); text-decoration: none; font-size: .76rem; overflow-wrap: anywhere; }
 .companion-overflow a:hover { background: var(--surface-2); }
 
 .companion-section { padding: 18px 20px; }
