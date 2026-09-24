@@ -32,15 +32,24 @@ function dateAt(index) {
 // Enum-like fields (status, type, icon) and times stay untouched so rendering logic still recognises them.
 const LONG_TEXT_FIELDS = new Set([
   "title", "label", "location", "prompt", "subtitle", "name", "note", "summary",
-  "routeLabel", "routeSummary", "reminders", "facts", "dateLabel", "mode", "duration",
+  "routeLabel", "routeSummary", "reminders", "facts", "dateLabel", "duration",
 ]);
-function withLongText(value, key) {
+// Keys that are free text only under a specific parent; elsewhere the same key is an enum
+// (e.g. transferAfter.mode is prose, decision.mode is "personal").
+const LONG_TEXT_FIELDS_BY_PARENT = { mode: new Set(["transferAfter"]) };
+
+function isLongTextField(key, parentKey) {
+  if (LONG_TEXT_FIELDS.has(key)) return true;
+  return LONG_TEXT_FIELDS_BY_PARENT[key]?.has(parentKey) ?? false;
+}
+
+function withLongText(value, key, parentKey) {
   // Arrays of strings (routeSummary, reminders, facts) inherit their parent key.
-  if (Array.isArray(value)) return value.map((item) => withLongText(item, key));
+  if (Array.isArray(value)) return value.map((item) => withLongText(item, key, parentKey));
   if (value && typeof value === "object") {
-    return Object.fromEntries(Object.entries(value).map(([childKey, child]) => [childKey, withLongText(child, childKey)]));
+    return Object.fromEntries(Object.entries(value).map(([childKey, child]) => [childKey, withLongText(child, childKey, key)]));
   }
-  if (typeof value === "string" && LONG_TEXT_FIELDS.has(key) && !value.includes(LONG_TOKEN)) return `${value} ${LONG_TOKEN}`;
+  if (typeof value === "string" && isLongTextField(key, parentKey) && !value.includes(LONG_TOKEN)) return `${value} ${LONG_TOKEN}`;
   return value;
 }
 
@@ -131,6 +140,21 @@ function makeStressTrip({ untimedToday = false } = {}) {
             summary: "Short context useful while visiting.",
             facts: ["A useful historical fact.", "A useful visit-context fact."],
             sourceLinks: [{ label: "Wikipedia", url: "https://example.com/wiki" }],
+          },
+        },
+        {
+          id: "today-personal",
+          start: "TBD",
+          title: "Evening coffee spot",
+          location: "Vienna",
+          decision: {
+            mode: "personal",
+            label: "Your pick",
+            prompt: "Which cafe do you prefer tonight?",
+            options: [
+              { id: "central", label: "Café Central" },
+              { id: "sacher", label: "Café Sacher" },
+            ],
           },
         },
         { id: "today-late", start: "16:00", end: "18:00", title: "Return to Vienna", location: "Vienna", lat: 48.2082, lng: 16.3738 },
@@ -354,6 +378,14 @@ test("opened secondary-link menu stays inside a 320px shell", async ({ page }) =
   const box = await menu.locator(".trip-action-menu-body").boundingBox();
   expect(box.x).toBeGreaterThanOrEqual(-1);
   expect(box.x + box.width).toBeLessThanOrEqual(321);
+});
+
+test("long-text fixture keeps enum fields intact: personal decisions stay personal", async ({ page }) => {
+  await boot(page, { width: 320, height: 568 }, { hash: `#trip/day/${TODAY}` });
+  await expect(page.locator('[data-personal-decision-item="today-personal"]')).toHaveCount(2);
+  // Free-text mode under transferAfter must still be lengthened.
+  await expect(page.locator(".trip-transfer").first()).toContainText(`Train / walk ${LONG_TOKEN}`);
+  await assertNoDocumentOverflow(page);
 });
 
 test("enlarged text keeps core read-only views inside a 320px shell", async ({ page }) => {
