@@ -111,6 +111,7 @@ function makeStressTrip({ untimedToday = false } = {}) {
           start: "TBD",
           title: "Backup boat / 彈性活動 with a very long decision label",
           location: "Danube",
+          externalLinks: [{ label: "Boat operator", url: "https://example.com/boat" }],
           decision: {
             label: "TBD",
             prompt: "Use the backup boat if the published sailing still works?",
@@ -157,7 +158,16 @@ function makeStressTrip({ untimedToday = false } = {}) {
             ],
           },
         },
-        { id: "today-late", start: "16:00", end: "18:00", title: "Return to Vienna", location: "Vienna", lat: 48.2082, lng: 16.3738 },
+        {
+          id: "today-late",
+          start: "16:00",
+          end: "18:00",
+          title: "Return to Vienna",
+          location: "Vienna",
+          lat: 48.2082,
+          lng: 16.3738,
+          externalLinks: [{ label: "Operator timetable", url: "https://example.com/timetable" }],
+        },
       ];
 
   return {
@@ -270,12 +280,13 @@ async function assertNoDocumentOverflow(page) {
 }
 
 // Interactive controls must be horizontally inside the viewport and must not overlap each other.
-// Controls are compared only within the same layer: fixed/sticky chrome (header, bottom nav) and open
-// popovers (absolute with a z-index, e.g. overflow menus) legitimately sit above scrolling content.
-// Controls inside explicit horizontal scroll rails are exempt.
+// Controls are compared only within the same layer: fixed/sticky chrome (header, bottom nav) and the
+// absolutely positioned body of an open <details> popover legitimately sit above scrolling content.
+// Controls inside the known horizontal scroll rails are exempt; vertically scrolling rails are not.
 async function assertControlsReachable(page) {
   const problems = await page.evaluate(() => {
     const SELECTOR = "a[href], button, select, summary, input:not([type=hidden]), textarea";
+    const HORIZONTAL_RAILS = ".day-tabs, .place-chips, .trip-route-steps";
     const width = window.innerWidth;
     const isRendered = (el) => {
       // checkVisibility() also excludes content-visibility:hidden subtrees, e.g. a closed <details> body.
@@ -283,18 +294,13 @@ async function assertControlsReachable(page) {
       const box = el.getBoundingClientRect();
       return box.width > 1 && box.height > 1;
     };
-    const inScrollRail = (el) => {
-      for (let node = el.parentElement; node; node = node.parentElement) {
-        const overflowX = getComputedStyle(node).overflowX;
-        if (overflowX === "auto" || overflowX === "scroll") return true;
-      }
-      return false;
-    };
+    const inScrollRail = (el) => Boolean(el.closest(HORIZONTAL_RAILS));
     const layerOf = (el) => {
       for (let node = el; node; node = node.parentElement) {
-        const { position, zIndex } = getComputedStyle(node);
+        const { position } = getComputedStyle(node);
         if (position === "fixed" || position === "sticky") return node;
-        if (position === "absolute" && zIndex !== "auto") return node;
+        const isOpenPopoverBody = node.parentElement?.matches("details[open]") && node.tagName !== "SUMMARY";
+        if (position === "absolute" && isOpenPopoverBody) return node;
       }
       return null;
     };
@@ -439,20 +445,26 @@ test("opened secondary-link menu stays inside a 320px shell", async ({ page }) =
 
 test("opened disclosure menus and cards keep controls reachable at 320px", async ({ page }) => {
   await boot(page, { width: 320, height: 568 });
+  const openEach = async (selector) => {
+    const all = await page.locator(selector).all();
+    for (const details of all) {
+      await details.locator(":scope > summary").click();
+      await assertNoDocumentOverflow(page);
+      await assertControlsReachable(page);
+      await details.locator(":scope > summary").click();
+    }
+    return all.length;
+  };
+
   await openView(page, "now");
-  for (const details of await page.locator("details.companion-overflow").all()) {
-    await details.locator("summary").click();
-    await assertNoDocumentOverflow(page);
-    await assertControlsReachable(page);
-    await details.locator("summary").click();
-  }
+  // Focus, window-card, floating and later menus all render links in the fixture.
+  expect(await openEach("details.companion-overflow")).toBeGreaterThanOrEqual(4);
+  expect(await openEach(".view-stack details.info-card")).toBeGreaterThanOrEqual(1);
 
   await page.goto(`/#trip/day/${TODAY}`);
   await expect(page.locator(".trip-v2-item .info-card").first()).toBeVisible();
-  const infoCard = page.locator(".trip-v2-item .info-card").first();
-  await infoCard.locator("summary").click();
-  await assertNoDocumentOverflow(page);
-  await assertControlsReachable(page);
+  expect(await openEach(".trip-v2-item details.info-card")).toBeGreaterThanOrEqual(1);
+  expect(await openEach("details.trip-action-menu")).toBeGreaterThanOrEqual(1);
 });
 
 test("long-text fixture keeps enum fields intact: personal decisions stay personal", async ({ page }) => {

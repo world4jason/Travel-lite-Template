@@ -82,7 +82,7 @@ The harness freezes time against an isolated 32-day stress fixture and covers:
 
 The primary invariant is that the document shell never becomes wider than the viewport. Explicit component-level horizontal rails remain allowed.
 
-A second invariant covers controls: every visible interactive element (links, buttons, selects, summaries, inputs) must lie horizontally inside the viewport and must not overlap another control in the same layer. Fixed/sticky chrome and open popovers (absolute with a z-index) count as their own layers; controls inside explicit horizontal scroll rails are exempt. Opened overflow menus and info cards are checked explicitly, because left-edge clipping does not create document overflow.
+A second invariant covers controls: every visible interactive element (links, buttons, selects, summaries, inputs) must lie horizontally inside the viewport and must not overlap another control in the same layer. Fixed/sticky chrome and the absolutely positioned body of an open `<details>` popover count as their own layers; only the known horizontal rails (`.day-tabs`, `.place-chips`, `.trip-route-steps`) are exempt, so vertically scrolling desktop rails are still checked. Every overflow menu and info card in the fixture is opened and checked explicitly, because left-edge clipping does not create document overflow.
 
 ## Product acceptance
 
