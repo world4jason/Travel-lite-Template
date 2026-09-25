@@ -280,9 +280,10 @@ async function assertNoDocumentOverflow(page) {
 }
 
 // Interactive controls must be horizontally inside the viewport and must not overlap each other.
-// Controls are compared only within the same layer: fixed/sticky chrome (header, bottom nav) and the
-// absolutely positioned body of an open <details> popover legitimately sit above scrolling content.
-// Controls inside the known horizontal scroll rails are exempt; vertically scrolling rails are not.
+// 1. Bounds: horizontally inside the viewport (known horizontal scroll rails are exempt).
+// 2. Same-layer overlap: fixed/sticky chrome and open <details> popover bodies are their own layers.
+// 3. Reachability: each control is scrolled to the viewport centre and must be the hit-test target at its
+//    own centre. Fixed/sticky chrome covering it is a failure; only an open <details> popover may cover it.
 async function assertControlsReachable(page) {
   const problems = await page.evaluate(() => {
     const SELECTOR = "a[href], button, select, summary, input:not([type=hidden]), textarea";
@@ -326,6 +327,29 @@ async function assertControlsReachable(page) {
         if (overlapX > 1 && overlapY > 1) found.push(`overlap: ${describe(a.el)} × ${describe(b.el)} (${Math.round(overlapX)}x${Math.round(overlapY)})`);
       }
     }
+
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const hitsControl = (el, hit) => {
+      if (!hit) return false;
+      if (hit === el || el.contains(hit)) return true;
+      // A visually hidden checkbox is operated through its <label>.
+      return hit.closest("label")?.control === el;
+    };
+    const coveredByOpenPopover = (hit) => {
+      const body = hit?.closest("details[open] > :not(summary)");
+      return Boolean(body && getComputedStyle(body).position === "absolute");
+    };
+    for (const el of [...document.querySelectorAll(SELECTOR)].filter(isRendered)) {
+      el.scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" });
+      const box = el.getBoundingClientRect();
+      const x = box.left + box.width / 2;
+      const y = box.top + box.height / 2;
+      if (x < 0 || x >= width || y < 0 || y >= window.innerHeight) continue; // bounds check above reports these
+      const hit = document.elementFromPoint(x, y);
+      if (!hitsControl(el, hit) && !coveredByOpenPopover(hit)) found.push(`covered: ${describe(el)} by ${hit ? describe(hit) : "nothing"}`);
+    }
+    window.scrollTo({ left: scrollX, top: scrollY, behavior: "instant" });
     return found;
   });
   expect(problems, problems.join("\n")).toEqual([]);
@@ -441,6 +465,28 @@ test("opened secondary-link menu stays inside a 320px shell", async ({ page }) =
   const box = await menu.locator(".trip-action-menu-body").boundingBox();
   expect(box.x).toBeGreaterThanOrEqual(-1);
   expect(box.x + box.width).toBeLessThanOrEqual(321);
+});
+
+test("reachability check fails when fixed or sticky chrome covers content controls", async ({ page }) => {
+  await boot(page, { width: 320, height: 568 }, { hash: `#trip/day/${TODAY}` });
+  await assertControlsReachable(page);
+
+  // Fixed chrome: an oversized bottom nav hides content controls even when they are scrolled to centre.
+  await page.addStyleTag({ content: "#bottom-nav { height: 75vh !important; }" });
+  await expect(assertControlsReachable(page)).rejects.toThrow(/covered: .* by .*nav/);
+
+  await page.reload();
+  await expect(page.locator("#trip-title")).toContainText("32-day");
+  await assertControlsReachable(page);
+
+  // Sticky layer inside the scrolling content.
+  await page.evaluate(() => {
+    const cover = document.createElement("div");
+    cover.className = "probe-sticky-cover";
+    cover.style.cssText = "position: sticky; top: 0; height: 100vh; margin-bottom: -100vh; z-index: 30; background: transparent;";
+    document.querySelector("#view-root").prepend(cover);
+  });
+  await expect(assertControlsReachable(page)).rejects.toThrow(/covered: .* by div\.probe-sticky-cover/);
 });
 
 test("opened disclosure menus and cards keep controls reachable at 320px", async ({ page }) => {
