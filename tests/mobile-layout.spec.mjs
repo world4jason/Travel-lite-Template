@@ -3,7 +3,8 @@ import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-// MapLibre is served from node_modules instead of the CDN so Map checks are hermetic and deterministic.
+// MapLibre is served from node_modules instead of the CDN, and map styles get a minimal local style with no
+// sources (tiles are blocked), so Map checks are hermetic and the attribution control settles immediately.
 // The version must match the one runtime-features.js loads.
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const MAPLIBRE_VERSION = JSON.parse(readFileSync(resolve(REPO_ROOT, "package.json"), "utf8")).devDependencies["maplibre-gl"];
@@ -13,7 +14,18 @@ if (!readFileSync(resolve(REPO_ROOT, "runtime-features.js"), "utf8").includes(MA
   throw new Error(`runtime-features.js does not load ${MAPLIBRE_CDN}; update the maplibre-gl devDependency to match.`);
 }
 
+const MAP_STYLE_HOST = "https://tiles.openfreemap.org/";
+const MINIMAL_MAP_STYLE = JSON.stringify({
+  version: 8,
+  name: "travel-lite-test",
+  sources: {},
+  layers: [{ id: "background", type: "background", paint: { "background-color": "#dde3e0" } }],
+});
+
 async function serveMapLibreLocally(page) {
+  await page.route(`${MAP_STYLE_HOST}**`, (route) => (new URL(route.request().url()).pathname.startsWith("/styles/")
+    ? route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: MINIMAL_MAP_STYLE })
+    : route.abort()));
   await page.route(`${MAPLIBRE_CDN}**`, async (route) => {
     const path = new URL(route.request().url()).pathname.slice(new URL(MAPLIBRE_CDN).pathname.length);
     const file = path === "+esm" ? "maplibre-gl.mjs" : path.replace(/^dist\//, "");
@@ -386,14 +398,27 @@ async function assertControlsReachable(page) {
   expect(problems, problems.join("\n")).toEqual([]);
 }
 
-// MapLibre loads asynchronously and adds its controls and markers later; wait until the map has either
-// initialised or fallen back so every Map control exists before any check runs.
-const MAP_SETTLED = "#runtime-map .maplibregl-ctrl, #runtime-map .map-library-fallback";
+// MapLibre loads asynchronously, then adds its controls and markers. With MapLibre served locally the fixture
+// must always initialise a real map, so a silent fallback fails here instead of skipping those controls.
+// `action` triggers a (re-)render: opening Map, switching theme, or selecting another stop.
+async function settleMap(page, action) {
+  const fallback = page.locator("#runtime-map .map-library-fallback");
+  const styleLoaded = page.waitForResponse((response) => response.url().startsWith(`${MAP_STYLE_HOST}styles/`))
+    .then(() => "maplibre", () => "no-style");
+  await action();
+  const fellBack = fallback.waitFor({ timeout: 15_000 }).then(() => "fallback", () => "no-fallback");
+  const outcome = await Promise.race([styleLoaded, fellBack]);
+  expect(outcome, "MapLibre must initialise (served locally), not fall back").toBe("maplibre");
+  await expect(fallback).toHaveCount(0);
+  await expect(page.locator("#runtime-map .maplibregl-ctrl").first()).toBeVisible();
+  await expect(page.locator("#runtime-map .map-marker").first()).toBeVisible();
+}
 
 async function openView(page, view) {
-  await page.locator(`#bottom-nav [data-view="${view}"]`).click();
+  const click = () => page.locator(`#bottom-nav [data-view="${view}"]`).click();
+  if (view === "map") await settleMap(page, click);
+  else await click();
   await page.waitForTimeout(30);
-  if (view === "map") await page.locator(MAP_SETTLED).first().waitFor({ timeout: 15_000 });
 }
 
 async function assertMapFullBleed(page) {
@@ -427,6 +452,9 @@ for (const viewport of FULL_MATRIX) {
         candidate.width === viewport.width && candidate.height === viewport.height
       )) {
         await assertMapFullBleed(page);
+        // Selecting another stop re-renders the map; its controls must stay reachable too.
+        await settleMap(page, () => page.locator(".place-chip:not(.active)").first().click());
+        await assertControlsReachable(page);
       }
     }
 
@@ -455,6 +483,7 @@ for (const theme of ["light", "dark"]) {
       for (const view of ["now", "trip", "map", "check", "more"]) {
         await openView(page, view);
         await assertNoDocumentOverflow(page);
+        await assertControlsReachable(page);
         if (view === "map") await assertMapFullBleed(page);
       }
     });
@@ -535,6 +564,17 @@ test("reachability check fails when fixed or sticky chrome covers content contro
     document.querySelector("#view-root").append(button);
   });
   await expect(assertControlsReachable(page)).rejects.toThrow(/unreachable: button\.probe-offscreen/);
+});
+
+test("Map fallback keeps controls reachable when MapLibre cannot load", async ({ page }) => {
+  await boot(page, { width: 320, height: 568 });
+  // Registered after boot, so it takes precedence over the local MapLibre route.
+  await page.route(`${MAPLIBRE_CDN}**`, (route) => route.abort());
+  await page.locator('#bottom-nav [data-view="map"]').click();
+  await expect(page.locator("#runtime-map .map-library-fallback")).toBeVisible();
+  await expect(page.locator("#runtime-map .maplibregl-ctrl")).toHaveCount(0);
+  await assertNoDocumentOverflow(page);
+  await assertControlsReachable(page);
 });
 
 test("opened disclosure menus and cards keep controls reachable at 320px", async ({ page }) => {
