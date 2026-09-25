@@ -109,14 +109,10 @@
     });
 
     updateButton();
-    const waitForTrip = window.setInterval(() => {
-      if (typeof state !== "undefined" && state?.data) {
-        window.clearInterval(waitForTrip);
-        updateButton();
-        rerenderMapIfVisible();
-      }
-    }, 100);
-    window.setTimeout(() => window.clearInterval(waitForTrip), 5000);
+    // app.js dispatches travel-lite-ready once trip data and stored view/date are final (no timeout).
+    const onTripReady = () => { updateButton(); rerenderMapIfVisible(); };
+    if (typeof state !== "undefined" && state?.ready) onTripReady();
+    else window.addEventListener("travel-lite-ready", onTripReady, { once: true });
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", install);
