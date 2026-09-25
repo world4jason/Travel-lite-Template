@@ -345,7 +345,10 @@ async function assertControlsReachable(page) {
       const box = el.getBoundingClientRect();
       const x = box.left + box.width / 2;
       const y = box.top + box.height / 2;
-      if (x < 0 || x >= width || y < 0 || y >= window.innerHeight) continue; // bounds check above reports these
+      if (x < 0 || x >= width || y < 0 || y >= window.innerHeight) {
+        found.push(`unreachable: ${describe(el)} centre stays at ${Math.round(x)},${Math.round(y)} after scrolling`);
+        continue;
+      }
       const hit = document.elementFromPoint(x, y);
       if (!hitsControl(el, hit) && !coveredByOpenPopover(hit)) found.push(`covered: ${describe(el)} by ${hit ? describe(hit) : "nothing"}`);
     }
@@ -473,7 +476,7 @@ test("reachability check fails when fixed or sticky chrome covers content contro
 
   // Fixed chrome: an oversized bottom nav hides content controls even when they are scrolled to centre.
   await page.addStyleTag({ content: "#bottom-nav { height: 75vh !important; }" });
-  await expect(assertControlsReachable(page)).rejects.toThrow(/covered: .* by .*nav/);
+  await expect(assertControlsReachable(page)).rejects.toThrow(/covered: (?!button\.nav-item)[^\n]* by (?:nav\.bottom-nav|button\.nav-item)/);
 
   await page.reload();
   await expect(page.locator("#trip-title")).toContainText("32-day");
@@ -487,6 +490,18 @@ test("reachability check fails when fixed or sticky chrome covers content contro
     document.querySelector("#view-root").prepend(cover);
   });
   await expect(assertControlsReachable(page)).rejects.toThrow(/covered: .* by div\.probe-sticky-cover/);
+
+  // A control that can never be scrolled into view is reported, not skipped.
+  await page.reload();
+  await expect(page.locator("#trip-title")).toContainText("32-day");
+  await page.evaluate(() => {
+    const button = document.createElement("button");
+    button.className = "probe-offscreen";
+    button.textContent = "Offscreen";
+    button.style.cssText = "position: absolute; top: -500px; left: 20px;";
+    document.querySelector("#view-root").append(button);
+  });
+  await expect(assertControlsReachable(page)).rejects.toThrow(/unreachable: button\.probe-offscreen/);
 });
 
 test("opened disclosure menus and cards keep controls reachable at 320px", async ({ page }) => {
