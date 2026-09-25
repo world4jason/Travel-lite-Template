@@ -521,6 +521,58 @@ test("trip-day deep link is applied even when trip.json takes longer than 5s", a
   await expect(page).toHaveURL(new RegExp(`#trip/day/${TODAY}$`));
 });
 
+test("enhancement layers initialise on travel-lite-ready, not by polling", () => {
+  // Guards the contract in docs/ARCHITECTURE.md: a timed poll can give up before a slow trip.json arrives.
+  for (const file of ["companion-ux.js", "responsive-shell.js", "theme-shell.js", "long-trip-nav.js"]) {
+    const source = readFileSync(resolve(REPO_ROOT, file), "utf8");
+    expect(source, `${file} must initialise on travel-lite-ready`).toContain('"travel-lite-ready"');
+    expect(source, `${file} must not poll for trip data`).not.toMatch(/setInterval\s*\(/);
+  }
+});
+
+test("enhancement layers initialise when trip.json takes longer than 5s", async ({ page }) => {
+  test.setTimeout(60_000);
+
+  // Phone: long-trip navigator (long-trip-nav.js).
+  await boot(page, { width: 390, height: 844 }, { hash: `#trip/day/${TODAY}`, tripDelayMs: 6_000 });
+  await expect(page.locator(".long-trip-nav")).toBeVisible();
+  await expect(page.locator("[data-long-trip-select]")).toHaveValue(TODAY);
+
+  // Desktop: context rails (responsive-shell.js).
+  await page.setViewportSize({ width: 1600, height: 900 });
+  await page.reload();
+  await expect(page.locator("#trip-title")).toContainText("32-day", { timeout: 11_000 });
+  await expect(page.locator(".shell-context-left [data-shell-day]")).toHaveCount(32);
+  await expect(page.locator(".shell-context-right")).not.toBeEmpty();
+
+  // Dark system theme: Map uses the dark style (theme-shell.js syncMapStyle).
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.reload();
+  await expect(page.locator("#trip-title")).toContainText("32-day", { timeout: 11_000 });
+  // companion-ux applies the #trip/day deep link asynchronously after ready; let it finish first.
+  await expect(page.locator(`[data-trip-day="${TODAY}"].active`)).toHaveCount(1);
+  const styleRequest = page.waitForRequest((request) => request.url().startsWith(`${MAP_STYLE_HOST}styles/`));
+  await openView(page, "map");
+  expect((await styleRequest).url()).toBe(`${MAP_STYLE_HOST}styles/dark`);
+});
+
+test("Map opened on first load initialises MapLibre exactly once", async ({ page }) => {
+  // A traveller who last used Map: the stored view makes app.js's first render start the map, and the
+  // ready listeners (companion-ux, theme-shell) re-render it while the MapLibre import is still pending.
+  await boot(page, { width: 390, height: 844 });
+  await page.evaluate(() => TravelLiteStorage.set(tripKey("ui:view"), "map"));
+  await page.route(`${MAPLIBRE_CDN}+esm`, async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    await route.fallback();
+  });
+  await page.goto("/");
+  await expect(page.locator("#runtime-map .maplibregl-ctrl").first()).toBeVisible({ timeout: 10_000 });
+  await page.waitForTimeout(1_000);
+  await expect(page.locator("#runtime-map .maplibregl-canvas")).toHaveCount(1);
+  await expect(page.locator("#runtime-map .maplibregl-ctrl-top-right .maplibregl-ctrl-group")).toHaveCount(1);
+});
+
 test("opened secondary-link menu stays inside a 320px shell", async ({ page }) => {
   await boot(page, { width: 320, height: 568 }, { hash: `#trip/day/${TODAY}` });
   const menu = page.locator(".trip-action-menu").first();

@@ -158,11 +158,7 @@
   if (rootNode) new MutationObserver(scheduleRender).observe(rootNode, { childList: true });
   window.addEventListener("resize", scheduleRender, { passive: true });
 
-  const waitForTrip = window.setInterval(() => {
-    if (state?.data) {
-      window.clearInterval(waitForTrip);
-      renderContext();
-    }
-  }, 100);
-  window.setTimeout(() => window.clearInterval(waitForTrip), 5000);
+  // app.js dispatches travel-lite-ready once trip data and stored view/date are final (no timeout).
+  if (state?.ready) renderContext();
+  else window.addEventListener("travel-lite-ready", renderContext, { once: true });
 })();
