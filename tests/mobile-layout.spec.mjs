@@ -1,4 +1,31 @@
 import { test, expect } from "@playwright/test";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+// MapLibre is served from node_modules instead of the CDN so Map checks are hermetic and deterministic.
+// The version must match the one runtime-features.js loads.
+const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const MAPLIBRE_VERSION = JSON.parse(readFileSync(resolve(REPO_ROOT, "package.json"), "utf8")).devDependencies["maplibre-gl"];
+const MAPLIBRE_DIST = resolve(REPO_ROOT, "node_modules/maplibre-gl/dist");
+const MAPLIBRE_CDN = `https://cdn.jsdelivr.net/npm/maplibre-gl@${MAPLIBRE_VERSION}/`;
+if (!readFileSync(resolve(REPO_ROOT, "runtime-features.js"), "utf8").includes(MAPLIBRE_CDN)) {
+  throw new Error(`runtime-features.js does not load ${MAPLIBRE_CDN}; update the maplibre-gl devDependency to match.`);
+}
+
+async function serveMapLibreLocally(page) {
+  await page.route(`${MAPLIBRE_CDN}**`, async (route) => {
+    const path = new URL(route.request().url()).pathname.slice(new URL(MAPLIBRE_CDN).pathname.length);
+    const file = path === "+esm" ? "maplibre-gl.mjs" : path.replace(/^dist\//, "");
+    if (!/^[\w.-]+\.(mjs|css)$/.test(file)) return route.abort();
+    await route.fulfill({
+      status: 200,
+      contentType: file.endsWith(".css") ? "text/css" : "text/javascript",
+      headers: { "access-control-allow-origin": "*" },
+      body: readFileSync(resolve(MAPLIBRE_DIST, file)),
+    });
+  });
+}
 
 const FIXED_NOW = Date.parse("2026-09-19T10:30:00Z");
 const TODAY = "2026-09-19";
@@ -237,6 +264,7 @@ function makeStressTrip({ untimedToday = false } = {}) {
 
 async function boot(page, viewport, { untimedToday = false, hash = "", tripDelayMs = 0 } = {}) {
   await page.setViewportSize(viewport);
+  await serveMapLibreLocally(page);
   await page.addInitScript(({ now }) => {
     const RealDate = Date;
     class FixedDate extends RealDate {
@@ -358,9 +386,14 @@ async function assertControlsReachable(page) {
   expect(problems, problems.join("\n")).toEqual([]);
 }
 
+// MapLibre loads asynchronously and adds its controls and markers later; wait until the map has either
+// initialised or fallen back so every Map control exists before any check runs.
+const MAP_SETTLED = "#runtime-map .maplibregl-ctrl, #runtime-map .map-library-fallback";
+
 async function openView(page, view) {
   await page.locator(`#bottom-nav [data-view="${view}"]`).click();
   await page.waitForTimeout(30);
+  if (view === "map") await page.locator(MAP_SETTLED).first().waitFor({ timeout: 15_000 });
 }
 
 async function assertMapFullBleed(page) {
