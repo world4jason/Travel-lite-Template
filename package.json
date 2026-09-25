@@ -7,6 +7,7 @@
     "test:mobile:headed": "playwright test --project=chromium --headed"
   },
   "devDependencies": {
-    "@playwright/test": "1.63.0"
+    "@playwright/test": "1.63.0",
+    "maplibre-gl": "6.10.0"
   }
 }

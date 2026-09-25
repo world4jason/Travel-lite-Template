@@ -1,4 +1,43 @@
 import { test, expect } from "@playwright/test";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
+// MapLibre is served from node_modules instead of the CDN, and map styles get a minimal local style with no
+// sources (tiles are blocked), so Map checks are hermetic and the attribution control settles immediately.
+// The version must match the one runtime-features.js loads.
+const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const MAPLIBRE_VERSION = JSON.parse(readFileSync(resolve(REPO_ROOT, "package.json"), "utf8")).devDependencies["maplibre-gl"];
+const MAPLIBRE_DIST = resolve(REPO_ROOT, "node_modules/maplibre-gl/dist");
+const MAPLIBRE_CDN = `https://cdn.jsdelivr.net/npm/maplibre-gl@${MAPLIBRE_VERSION}/`;
+if (!readFileSync(resolve(REPO_ROOT, "runtime-features.js"), "utf8").includes(MAPLIBRE_CDN)) {
+  throw new Error(`runtime-features.js does not load ${MAPLIBRE_CDN}; update the maplibre-gl devDependency to match.`);
+}
+
+const MAP_STYLE_HOST = "https://tiles.openfreemap.org/";
+const MINIMAL_MAP_STYLE = JSON.stringify({
+  version: 8,
+  name: "travel-lite-test",
+  sources: {},
+  layers: [{ id: "background", type: "background", paint: { "background-color": "#dde3e0" } }],
+});
+
+async function serveMapLibreLocally(page) {
+  await page.route(`${MAP_STYLE_HOST}**`, (route) => (new URL(route.request().url()).pathname.startsWith("/styles/")
+    ? route.fulfill({ status: 200, contentType: "application/json", headers: { "access-control-allow-origin": "*" }, body: MINIMAL_MAP_STYLE })
+    : route.abort()));
+  await page.route(`${MAPLIBRE_CDN}**`, async (route) => {
+    const path = new URL(route.request().url()).pathname.slice(new URL(MAPLIBRE_CDN).pathname.length);
+    const file = path === "+esm" ? "maplibre-gl.mjs" : path.replace(/^dist\//, "");
+    if (!/^[\w.-]+\.(mjs|css)$/.test(file)) return route.abort();
+    await route.fulfill({
+      status: 200,
+      contentType: file.endsWith(".css") ? "text/css" : "text/javascript",
+      headers: { "access-control-allow-origin": "*" },
+      body: readFileSync(resolve(MAPLIBRE_DIST, file)),
+    });
+  });
+}
 
 const FIXED_NOW = Date.parse("2026-09-19T10:30:00Z");
 const TODAY = "2026-09-19";
@@ -111,6 +150,7 @@ function makeStressTrip({ untimedToday = false } = {}) {
           start: "TBD",
           title: "Backup boat / 彈性活動 with a very long decision label",
           location: "Danube",
+          externalLinks: [{ label: "Boat operator", url: "https://example.com/boat" }],
           decision: {
             label: "TBD",
             prompt: "Use the backup boat if the published sailing still works?",
@@ -157,7 +197,16 @@ function makeStressTrip({ untimedToday = false } = {}) {
             ],
           },
         },
-        { id: "today-late", start: "16:00", end: "18:00", title: "Return to Vienna", location: "Vienna", lat: 48.2082, lng: 16.3738 },
+        {
+          id: "today-late",
+          start: "16:00",
+          end: "18:00",
+          title: "Return to Vienna",
+          location: "Vienna",
+          lat: 48.2082,
+          lng: 16.3738,
+          externalLinks: [{ label: "Operator timetable", url: "https://example.com/timetable" }],
+        },
       ];
 
   return {
@@ -227,6 +276,7 @@ function makeStressTrip({ untimedToday = false } = {}) {
 
 async function boot(page, viewport, { untimedToday = false, hash = "", tripDelayMs = 0 } = {}) {
   await page.setViewportSize(viewport);
+  await serveMapLibreLocally(page);
   await page.addInitScript(({ now }) => {
     const RealDate = Date;
     class FixedDate extends RealDate {
@@ -269,8 +319,105 @@ async function assertNoDocumentOverflow(page) {
   expect(nav.x + nav.width).toBeLessThanOrEqual(metrics.width + 1);
 }
 
+// Interactive controls must be horizontally inside the viewport and must not overlap each other.
+// 1. Bounds: horizontally inside the viewport (known horizontal scroll rails are exempt).
+// 2. Same-layer overlap: fixed/sticky chrome and open <details> popover bodies are their own layers.
+// 3. Reachability: each control is scrolled to the viewport centre and must be the hit-test target at its
+//    own centre. Fixed/sticky chrome covering it is a failure; only an open <details> popover may cover it.
+async function assertControlsReachable(page) {
+  const problems = await page.evaluate(() => {
+    const SELECTOR = "a[href], button, select, summary, input:not([type=hidden]), textarea";
+    const HORIZONTAL_RAILS = ".day-tabs, .place-chips, .trip-route-steps";
+    const width = window.innerWidth;
+    const isRendered = (el) => {
+      // checkVisibility() also excludes content-visibility:hidden subtrees, e.g. a closed <details> body.
+      if (!el.checkVisibility({ visibilityProperty: true })) return false;
+      const box = el.getBoundingClientRect();
+      return box.width > 1 && box.height > 1;
+    };
+    const inScrollRail = (el) => Boolean(el.closest(HORIZONTAL_RAILS));
+    const layerOf = (el) => {
+      for (let node = el; node; node = node.parentElement) {
+        const { position } = getComputedStyle(node);
+        if (position === "fixed" || position === "sticky") return node;
+        const isOpenPopoverBody = node.parentElement?.matches("details[open]") && node.tagName !== "SUMMARY";
+        if (position === "absolute" && isOpenPopoverBody) return node;
+      }
+      return null;
+    };
+    const describe = (el) => {
+      const text = (el.getAttribute("aria-label") || el.textContent || "").trim().replace(/\s+/g, " ").slice(0, 24);
+      return `${el.tagName.toLowerCase()}${el.className ? "." + String(el.className).trim().split(/\s+/).join(".") : ""}[${text}]`;
+    };
+
+    const controls = [...document.querySelectorAll(SELECTOR)]
+      .filter((el) => isRendered(el) && !inScrollRail(el))
+      .map((el) => ({ el, box: el.getBoundingClientRect(), layer: layerOf(el) }));
+    const found = [];
+    for (const { el, box } of controls) {
+      if (box.left < -1 || box.right > width + 1) found.push(`outside viewport: ${describe(el)} ${Math.round(box.left)}..${Math.round(box.right)}`);
+    }
+    for (let i = 0; i < controls.length; i += 1) {
+      for (let j = i + 1; j < controls.length; j += 1) {
+        const a = controls[i];
+        const b = controls[j];
+        if (a.layer !== b.layer || a.el.contains(b.el) || b.el.contains(a.el)) continue;
+        const overlapX = Math.min(a.box.right, b.box.right) - Math.max(a.box.left, b.box.left);
+        const overlapY = Math.min(a.box.bottom, b.box.bottom) - Math.max(a.box.top, b.box.top);
+        if (overlapX > 1 && overlapY > 1) found.push(`overlap: ${describe(a.el)} × ${describe(b.el)} (${Math.round(overlapX)}x${Math.round(overlapY)})`);
+      }
+    }
+
+    const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
+    const hitsControl = (el, hit) => {
+      if (!hit) return false;
+      if (hit === el || el.contains(hit)) return true;
+      // A visually hidden checkbox is operated through its <label>.
+      return hit.closest("label")?.control === el;
+    };
+    const coveredByOpenPopover = (hit) => {
+      const body = hit?.closest("details[open] > :not(summary)");
+      return Boolean(body && getComputedStyle(body).position === "absolute");
+    };
+    for (const el of [...document.querySelectorAll(SELECTOR)].filter(isRendered)) {
+      el.scrollIntoView({ block: "center", inline: "nearest", behavior: "instant" });
+      const box = el.getBoundingClientRect();
+      const x = box.left + box.width / 2;
+      const y = box.top + box.height / 2;
+      if (x < 0 || x >= width || y < 0 || y >= window.innerHeight) {
+        found.push(`unreachable: ${describe(el)} centre stays at ${Math.round(x)},${Math.round(y)} after scrolling`);
+        continue;
+      }
+      const hit = document.elementFromPoint(x, y);
+      if (!hitsControl(el, hit) && !coveredByOpenPopover(hit)) found.push(`covered: ${describe(el)} by ${hit ? describe(hit) : "nothing"}`);
+    }
+    window.scrollTo({ left: scrollX, top: scrollY, behavior: "instant" });
+    return found;
+  });
+  expect(problems, problems.join("\n")).toEqual([]);
+}
+
+// MapLibre loads asynchronously, then adds its controls and markers. With MapLibre served locally the fixture
+// must always initialise a real map, so a silent fallback fails here instead of skipping those controls.
+// `action` triggers a (re-)render: opening Map, switching theme, or selecting another stop.
+async function settleMap(page, action) {
+  const fallback = page.locator("#runtime-map .map-library-fallback");
+  const styleLoaded = page.waitForResponse((response) => response.url().startsWith(`${MAP_STYLE_HOST}styles/`))
+    .then(() => "maplibre", () => "no-style");
+  await action();
+  const fellBack = fallback.waitFor({ timeout: 15_000 }).then(() => "fallback", () => "no-fallback");
+  const outcome = await Promise.race([styleLoaded, fellBack]);
+  expect(outcome, "MapLibre must initialise (served locally), not fall back").toBe("maplibre");
+  await expect(fallback).toHaveCount(0);
+  await expect(page.locator("#runtime-map .maplibregl-ctrl").first()).toBeVisible();
+  await expect(page.locator("#runtime-map .map-marker").first()).toBeVisible();
+}
+
 async function openView(page, view) {
-  await page.locator(`#bottom-nav [data-view="${view}"]`).click();
+  const click = () => page.locator(`#bottom-nav [data-view="${view}"]`).click();
+  if (view === "map") await settleMap(page, click);
+  else await click();
   await page.waitForTimeout(30);
 }
 
@@ -300,10 +447,14 @@ for (const viewport of FULL_MATRIX) {
     for (const view of ["now", "trip", "map", "check", "more"]) {
       await openView(page, view);
       await assertNoDocumentOverflow(page);
+      await assertControlsReachable(page);
       if (view === "map" && MOBILE_VIEWPORTS.some((candidate) =>
         candidate.width === viewport.width && candidate.height === viewport.height
       )) {
         await assertMapFullBleed(page);
+        // Selecting another stop re-renders the map; its controls must stay reachable too.
+        await settleMap(page, () => page.locator(".place-chip:not(.active)").first().click());
+        await assertControlsReachable(page);
       }
     }
 
@@ -332,6 +483,7 @@ for (const theme of ["light", "dark"]) {
       for (const view of ["now", "trip", "map", "check", "more"]) {
         await openView(page, view);
         await assertNoDocumentOverflow(page);
+        await assertControlsReachable(page);
         if (view === "map") await assertMapFullBleed(page);
       }
     });
@@ -380,6 +532,75 @@ test("opened secondary-link menu stays inside a 320px shell", async ({ page }) =
   expect(box.x + box.width).toBeLessThanOrEqual(321);
 });
 
+test("reachability check fails when fixed or sticky chrome covers content controls", async ({ page }) => {
+  await boot(page, { width: 320, height: 568 }, { hash: `#trip/day/${TODAY}` });
+  await assertControlsReachable(page);
+
+  // Fixed chrome: an oversized bottom nav hides content controls even when they are scrolled to centre.
+  await page.addStyleTag({ content: "#bottom-nav { height: 75vh !important; }" });
+  await expect(assertControlsReachable(page)).rejects.toThrow(/covered: (?!button\.nav-item)[^\n]* by (?:nav\.bottom-nav|button\.nav-item)/);
+
+  await page.reload();
+  await expect(page.locator("#trip-title")).toContainText("32-day");
+  await assertControlsReachable(page);
+
+  // Sticky layer inside the scrolling content.
+  await page.evaluate(() => {
+    const cover = document.createElement("div");
+    cover.className = "probe-sticky-cover";
+    cover.style.cssText = "position: sticky; top: 0; height: 100vh; margin-bottom: -100vh; z-index: 30; background: transparent;";
+    document.querySelector("#view-root").prepend(cover);
+  });
+  await expect(assertControlsReachable(page)).rejects.toThrow(/covered: .* by div\.probe-sticky-cover/);
+
+  // A control that can never be scrolled into view is reported, not skipped.
+  await page.reload();
+  await expect(page.locator("#trip-title")).toContainText("32-day");
+  await page.evaluate(() => {
+    const button = document.createElement("button");
+    button.className = "probe-offscreen";
+    button.textContent = "Offscreen";
+    button.style.cssText = "position: absolute; top: -500px; left: 20px;";
+    document.querySelector("#view-root").append(button);
+  });
+  await expect(assertControlsReachable(page)).rejects.toThrow(/unreachable: button\.probe-offscreen/);
+});
+
+test("Map fallback keeps controls reachable when MapLibre cannot load", async ({ page }) => {
+  await boot(page, { width: 320, height: 568 });
+  // Registered after boot, so it takes precedence over the local MapLibre route.
+  await page.route(`${MAPLIBRE_CDN}**`, (route) => route.abort());
+  await page.locator('#bottom-nav [data-view="map"]').click();
+  await expect(page.locator("#runtime-map .map-library-fallback")).toBeVisible();
+  await expect(page.locator("#runtime-map .maplibregl-ctrl")).toHaveCount(0);
+  await assertNoDocumentOverflow(page);
+  await assertControlsReachable(page);
+});
+
+test("opened disclosure menus and cards keep controls reachable at 320px", async ({ page }) => {
+  await boot(page, { width: 320, height: 568 });
+  const openEach = async (selector) => {
+    const all = await page.locator(selector).all();
+    for (const details of all) {
+      await details.locator(":scope > summary").click();
+      await assertNoDocumentOverflow(page);
+      await assertControlsReachable(page);
+      await details.locator(":scope > summary").click();
+    }
+    return all.length;
+  };
+
+  await openView(page, "now");
+  // Focus, window-card, floating and later menus all render links in the fixture.
+  expect(await openEach("details.companion-overflow")).toBeGreaterThanOrEqual(4);
+  expect(await openEach(".view-stack details.info-card")).toBeGreaterThanOrEqual(1);
+
+  await page.goto(`/#trip/day/${TODAY}`);
+  await expect(page.locator(".trip-v2-item .info-card").first()).toBeVisible();
+  expect(await openEach(".trip-v2-item details.info-card")).toBeGreaterThanOrEqual(1);
+  expect(await openEach("details.trip-action-menu")).toBeGreaterThanOrEqual(1);
+});
+
 test("long-text fixture keeps enum fields intact: personal decisions stay personal", async ({ page }) => {
   await boot(page, { width: 320, height: 568 }, { hash: `#trip/day/${TODAY}` });
   await expect(page.locator('[data-personal-decision-item="today-personal"]')).toHaveCount(2);
@@ -395,5 +616,6 @@ test("enlarged text keeps core read-only views inside a 320px shell", async ({ p
   for (const view of ["now", "trip", "check", "more"]) {
     await openView(page, view);
     await assertNoDocumentOverflow(page);
+    await assertControlsReachable(page);
   }
 });
