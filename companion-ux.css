@@ -227,9 +227,10 @@
   .companion-window-card p { grid-column: 1; }
   .companion-window-card .companion-compact-actions { grid-column: 2; grid-row: 1 / span 3; align-self: center; margin-top: 0; }
 
-  #view-root:has(.runtime-map-panel) { margin-left: calc(-1 * var(--shell-gutter)); margin-right: calc(-1 * var(--shell-gutter)); }
-  /* #view-root already bleeds to the shell edge here; a second negative gutter would widen the document. */
-  #view-root:has(.runtime-map-panel) > .day-tabs { margin-left: 0; margin-right: 0; padding-left: 14px; padding-right: 14px; }
+  #view-root.view-root--map { margin-left: calc(-1 * var(--shell-gutter)); margin-right: calc(-1 * var(--shell-gutter)); }
+  /* `.view-root--map` is set by runtime-features.js while the Map panel is shown, so this works without the relational :has selector.
+     #view-root already bleeds to the shell edge here; a second negative gutter would widen the document. */
+  #view-root.view-root--map > .day-tabs { margin-left: 0; margin-right: 0; padding-left: 14px; padding-right: 14px; }
   .runtime-map-panel { border-radius: 0; border-left: 0; border-right: 0; padding: 12px 0 0; box-shadow: none; }
   .runtime-map-panel .map-heading,
   .runtime-map-panel .place-chips { padding-left: 14px; padding-right: 14px; }

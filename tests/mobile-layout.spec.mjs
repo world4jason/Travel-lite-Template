@@ -573,6 +573,28 @@ test("Map opened on first load initialises MapLibre exactly once", async ({ page
   await expect(page.locator("#runtime-map .maplibregl-ctrl-top-right .maplibregl-ctrl-group")).toHaveCount(1);
 });
 
+test("mobile Map full-bleed uses a root class, not :has()", async ({ page }) => {
+  // Browsers without :has() (iOS Safari < 15.4) must get the same Map layout.
+  for (const file of ["styles.css", "runtime.css", "companion-ux.css", "trip-view.css", "responsive-shell.css", "desktop-theme.css", "long-trip-nav.css", "today-brief.css"]) {
+    expect(readFileSync(resolve(REPO_ROOT, file), "utf8"), `${file} must not rely on :has()`).not.toContain(":has(");
+  }
+
+  await boot(page, { width: 320, height: 568 });
+  await expect(page.locator("#view-root")).not.toHaveClass(/\bview-root--map\b/);
+  await openView(page, "map");
+  await expect(page.locator("#view-root")).toHaveClass(/\bview-root--map\b/);
+  await assertMapFullBleed(page);
+  await assertNoDocumentOverflow(page);
+
+  // The full-bleed layout depends on the class: removing it drops the bleed.
+  await page.evaluate(() => document.querySelector("#view-root").classList.remove("view-root--map"));
+  await expect(assertMapFullBleed(page)).rejects.toThrow();
+  await page.evaluate(() => document.querySelector("#view-root").classList.add("view-root--map"));
+
+  await openView(page, "now");
+  await expect(page.locator("#view-root")).not.toHaveClass(/\bview-root--map\b/);
+});
+
 test("opened secondary-link menu stays inside a 320px shell", async ({ page }) => {
   await boot(page, { width: 320, height: 568 }, { hash: `#trip/day/${TODAY}` });
   const menu = page.locator(".trip-action-menu").first();
