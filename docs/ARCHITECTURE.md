@@ -235,6 +235,17 @@ trip.json              shared trip data
 manifest.webmanifest   installable PWA metadata
 ```
 
+### Enhancement layer initialisation
+
+Enhancement scripts (`companion-ux.js`, `responsive-shell.js`, `theme-shell.js`, `long-trip-nav.js`) load with `defer` after `app.js`. `app.js` loads trip data, hydrates stored view/date, renders once, then sets `state.ready = true` and dispatches `travel-lite-ready`. A layer that needs trip data initialises with:
+
+```js
+if (state?.ready) init();
+else window.addEventListener("travel-lite-ready", init, { once: true });
+```
+
+Do not poll `state.data` with a timeout: a slow or offline `trip.json` load can outlast it and silently skip initialisation. MutationObservers on `#view-root` or `data-theme` remain the mechanism for re-rendering after later view or theme changes.
+
 ## TREK relationship
 
 Travel Lite inherits useful **client-side travel patterns** from TREK: responsive desktop/mobile shells, current/next context, day itinerary, map, packing/todos, appearance modes, offline/PWA, and local storage patterns.

@@ -108,10 +108,7 @@
   window.addEventListener("hashchange", schedule);
   window.addEventListener("resize", schedule, { passive: true });
 
-  const waitForData = window.setInterval(() => {
-    if (!state?.data) return;
-    window.clearInterval(waitForData);
-    schedule();
-  }, 50);
-  window.setTimeout(() => window.clearInterval(waitForData), 5000);
+  // app.js dispatches travel-lite-ready once trip data and stored view/date are final (no timeout).
+  if (state?.ready) schedule();
+  else window.addEventListener("travel-lite-ready", schedule, { once: true });
 })();

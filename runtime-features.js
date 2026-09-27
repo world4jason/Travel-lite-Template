@@ -6,6 +6,9 @@
  */
 (() => {
   let mapInstance = null;
+  // Each initMap() call takes a generation; a call whose MapLibre import resolves after a newer render
+  // started must not create a second map in the (replaced) container.
+  let mapInitGeneration = 0;
   let maplibrePromise = null;
 
   const baseRenderNow = renderNow;
@@ -164,6 +167,7 @@
   }
 
   async function initMap(items, selected) {
+    const generation = ++mapInitGeneration;
     const container = document.querySelector("#runtime-map");
     if (!container) return;
     destroyMap();
@@ -176,7 +180,7 @@
 
     try {
       const maplibregl = await ensureMapLibre();
-      if (!document.querySelector("#runtime-map") || state.view !== "map") return;
+      if (generation !== mapInitGeneration || !document.querySelector("#runtime-map") || state.view !== "map") return;
       const focus = itemCoordinates(selected) || itemCoordinates(mappable[0]);
 
       mapInstance = new maplibregl.Map({
@@ -208,6 +212,7 @@
 
       if (mappable.length > 1) mapInstance.fitBounds(bounds, { padding: 54, maxZoom: 14, duration: 0 });
     } catch (error) {
+      if (generation !== mapInitGeneration) return;
       console.warn("MapLibre unavailable", error);
       container.innerHTML = `<div class="map-library-fallback"><strong>Interactive map unavailable.</strong><br>Trip data and Google Maps links still work.</div>`;
     }
