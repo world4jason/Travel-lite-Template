@@ -263,4 +263,10 @@
   };
 
   window.addEventListener("beforeunload", destroyMap);
+
+  // Mirrors `#view-root:has(.runtime-map-panel)` for browsers without :has() (iOS Safari < 15.4).
+  // An observer covers every module that rewrites #view-root, not just renderMap().
+  const syncMapRootClass = () => root.classList.toggle("view-root--map", Boolean(root.querySelector(".runtime-map-panel")));
+  new MutationObserver(syncMapRootClass).observe(root, { childList: true });
+  syncMapRootClass();
 })();
