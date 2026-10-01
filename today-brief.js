@@ -88,7 +88,7 @@
   function briefHtml(context) {
     const day = context.today;
     const route = routeStops(day);
-    return `<section class="panel today-brief-card">
+    return `<section class="composition-identity surface-open today-brief-card">
       <div class="today-brief-heading">
         <div><p class="eyebrow">${escapeHtml(label("today", "Today", "今天"))} · ${escapeHtml(day.label || prettyDate(day.date, { weekday: "short" }))}</p><h2>${escapeHtml(day.title || label("todayBriefTitle", "Today at a glance", "今日摘要"))}</h2></div>
         <span>${day.items.length} ${escapeHtml(label("todayBriefPlans", "plans", "項"))}</span>
@@ -120,11 +120,14 @@
     if (!isUntimedDay(context) || state.view !== "now") return;
     const right = rightRail;
     if (!right || getComputedStyle(right).display === "none") return;
-    const card = right.querySelector(".shell-context-card");
-    if (!card || card.dataset.todayBrief === "true") return;
+    const primary = window.TravelLiteShellContext?.slot?.("primary") || right;
     const day = context.today, route = routeStops(day);
-    card.dataset.todayBrief = "true";
-    card.innerHTML = `<div class="shell-context-heading"><strong>${escapeHtml(day.title || label("todayBriefTitle", "Today at a glance", "今日摘要"))}</strong><span>${escapeHtml(day.label || prettyDate(day.date, { weekday: "short" }))}</span></div>${route.length ? `<p class="shell-context-route">${route.map(escapeHtml).join(" → ")}</p>` : ""}<p class="shell-context-muted">${escapeHtml(label("todayBriefNoFixedTimeShort", "No fixed times published for today.", "今天沒有固定時間。"))}</p>`;
+    primary.innerHTML = `<section class="shell-context-section" data-today-brief="true">
+      <div class="shell-context-heading"><strong>${escapeHtml(day.title || label("todayBriefTitle", "Today at a glance", "今日摘要"))}</strong><span>${escapeHtml(day.label || prettyDate(day.date, { weekday: "short" }))}</span></div>
+      ${route.length ? `<p class="shell-context-route">${route.map(escapeHtml).join(" → ")}</p>` : ""}
+      <p class="shell-context-muted">${escapeHtml(label("todayBriefNoFixedTimeShort", "No fixed times published for today.", "今天沒有固定時間。"))}</p>
+    </section>`;
+    window.TravelLiteShellContext?.sync?.();
   }
 
   let railFrame = 0;
