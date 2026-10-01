@@ -28,3 +28,68 @@
   .today-brief-heading { gap: 10px; }
   .today-brief-route { font-size: .84rem; }
 }
+
+
+/* #47 — untimed days use the same open editorial hierarchy as scheduled Now. */
+.today-brief-card {
+  max-width: var(--content-reading);
+  padding: var(--space-4) 0 var(--space-6);
+  border: 0;
+  border-bottom: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+}
+.today-brief-heading h2 {
+  max-width: 18ch;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 3.8rem);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -.04em;
+}
+.today-brief-heading > span {
+  padding-top: var(--space-2);
+}
+.today-brief-route {
+  max-width: 58ch;
+  margin-top: var(--space-6);
+  font-size: var(--text-md);
+  font-weight: 700;
+}
+.today-brief-timing {
+  margin-top: var(--space-5);
+  padding: var(--space-3) 0;
+  border: 0;
+  border-block: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+}
+.today-brief-list {
+  margin-top: var(--space-6);
+}
+.today-brief-item {
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-4) 0;
+}
+.today-brief-sequence {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: var(--border-subtle);
+}
+.today-brief-copy h3 {
+  margin-top: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 650;
+}
+@media (max-width: 520px) {
+  .today-brief-card {
+    padding: var(--space-2) 0 var(--space-5);
+  }
+  .today-brief-heading h2 {
+    font-size: clamp(1.9rem, 10vw, 3rem);
+  }
+}
