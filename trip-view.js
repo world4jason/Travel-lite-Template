@@ -104,7 +104,7 @@
     if (!stops.length) return "";
     const first = stops[0];
     const last = stops[stops.length - 1];
-    return `<section class="panel trip-route-summary">
+    return `<section class="trip-route-summary composition-operational">
       <div class="trip-route-heading"><div><p class="eyebrow">Day route</p><h3>${escapeHtml(day.routeLabel || "At a glance")}</h3></div><span>${stops.length} stop${stops.length === 1 ? "" : "s"}</span></div>
       <div class="trip-route-endpoints"><div><small>Start</small><strong>${escapeHtml(first)}</strong></div><span aria-hidden="true">→</span><div class="end"><small>End</small><strong>${escapeHtml(last)}</strong></div></div>
       ${stops.length > 2 ? `<div class="trip-route-steps">${stops.map((stop, index) => `<span><b>${index + 1}</b>${escapeHtml(stop)}</span>`).join("")}</div>` : ""}
@@ -121,7 +121,7 @@
 
   function highlightCard(highlight) {
     const url = safeUrl(highlight.url);
-    return `<article class="panel trip-highlight-card">
+    return `<article class="trip-highlight-card composition-narrative">
       <div class="trip-highlight-meta"><span>${escapeHtml(highlightDate(highlight))}</span>${highlight.status ? `<small>${escapeHtml(highlight.status)}</small>` : ""}</div>
       <h3>${highlight.icon ? `<span aria-hidden="true">${escapeHtml(highlight.icon)}</span> ` : ""}${escapeHtml(highlight.title || "Activity")}</h3>
       ${highlight.note ? `<p>${escapeHtml(highlight.note)}</p>` : ""}
@@ -131,7 +131,7 @@
 
   function overviewDayCard(day) {
     const open = unresolvedItems(day).length;
-    return `<button class="panel trip-overview-day" type="button" data-trip-day="${escapeAttr(day.date)}">
+    return `<button class="trip-overview-day composition-sequence" type="button" data-trip-day="${escapeAttr(day.date)}">
       <div class="trip-overview-day-meta"><span>${escapeHtml(day.label || "Day")}</span><time>${prettyDate(day.date, { weekday: "short" })}</time></div>
       <h3>${escapeHtml(day.title || "Trip day")}</h3>
       <p>${escapeHtml(dayRouteText(day))}</p>
@@ -147,7 +147,7 @@
 
     root.innerHTML = `<div class="trip-v2 trip-overview-view">
       ${tripTabs()}
-      <section class="panel trip-overview-hero">
+      <section class="trip-overview-hero composition-identity">
         <p class="eyebrow">Trip overview</p>
         <h2>${escapeHtml(state.data.trip.title)}</h2>
         <p>${escapeHtml(dateRangeLabel(state.data.trip))}</p>
@@ -155,7 +155,7 @@
       </section>
       <section class="trip-overview-days" aria-label="Daily overview">${days.map(overviewDayCard).join("")}</section>
       ${highlights.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">Flexible</p><h2>Highlights & activities</h2></div><span>${highlights.length}</span></div><div class="trip-highlight-grid">${highlights.map(highlightCard).join("")}</div></section>` : ""}
-      ${openDecisions.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">TBD</p><h2>Open decisions</h2></div><span>${openDecisions.length}</span></div><div class="trip-open-decisions">${openDecisions.map(({ day, item }) => `<button type="button" class="panel trip-open-decision" data-trip-day="${escapeAttr(day.date)}"><span>${prettyDate(day.date, { weekday: "short" })}</span><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.decision?.prompt || "Decide on the day")}</p><small>View day →</small></button>`).join("")}</div></section>` : ""}
+      ${openDecisions.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">TBD</p><h2>Open decisions</h2></div><span>${openDecisions.length}</span></div><div class="trip-open-decisions">${openDecisions.map(({ day, item }) => `<button type="button" class="trip-open-decision composition-narrative" data-trip-day="${escapeAttr(day.date)}"><span>${prettyDate(day.date, { weekday: "short" })}</span><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.decision?.prompt || "Decide on the day")}</p><small>View day →</small></button>`).join("")}</div></section>` : ""}
     </div>`;
 
     attachOverviewHandlers();
@@ -201,9 +201,9 @@
 
     root.innerHTML = `<div class="trip-v2 trip-day-view">
       ${tripTabs()}
-      <section class="panel day-summary"><p class="eyebrow">${escapeHtml(day.label || "")} · ${prettyDate(day.date, { weekday: "short" })}</p><h2>${escapeHtml(day.title || "Trip")}</h2><p>${day.items?.length || 0} planned stop${day.items?.length === 1 ? "" : "s"}</p>${day.note ? `<p class="day-note">${escapeHtml(day.note)}</p>` : ""}</section>
+      <section class="day-summary composition-identity"><p class="eyebrow">${escapeHtml(day.label || "")} · ${prettyDate(day.date, { weekday: "short" })}</p><h2>${escapeHtml(day.title || "Trip")}</h2><p>${day.items?.length || 0} planned stop${day.items?.length === 1 ? "" : "s"}</p>${day.note ? `<p class="day-note">${escapeHtml(day.note)}</p>` : ""}</section>
       ${routeSummaryCard(day)}
-      <section class="panel timeline trip-v2-timeline">${timeline || `<div class="empty-state"><p>No plans yet.</p></div>`}</section>
+      <section class="timeline trip-v2-timeline composition-sequence">${timeline || `<div class="empty-state"><p>No plans yet.</p></div>`}</section>
     </div>`;
 
     attachOverviewHandlers();
