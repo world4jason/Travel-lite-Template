@@ -162,7 +162,7 @@
   function remindersHtml(day) {
     const reminders = Array.isArray(day?.reminders) ? day.reminders : [];
     if (!reminders.length) return "";
-    return `<section class="panel companion-section"><div class="companion-section-heading"><p class="eyebrow">${escapeHtml(t("today"))}</p><h2>${escapeHtml(t("remember"))}</h2></div><div class="companion-reminders">${reminders.map((entry) => {
+    return `<section class="companion-section composition-narrative"><div class="companion-section-heading"><p class="eyebrow">${escapeHtml(t("today"))}</p><h2>${escapeHtml(t("remember"))}</h2></div><div class="companion-reminders">${reminders.map((entry) => {
       const text = typeof entry === "string" ? entry : entry?.text || entry?.label || "";
       const url = safeUrl(typeof entry === "object" ? entry?.url : "");
       return text ? `<div><span>!</span><p>${escapeHtml(text)}${url ? ` <a href="${escapeAttr(url)}" target="_blank" rel="noreferrer">↗</a>` : ""}</p></div>` : "";
@@ -171,13 +171,13 @@
 
   function floatingHtml(items) {
     if (!items?.length) return "";
-    return `<section class="panel companion-section"><div class="companion-section-heading"><p class="eyebrow">${escapeHtml(t("tbd"))}</p><h2>${escapeHtml(t("flexibleToday"))}</h2></div><div class="companion-floating-list">${items.map((item) => `<article><div><span class="type-pill">${escapeHtml(item.type || t("tbd"))}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.location || item.note || "")}</p></div>${compactLinks(item)}${supplementary(item)}</article>`).join("")}</div></section>`;
+    return `<section class="companion-section composition-narrative"><div class="companion-section-heading"><p class="eyebrow">${escapeHtml(t("tbd"))}</p><h2>${escapeHtml(t("flexibleToday"))}</h2></div><div class="companion-floating-list">${items.map((item) => `<article><div><span class="type-pill">${escapeHtml(item.type || t("tbd"))}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.location || item.note || "")}</p></div>${compactLinks(item)}${supplementary(item)}</article>`).join("")}</div></section>`;
   }
 
   function laterHtml(items) {
     if (!items?.length) return "";
     const nowDate = zonedNow(state.data.trip.timezone).date;
-    return `<section class="panel companion-section"><div class="companion-section-heading"><p class="eyebrow">${escapeHtml(t("today"))}</p><h2>${escapeHtml(t("laterToday"))}</h2></div><div class="companion-later-list">${items.map((item) => `<article><time>${escapeHtml([relativeDay(item, nowDate), item.start].filter(Boolean).join(" · "))}</time><div><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.location || item.dayTitle || "")}</p></div>${compactLinks(item)}</article>`).join("")}</div></section>`;
+    return `<section class="companion-section composition-narrative"><div class="companion-section-heading"><p class="eyebrow">${escapeHtml(t("today"))}</p><h2>${escapeHtml(t("laterToday"))}</h2></div><div class="companion-later-list">${items.map((item) => `<article><time>${escapeHtml([relativeDay(item, nowDate), item.start].filter(Boolean).join(" · "))}</time><div><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.location || item.dayTitle || "")}</p></div>${compactLinks(item)}</article>`).join("")}</div></section>`;
   }
 
   async function injectMainWeather(context) {
@@ -198,11 +198,11 @@
   renderNow = function companionRenderNow() {
     const context = getNowContext();
     if (context.phase === "before") {
-      root.innerHTML = `<div class="view-stack companion-now"><section class="panel companion-focus"><p class="eyebrow">${escapeHtml(state.data.trip.title)}</p><h2>Trip starts in ${context.daysUntil} day${context.daysUntil === 1 ? "" : "s"}</h2><p>${escapeHtml(dateRangeLabel(state.data.trip))}</p></section>${context.next ? `<section class="panel companion-section"><h2>${escapeHtml(t("next"))}</h2>${windowCard(t("next"), context.next, "next")}</section>` : ""}</div>`;
+      root.innerHTML = `<div class="view-stack companion-now"><section class="companion-focus composition-identity"><p class="eyebrow">${escapeHtml(state.data.trip.title)}</p><h2>Trip starts in ${context.daysUntil} day${context.daysUntil === 1 ? "" : "s"}</h2><p>${escapeHtml(dateRangeLabel(state.data.trip))}</p></section>${context.next ? `<section class="companion-section composition-narrative"><h2>${escapeHtml(t("next"))}</h2>${windowCard(t("next"), context.next, "next")}</section>` : ""}</div>`;
       afterRender(); return;
     }
     if (context.phase === "after") {
-      root.innerHTML = `<section class="panel empty-state"><p class="eyebrow">Trip complete</p><h2>${escapeHtml(state.data.trip.title)}</h2><p>${escapeHtml(dateRangeLabel(state.data.trip))}</p></section>`;
+      root.innerHTML = `<section class="empty-state companion-complete composition-identity"><p class="eyebrow">Trip complete</p><h2>${escapeHtml(state.data.trip.title)}</h2><p>${escapeHtml(dateRangeLabel(state.data.trip))}</p></section>`;
       afterRender(); return;
     }
 
@@ -210,9 +210,9 @@
     const today = context.today;
     const progress = today ? getDayProgress(today, context.now.minuteOfDay) : 0;
     root.innerHTML = `<div class="view-stack companion-now">
-      <section class="panel companion-focus"><div class="status-row"><span class="status-dot ${focus ? "" : "upcoming"}"></span>${escapeHtml(focus ? t("scheduledNow") : t("betweenPlans"))}</div><div class="companion-focus-top"><div><h2>${escapeHtml(focus?.title || today?.title || t("today"))}</h2><p>${focus ? `${escapeHtml(focus.start || "")} ${focus.end ? `–${escapeHtml(focus.end)}` : ""}${focus.location ? ` · ${escapeHtml(focus.location)}` : ""}` : escapeHtml(t("noScheduledNow"))}</p></div>${compactLinks(focus)}</div>${focus?.note ? `<p class="companion-focus-note">${escapeHtml(focus.note)}</p>` : ""}${supplementary(focus)}${today ? `<div class="progress-wrap"><div class="progress-meta"><span>${escapeHtml(today.label)} · ${escapeHtml(today.title)}</span><span>${progress}%</span></div><div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div></div>` : ""}</section>
-      <section id="companion-now-weather" class="panel weather-card"><div class="weather-icon">◌</div><div><p class="eyebrow">${escapeHtml(t("weather"))}</p><p>Loading…</p></div></section>
-      <section class="companion-window" aria-label="Schedule reference window">${windowCard(t("previous"), context.previous, "previous")}${windowCard(t("scheduledNow"), context.current, "current")}${windowCard(t("next"), context.next, "next")}</section>
+      <section class="companion-focus composition-identity"><div class="status-row"><span class="status-dot ${focus ? "" : "upcoming"}"></span>${escapeHtml(focus ? t("scheduledNow") : t("betweenPlans"))}</div><div class="companion-focus-top"><div><h2>${escapeHtml(focus?.title || today?.title || t("today"))}</h2><p>${focus ? `${escapeHtml(focus.start || "")} ${focus.end ? `–${escapeHtml(focus.end)}` : ""}${focus.location ? ` · ${escapeHtml(focus.location)}` : ""}` : escapeHtml(t("noScheduledNow"))}</p></div>${compactLinks(focus)}</div>${focus?.note ? `<p class="companion-focus-note">${escapeHtml(focus.note)}</p>` : ""}${supplementary(focus)}${today ? `<div class="progress-wrap"><div class="progress-meta"><span>${escapeHtml(today.label)} · ${escapeHtml(today.title)}</span><span>${progress}%</span></div><div class="progress-track"><div class="progress-fill" style="width:${progress}%"></div></div></div>` : ""}</section>
+      <section id="companion-now-weather" class="weather-card composition-operational"><div class="weather-icon">◌</div><div><p class="eyebrow">${escapeHtml(t("weather"))}</p><p>Loading…</p></div></section>
+      <section class="companion-window composition-sequence" aria-label="Schedule reference window">${windowCard(t("previous"), context.previous, "previous")}${windowCard(t("scheduledNow"), context.current, "current")}${windowCard(t("next"), context.next, "next")}</section>
       ${laterHtml(context.later)}${floatingHtml(context.floating)}${remindersHtml(today)}
     </div>`;
     injectMainWeather(context);
