@@ -287,3 +287,43 @@ h2 { letter-spacing: -.025em; line-height: 1.12; }
 @media (max-width: 390px) { :root { --shell-gutter: 12px; } .timeline-item { grid-template-columns: 54px 18px 1fr; padding-left: 12px; padding-right: 12px; } .nav-item { font-size: .62rem; } .bottom-nav { width: calc(100% - 12px); } .trip-header { gap: 8px; } .live-time { min-width: 68px; padding: 9px; } }
 @media (min-width: 760px) and (max-width: 899px) { :root { --shell-gutter: 28px; } .hero-card { padding: 28px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
+
+
+/* #46 — bounded trip identity cover. Core content never depends on this media. */
+.trip-cover {
+  width: min(100%, 680px);
+  aspect-ratio: 5 / 1;
+  max-height: 136px;
+  margin: var(--space-4) 0 0;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--accent) 9%, var(--surface-2));
+}
+.trip-cover img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  visibility: hidden;
+}
+.trip-cover.is-loaded img {
+  visibility: visible;
+}
+.trip-cover[data-focal-point="center"] img { object-position: center; }
+.trip-cover[data-focal-point="top"] img { object-position: center top; }
+.trip-cover[data-focal-point="bottom"] img { object-position: center bottom; }
+.trip-cover[data-focal-point="left"] img { object-position: left center; }
+.trip-cover[data-focal-point="right"] img { object-position: right center; }
+
+@media (max-width: 899px), (max-height: 600px) {
+  .trip-cover {
+    aspect-ratio: 5 / 1;
+    max-height: 88px;
+    margin-top: var(--space-3);
+    border-radius: var(--radius-sm);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trip-cover img { transition: none; }
+}

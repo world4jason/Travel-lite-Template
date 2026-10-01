@@ -53,6 +53,33 @@ Rules:
 - change `trip.id` for a genuinely different trip so browser-local state does not collide
 - set `updatedAt` / `revision` when publishing a new shared itinerary version; they describe shared content, not local checklist changes
 - treat `accent` as trip decoration; important meaning must not depend on that color
+- `accent` accepts only six-digit hex colors (for example `#4f6f5e`) that keep at least 4.5:1 contrast with white on accent-backed controls; unsupported/unsafe values fall back to `#4f6f5e`
+
+### Optional trip cover
+
+A cover is a progressive identity enhancement. Core trip information never depends on it.
+
+```json
+{
+  "cover": {
+    "src": "./assets/cover.webp",
+    "alt": "Mountain valley seen from the morning trail",
+    "focalPoint": "right"
+  }
+}
+```
+
+Rules:
+
+- `src` may be a same-origin relative URL or an absolute `https://` URL
+- protocol-relative URLs and `http:`, `javascript:`, `data:`, `blob:`, or other schemes are rejected
+- `alt` must be a non-empty description; invalid/missing alt makes the whole cover invalid
+- `focalPoint` is optional and limited to `center | top | bottom | left | right`; unknown values normalize to `center`
+- cover failure collapses back to the canonical no-cover composition
+- same-origin media can benefit from the existing runtime cache after first fetch; cross-origin HTTPS media is not guaranteed offline
+- trip data cannot provide CSS, HTML, font URLs, motion settings, density modes, or visual presets
+
+Do not add `ui.visualPreset` or a trip-type theme selector. All trips use the same Travel Lite composition system.
 
 ## `ui`
 

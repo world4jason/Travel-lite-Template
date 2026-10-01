@@ -747,3 +747,87 @@ test("enlarged text keeps core read-only views inside a 320px shell", async ({ p
     await assertControlsReachable(page);
   }
 });
+
+
+async function bootIdentityTrip(page, identity = {}, { coverStatus = 200 } = {}) {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const trip = makeStressTrip();
+  trip.trip.id = `identity-${Math.random().toString(36).slice(2)}`;
+  if ("accent" in identity) trip.trip.accent = identity.accent;
+  if ("cover" in identity) trip.trip.cover = identity.cover;
+  else delete trip.trip.cover;
+
+  await page.route("**/trip.json", (route) => route.fulfill({
+    status: 200,
+    contentType: "application/json",
+    body: JSON.stringify(trip),
+  }));
+  await page.route("**/test-cover.svg", (route) => {
+    if (coverStatus !== 200) return route.fulfill({ status: coverStatus, body: "not found" });
+    return route.fulfill({
+      status: 200,
+      contentType: "image/svg+xml",
+      body: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 100"><rect width="500" height="100" fill="#365f4c"/></svg>',
+    });
+  });
+  await page.goto("/#now", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("#trip-title")).toContainText("32-day");
+  await page.waitForFunction(() => typeof state !== "undefined" && state.ready === true);
+}
+
+test("trip identity accepts a contrast-safe accent and rejects unsafe accent colors", async ({ page }) => {
+  await bootIdentityTrip(page, { accent: "#1f5f4a" });
+  await expect.poll(() => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--accent").trim())).toBe("#1f5f4a");
+
+  expect(await page.evaluate(() => normalizeAccent("#ffffff"))).toBe("#4f6f5e");
+  expect(await page.evaluate(() => normalizeAccent("red"))).toBe("#4f6f5e");
+  expect(await page.evaluate(() => normalizeAccent("javascript:alert(1)"))).toBe("#4f6f5e");
+});
+
+test("valid relative trip cover renders with bounded focal point and alt text", async ({ page }) => {
+  await bootIdentityTrip(page, {
+    cover: { src: "./test-cover.svg", alt: "Green landscape cover", focalPoint: "right" },
+  });
+  const cover = page.locator("#trip-cover");
+  await expect(cover).toHaveClass(/is-loaded/);
+  await expect(cover).toHaveAttribute("data-focal-point", "right");
+  await expect(cover.locator("img")).toHaveAttribute("alt", "Green landscape cover");
+  await expect(page.locator("#trip-title")).toBeVisible();
+});
+
+test("trip cover rejects executable protocols and missing alt text", async ({ page }) => {
+  await bootIdentityTrip(page, {
+    cover: { src: "javascript:alert(1)", alt: "Unsafe", focalPoint: "center" },
+  });
+  await expect(page.locator("#trip-cover")).toHaveCount(0);
+  expect(await page.evaluate(() => state.data.trip.cover)).toBeUndefined();
+
+  expect(await page.evaluate(() => normalizeCover({ src: "./test-cover.svg", alt: "" }))).toBeNull();
+  expect(await page.evaluate(() => normalizeCover({ src: "data:image/png;base64,AAAA", alt: "No" }))).toBeNull();
+  expect(await page.evaluate(() => normalizeCover({ src: "//example.com/cover.jpg", alt: "No" }))).toBeNull();
+});
+
+test("unknown cover focal point normalizes to center", async ({ page }) => {
+  await bootIdentityTrip(page, {
+    cover: { src: "./test-cover.svg", alt: "Centered fallback cover", focalPoint: "37% 12%" },
+  });
+  await expect(page.locator("#trip-cover")).toHaveAttribute("data-focal-point", "center");
+  expect(await page.evaluate(() => state.data.trip.cover.focalPoint)).toBe("center");
+});
+
+test("failed trip cover collapses cleanly while core trip identity remains", async ({ page }) => {
+  await bootIdentityTrip(page, {
+    cover: { src: "./test-cover.svg", alt: "Unavailable cover", focalPoint: "top" },
+  }, { coverStatus: 404 });
+  await expect(page.locator("#trip-cover")).toHaveCount(0);
+  await expect(page.locator("#trip-title")).toBeVisible();
+  await expect(page.locator("#bottom-nav")).toBeVisible();
+  await assertNoDocumentOverflow(page);
+});
+
+test("missing trip cover preserves the canonical no-cover composition", async ({ page }) => {
+  await bootIdentityTrip(page, { accent: "#4f6f5e" });
+  await expect(page.locator("#trip-cover")).toHaveCount(0);
+  await expect(page.locator("#trip-title")).toBeVisible();
+  await assertNoDocumentOverflow(page);
+});

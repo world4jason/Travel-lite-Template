@@ -62,8 +62,57 @@ function dayDiff(from, to) {
   return Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86400000);
 }
 
+const DEFAULT_TRIP_ACCENT = "#4f6f5e";
+const COVER_FOCAL_POINTS = new Set(["center", "top", "bottom", "left", "right"]);
+
+function relativeLuminance(hex) {
+  const channels = [1, 3, 5].map((index) => Number.parseInt(hex.slice(index, index + 2), 16) / 255)
+    .map((value) => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+function contrastRatio(first, second) {
+  const a = relativeLuminance(first);
+  const b = relativeLuminance(second);
+  return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+}
+
+function normalizeAccent(rawAccent) {
+  if (typeof rawAccent !== "string" || !/^#[0-9a-f]{6}$/i.test(rawAccent.trim())) return DEFAULT_TRIP_ACCENT;
+  const accent = rawAccent.trim().toLowerCase();
+  // Accent-backed controls use white text. Reject colors that cannot maintain WCAG AA contrast there.
+  return contrastRatio(accent, "#ffffff") >= 4.5 ? accent : DEFAULT_TRIP_ACCENT;
+}
+
+function normalizeCover(rawCover) {
+  if (!rawCover || typeof rawCover !== "object" || Array.isArray(rawCover)) return null;
+  const src = typeof rawCover.src === "string" ? rawCover.src.trim() : "";
+  const alt = typeof rawCover.alt === "string" ? rawCover.alt.trim() : "";
+  if (!src || !alt || src.startsWith("//")) return null;
+
+  try {
+    const hasScheme = /^[a-z][a-z0-9+.-]*:/i.test(src);
+    const url = new URL(src, document.baseURI);
+    if (hasScheme) {
+      if (url.protocol !== "https:") return null;
+    } else if (url.origin !== window.location.origin) {
+      return null;
+    }
+  } catch {
+    return null;
+  }
+
+  const focalPoint = COVER_FOCAL_POINTS.has(rawCover.focalPoint) ? rawCover.focalPoint : "center";
+  return { src, alt, focalPoint };
+}
+
 function normalizeData(raw) {
   const data = structuredClone(raw);
+  data.trip ||= {};
+  data.trip.accent = normalizeAccent(data.trip.accent);
+  const cover = normalizeCover(data.trip.cover);
+  if (cover) data.trip.cover = cover;
+  else delete data.trip.cover;
   data.days ||= [];
   data.checklists ||= [];
   data.todos ||= [];
@@ -375,14 +424,38 @@ function updateClock() {
   document.querySelector("#timezone-label").textContent = state.data.trip.timezone.replaceAll("_", " ");
 }
 
+function hydrateTripCover(trip) {
+  document.querySelector("#trip-cover")?.remove();
+  if (!trip.cover) return;
+
+  const host = document.querySelector(".trip-header > div:first-child");
+  if (!host) return;
+
+  const figure = document.createElement("figure");
+  figure.id = "trip-cover";
+  figure.className = "trip-cover";
+  figure.dataset.focalPoint = trip.cover.focalPoint;
+
+  const image = document.createElement("img");
+  image.src = trip.cover.src;
+  image.alt = trip.cover.alt;
+  image.decoding = "async";
+  image.addEventListener("load", () => figure.classList.add("is-loaded"), { once: true });
+  image.addEventListener("error", () => figure.remove(), { once: true });
+
+  figure.appendChild(image);
+  host.appendChild(figure);
+}
+
 function hydrateHeader() {
   const { trip } = state.data;
   document.title = `${trip.title} · Travel Lite`;
-  document.documentElement.style.setProperty("--accent", trip.accent || "#2563eb");
+  document.documentElement.style.setProperty("--accent", trip.accent);
   document.querySelector('meta[name="theme-color"]')?.setAttribute("content", trip.themeColor || "#0b1020");
   document.querySelector("#trip-location").textContent = trip.homeLabel || "Travel Lite";
   document.querySelector("#trip-title").textContent = trip.title;
   document.querySelector("#trip-meta").textContent = `${trip.subtitle || ""}${trip.subtitle ? " · " : ""}${dateRangeLabel(trip)}`;
+  hydrateTripCover(trip);
 }
 
 async function loadTripData() {

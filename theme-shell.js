@@ -25,7 +25,7 @@
 
   function syncAccent() {
     if (typeof state === "undefined" || !state?.data) return;
-    if (!state.data.trip?.accent) document.documentElement.style.setProperty("--accent", DEFAULT_ACCENT);
+    document.documentElement.style.setProperty("--accent", state.data.trip?.accent || DEFAULT_ACCENT);
   }
 
   function syncMapStyle() {
