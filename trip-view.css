@@ -109,3 +109,304 @@
   min-width: 0;
   overflow-wrap: anywhere;
 }
+
+
+/* #48 — Editorial Atlas Trip composition.
+   Information structure replaces repeated-card grammar without changing itinerary semantics. */
+.trip-v2 {
+  gap: var(--space-8);
+}
+
+.trip-overview-hero,
+.trip-day-view > .day-summary {
+  max-width: var(--content-reading);
+  padding: var(--space-4) 0 var(--space-8);
+  border: 0;
+  border-bottom: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+}
+.trip-overview-hero h2,
+.trip-day-view > .day-summary h2 {
+  max-width: 18ch;
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: clamp(2.15rem, 7vw, 4.6rem);
+  font-weight: 650;
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+.trip-overview-hero > p:last-of-type,
+.trip-day-view > .day-summary > p {
+  max-width: 58ch;
+  color: var(--muted);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+}
+.trip-overview-stats {
+  gap: var(--space-3) var(--space-6);
+  margin-top: var(--space-6);
+  padding-top: var(--space-3);
+  border-top: var(--border-subtle);
+}
+.trip-overview-stats strong {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 650;
+}
+
+.trip-overview-days {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  border-top: var(--border-subtle);
+}
+.trip-overview-day {
+  appearance: none;
+  position: relative;
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) auto;
+  grid-template-areas:
+    "meta title foot"
+    "meta route foot";
+  gap: var(--space-1) var(--space-5);
+  align-items: start;
+  width: 100%;
+  min-height: 112px;
+  padding: var(--space-5) 0;
+  border: 0;
+  border-bottom: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+}
+.trip-overview-day:hover {
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+}
+.trip-overview-day:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+.trip-overview-day-meta {
+  grid-area: meta;
+  display: grid;
+  justify-content: start;
+  gap: var(--space-1);
+}
+.trip-overview-day h3 {
+  grid-area: title;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 650;
+  line-height: 1.08;
+}
+.trip-overview-day p {
+  grid-area: route;
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+.trip-overview-day-foot {
+  grid-area: foot;
+  align-self: center;
+  display: grid;
+  justify-items: end;
+  gap: var(--space-2);
+  margin: 0;
+}
+.trip-overview-day-foot > span:last-child {
+  margin-left: 0;
+}
+.trip-open-count {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--accent);
+}
+
+.trip-overview-section {
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding-top: var(--space-6);
+  border-top: var(--border-subtle);
+}
+.trip-section-heading {
+  align-items: baseline;
+  padding: 0;
+}
+.trip-section-heading h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 650;
+}
+.trip-highlight-grid,
+.trip-open-decisions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  border-top: var(--border-subtle);
+}
+.trip-highlight-card,
+.trip-open-decision {
+  padding: var(--space-4) 0;
+  border: 0;
+  border-bottom: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+}
+.trip-highlight-card h3,
+.trip-open-decision strong {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 650;
+}
+.trip-highlight-card p,
+.trip-open-decision p {
+  max-width: 64ch;
+}
+.trip-open-decision:hover {
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+}
+.trip-open-decision:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.trip-route-summary {
+  max-width: var(--content-reading);
+  padding: var(--space-3) 0 var(--space-5);
+  border: 0;
+  border-block: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+}
+.trip-route-heading {
+  margin-bottom: var(--space-3);
+}
+.trip-route-heading h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 650;
+}
+.trip-route-endpoints {
+  padding: var(--space-3) 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.trip-route-steps {
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.trip-route-steps span {
+  min-height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.trip-route-steps b {
+  border-radius: var(--radius-sm);
+}
+
+.trip-v2-timeline {
+  padding: 0;
+  border: 0;
+  border-top: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+}
+.trip-stop-wrap {
+  border-bottom: var(--border-subtle);
+}
+.trip-v2-item {
+  padding-block: var(--space-5);
+}
+.trip-v2-item .timeline-content h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 650;
+}
+.trip-v2-item .type-pill {
+  background: transparent;
+  padding-inline: 0;
+}
+.trip-transfer {
+  margin-top: calc(-1 * var(--space-2));
+  margin-bottom: var(--space-2);
+  padding-top: 0;
+  padding-bottom: var(--space-3);
+}
+.trip-transfer-copy strong {
+  color: var(--muted);
+  font-weight: 760;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.trip-transfer-copy p {
+  max-width: 62ch;
+}
+.trip-icon-action,
+.trip-action-menu > summary {
+  border-radius: var(--radius-sm);
+}
+
+@media (min-width: 900px) and (min-height: 601px) {
+  .trip-overview-days,
+  .trip-highlight-grid,
+  .trip-open-decisions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .trip-overview-hero {
+    padding: var(--space-6) 0 var(--space-10);
+  }
+  .trip-overview-day {
+    grid-template-columns: 110px minmax(0, 1fr) 120px;
+    min-height: 126px;
+    padding-block: var(--space-6);
+  }
+  .trip-v2-timeline {
+    padding: 0;
+  }
+  .trip-v2-item {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .trip-transfer {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 520px) {
+  .trip-v2 {
+    gap: var(--space-6);
+  }
+  .trip-overview-hero,
+  .trip-day-view > .day-summary {
+    padding: var(--space-2) 0 var(--space-6);
+  }
+  .trip-overview-hero h2,
+  .trip-day-view > .day-summary h2 {
+    font-size: clamp(2rem, 10vw, 3.25rem);
+  }
+  .trip-overview-day {
+    grid-template-columns: 70px minmax(0, 1fr);
+    grid-template-areas:
+      "meta title"
+      "meta route"
+      "meta foot";
+    gap: var(--space-1) var(--space-3);
+    padding-block: var(--space-4);
+  }
+  .trip-overview-day-foot {
+    justify-items: start;
+    grid-auto-flow: column;
+    justify-content: start;
+    margin-top: var(--space-2);
+  }
+  .trip-route-summary {
+    padding: var(--space-3) 0;
+  }
+}
