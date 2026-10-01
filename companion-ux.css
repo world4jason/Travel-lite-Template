@@ -562,3 +562,174 @@
   font-size: var(--text-sm);
   line-height: 1.4;
 }
+
+
+/* #52 — Map is a spatial-reference surface, not a dashboard panel. */
+.map-view {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.map-view .map-day-tabs {
+  margin-bottom: 0;
+}
+.runtime-map-panel {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.runtime-map-panel .map-heading {
+  margin: 0 0 var(--space-3);
+  padding: 0;
+}
+.runtime-map-panel .map-heading h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 650;
+}
+.runtime-map-panel .place-chips {
+  margin-bottom: var(--space-3);
+}
+.runtime-map-panel .place-chip {
+  min-height: 36px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+}
+.runtime-map-panel .place-chip.active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+.map-stage {
+  position: relative;
+  overflow: hidden;
+  border: var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.runtime-map-panel .interactive-map {
+  min-height: 420px;
+  height: min(66vh, 720px);
+  border-radius: 0;
+}
+.runtime-map-panel .selected-place-card {
+  margin: 0;
+  padding: var(--space-4) 0 0;
+  border-top: 0;
+  background: transparent;
+}
+.runtime-map-panel .selected-place-card h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 650;
+}
+.map-library-fallback {
+  min-height: inherit;
+  padding: clamp(28px, 7vw, 64px);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 5%, transparent), transparent 60%),
+    var(--surface-2);
+}
+.map-fallback-copy {
+  width: min(100%, 34rem);
+  margin: auto;
+  text-align: left;
+}
+.map-fallback-copy strong {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 650;
+}
+.map-fallback-copy p:last-child {
+  margin: 0;
+  color: var(--muted);
+  line-height: var(--leading-body);
+}
+.map-context-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.map-context-heading strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.map-context-heading span {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+.map-context-card h3 {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 650;
+}
+.map-context-card .shell-context-route,
+.map-context-card .shell-context-muted {
+  margin: 0 0 var(--space-2);
+  color: var(--muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+.map-context-card .companion-context-link {
+  margin-top: var(--space-3);
+}
+
+@media (min-width: 900px) and (min-height: 601px) {
+  .map-view {
+    gap: var(--space-4);
+  }
+  .runtime-map-panel .interactive-map {
+    min-height: 520px;
+    height: min(70vh, 760px);
+  }
+}
+
+@media (max-width: 899px), (max-height: 600px) {
+  #view-root.view-root--map > .map-view > .map-day-tabs {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .runtime-map-panel {
+    padding-top: var(--space-2);
+  }
+  .runtime-map-panel .map-heading,
+  .runtime-map-panel .place-chips {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .runtime-map-panel .map-stage {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+  .runtime-map-panel .interactive-map {
+    min-height: 320px;
+    height: clamp(320px, calc(100dvh - 292px), 720px);
+    max-height: 720px;
+  }
+  .runtime-map-panel .selected-place-card {
+    padding: var(--space-4) 16px calc(var(--space-5) + env(safe-area-inset-bottom));
+    border-top: var(--border-subtle);
+    background: var(--surface);
+  }
+}
+
+@media (max-height: 600px) {
+  .runtime-map-panel .interactive-map {
+    min-height: 220px;
+    height: clamp(220px, calc(100dvh - 172px), 420px);
+    max-height: 420px;
+  }
+}
