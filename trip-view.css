@@ -410,3 +410,57 @@
     padding: var(--space-3) 0;
   }
 }
+
+
+/* #48 scoped wide Trip context: concise supporting context, never a second main view. */
+.trip-context-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.trip-context-heading strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.trip-context-heading span {
+  flex: 0 1 auto;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.trip-context-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-2);
+}
+.trip-context-stats span {
+  min-width: 0;
+  color: var(--muted);
+  font-size: var(--text-xs);
+  line-height: 1.35;
+}
+.trip-context-stats b {
+  display: block;
+  color: var(--text);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 650;
+}
+.trip-context-card .shell-context-route,
+.trip-context-card .shell-context-muted {
+  margin: 0;
+  color: var(--muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+.trip-context-card .shell-reminder-list {
+  margin: var(--space-2) 0 0;
+  padding-left: var(--space-4);
+  color: var(--muted);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
