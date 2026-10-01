@@ -242,7 +242,7 @@
     root.innerHTML = `<div class="map-view">
       <div class="day-tabs map-day-tabs" aria-label="Map days">${dayTabs}</div>
       <section class="map-panel runtime-map-panel">
-        <div class="map-heading"><div><p class="eyebrow">Spatial reference</p><h2>${escapeHtml(selectedDay?.title || "Trip map")}</h2></div>${googleUrl ? `<a class="button-link map-heading-handoff" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Open in Google Maps ↗</a>` : ""}</div>
+        <div class="map-heading"><div><p class="eyebrow">Spatial reference</p><h2>${escapeHtml(selectedDay?.title || "Trip map")}</h2></div></div>
         ${placeChips ? `<div class="place-chips" aria-label="Planned stops">${placeChips}</div>` : ""}
         <div class="map-stage"><div id="runtime-map" class="interactive-map" aria-label="Interactive trip map"></div></div>
         ${selected ? `<div class="selected-place-card" aria-live="polite"><div><p class="eyebrow">Selected stop</p><h3>${escapeHtml(selected.title || selected.location || "Place")}</h3><p>${escapeHtml(selected.location || "")}</p></div>${googleUrl ? `<a class="button-link" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Ratings & navigation ↗</a>` : ""}</div>` : ""}
