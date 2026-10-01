@@ -493,7 +493,25 @@ for (const theme of ["light", "dark"]) {
 test("fully untimed current day renders Today Brief without widening the phone", async ({ page }) => {
   await boot(page, { width: 320, height: 568 }, { untimedToday: true });
   await expect(page.locator(".today-brief-card")).toBeVisible();
+  await expect(page.locator(".companion-window")).toHaveCount(0);
   await assertNoDocumentOverflow(page);
+});
+
+test("Now uses editorial composition primitives instead of a panel wall", async ({ page }) => {
+  await boot(page, { width: 390, height: 844 });
+  await expect(page.locator(".companion-focus.composition-identity.surface-open")).toBeVisible();
+  await expect(page.locator(".companion-operational.composition-operational")).toBeVisible();
+  await expect(page.locator(".companion-window.composition-sequence")).toBeVisible();
+  await expect(page.locator(".companion-now > .panel")).toHaveCount(0);
+});
+
+test("wide Now context rail complements the main schedule window instead of duplicating it", async ({ page }) => {
+  await boot(page, { width: 1600, height: 900 });
+  const primary = page.locator('[data-shell-context-slot="primary"]');
+  await expect(primary).toBeVisible();
+  await expect(page.locator(".companion-window .companion-window-card")).toHaveCount(3);
+  await expect(primary.locator(".companion-context-row")).toHaveCount(0);
+  await expect(primary.locator(".companion-now-aside")).toBeVisible();
 });
 
 test("trip-day deep link survives portrait -> landscape phone -> desktop -> portrait resize", async ({ page }) => {
