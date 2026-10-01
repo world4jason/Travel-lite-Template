@@ -280,3 +280,252 @@
   min-width: 0;
   overflow-wrap: anywhere;
 }
+
+
+/* #47 — Editorial Atlas Now composition.
+   Keep existing schedule semantics; change only hierarchy and spatial treatment. */
+.companion-now {
+  gap: var(--space-8);
+}
+.companion-now > .companion-focus,
+.companion-now > .companion-section,
+.companion-now > .weather-card {
+  max-width: var(--content-reading);
+}
+.companion-focus {
+  position: relative;
+  padding: var(--space-4) 0 var(--space-8);
+  border: 0;
+  border-bottom: var(--border-subtle);
+  background: transparent;
+}
+.companion-focus::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: var(--space-4);
+  width: clamp(48px, 12vw, 92px);
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  opacity: .9;
+}
+.companion-focus .status-row {
+  width: fit-content;
+  margin-bottom: var(--space-5);
+  color: var(--muted);
+}
+.companion-focus-top {
+  margin-top: 0;
+}
+.companion-focus h2 {
+  max-width: 17ch;
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: clamp(2.15rem, 7vw, 4.4rem);
+  font-weight: 650;
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+.companion-focus-top p,
+.companion-focus-note {
+  max-width: 58ch;
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+}
+.companion-focus .progress-wrap {
+  max-width: 42rem;
+  margin-top: var(--space-6);
+}
+.companion-focus .progress-track {
+  height: 3px;
+  border-radius: 0;
+}
+
+.companion-now > .weather-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border: 0;
+  border-block: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+}
+.companion-now > .weather-card .weather-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.companion-now > .weather-card h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+}
+.companion-now > .weather-card p {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: var(--text-sm);
+}
+
+.companion-window {
+  max-width: var(--content-main);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  padding: 0;
+  border-top: var(--border-subtle);
+}
+.companion-window-card {
+  position: relative;
+  min-width: 0;
+  padding: var(--space-4) var(--space-5) var(--space-5) 0;
+  border: 0;
+  border-bottom: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+}
+.companion-window-card + .companion-window-card {
+  padding-left: var(--space-5);
+  border-left: var(--border-subtle);
+}
+.companion-window-card.current {
+  border-color: var(--line);
+  background: transparent;
+}
+.companion-window-card.current::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: min(72px, 38%);
+  height: 3px;
+  background: var(--accent);
+}
+.companion-window-card.previous {
+  opacity: .62;
+}
+.companion-window-card.empty {
+  opacity: .45;
+}
+.companion-window-card > div:first-child > span {
+  color: var(--muted);
+  font-size: var(--text-xs);
+  letter-spacing: .12em;
+}
+.companion-window-card strong {
+  margin-top: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 650;
+  line-height: 1.15;
+}
+.companion-window-card p {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+}
+.companion-window-card .companion-compact-actions {
+  margin-top: var(--space-3);
+}
+
+.companion-section {
+  padding: var(--space-6) 0 0;
+  border: 0;
+  border-top: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+}
+.companion-section-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+.companion-section-heading h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 650;
+}
+.companion-later-list article,
+.companion-floating-list article,
+.companion-reminders > div {
+  min-height: 58px;
+  padding-block: var(--space-3);
+}
+.companion-floating-list .type-pill {
+  background: transparent;
+  padding-inline: 0;
+}
+.companion-reminders > div > span {
+  border-radius: var(--radius-sm);
+}
+.companion-complete {
+  max-width: var(--content-reading);
+  padding: var(--space-8) 0;
+  border: 0;
+  border-block: var(--border-subtle);
+  border-radius: 0;
+  background: transparent;
+}
+.companion-complete h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: 650;
+}
+
+@media (max-width: 899px), (max-height: 600px) {
+  .companion-now {
+    gap: var(--space-6);
+  }
+  .companion-focus {
+    padding-top: var(--space-2);
+  }
+  .companion-focus::after {
+    top: var(--space-2);
+    width: 52px;
+  }
+  .companion-focus h2 {
+    max-width: 15ch;
+    font-size: clamp(2rem, 11vw, 3.25rem);
+  }
+  .companion-window {
+    grid-template-columns: 1fr;
+  }
+  .companion-window-card,
+  .companion-window-card + .companion-window-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-1) var(--space-3);
+    padding: var(--space-4) 0;
+    border-left: 0;
+  }
+  .companion-window-card.current::before {
+    width: 44px;
+  }
+  .companion-window-card > div:first-child,
+  .companion-window-card strong,
+  .companion-window-card p {
+    grid-column: 1;
+  }
+  .companion-window-card .companion-compact-actions {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: center;
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 1400px) and (min-height: 601px) {
+  .companion-focus h2 {
+    font-size: clamp(3rem, 4.8vw, 5.2rem);
+  }
+  .companion-now {
+    gap: var(--space-10);
+  }
+}
