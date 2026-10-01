@@ -514,6 +514,57 @@ test("trip-day deep link survives portrait -> landscape phone -> desktop -> port
   }
 });
 
+
+test("desktop shell exposes stable right-context slots for view renderers", async ({ page }) => {
+  await boot(page, { width: 1600, height: 900 });
+  const right = page.locator(".shell-context-right");
+  await expect(right.locator("[data-shell-context-slot]")).toHaveCount(3);
+  await expect(right.locator(":scope > .shell-context-card, :scope > .shell-context-section")).toHaveCount(0);
+  await expect(right.locator('[data-shell-context-slot="primary"]')).not.toBeEmpty();
+  await expect(right).toBeVisible();
+
+  await page.evaluate(() => window.TravelLiteShellContext.clear());
+  await expect(right).toBeHidden();
+
+  await page.evaluate(() => {
+    const slot = window.TravelLiteShellContext.slot("secondary");
+    const note = document.createElement("p");
+    note.textContent = "Context supplied by a view renderer";
+    slot.replaceChildren(note);
+  });
+  await expect(right).toBeVisible();
+  await expect(right.locator('[data-shell-context-slot="secondary"]')).toContainText("Context supplied by a view renderer");
+});
+
+test("32-day desktop rail scrolls internally and keeps first/last day controls reachable", async ({ page }) => {
+  await boot(page, { width: 1100, height: 900 });
+  const rail = page.locator(".shell-context-left");
+  const list = rail.locator(".shell-day-list");
+  await expect(rail.locator("[data-shell-day]")).toHaveCount(32);
+
+  const metrics = await list.evaluate((el) => ({
+    clientHeight: el.clientHeight,
+    scrollHeight: el.scrollHeight,
+    overflowY: getComputedStyle(el).overflowY,
+  }));
+  expect(metrics.scrollHeight).toBeGreaterThan(metrics.clientHeight);
+  expect(metrics.overflowY).toBe("auto");
+
+  const controls = [rail.locator("[data-shell-day]").first(), rail.locator("[data-shell-day]").last()];
+  for (const control of controls) {
+    await control.scrollIntoViewIfNeeded();
+    await expect(control).toBeVisible();
+    const hit = await control.evaluate((el) => {
+      const box = el.getBoundingClientRect();
+      const x = box.left + box.width / 2;
+      const y = box.top + box.height / 2;
+      const target = document.elementFromPoint(x, y);
+      return Boolean(target && (target === el || el.contains(target)));
+    });
+    expect(hit).toBe(true);
+  }
+});
+
 test("trip-day deep link is applied even when trip.json takes longer than 5s", async ({ page }) => {
   test.setTimeout(45_000);
   await boot(page, { width: 390, height: 844 }, { hash: `#trip/day/${TODAY}`, tripDelayMs: 6_000 });
@@ -543,7 +594,10 @@ test("enhancement layers initialise when trip.json takes longer than 5s", async 
   await page.reload();
   await expect(page.locator("#trip-title")).toContainText("32-day", { timeout: 11_000 });
   await expect(page.locator(".shell-context-left [data-shell-day]")).toHaveCount(32);
-  await expect(page.locator(".shell-context-right")).not.toBeEmpty();
+  await expect(page.locator(".shell-context-right [data-shell-context-host]")).toHaveCount(1);
+  await expect(page.locator(".shell-context-right [data-shell-context-slot]")).toHaveCount(3);
+  await expect(page.locator('.shell-context-right [data-shell-context-slot="primary"]')).not.toBeEmpty();
+  await expect(page.locator(".shell-context-right")).toBeVisible();
 
   // Dark system theme: Map uses the dark style (theme-shell.js syncMapStyle).
   await page.emulateMedia({ colorScheme: "dark" });
