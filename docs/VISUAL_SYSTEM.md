@@ -533,6 +533,52 @@ No trip may select a different “theme personality” that changes these fundam
 
 ---
 
+# Implemented foundation vocabulary
+
+Issue #45 maps this contract to reusable CSS primitives. Downstream tickets should use these shared values/classes before adding local magic numbers.
+
+## Semantic tokens
+
+| Role | CSS tokens |
+| --- | --- |
+| Theme | `--bg`, `--bg-top`, `--surface`, `--surface-2`, `--text`, `--muted`, `--line`, `--accent`, `--accent-soft`, `--success` |
+| Typography | `--font-display`, `--font-utility`, `--text-xs` through `--text-display`, `--leading-tight`, `--leading-body` |
+| Spacing | `--space-1`, `--space-2`, `--space-3`, `--space-4`, `--space-5`, `--space-6`, `--space-8`, `--space-10`, `--space-12` |
+| Content widths | `--content-reading`, `--content-main` |
+| Shape | `--radius-sm`, `--radius-md`, `--radius-lg`, `--radius-pill`, `--border-subtle` |
+| Elevation | `--shadow`, `--shadow-float` — reserved for genuinely layered/floating UI |
+| Interaction | `--focus-ring`, `--focus-offset` |
+| Motion | `--motion-fast`, `--motion-base`, `--motion-slow`, `--ease-standard` |
+
+`trip.accent` continues to supply `--accent`; the token system must not reinterpret accent as semantic status.
+
+## Composition primitives
+
+| Visual-system role | Shared CSS primitive |
+| --- | --- |
+| Trip identity / hero | `.composition-identity` |
+| Operational strip | `.composition-operational` |
+| Narrative section | `.composition-narrative` |
+| Sequence / timeline | `.composition-sequence` |
+| Inline utility | `.composition-inline` |
+| Context aside | `.composition-aside` |
+
+These primitives are intentionally structural. They do not encode trip data, destination logic, or breakpoint-specific business behavior.
+
+## Structural surface treatments
+
+Three distinct shared treatments are available:
+
+- `.surface-open` — spacing/typography-led grouping with no container chrome;
+- `.surface-contained` — restrained boundary for controls or true semantic grouping;
+- `.surface-emphasis` — accent rule + quiet tint for exceptional callouts/decisions.
+
+Do not create new “card variants” when one of these structural treatments and the composition primitives can express the hierarchy.
+
+Legacy `.panel` remains supported during staged migration, but its foundation treatment is now deliberately quieter: restrained radius, subtle border, and no default blur/shadow. View tickets should progressively choose a semantic composition/surface role rather than wrapping every new block in `.panel`.
+
+---
+
 # Accessibility and robustness requirements
 
 Downstream implementation must preserve:
