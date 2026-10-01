@@ -88,7 +88,7 @@
   function briefHtml(context) {
     const day = context.today;
     const route = routeStops(day);
-    return `<section class="panel today-brief-card">
+    return `<section class="today-brief-card composition-narrative">
       <div class="today-brief-heading">
         <div><p class="eyebrow">${escapeHtml(label("today", "Today", "今天"))} · ${escapeHtml(day.label || prettyDate(day.date, { weekday: "short" }))}</p><h2>${escapeHtml(day.title || label("todayBriefTitle", "Today at a glance", "今日摘要"))}</h2></div>
         <span>${day.items.length} ${escapeHtml(label("todayBriefPlans", "plans", "項"))}</span>
