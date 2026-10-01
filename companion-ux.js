@@ -378,7 +378,8 @@
   }
 
   function renderContextRail() {
-    const right = document.querySelector("#shell-right");
+    const rail = document.querySelector("#shell-right");
+    const right = window.TravelLiteShellContext?.slot?.("primary") || rail;
     if (!right || !state?.data) return;
     const context = getNowContext();
     const day = state.data.days.find((candidate) => candidate.date === state.selectedDate) || context.today || state.data.days[0];
