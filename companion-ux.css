@@ -562,3 +562,53 @@
   font-size: var(--text-sm);
   line-height: 1.4;
 }
+
+
+/* #52 — mobile full-bleed and compact-map chrome. */
+@media (max-width: 899px), (max-height: 600px) {
+  #view-root.view-root--map > .map-day-tabs {
+    padding-inline: var(--shell-gutter);
+    margin-bottom: var(--space-2);
+  }
+  .runtime-map-panel {
+    padding-top: 0;
+  }
+  .runtime-map-panel .map-heading-minimal,
+  .runtime-map-panel .map-stop-strip {
+    padding-inline: var(--shell-gutter);
+  }
+  .runtime-map-panel .map-heading-minimal {
+    padding-top: var(--space-2);
+  }
+  .runtime-map-panel .map-stage {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
+  .runtime-map-panel .interactive-map {
+    min-height: 360px;
+    height: clamp(360px, calc(100dvh - 250px), 760px);
+    max-height: none;
+    border-radius: 0;
+  }
+  .runtime-map-panel .map-selected-stop {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    grid-template-columns: 34px minmax(0, 1fr);
+  }
+  .runtime-map-panel .map-selected-index {
+    width: 32px;
+    height: 32px;
+  }
+  .runtime-map-panel .map-handoff-link {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .map-heading-note { display: none; }
+  .map-stop-chip { max-width: 70vw; }
+  .map-selected-copy h3 { font-size: var(--text-md); }
+}
