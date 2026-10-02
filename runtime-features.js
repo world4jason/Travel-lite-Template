@@ -174,7 +174,7 @@
 
     const mappable = items.filter(itemCoordinates);
     if (!mappable.length) {
-      container.innerHTML = `<div class="map-library-fallback">No coordinates are available for this day. Add lat/lng during vibe-time, or use the Google Maps handoff on an itinerary card.</div>`;
+      container.innerHTML = `<div class="map-library-fallback"><div><strong>No mapped stops for this day.</strong><p>The itinerary is still available. Open a stop in Google Maps when a location link is available.</p></div></div>`;
       return;
     }
 
@@ -214,7 +214,7 @@
     } catch (error) {
       if (generation !== mapInitGeneration) return;
       console.warn("MapLibre unavailable", error);
-      container.innerHTML = `<div class="map-library-fallback"><strong>Interactive map unavailable.</strong><br>Trip data and Google Maps links still work.</div>`;
+      container.innerHTML = `<div class="map-library-fallback"><div><strong>Map temporarily unavailable.</strong><p>Your planned stops and Google Maps handoff remain available below.</p></div></div>`;
     }
   }
 
@@ -233,18 +233,21 @@
       `<button class="day-chip ${day.date === state.selectedDate ? "active" : ""}" type="button" data-runtime-map-date="${escapeAttr(day.date)}"><strong>${escapeHtml(day.label)}</strong><small>${prettyDate(day.date)}</small></button>`
     ).join("");
 
-    const placeChips = items.map((item) =>
-      `<button class="place-chip ${item.id === state.selectedMapItemId ? "active" : ""}" type="button" data-runtime-map-place="${escapeAttr(item.id)}"><span>${escapeHtml(item.start || "")}</span>${escapeHtml(item.title)}</button>`
+    const placeChips = items.map((item, index) =>
+      `<button class="place-chip map-stop-chip ${item.id === state.selectedMapItemId ? "active" : ""}" type="button" data-runtime-map-place="${escapeAttr(item.id)}" aria-pressed="${item.id === state.selectedMapItemId ? "true" : "false"}"><span class="map-stop-sequence" aria-hidden="true">${index + 1}</span><span class="map-stop-copy"><small>${escapeHtml(item.start || "TBD")}</small><strong>${escapeHtml(item.title || item.location || "Stop")}</strong></span></button>`
     ).join("");
 
     const googleUrl = selected ? googleMapsOpenUrl(selected) : "";
+    const selectedIndex = selected ? items.findIndex((item) => item.id === selected.id) : -1;
 
-    root.innerHTML = `<div class="day-tabs" aria-label="Map days">${dayTabs}</div>
-      <section class="panel map-panel runtime-map-panel">
-        <div class="map-heading"><div><p class="eyebrow">Trip map</p><h2>${escapeHtml(selectedDay?.title || "Trip map")}</h2></div>${googleUrl ? `<a class="button-link" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Google Maps ↗</a>` : ""}</div>
-        ${placeChips ? `<div class="place-chips">${placeChips}</div>` : ""}
-        <div id="runtime-map" class="interactive-map" aria-label="Interactive trip map"></div>
-        ${selected ? `<div class="selected-place-card"><div><p class="eyebrow">Selected stop</p><h3>${escapeHtml(selected.title || selected.location || "Place")}</h3><p>${escapeHtml(selected.location || "")}</p></div>${googleUrl ? `<a class="button-link" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Ratings & navigation ↗</a>` : ""}</div>` : ""}
+    root.innerHTML = `<div class="day-tabs map-day-tabs" aria-label="Map days">${dayTabs}</div>
+      <section class="runtime-map-panel composition-context">
+        <div class="map-heading map-heading-minimal"><div><p class="eyebrow">Spatial reference</p><h2>${escapeHtml(selectedDay?.title || "Trip map")}</h2></div><p class="map-heading-note">${items.length} planned stop${items.length === 1 ? "" : "s"}</p></div>
+        ${placeChips ? `<div class="place-chips map-stop-strip" aria-label="Planned stops">${placeChips}</div>` : ""}
+        <div class="map-stage">
+          <div id="runtime-map" class="interactive-map" aria-label="Interactive trip map"></div>
+          ${selected ? `<div class="selected-place-card map-selected-stop"><div class="map-selected-index" aria-hidden="true">${selectedIndex + 1}</div><div class="map-selected-copy"><p class="eyebrow">Selected stop</p><h3>${escapeHtml(selected.title || selected.location || "Place")}</h3><p>${escapeHtml([selected.start || "", selected.location || ""].filter(Boolean).join(" · "))}</p></div>${googleUrl ? `<a class="button-link map-handoff-link" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Open in Google Maps ↗</a>` : ""}</div>` : ""}
+        </div>
       </section>`;
 
     root.querySelectorAll("[data-runtime-map-date]").forEach((button) => button.addEventListener("click", () => {
