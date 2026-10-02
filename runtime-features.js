@@ -174,7 +174,10 @@
 
     const mappable = items.filter(itemCoordinates);
     if (!mappable.length) {
-      container.innerHTML = `<div class="map-library-fallback">No coordinates are available for this day. Add lat/lng during vibe-time, or use the Google Maps handoff on an itinerary card.</div>`;
+      container.innerHTML = `<div class="map-library-state map-library-fallback" role="status">
+        <span class="map-state-mark" aria-hidden="true">⌖</span>
+        <div><p class="eyebrow">Spatial reference</p><strong>No mapped stops for this day</strong><p>The itinerary still works normally. Use the stop details and map handoff below when available.</p></div>
+      </div>`;
       return;
     }
 
@@ -198,10 +201,13 @@
         bounds.extend([coord.lng, coord.lat]);
 
         const el = document.createElement("button");
-        el.className = `map-marker ${item.id === selected?.id ? "active" : ""}`;
+        const markerSelected = item.id === selected?.id;
+        el.className = `map-marker ${markerSelected ? "active" : ""}`;
         el.type = "button";
         el.textContent = item.start || "•";
         el.title = item.title || item.location || "Trip stop";
+        el.setAttribute("aria-label", `${markerSelected ? "Selected stop: " : "Select stop: "}${item.title || item.location || "Trip stop"}`);
+        el.setAttribute("aria-pressed", markerSelected ? "true" : "false");
         el.addEventListener("click", () => {
           state.selectedMapItemId = item.id;
           renderMap();
@@ -214,7 +220,10 @@
     } catch (error) {
       if (generation !== mapInitGeneration) return;
       console.warn("MapLibre unavailable", error);
-      container.innerHTML = `<div class="map-library-fallback"><strong>Interactive map unavailable.</strong><br>Trip data and Google Maps links still work.</div>`;
+      container.innerHTML = `<div class="map-library-state map-library-fallback" role="status">
+        <span class="map-state-mark" aria-hidden="true">⌖</span>
+        <div><p class="eyebrow">Map fallback</p><strong>Interactive map unavailable</strong><p>Your planned stops and external map handoffs remain available.</p></div>
+      </div>`;
     }
   }
 
@@ -233,18 +242,21 @@
       `<button class="day-chip ${day.date === state.selectedDate ? "active" : ""}" type="button" data-runtime-map-date="${escapeAttr(day.date)}"><strong>${escapeHtml(day.label)}</strong><small>${prettyDate(day.date)}</small></button>`
     ).join("");
 
-    const placeChips = items.map((item) =>
-      `<button class="place-chip ${item.id === state.selectedMapItemId ? "active" : ""}" type="button" data-runtime-map-place="${escapeAttr(item.id)}"><span>${escapeHtml(item.start || "")}</span>${escapeHtml(item.title)}</button>`
-    ).join("");
+    const placeChips = items.map((item) => {
+      const active = item.id === state.selectedMapItemId;
+      return `<button class="place-chip ${active ? "active" : ""}" type="button" data-runtime-map-place="${escapeAttr(item.id)}" aria-pressed="${active ? "true" : "false"}"><span>${escapeHtml(item.start || "")}</span>${escapeHtml(item.title)}</button>`;
+    }).join("");
 
     const googleUrl = selected ? googleMapsOpenUrl(selected) : "";
 
-    root.innerHTML = `<div class="day-tabs" aria-label="Map days">${dayTabs}</div>
-      <section class="panel map-panel runtime-map-panel">
-        <div class="map-heading"><div><p class="eyebrow">Trip map</p><h2>${escapeHtml(selectedDay?.title || "Trip map")}</h2></div>${googleUrl ? `<a class="button-link" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Google Maps ↗</a>` : ""}</div>
-        ${placeChips ? `<div class="place-chips">${placeChips}</div>` : ""}
-        <div id="runtime-map" class="interactive-map" aria-label="Interactive trip map"></div>
-        ${selected ? `<div class="selected-place-card"><div><p class="eyebrow">Selected stop</p><h3>${escapeHtml(selected.title || selected.location || "Place")}</h3><p>${escapeHtml(selected.location || "")}</p></div>${googleUrl ? `<a class="button-link" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Ratings & navigation ↗</a>` : ""}</div>` : ""}
+    root.innerHTML = `<div class="day-tabs map-day-tabs" aria-label="Map days">${dayTabs}</div>
+      <section class="map-panel runtime-map-panel composition-narrative" aria-label="Trip spatial reference">
+        <div class="map-heading"><div><p class="eyebrow">Spatial reference</p><h2>${escapeHtml(selectedDay?.title || "Trip map")}</h2><p class="map-heading-copy">Planned stops only · select a stop for context</p></div>${googleUrl ? `<a class="button-link map-primary-handoff" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Open in Maps ↗</a>` : ""}</div>
+        ${placeChips ? `<div class="place-chips" aria-label="Planned stops">${placeChips}</div>` : ""}
+        <div class="map-stage">
+          <div id="runtime-map" class="interactive-map" aria-label="Interactive trip map"><div class="map-library-state map-library-loading" role="status"><span class="map-state-mark" aria-hidden="true">⌖</span><div><p class="eyebrow">Spatial reference</p><strong>Loading planned stops…</strong><p>Trip details remain available while the map loads.</p></div></div></div>
+        </div>
+        ${selected ? `<div class="selected-place-card map-selected-summary" aria-label="Selected stop"><div><p class="eyebrow">Selected stop · ${escapeHtml(selected.start || "TBD")}</p><h3>${escapeHtml(selected.title || selected.location || "Place")}</h3><p>${escapeHtml(selected.location || "")}</p></div>${googleUrl ? `<a class="button-link map-secondary-handoff" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Navigation ↗</a>` : ""}</div>` : ""}
       </section>`;
 
     root.querySelectorAll("[data-runtime-map-date]").forEach((button) => button.addEventListener("click", () => {
