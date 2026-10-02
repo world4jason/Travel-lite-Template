@@ -831,3 +831,55 @@ test("missing trip cover preserves the canonical no-cover composition", async ({
   await expect(page.locator("#trip-title")).toBeVisible();
   await assertNoDocumentOverflow(page);
 });
+
+
+test("#52 Map selected stop has structural state, not color-only state", async ({ page }) => {
+  await boot(page, { width: 390, height: 844 });
+  await openView(page, "map");
+
+  const chips = page.locator("[data-runtime-map-place]");
+  await expect(chips.first()).toHaveAttribute("aria-pressed", "true");
+  await expect(chips.first().locator(".map-stop-sequence")).toHaveText("1");
+  await expect(page.locator(".map-selected-stop .map-selected-index")).toHaveText("1");
+
+  if (await chips.count() > 1) {
+    await chips.nth(1).click();
+    await expect(chips.nth(1)).toHaveAttribute("aria-pressed", "true");
+    await expect(chips.first()).toHaveAttribute("aria-pressed", "false");
+    await expect(page.locator(".map-selected-stop .map-selected-index")).toHaveText("2");
+  }
+
+  await assertNoDocumentOverflow(page);
+  await assertControlsReachable(page);
+});
+
+test("#52 Map fallback uses traveller-facing copy and keeps handoff reachable", async ({ page }) => {
+  await boot(page, { width: 390, height: 844 });
+  await page.route(`${MAPLIBRE_CDN}**`, (route) => route.abort());
+  await openView(page, "map");
+
+  const fallback = page.locator("#runtime-map .map-library-fallback");
+  await expect(fallback).toBeVisible();
+  await expect(fallback).toContainText("Map temporarily unavailable");
+  await expect(fallback).not.toContainText(/vibe-time|lat\/lng|implementation/i);
+  await expect(page.locator(".map-selected-stop .map-handoff-link")).toBeVisible();
+  await assertNoDocumentOverflow(page);
+  await assertControlsReachable(page);
+});
+
+test("#52 Map remains the dominant surface on phone and wide desktop", async ({ page }) => {
+  await boot(page, { width: 390, height: 844 });
+  await openView(page, "map");
+  await assertMapFullBleed(page);
+
+  const phoneMap = await page.locator("#runtime-map").boundingBox();
+  expect(phoneMap.height).toBeGreaterThan(350);
+
+  await page.setViewportSize({ width: 1600, height: 900 });
+  const desktopMap = await page.locator("#runtime-map").boundingBox();
+  const panel = await page.locator(".runtime-map-panel").boundingBox();
+  expect(desktopMap.width).toBeGreaterThan(panel.width * 0.85);
+  expect(desktopMap.height).toBeGreaterThan(500);
+  await assertNoDocumentOverflow(page);
+  await assertControlsReachable(page);
+});
