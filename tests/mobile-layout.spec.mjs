@@ -831,3 +831,40 @@ test("missing trip cover preserves the canonical no-cover composition", async ({
   await expect(page.locator("#trip-title")).toBeVisible();
   await assertNoDocumentOverflow(page);
 });
+
+
+test("#52 Map selected stop is structurally identifiable and keyboard-reachable", async ({ page }) => {
+  await boot(page, { width: 390, height: 844 });
+  await openView(page, "map");
+
+  const chips = page.locator("[data-runtime-map-place]");
+  await expect(chips.first()).toHaveAttribute("aria-pressed", "true");
+  await expect(chips.first()).toHaveClass(/active/);
+  await chips.first().focus();
+  await expect(chips.first()).toBeFocused();
+
+  if (await chips.count() > 1) {
+    await chips.nth(1).click();
+    await expect(chips.nth(1)).toHaveAttribute("aria-pressed", "true");
+    await expect(chips.first()).toHaveAttribute("aria-pressed", "false");
+  }
+
+  await assertNoDocumentOverflow(page);
+  await assertControlsReachable(page);
+});
+
+test("#52 Map fallback remains traveller-facing and handoff-safe", async ({ page }) => {
+  await boot(page, { width: 390, height: 844 });
+  await page.route(`${MAPLIBRE_CDN}**`, (route) => route.abort());
+  await page.locator('#bottom-nav [data-view="map"]').click();
+
+  const fallback = page.locator("#runtime-map .map-library-fallback");
+  await expect(fallback).toBeVisible();
+  await expect(fallback).toContainText("Interactive map unavailable");
+  await expect(fallback).not.toContainText(/vibe-time|lat\/lng|implementation/i);
+
+  await expect(page.locator(".map-selected-summary")).toBeVisible();
+  await expect(page.locator(".map-selected-summary a[href*='google.com/maps']").first()).toBeVisible();
+  await assertNoDocumentOverflow(page);
+  await assertControlsReachable(page);
+});
