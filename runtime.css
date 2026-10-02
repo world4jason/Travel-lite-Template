@@ -9,12 +9,28 @@
 .map-handoff strong { display: block; margin-bottom: 5px; }
 .map-handoff p { margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.4; }
 
-.runtime-map-panel { padding-bottom: 16px; }
-.interactive-map { width: 100%; height: min(58vh, 520px); min-height: 360px; overflow: hidden; border-radius: 18px; background: var(--surface-2); }
-.map-library-fallback { min-height: 360px; display: grid; place-items: center; padding: 30px; color: var(--muted); text-align: center; line-height: 1.5; }
-.map-marker { appearance: none; min-width: 34px; height: 34px; padding: 0 8px; border: 2px solid white; border-radius: 999px; background: var(--accent); color: white; box-shadow: 0 4px 14px rgba(0,0,0,.35); font: 700 .7rem/1 system-ui, sans-serif; cursor: pointer; }
-.map-marker.active { transform: scale(1.18); background: #111827; }
+.runtime-map-panel { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.map-heading { align-items: end; margin-bottom: var(--space-4); }
+.map-heading h2 { margin: var(--space-1) 0 0; }
+.map-heading-copy { margin: var(--space-2) 0 0; color: var(--muted); font-size: var(--text-sm); }
+.map-primary-handoff { display: none; }
+.map-primary-handoff, .map-secondary-handoff { flex: 0 0 auto; }
+.runtime-map-panel .place-chip.active { font-weight: 800; }
+.runtime-map-panel .place-chip.active::before { content: "●"; margin-right: 6px; font-size: .55rem; vertical-align: middle; }
+.map-stage { position: relative; overflow: hidden; border-radius: var(--radius-lg); background: var(--surface-2); }
+.interactive-map { width: 100%; height: clamp(420px, 62vh, 680px); min-height: 420px; overflow: hidden; background: var(--surface-2); }
+.map-library-state { min-height: inherit; height: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr); place-content: center; gap: var(--space-4); padding: clamp(28px, 6vw, 64px); color: var(--muted); text-align: left; line-height: 1.5; }
+.map-library-state strong { display: block; margin-bottom: var(--space-1); color: var(--text); font-size: var(--text-lg); }
+.map-library-state p { max-width: 38rem; margin: 0; }
+.map-library-state .eyebrow { margin-bottom: var(--space-2); }
+.map-state-mark { width: 42px; height: 42px; display: grid; place-items: center; border: var(--border-subtle); border-radius: 50%; color: var(--accent); font-size: 1.35rem; }
+.map-library-loading .map-state-mark { animation: map-pulse var(--motion-slow) var(--ease-standard) infinite alternate; }
+.map-marker { appearance: none; min-width: 34px; height: 34px; padding: 0 8px; border: 2px solid white; border-radius: 999px; background: var(--accent); color: white; box-shadow: 0 4px 14px rgba(0,0,0,.35); font: 700 .7rem/1 system-ui, sans-serif; cursor: pointer; transition: transform var(--motion-fast) var(--ease-standard), box-shadow var(--motion-fast) var(--ease-standard); }
+.map-marker.active { transform: scale(1.22); background: var(--text); color: var(--bg); box-shadow: 0 0 0 5px var(--accent-soft), 0 7px 24px rgba(0,0,0,.28); }
+.map-marker:focus-visible { outline: var(--focus-ring); outline-offset: var(--focus-offset); }
+.map-selected-summary { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); margin-top: var(--space-4); padding: var(--space-4) 0 0; border-top: var(--border-subtle); }
 .selected-place-card { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; margin-top: 14px; padding: 14px 2px 0; }
+@keyframes map-pulse { from { transform: scale(.92); opacity: .55; } to { transform: scale(1.06); opacity: 1; } }
 .selected-place-card h3 { margin: 0 0 5px; }
 .selected-place-card p { margin: 0; color: var(--muted); font-size: .82rem; }
 .selected-place-card > .action-row,
@@ -37,4 +53,11 @@
 @media (max-width: 520px) {
   .interactive-map { min-height: 320px; height: 48vh; }
   .selected-place-card, .map-handoff { align-items: flex-start; flex-direction: column; }
+}
+
+
+@media (min-width: 1400px) and (min-height: 601px) {
+  .map-primary-handoff { display: inline-flex; }
+  .runtime-map-panel .map-selected-summary { display: none; }
+  .runtime-map-panel .interactive-map { height: clamp(560px, 68vh, 760px); }
 }
