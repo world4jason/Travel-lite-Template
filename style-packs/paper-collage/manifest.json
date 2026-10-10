@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "paper-collage",
+  "displayName": "Paper Collage",
+  "sourceBriefId": "paper-collage",
+  "sourceBriefPath": "../../style-generator/examples/paper-collage.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/paper-collage.md",
+  "stage": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "paper-collage",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "gentle-and-reducible",
+  "css": [
+    "../../storybook-theme.css",
+    "../../paper-collage-theme.css"
+  ],
+  "assetDirectory": "../../assets/paper-collage",
+  "assets": [
+    "hero.svg",
+    "marker.svg",
+    "street.svg"
+  ],
+  "palette": {
+    "ivory": "#FAF3E4",
+    "ink": "#304C49",
+    "cut-paper": "#F2DCC8",
+    "teal": "#467C78",
+    "peach": "#D98D87"
+  },
+  "materialRules": [
+    "3+ visibly layered matte-cardstock cutouts",
+    "soft contact shadows only at paper surfaces",
+    "editorial type hierarchy",
+    "foreground/midground/background masking"
+  ],
+  "sourceVsOutputBoundary": "No photo scene, location or original-card title is asserted. Dynamic trip title remains authoritative.",
+  "acceptanceTests": [
+    "tests/nine-looks.spec.mjs",
+    "tests/four-pack-manifests.test.mjs"
+  ]
+}

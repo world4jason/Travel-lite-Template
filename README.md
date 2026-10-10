@@ -166,7 +166,7 @@ Built-in companion/shell labels cover English and Traditional Chinese; trip cont
 
 ## Visual Style Packs — Editorial, Storybook, Candy and Risograph
 
-Travel Lite ships **four reviewed visual styles**. The publisher chooses the shared default; travellers may temporarily or persistently override the appearance on their own device. Editorial is still the default and supports Auto / Light / Dark. Storybook, Candy Geometry and Risograph Zine are fixed-light styles. All four reuse one itinerary, navigation, map, checklist and offline application; only their visual layout and bundled decorative assets differ. [See Style Pack implementation notes and source evidence](./style-packs/README.md).
+Travel Lite ships **eight reviewed Style Packs (nine visible appearances)**. The publisher chooses the shared default; travellers may temporarily or persistently override the appearance on their own device. Editorial is still the default and supports Auto / Light / Dark. Storybook, Candy Geometry and Risograph Zine are fixed-light styles. All four reuse one itinerary, navigation, map, checklist and offline application; only their visual layout and bundled decorative assets differ. [See Style Pack implementation notes and source evidence](./style-packs/README.md).
 
 For one-click comparison with the built-in Tokyo sample (without changing its data):
 
@@ -174,10 +174,15 @@ For one-click comparison with the built-in Tokyo sample (without changing its da
 - [Storybook — illustrated notebook](https://world4jason.github.io/Travel-lite-Template/?previewStyle=storybook#trip/overview)
 - [Candy Geometry — rounded sticker art](https://world4jason.github.io/Travel-lite-Template/?previewStyle=candy#trip/overview)
 - [Risograph Zine — paper and indigo ink](https://world4jason.github.io/Travel-lite-Template/?previewStyle=risograph#trip/overview)
+- [Paper Collage — layered cut paper](https://world4jason.github.io/Travel-lite-Template/?previewStyle=paper-collage#trip/overview)
+- [Naive City Sketch — illustrated neighbourhood](https://world4jason.github.io/Travel-lite-Template/?previewStyle=naive-city#trip/overview)
+- [Taiwan Retro Poster — screenprint editorial](https://world4jason.github.io/Travel-lite-Template/?previewStyle=taiwan-poster#trip/overview)
+- [Field Stamp — hand-carved field notes](https://world4jason.github.io/Travel-lite-Template/?previewStyle=field-stamp#trip/overview)
+- **Editorial Dark**: choose it directly in More → Appearance (the same Editorial pack, dark color mode).
 
-**You can also switch directly in the website:** open **More → Appearance / 外觀**, select any of the four styles, or press **Follow trip default / 跟隨行程預設** to clear your personal preference. Switching is instant and does not reload or alter the public itinerary. Your selection is saved locally, per trip, in IndexedDB (with a localStorage fallback). A whitelisted `?previewStyle=...` sharing link temporarily overrides the device preference until you select or reset a style.
+**You can also switch directly in the website:** open **More → Appearance / 外觀**, select one of **nine appearance choices** (Editorial Light/Dark plus seven other styles), or press **Follow trip default / 跟隨行程預設** to clear your personal preference. Switching is instant and does not reload or alter the public itinerary. Your selection is saved locally, per trip, in IndexedDB (with a localStorage fallback). A whitelisted `?previewStyle=...` sharing link temporarily overrides the device preference until you select or reset a style.
 
-To select a built-in Style Pack for a *generated trip*, set this in `trip.json` (replace `storybook` with `candy` or `risograph`):
+To select a published Style Pack default for a *generated trip*, set `ui.visualStyle` to one of `editorial`, `storybook`, `candy`, `paper-collage`, `naive-city`, `risograph`, `taiwan-poster`, `field-stamp`. Editorial Light/Dark are `ui.theme` modes, not extra Style Pack IDs. Example:
 
 ```json
 {
@@ -216,14 +221,15 @@ Style Pack CSS is **disabled unless the site chooses that whitelisted pack**. Ca
 
 ## Style Prompt Lab — 將自然語言風格提示詞轉成 Style Brief
 
-目前 `editorial`、`storybook`、`candy`、`risograph` 是已實作並有驗收的 **Style Pack**。若你有不同用途的提示詞（插畫、明信片、Risograph、手刻印章、復古海報），可以先交給 [Style Prompt Lab](./style-generator/README.md) 拆解，不必自己預先知道 CSS 或 SVG。
+目前有八套可使用、已驗收的 **Style Pack**，其中六種來自你提供的六類原始提示詞（另有 Editorial 與 Megan Storybook）。使用者可以選擇九種外觀（Editorial Light/Dark 分開顯示）。若你有不同用途的提示詞（插畫、明信片、Risograph、手刻印章、復古海報），可以先交給 [Style Prompt Lab](./style-generator/README.md) 拆解，不必自己預先知道 CSS 或 SVG。
 
 - [使用者填空模板](./style-generator/templates/STYLE_REQUEST.md)
 - [可交給 LLM 使用的 Style Extractor Prompt](./style-generator/STYLE_EXTRACTOR_PROMPT.md)
 - [風格 JSON Schema](./style-generator/style.schema.json) 與 [六組實測範例](./style-generator/examples)
 - `npm run validate:styles`、`npm run test:styles`：驗證六組範例與規格約束，不需要 API Key
 - `npm run render:style-prompts`：把六份規格轉成[可重複填空的風格提示詞](./style-generator/generated-prompts)
-- `npm run test:packs`：驗證已實作 Candy / Risograph 的來源對應、SVG 五色與文字對比。
+- `npm run test:packs`：驗證六個由提示詞實作出的 Style Pack 的來源對應、SVG、紙雕／印刷材質語法與文字對比。
+- [新提示詞 E2E 驗收步驟](./style-generator/NEXT_PROMPT_E2E.md)：明確區分 style reference／實際目的地資料，再完成兩站視覺、資料與部署驗收。
 
 **重要：** 六份 Style Brief 並不是六套自動生效的網站外觀。本次只從其中兩份完成了 Candy / Risograph 的 CSS、SVG 與驗收，其餘仍是 `brief-only`。自訂名稱不會被當作 `ui.visualStyle` 使用；新 pack 需實作並驗收後才可加入白名單。沒有來源照片時，抽取器不會憑空猜測地標、實際照片顏色、招牌或來源文字。
 

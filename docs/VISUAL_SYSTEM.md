@@ -487,7 +487,7 @@ The editorial hierarchy and composition must remain recognizable in both themes.
 
 ## Bounded, opt-in visual style
 
-The original Editorial Atlas remains the **default system**. A later product decision added three explicit site-level styles—`storybook`, `candy` and `risograph`—validated through a fixed `ui.visualStyle` whitelist.
+The original Editorial Atlas remains the **default system**. A later product decision added seven explicit site-level styles—`storybook`, `candy`, `paper-collage`, `naive-city`, `risograph`, `taiwan-poster` and `field-stamp`—validated through a fixed `ui.visualStyle` whitelist.
 
 This is a **bounded exception** to the original 2026-09 no-preset direction. It was informed by a real user trip implementation and a requirement to reuse that outcome. It allows a **bounded built-in Style Pack picker in More → Appearance**, with a per-trip device-only override; it does not permit a free-form style editor, marketplace, arbitrary CSS/HTML injection or destination-dependent appearance inference.
 
@@ -497,6 +497,10 @@ This is a **bounded exception** to the original 2026-09 no-preset direction. It 
 | `storybook` | explicit publisher opt-in | paper white, 3px ink contours, large radii, Huninn, gentle SVG travel illustrations, light-only, reduced-motion support |
 | `candy` | reviewed Storybook variation | five sticker-fill SVG colors, rounded geometry, soft cards, accessible dark text, light-only, reduced motion |
 | `risograph` | reviewed standalone print pack | indigo ink, ivory paper grain, halftone and one warm graphic accent, serif hierarchy, static/light-only |
+| `paper-collage` | reviewed paper pack | matte layered cardstock, cut silhouettes, editorial serif and soft paper-contact shadows |
+| `naive-city` | reviewed gouache pack | deliberately wobbly ink outlines, crooked ordinary streets, matte water-based color blocks |
+| `taiwan-poster` | reviewed mid-century poster pack | navy/honey/brick print grammar and generic symbolic buildings, without photo or brand imitation |
+| `field-stamp` | reviewed engraved pack | imperfect carved strokes, dry ink, misregistration only in decorative images, no fixed record copy |
 
 Shared and invariant across styles:
 
@@ -507,7 +511,7 @@ Shared and invariant across styles:
 - semantic labels, focus states, legible contrast, keyboard and motion accessibility
 - phone, compact desktop and wide desktop reachability
 
-The visual language may vary **within these four controlled styles** (font families, surface grammar, radius, illustrations, timeline composition); the itinerary data model and workflow do not fork. The published default remains in `trip.json`, while a traveller may locally preview/switch using whitelisted IDs. Resetting follows the publisher default; the URL preview is temporary and higher precedence.
+The visual language may vary **within these eight controlled styles** (font families, surface grammar, radius, illustrations, timeline composition); the itinerary data model and workflow do not fork. The published default remains in `trip.json`, while a traveller may locally preview/switch using whitelisted IDs. Resetting follows the publisher default; the URL preview is temporary and higher precedence.
 
 All illustrative pack assets are local and whitelisted (`assets/storybook/`, `assets/candy/`, `assets/risograph/`). Storybook supports only built-in SVG illustration keys in `assets/storybook/`. Unknown art keys use the generic fallback and do not request remote images. No trip content may inject CSS, arbitrary URLs, scripts, fonts, animations, or external presets. Styles are applied by an isolated disabled-until-opted-in stylesheet, so default Editorial rendering remains unaffected.
 

@@ -8,7 +8,8 @@
     "test:styles": "node --test style-generator/tests/*.test.mjs",
     "validate:styles": "node style-generator/validate-style.mjs style-generator/examples",
     "render:style-prompts": "node style-generator/render-style-prompt.mjs style-generator/examples",
-    "test:packs": "node --test tests/pack-manifests.test.mjs"
+    "test:packs": "node --test tests/pack-manifests.test.mjs tests/four-pack-manifests.test.mjs",
+    "test:style-parity": "node scripts/verify-style-parity.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

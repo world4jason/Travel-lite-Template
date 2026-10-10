@@ -1,0 +1,241 @@
+/* Taiwan Retro Poster — 60s–70s inspired screenprint grammar.
+   Four user samples inform geometry, ink restraint and microtype; it does NOT
+   re-create or claim any photo, city landmark, sign, transport route or brand.
+   SPDX-License-Identifier: AGPL-3.0-or-later */
+:root[data-visual-style="taiwan-poster"] {
+  --paper:#F5E7C4;--ink:#143C56;--muted-ink:#39566A;
+  --coral:#B64D33;--yamabuki:#E3AF50;--water:#7EA9AC;--bamboo:#778366;
+  --bg:#F5E7C4;--bg-top:#F5E7C4;--surface:#FAECCE;--surface-2:#EDD6A9;
+  --text:#143C56;--muted:#39566A;--line:#143C56;--accent:#143C56!important;
+  --accent-soft:#E3AF50;--radius-md:2px;--radius-lg:2px;--font-display:Impact,"Arial Black","Noto Sans TC",sans-serif;
+  --font-utility:"Arial Narrow","Noto Sans TC",Arial,sans-serif;
+  color-scheme:light;
+}
+:root[data-visual-style="taiwan-poster"] body {
+  background:#F5E7C4!important;color:#143C56;background-image:none!important;
+}
+:root[data-visual-style="taiwan-poster"] body::before {
+  content:"";position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:url("./assets/risograph/grain.svg") center/225px repeat;opacity:.18;
+}
+:root[data-visual-style="taiwan-poster"] :is(.app-shell,.trip-header,#view-root,.bottom-nav,
+  .shell-context,.trip-overview-hero) {position:relative;z-index:2;}
+:root[data-visual-style="taiwan-poster"] * {
+  box-shadow:none!important;text-shadow:none!important;
+}
+:root[data-visual-style="taiwan-poster"] h1,
+:root[data-visual-style="taiwan-poster"] h2,
+:root[data-visual-style="taiwan-poster"] h3 {
+  color:#143C56;font-family:var(--font-display);font-weight:900;
+  letter-spacing:.015em;line-height:1.13;
+}
+:root[data-visual-style="taiwan-poster"] .eyebrow {
+  font:.7rem/1.4 var(--font-utility);font-weight:800;letter-spacing:.18em;
+  text-transform:uppercase;color:#143C56;
+}
+:root[data-visual-style="taiwan-poster"] .trip-header {
+  background:transparent;border:0;border-bottom:4px solid #143C56;border-radius:0;
+  padding:19px 7px 16px;margin-bottom:14px;
+}
+:root[data-visual-style="taiwan-poster"] #trip-location {
+  padding:3px 10px;background:#143C56;color:#F5E7C4;border:0;border-radius:0;
+  letter-spacing:.1em;font-size:.76rem;
+}
+:root[data-visual-style="taiwan-poster"] #trip-title {
+  font:900 clamp(1.75rem,4vw,3rem)/1.04 var(--font-display);letter-spacing:.018em;
+}
+:root[data-visual-style="taiwan-poster"] .trip-meta {color:#39566A;letter-spacing:.07em;font-size:.75rem;}
+:root[data-visual-style="taiwan-poster"] .live-time {
+  color:#143C56;background:#E3AF50;border:2px solid #143C56;border-radius:0;
+}
+:root[data-visual-style="taiwan-poster"] .panel,
+:root[data-visual-style="taiwan-poster"] .runtime-map-panel,
+:root[data-visual-style="taiwan-poster"] .companion-window-card,
+:root[data-visual-style="taiwan-poster"] .companion-focus,
+:root[data-visual-style="taiwan-poster"] .shell-context-slot {
+  border:2px solid #143C56;border-radius:0;background:#F5E7C4;color:#143C56;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-hero {
+  display:grid;grid-template-columns:minmax(0,1fr);
+  grid-template-areas:"eyebrow" "art" "title" "subtitle" "stats";
+  padding:10px;background:#F5E7C4;border:4px solid #143C56;border-radius:0;
+  gap:6px;min-height:0;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-hero > .eyebrow {
+  grid-area:eyebrow;padding:6px 5px;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-hero::after {
+  content:"";grid-area:art;display:block;
+  width:100%;height:auto;aspect-ratio:640/380;
+  margin:0;background:url("./assets/taiwan-poster/hero.svg") center/cover no-repeat;
+  border:0;animation:none;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-hero > h2 {
+  grid-area:title;max-width:100%;margin:9px 3px 1px;
+  font:900 clamp(2.3rem,8.6vw,5.5rem)/1.06 var(--font-display);
+  letter-spacing:.035em;overflow-wrap:anywhere;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-hero > p:last-of-type {
+  grid-area:subtitle;color:#39566A;max-width:none;
+  margin:0 3px;font-size:.81rem;letter-spacing:.035em;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-stats {
+  grid-area:stats;border-top:2px solid #143C56;margin-top:11px;padding-top:11px;
+  width:100%;gap:7px;display:flex;flex-wrap:wrap;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-stats span {
+  background:#E3AF50;border:0;border-radius:0;padding:5px 9px;
+  color:#143C56;letter-spacing:.04em;font-weight:700;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-day {
+  display:grid;grid-template-columns:90px minmax(0,1fr);
+  grid-template-areas:"meta title" "meta route" "meta foot";
+  align-items:start;gap:4px 15px;min-height:126px;
+  background:#F5E7C4;border:2px solid #143C56;border-radius:0;padding:17px;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-day:nth-child(odd) {background:#F4E2BF;}
+:root[data-visual-style="taiwan-poster"] .trip-overview-day::after {
+  content:"";position:absolute;right:12px;top:13px;
+  width:47px;height:47px;background:url("./assets/taiwan-poster/marker.svg") center/contain no-repeat;
+  opacity:.75;animation:none;pointer-events:none;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-day-meta {
+  grid-area:meta;display:flex;flex-direction:column;align-items:start;gap:9px;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-day-meta span {
+  background:#B64D33;color:#F5E7C4;border:0;border-radius:0;
+  padding:4px 7px;letter-spacing:.04em;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-day-meta time {color:#39566A;font-size:.7rem;}
+:root[data-visual-style="taiwan-poster"] .trip-overview-day h3 {
+  grid-area:title;margin:0;max-width:calc(100% - 36px);
+  font:900 clamp(1.2rem,3vw,1.8rem)/1.12 var(--font-display);
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-day p {
+  grid-area:route;font-size:.81rem;color:#39566A;
+}
+:root[data-visual-style="taiwan-poster"] .trip-overview-day-foot {
+  grid-area:foot;display:flex;justify-content:space-between;align-items:center;gap:8px;margin:7px 0 0;width:100%;
+}
+:root[data-visual-style="taiwan-poster"] .trip-open-count {background:#E3AF50;border:1px solid #143C56;color:#143C56;}
+:root[data-visual-style="taiwan-poster"] .trip-section-heading {
+  border-top:3px solid #143C56;padding-top:13px;
+}
+:root[data-visual-style="taiwan-poster"] .trip-section-heading h2 {
+  font:900 1.6rem/1.15 var(--font-display);
+}
+:root[data-visual-style="taiwan-poster"] :is(.trip-highlight-card,.trip-open-decision) {
+  position:relative;padding:17px 79px 18px 17px;
+  border:2px solid #143C56;border-radius:0;background:#F5E7C4;
+}
+:root[data-visual-style="taiwan-poster"] .trip-highlight-card h3,
+:root[data-visual-style="taiwan-poster"] .trip-open-decision strong {font-family:var(--font-display);}
+:root[data-visual-style="taiwan-poster"] :is(.trip-highlight-card,.trip-open-decision)::after {
+  background-image:url("./assets/taiwan-poster/marker.svg");animation:none;
+}
+:root[data-visual-style="taiwan-poster"] .trip-day-view > .day-summary {
+  background:#E3AF50;border:3px solid #143C56;border-radius:0;
+  min-height:135px;padding:17px 130px 19px 19px;
+}
+:root[data-visual-style="taiwan-poster"] .trip-day-view > .day-summary h2 {
+  font:900 clamp(1.7rem,4.7vw,2.7rem)/1.12 var(--font-display);max-width:none;
+}
+:root[data-visual-style="taiwan-poster"] .trip-day-view > .day-summary::after {
+  background-image:url("./assets/taiwan-poster/marker.svg");animation:none;
+  width:102px;height:102px;right:16px;
+}
+:root[data-visual-style="taiwan-poster"] .trip-route-summary {
+  background:#F5E7C4;border:2px solid #143C56;border-radius:0;padding:15px;
+}
+:root[data-visual-style="taiwan-poster"] .trip-route-heading h3 {
+  font:900 1.27rem/1.15 var(--font-display);
+}
+:root[data-visual-style="taiwan-poster"] .trip-route-endpoints {
+  background:#F5E7C4;border:2px solid #143C56;border-radius:0;
+}
+:root[data-visual-style="taiwan-poster"] .trip-route-steps span {
+  background:#E3AF50;border:1px solid #143C56;border-radius:0;
+}
+:root[data-visual-style="taiwan-poster"] .trip-v2-timeline::before {width:4px;background:#143C56;}
+:root[data-visual-style="taiwan-poster"] .trip-v2-timeline > .trip-stop-wrap::before {
+  border:3px solid #143C56;border-radius:0;background:#B64D33;
+  width:16px;height:16px;
+}
+:root[data-visual-style="taiwan-poster"] .trip-v2-timeline .trip-v2-item {
+  background:#FAECCE;border:2px solid #143C56;border-radius:0;
+}
+:root[data-visual-style="taiwan-poster"] .trip-v2-timeline .trip-stop-wrap:nth-child(even) .trip-v2-item {
+  background:#E9D9B4;
+}
+:root[data-visual-style="taiwan-poster"] .trip-v2-timeline .timeline-time {
+  background:#143C56;border:0;border-radius:0;color:#F5E7C4;
+  font-weight:800;letter-spacing:.07em;
+}
+:root[data-visual-style="taiwan-poster"] .trip-v2-timeline .timeline-time--floating {
+  background:#E3AF50;color:#143C56;
+}
+:root[data-visual-style="taiwan-poster"] .trip-v2-timeline .timeline-content h3 {
+  font:900 1.12rem/1.2 var(--font-display);
+}
+:root[data-visual-style="taiwan-poster"] :is(.type-pill,.must-go-tag,.transport-tag,.time-pill,
+ .summary-count,.trip-open-count) {
+  border:1px solid #143C56;border-radius:0;background:#E3AF50;
+  color:#143C56;font:700 .72rem/1.4 var(--font-utility);
+}
+:root[data-visual-style="taiwan-poster"] .must-go-tag {background:#B64D33;color:#F5E7C4;}
+:root[data-visual-style="taiwan-poster"] .transport-tag--train,
+:root[data-visual-style="taiwan-poster"] .transport-tag--boat {background:#778366;color:#F5E7C4;}
+:root[data-visual-style="taiwan-poster"] .trip-transfer {
+  background:#EADBBD;border-left:4px solid #143C56;border-radius:0;
+}
+:root[data-visual-style="taiwan-poster"] :is(.day-chip,.place-chip,.button-link,
+ .trip-icon-action,.trip-action-menu > summary,.long-trip-step,.theme-button) {
+  background:#F5E7C4;border:2px solid #143C56;border-radius:0;color:#143C56;
+}
+:root[data-visual-style="taiwan-poster"] :is(.day-chip,.place-chip).active {
+  background:#143C56;color:#F5E7C4;
+}
+:root[data-visual-style="taiwan-poster"] .day-chip.active small {color:#F5E7C4;}
+:root[data-visual-style="taiwan-poster"] .button-link.primary {
+  background:#B64D33;color:#F5E7C4;
+}
+:root[data-visual-style="taiwan-poster"] .bottom-nav {
+  background:#F5E7C4;border:2px solid #143C56;border-radius:0;
+}
+:root[data-visual-style="taiwan-poster"] .nav-item {
+  color:#143C56;background:transparent;border-radius:0;
+}
+:root[data-visual-style="taiwan-poster"] .nav-item.active {
+  background:#143C56;color:#F5E7C4;border-radius:0;
+}
+:root[data-visual-style="taiwan-poster"] .nav-item.active .nav-svg,
+:root[data-visual-style="taiwan-poster"] .nav-item.active .nav-icon {color:#F5E7C4;}
+:root[data-visual-style="taiwan-poster"] .check-item {
+  background:#FAECCE;border:1px solid #143C56;border-radius:0;
+}
+:root[data-visual-style="taiwan-poster"] .more-section > summary,
+:root[data-visual-style="taiwan-poster"] .cost-total {
+  border:1px solid #143C56;border-radius:0;background:#E3AF50;
+}
+:root[data-visual-style="taiwan-poster"] .style-option {
+  border:1px solid #143C56;border-radius:0;background:#FAECCE;color:#143C56;
+}
+:root[data-visual-style="taiwan-poster"] .style-option[aria-pressed="true"] {
+  background:#E3AF50;outline:2px solid #143C56;
+}
+:root[data-visual-style="taiwan-poster"] .map-stage {border:2px solid #143C56;border-radius:0;}
+:root[data-visual-style="taiwan-poster"] .motion-choice {border-radius:0;}
+:root[data-visual-style="taiwan-poster"] .shell-day.active {background:#E3AF50;color:#143C56;}
+@media(max-width:520px){
+  :root[data-visual-style="taiwan-poster"] .trip-overview-hero {padding:8px;}
+  :root[data-visual-style="taiwan-poster"] .trip-overview-hero > h2 {font-size:clamp(2rem,9vw,3.4rem);}
+  :root[data-visual-style="taiwan-poster"] .trip-overview-day {grid-template-columns:72px minmax(0,1fr);padding:11px;gap:4px 8px;}
+  :root[data-visual-style="taiwan-poster"] .trip-overview-day h3 {font-size:1.15rem;}
+  :root[data-visual-style="taiwan-poster"] .trip-day-view > .day-summary {padding:15px 85px 16px 14px;}
+  :root[data-visual-style="taiwan-poster"] .trip-day-view > .day-summary::after {width:68px;height:68px;right:9px;}
+  :root[data-visual-style="taiwan-poster"] .trip-v2-timeline .trip-v2-item {padding:12px;}
+}
+@media(prefers-reduced-motion:reduce){
+  :root[data-visual-style="taiwan-poster"] *, :root[data-visual-style="taiwan-poster"] *::before,
+  :root[data-visual-style="taiwan-poster"] *::after {animation:none!important;transition:none!important;}
+}
