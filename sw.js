@@ -1,4 +1,4 @@
-const CACHE = "travel-lite-shell-v25-storybook";
+const CACHE = "travel-lite-shell-v26-stylepacks";
 const RUNTIME_CACHE = "travel-lite-runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -14,6 +14,8 @@ const CORE = [
   "./long-trip-nav.css",
   "./today-brief.css",
   "./storybook-theme.css",
+  "./candy-theme.css",
+  "./risograph-theme.css",
   "./bootstrap.js",
   "./storage.js",
   "./app.js",
@@ -43,6 +45,21 @@ const CORE = [
   "./assets/storybook/landmark.svg",
   "./assets/storybook/nature.svg",
   "./assets/storybook/sea.svg",
+  "./assets/candy/boat.svg",
+  "./assets/candy/car.svg",
+  "./assets/candy/city.svg",
+  "./assets/candy/food.svg",
+  "./assets/candy/hero.svg",
+  "./assets/candy/hotel.svg",
+  "./assets/candy/landmark.svg",
+  "./assets/candy/map.svg",
+  "./assets/candy/nature.svg",
+  "./assets/candy/plane.svg",
+  "./assets/candy/sea.svg",
+  "./assets/candy/train.svg",
+  "./assets/risograph/grain.svg",
+  "./assets/risograph/hero.svg",
+  "./assets/risograph/marker.svg",
 
   "./manifest.webmanifest",
   "./icon.svg"

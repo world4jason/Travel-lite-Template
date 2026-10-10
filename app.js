@@ -22,8 +22,19 @@ const bottomNav = document.querySelector("#bottom-nav");
 
 // Visual style is shared trip presentation, not a device-local choice.
 // A whitelisted URL override is only for read-only preview links.
-const VISUAL_STYLES = new Set(["editorial", "storybook"]);
+const VISUAL_PACKS = Object.freeze({
+  editorial: { css: [], lightOnly: false, timeline: false, motion: false },
+  storybook: { css: ["storybook-style"], lightOnly: true, timeline: true, motion: true },
+  candy: { css: ["storybook-style", "candy-style"], lightOnly: true, timeline: true, motion: true },
+  risograph: { css: ["risograph-style"], lightOnly: true, timeline: true, motion: false },
+});
+const VISUAL_STYLES = new Set(Object.keys(VISUAL_PACKS));
 const isStorybook = () => state.visualStyle === "storybook";
+const isIllustratedStyle = () => VISUAL_PACKS[state.visualStyle]?.timeline === true;
+const isFixedLightStyle = () => VISUAL_PACKS[state.visualStyle]?.lightOnly === true;
+const hasIllustrationMotion = () => VISUAL_PACKS[state.visualStyle]?.motion === true;
+const packThemeColor = () => ({ storybook: "#FFFCF6", candy: "#FFF9EF",
+  risograph: "#F7F1E4" })[state.visualStyle] || "#f5f6f2";
 
 function activateVisualStyle() {
   let requested = "";
@@ -32,12 +43,15 @@ function activateVisualStyle() {
   state.visualStyle = VISUAL_STYLES.has(requested) ? requested : fromTrip;
   document.documentElement.dataset.visualStyle = state.visualStyle;
 
-  // Keep the old stylesheet entirely disabled on the default layout:
-  // no higher specificity or palette leakage for existing trips.
-  const sheet = document.querySelector("#storybook-style");
-  if (sheet) sheet.disabled = !isStorybook();
+  // Only audited, bundled pack IDs may activate stylesheets. No arbitrary
+  // prompt text, URL or style manifest gets interpreted as CSS or JavaScript.
+  const pack = VISUAL_PACKS[state.visualStyle];
+  for (const id of ["storybook-style", "candy-style", "risograph-style"]) {
+    const sheet = document.getElementById(id);
+    if (sheet) sheet.disabled = !pack.css.includes(id);
+  }
 
-  if (isStorybook()) {
+  if (state.visualStyle === "storybook" || state.visualStyle === "candy") {
     // This is intentionally not a blocking font stylesheet.
     if (!document.querySelector("#storybook-font")) {
       const font = document.createElement("link");
@@ -410,17 +424,17 @@ function renderMore() {
   const contacts = state.data.contacts.map((contact) => `<article class="info-row compact-row"><div><h3>${escapeHtml(contact.name)}</h3><p>${escapeHtml(contact.role || "")}</p></div>${contact.phone ? `<a class="inline-link" href="tel:${escapeAttr(contact.phone)}">${escapeHtml(contact.phone)}</a>` : ""}</article>`).join("");
   const journal = state.data.journal.map((entry) => `<article class="text-card"><p class="eyebrow">${escapeHtml(entry.date ? prettyDate(entry.date, { weekday: "short" }) : entry.mood || "Journal")}</p><h3>${escapeHtml(entry.title)}</h3><p>${escapeHtml(entry.body)}</p></article>`).join("");
   const links = state.data.links.map((link) => `<a class="file-row" href="${escapeAttr(link.url)}" target="_blank" rel="noreferrer"><span><strong>${escapeHtml(link.label)}</strong></span><span>↗</span></a>`).join("");
-  const appearance = isStorybook()
+  const appearance = isFixedLightStyle()
     ? `<section class="panel settings-card">
-        <div><p class="eyebrow">Appearance</p><h2>Storybook · Light only</h2></div>
-        <p class="helper-text">Gentle illustrated motion follows your device accessibility settings.</p>
+        <div><p class="eyebrow">Appearance</p><h2>${({storybook:"Storybook",candy:"Candy Geometry",risograph:"Risograph Zine"})[state.visualStyle]} · Light only</h2></div>
+        ${hasIllustrationMotion() ? `<p class="helper-text">Gentle illustration animation respects your device accessibility settings.</p>
         <div class="motion-preference">
           <h3>Motion / 動態效果</h3>
           <div class="motion-options" role="group" aria-label="Motion preference">
             ${[["system", "Follow device · 跟隨裝置"], ["reduce", "Reduce motion · 減少動畫"]]
               .map(([mode, label]) => `<button type="button" class="motion-choice" data-motion-choice="${mode}" aria-pressed="${window.TravelLiteStorybookMotion?.get() === mode}">${label}</button>`).join("")}
           </div>
-        </div>
+        </div>` : `<p class="helper-text">Static print-inspired design. No illustration animations.</p>`}
         <div class="storage-status"><span>Local storage</span><strong id="storage-mode">${escapeHtml(TravelLiteStorage.getMode())}</strong></div>
       </section>`
     : `<section class="panel settings-card"><div><p class="eyebrow">Appearance</p><h2>Theme</h2></div><div class="theme-switcher">${["system", "dark", "light"].map((theme) => `<button type="button" data-theme="${theme}" class="theme-button ${state.theme === theme ? "active" : ""}">${theme}</button>`).join("")}</div><div class="storage-status"><span>Local storage</span><strong id="storage-mode">${escapeHtml(TravelLiteStorage.getMode())}</strong></div></section>`;
@@ -456,7 +470,7 @@ function renderMore() {
 }
 
 function applyTheme() {
-  const mode = isStorybook() ? "light" : state.theme;
+  const mode = isFixedLightStyle() ? "light" : state.theme;
   document.documentElement.dataset.theme = mode;
   document.documentElement.style.colorScheme = mode === "system" ? "light dark" : mode;
 }
@@ -504,7 +518,7 @@ function hydrateHeader() {
   const { trip } = state.data;
   document.title = `${trip.title} · Travel Lite`;
   document.documentElement.style.setProperty("--accent", trip.accent);
-  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", isStorybook() ? "#FFFCF6" : (trip.themeColor || "#0b1020"));
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", isFixedLightStyle() ? packThemeColor() : (trip.themeColor || "#0b1020"));
   document.querySelector("#trip-location").textContent = trip.homeLabel || "Travel Lite";
   document.querySelector("#trip-title").textContent = trip.title;
   document.querySelector("#trip-meta").textContent = `${trip.subtitle || ""}${trip.subtitle ? " · " : ""}${dateRangeLabel(trip)}`;

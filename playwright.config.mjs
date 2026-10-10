@@ -5,7 +5,7 @@ const baseURL = `http://127.0.0.1:${port}`;
 
 export default defineConfig({
   testDir: "./tests",
-  testMatch: ["mobile-layout.spec.mjs", "style-options.spec.mjs"],
+  testMatch: ["mobile-layout.spec.mjs", "style-options.spec.mjs", "phase2-packs.spec.mjs"],
   fullyParallel: false,
   workers: 1,
   retries: 0,

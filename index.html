@@ -18,8 +18,11 @@
     <link rel="stylesheet" href="./companion-ux.css" />
     <link rel="stylesheet" href="./long-trip-nav.css" />
     <link rel="stylesheet" href="./today-brief.css" />
-    <!-- Disabled unless the trip selects ui.visualStyle=storybook. -->
+    <!-- Trusted, bundled styles remain disabled unless ui.visualStyle selects them. -->
     <link id="storybook-style" rel="stylesheet" href="./storybook-theme.css" disabled />
+    <!-- Only explicit, trusted packs can enable these local stylesheets. -->
+    <link id="candy-style" rel="stylesheet" href="./candy-theme.css" disabled />
+    <link id="risograph-style" rel="stylesheet" href="./risograph-theme.css" disabled />
   </head>
   <body>
     <div class="app-shell">

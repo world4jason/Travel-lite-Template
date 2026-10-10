@@ -7,7 +7,7 @@
   let rememberedLightMapStyle = null;
 
   function currentMode() {
-    if (typeof isStorybook === "function" && isStorybook()) return "light";
+    if (typeof isFixedLightStyle === "function" && isFixedLightStyle()) return "light";
     const mode = document.documentElement.dataset.theme;
     return MODES.includes(mode) ? mode : "system";
   }
@@ -21,8 +21,8 @@
   function updateThemeColor() {
     const meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) return;
-    meta.setAttribute("content", typeof isStorybook === "function" && isStorybook()
-      ? "#FFFCF6" : (effectiveMode() === "dark" ? "#111411" : "#f5f6f2"));
+    meta.setAttribute("content", typeof isFixedLightStyle === "function" && isFixedLightStyle()
+      ? packThemeColor() : (effectiveMode() === "dark" ? "#111411" : "#f5f6f2"));
   }
 
   function syncAccent() {
@@ -49,8 +49,8 @@
     if (!button) return;
     const mode = currentMode();
     const effective = effectiveMode();
-    const storybook = typeof isStorybook === "function" && isStorybook();
-    button.hidden = storybook;
+    const fixedLight = typeof isFixedLightStyle === "function" && isFixedLightStyle();
+    button.hidden = fixedLight;
     const icon = effective === "dark" ? "☾" : "☀";
     const label = mode === "system" ? "Auto" : mode[0].toUpperCase() + mode.slice(1);
     button.innerHTML = `<span class="quick-theme-icon" aria-hidden="true">${icon}</span><span class="quick-theme-label">${label}</span>`;
@@ -66,7 +66,7 @@
   }
 
   async function setMode(mode) {
-    if ((typeof isStorybook === "function" && isStorybook()) || !MODES.includes(mode)) return;
+    if ((typeof isFixedLightStyle === "function" && isFixedLightStyle()) || !MODES.includes(mode)) return;
     document.documentElement.dataset.theme = mode;
     document.documentElement.style.colorScheme = mode === "system" ? "light dark" : mode;
 

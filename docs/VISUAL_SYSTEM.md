@@ -487,7 +487,7 @@ The editorial hierarchy and composition must remain recognizable in both themes.
 
 ## Bounded, opt-in visual style
 
-The original Editorial Atlas remains the **default system**. A later product decision adds exactly one other named site-level style, `storybook`, validated through `ui.visualStyle`.
+The original Editorial Atlas remains the **default system**. A later product decision added three explicit site-level styles—`storybook`, `candy` and `risograph`—validated through a fixed `ui.visualStyle` whitelist.
 
 This is a **bounded exception** to the original 2026-09 no-preset direction. It was informed by a real user trip implementation and a requirement to reuse that outcome. It is not permission to expand into an unrestricted preset market, style picker in the application, or destination-dependent appearance inference.
 
@@ -495,6 +495,8 @@ This is a **bounded exception** to the original 2026-09 no-preset direction. It 
 | --- | --- | --- |
 | `editorial` | default, backwards compatible | existing Editorial Atlas, Auto/Light/Dark, trip accent |
 | `storybook` | explicit publisher opt-in | paper white, 3px ink contours, large radii, Huninn, gentle SVG travel illustrations, light-only, reduced-motion support |
+| `candy` | reviewed Storybook variation | five sticker-fill SVG colors, rounded geometry, soft cards, accessible dark text, light-only, reduced motion |
+| `risograph` | reviewed standalone print pack | indigo ink, ivory paper grain, halftone and one warm graphic accent, serif hierarchy, static/light-only |
 
 Shared and invariant across styles:
 
@@ -505,9 +507,9 @@ Shared and invariant across styles:
 - semantic labels, focus states, legible contrast, keyboard and motion accessibility
 - phone, compact desktop and wide desktop reachability
 
-The visual language may vary **within these two controlled styles** (font families, surface grammar, radius, illustrations, timeline composition); the itinerary data model and workflow do not fork.
+The visual language may vary **within these four controlled styles** (font families, surface grammar, radius, illustrations, timeline composition); the itinerary data model and workflow do not fork.
 
-Storybook supports only built-in SVG illustration keys in `assets/storybook/`. Unknown art keys use the generic fallback and do not request remote images. No trip content may inject CSS, arbitrary URLs, scripts, fonts, animations, or external presets. Styles are applied by an isolated disabled-until-opted-in stylesheet, so default Editorial rendering remains unaffected.
+All illustrative pack assets are local and whitelisted (`assets/storybook/`, `assets/candy/`, `assets/risograph/`). Storybook supports only built-in SVG illustration keys in `assets/storybook/`. Unknown art keys use the generic fallback and do not request remote images. No trip content may inject CSS, arbitrary URLs, scripts, fonts, animations, or external presets. Styles are applied by an isolated disabled-until-opted-in stylesheet, so default Editorial rendering remains unaffected.
 
 ---
 

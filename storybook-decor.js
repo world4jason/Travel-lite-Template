@@ -23,7 +23,7 @@
   }
   function decorate() {
     scheduled = false;
-    if (typeof isStorybook !== "function" || !isStorybook() || !state?.data) return;
+    if (typeof isIllustratedStyle !== "function" || !isIllustratedStyle() || !state?.data) return;
     const allDays = state.data.days || [];
     const byDate = new Map(allDays.map(day => [day.date, day]));
 

@@ -164,16 +164,18 @@ The base template keeps localization lightweight. Set a shell locale and optiona
 
 Built-in companion/shell labels cover English and Traditional Chinese; trip content itself remains whatever language the generating agent writes.
 
-## Optional visual style: Storybook
+## Visual Style Packs — Editorial, Storybook, Candy and Risograph
 
-Travel Lite now has two **site-level presentation styles**. The existing layout remains the default and still supports Auto / Light / Dark. The optional Storybook style adapts the illustrated Ishigaki experiment into **generic travel artwork**; it uses paper white, ink outlines, flat coral/yellow/blue/green colors, Huninn when available, illustrated day cards, a continuous daily timeline, optional mode/highlight tags, and gentle reduced-motion-aware animations.
+Travel Lite now ships **four reviewed site-level visual styles**. Editorial is still the default and supports Auto / Light / Dark. Storybook, Candy Geometry and Risograph Zine are fixed-light styles. All four reuse one itinerary, navigation, map, checklist and offline application; only their visual layout and bundled decorative assets differ. [See Style Pack implementation notes and source evidence](./style-packs/README.md).
 
 For one-click comparison with the built-in Tokyo sample (without changing its data):
 
 - [Editorial — original template](https://world4jason.github.io/Travel-lite-Template/#trip/overview)
-- [Storybook — temporary preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=storybook#trip/overview)
+- [Storybook — illustrated notebook](https://world4jason.github.io/Travel-lite-Template/?previewStyle=storybook#trip/overview)
+- [Candy Geometry — rounded sticker art](https://world4jason.github.io/Travel-lite-Template/?previewStyle=candy#trip/overview)
+- [Risograph Zine — paper and indigo ink](https://world4jason.github.io/Travel-lite-Template/?previewStyle=risograph#trip/overview)
 
-To select Storybook permanently for a *generated trip*, set this in `trip.json`:
+To select a built-in Style Pack for a *generated trip*, set this in `trip.json` (replace `storybook` with `candy` or `risograph`):
 
 ```json
 {
@@ -208,19 +210,20 @@ Here, `illustration` at the day or item level uses a **safe built-in icon key** 
 
 The included illustration files are in `assets/storybook/` and are **destination-neutral**. When making a new trip, you can replace `assets/storybook/hero.svg` with a locally designed destination illustration without changing the data schema. Storybook uses **light only**, preserves the existing checklist/notes/offline features, and has **More → Motion** options: Follow device or Reduce motion. System `prefers-reduced-motion` always disables animation, even when the local option says Follow device.
 
-Storybook's stylesheet is **disabled in Editorial**; its font is requested only in Storybook and never blocks page load. The URL query override is only for *previewing appearance* and does not rewrite `trip.json`, change group decisions, or store an alternate style preference.
+Style Pack CSS is **disabled unless the site chooses that whitelisted pack**. Candy inherits Storybook's timeline and swaps tokens/illustrations; Risograph uses independent print-typography and texture CSS. The Huninn font is only requested for Storybook/Candy and never blocks page load. The URL query override is only an appearance preview; it does not rewrite `trip.json`, group decisions or local preferences.
 
 ## Style Prompt Lab — 將自然語言風格提示詞轉成 Style Brief
 
-原本 `editorial`、`storybook` 是已經開發的 **Style Pack**。若你有不同用途的提示詞（插畫、明信片、Risograph、手刻印章、復古海報），可以先交給 [Style Prompt Lab](./style-generator/README.md) 拆解，不必自己預先知道 CSS 或 SVG。
+目前 `editorial`、`storybook`、`candy`、`risograph` 是已實作並有驗收的 **Style Pack**。若你有不同用途的提示詞（插畫、明信片、Risograph、手刻印章、復古海報），可以先交給 [Style Prompt Lab](./style-generator/README.md) 拆解，不必自己預先知道 CSS 或 SVG。
 
 - [使用者填空模板](./style-generator/templates/STYLE_REQUEST.md)
 - [可交給 LLM 使用的 Style Extractor Prompt](./style-generator/STYLE_EXTRACTOR_PROMPT.md)
 - [風格 JSON Schema](./style-generator/style.schema.json) 與 [六組實測範例](./style-generator/examples)
 - `npm run validate:styles`、`npm run test:styles`：驗證六組範例與規格約束，不需要 API Key
-- `npm run render:style-prompts`：把六份規格轉成[可重複填空的風格提示詞](./style-generator/generated-prompts)，仍不會修改網站 CSS
+- `npm run render:style-prompts`：把六份規格轉成[可重複填空的風格提示詞](./style-generator/generated-prompts)
+- `npm run test:packs`：驗證已實作 Candy / Risograph 的來源對應、SVG 五色與文字對比。
 
-**重要：** 目前已完成的是六種風格的 **Style Brief 抽取／評估**，不是六套會自動生效的網站外觀。自訂名稱不會被當作 `ui.visualStyle` 使用；若要從 Style Brief 產生真正 Style Pack，需在下一階段建立 CSS／SVG、視覺預覽與功能回歸測試。沒有來源照片時，抽取器不會憑空猜測地標、實際照片顏色、招牌或來源文字。
+**重要：** 六份 Style Brief 並不是六套自動生效的網站外觀。本次只從其中兩份完成了 Candy / Risograph 的 CSS、SVG 與驗收，其餘仍是 `brief-only`。自訂名稱不會被當作 `ui.visualStyle` 使用；新 pack 需實作並驗收後才可加入白名單。沒有來源照片時，抽取器不會憑空猜測地標、實際照片顏色、招牌或來源文字。
 
 ## Quick start
 

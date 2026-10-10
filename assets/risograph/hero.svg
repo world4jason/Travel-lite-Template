@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 450" role="img" aria-label="Indigo risograph travel street study, one warm architectural accent">
+<defs>
+<pattern id="halftone" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.2" fill="#293C57"/></pattern>
+<pattern id="broken" width="17" height="19" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.1" fill="#F7F1E4"/><path d="M9 8h3M4 16h3" stroke="#F7F1E4" stroke-width="1"/></pattern>
+</defs>
+<rect width="840" height="450" fill="#F7F1E4"/>
+<path d="M15 250Q96 235 164 263T337 253T505 273T828 250" fill="none" stroke="#293C57" stroke-width="4" opacity=".55"/>
+<path d="M19 320V257H107V192H184V302H215V243H271V341H303V198H350V341H370V284H430V341H466V252H536V341H570V197H638V341H670V270H752V323H829" fill="#293C57" opacity=".9"/>
+<path d="M20 326V260H108V195H183V306H218V247H274V345H306V203H349V345H373V285H433V345H465V251H536V345H570V199H637V345H670V269H749V327H827" fill="url(#broken)" opacity=".45"/>
+<path d="M90 260V206M132 260V206M250 272V330M331 225V305M402 315V292M495 275V330M605 225V321M703 289V319" fill="none" stroke="#F7F1E4" stroke-width="8" stroke-linecap="square"/>
+<path d="M335 355V238Q338 217 359 210H450Q468 218 470 236V355Z" fill="#C95B41" stroke="#F7F1E4" stroke-width="7"/>
+<path d="M377 350V289Q405 272 434 289V350" fill="#F7F1E4"/>
+<rect x="352" y="248" width="29" height="28" rx="2" fill="#F7F1E4"/><rect x="429" y="248" width="26" height="28" rx="2" fill="#F7F1E4"/>
+<path d="M21 350Q201 336 310 351Q520 338 820 344V446H21Z" fill="#293C57"/>
+<path d="M18 351Q260 360 418 349Q613 357 821 344V447H18Z" fill="url(#broken)" opacity=".42"/>
+<path d="M34 379H277M544 383H797M84 410H198M640 409H739" fill="none" stroke="#F7F1E4" stroke-width="2" stroke-dasharray="22 12" opacity=".48"/>
+<path d="M590 178Q624 166 651 179M670 183Q684 172 701 181" fill="none" stroke="#293C57" stroke-width="3" stroke-linecap="round" opacity=".5"/>
+<path d="M25 443Q420 446 818 440" fill="none" stroke="#293C57" stroke-width="8" opacity=".7"/>
+</svg>

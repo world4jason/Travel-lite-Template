@@ -33,6 +33,7 @@ node --check theme-shell.js
 node --check sw.js
 node --check storybook-motion.js
 node --check storybook-decor.js
+node --check tests/pack-manifests.test.mjs
 ```
 
 Also parse:
@@ -88,9 +89,9 @@ A second invariant covers controls: every visible interactive element (links, bu
 
 The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead of the CDN, answers map style requests with a minimal local style (tiles are blocked), and checks the Map view only after a real map has initialised; a silent fallback fails the run. The fallback message has its own test, and the Map is rechecked after selecting another stop. When `runtime-features.js` moves to a new MapLibre version, bump the devDependency to the same version; the spec refuses to run if they differ.
 
-## Optional Storybook regression
+## Built-in Style Pack review (Storybook / Candy / Risograph)
 
-`npm run test:mobile` also runs `tests/style-options.spec.mjs` (separate from the 32-day default fixture). Verify:
+`npm run test:mobile` also runs `tests/style-options.spec.mjs` and `tests/phase2-packs.spec.mjs` (separate from the 32-day default fixture). Verify:
 
 - old trips with no `ui.visualStyle` render the same Editorial Atlas and still switch light/dark
 - invalid style selection falls back to Editorial

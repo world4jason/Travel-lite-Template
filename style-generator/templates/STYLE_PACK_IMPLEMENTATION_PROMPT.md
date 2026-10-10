@@ -1,6 +1,6 @@
 # Style Brief → 網站 Style Pack 的第二階段提示詞
 
-> 本檔是待後續專案使用的**實作指引**，不是已實作的自動產生器。第一階段六組案例只有通過風格抽取，還沒被建成六套完整網站風格。
+> 本檔是後續風格實作的**指引**，不是能自動生成 CSS 的執行器。第二階段已有兩套人工審查的參考實作：[Candy（素材變體）](../../style-packs/candy/manifest.json) 與 [Risograph（新風格）](../../style-packs/risograph/manifest.json)。其餘來源案例仍僅通過 Style Brief 抽取。
 
 你是 Travel-lite-Template 的前端工程師與視覺設計師。使用通過 `style.schema.json` 的 `Style Brief` 作為唯一視覺規格來源，先對既有 `editorial` / `storybook` 視覺和元件盤點差異，再選擇最小可行的實作範圍。
 

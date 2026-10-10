@@ -88,7 +88,7 @@ node style-generator/render-style-prompt.mjs ./my-style-brief.json ./my-output-d
 | 來源照片必須有嗎？ | 不用，沒照片記錄 unknowns | 製作忠於照片的素材才需要 |
 | 會直接塞進 `trip.json` 嗎？ | **不會** | 只有已安裝、白名單允許的 `ui.visualStyle` 才能選用 |
 
-若要往第二階段實作，請參考 [Style Pack Implementation Prompt](./templates/STYLE_PACK_IMPLEMENTATION_PROMPT.md)，但不要把 Spec 當作已經部署的網站風格。
+第二階段已完成兩個人工實作並驗收的網站風格：**Candy Geometry**（Storybook 的色塊／素材變體）和 **Risograph Zine**（獨立印刷風格）。[查看兩套真正可使用的 Style Pack 和預覽](../style-packs/README.md)。兩份來源 JSON 仍是 `brief-only`（描述來源，不是可執行程式）；只有經審核的 CSS／SVG pack 才列入 `ui.visualStyle` 白名單。若要擴充第三種請參考 [Style Pack Implementation Prompt](./templates/STYLE_PACK_IMPLEMENTATION_PROMPT.md)，不要把 Spec 當作已經部署的網站風格。
 
 ## 這版抽取器的限制
 

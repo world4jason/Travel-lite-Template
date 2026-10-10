@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "id": "risograph",
+  "displayName": "Risograph Zine",
+  "sourceBriefId": "risograph-zine",
+  "sourceBriefPath": "../../style-generator/examples/risograph-zine.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/risograph-zine.md",
+  "visualStyle": "risograph",
+  "status": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "editorial",
+  "lightOnly": true,
+  "motion": "none",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "css": [
+    "../../risograph-theme.css"
+  ],
+  "assetDirectory": "../../assets/risograph",
+  "assets": [
+    "grain.svg",
+    "hero.svg",
+    "marker.svg"
+  ],
+  "palette": {
+    "ivory": "#F7F1E4",
+    "indigo": "#293C57",
+    "printAccent": "#C95B41",
+    "readableAccent": "#A84732"
+  },
+  "accentContrastNote": "Vermilion in the illustration is decorative. Small editorial type uses darker #A84732 to meet WCAG AA.",
+  "scenePrinciples": [
+    "Single indigo ink for environment and halftone/paper grain",
+    "One warm architectural accent in generic nonphotographic scene",
+    "Large typographic whitespace and static print composition",
+    "No fixed magazine slogans or source-image fidelity claims"
+  ],
+  "acceptanceTests": [
+    "tests/phase2-packs.spec.mjs",
+    "tests/pack-manifests.test.mjs"
+  ],
+  "browserPreviews": [
+    "../previews/risograph-overview-mobile.png",
+    "../previews/risograph-overview-desktop.png",
+    "../previews/risograph-day-mobile.png"
+  ]
+}

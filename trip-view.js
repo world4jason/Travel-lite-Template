@@ -206,7 +206,7 @@
   }
 
   function renderDay(day) {
-    const storybook = typeof isStorybook === "function" && isStorybook();
+    const storybook = typeof isIllustratedStyle === "function" && isIllustratedStyle();
     const isNewDay = lastRenderedDate !== day.date;
     lastRenderedDate = day.date;
 
