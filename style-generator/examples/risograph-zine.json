@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "risograph-zine",
+  "name": {
+    "zh": "單墨孔版印刷誌",
+    "en": "Risograph Zine"
+  },
+  "sourceTask": "zine-print",
+  "visual": {
+    "mood": [
+      "地下刊物感",
+      "懷舊",
+      "粗粒度",
+      "安靜",
+      "限色"
+    ],
+    "era": "復古 Zine／單色 Risograph 美術印刷",
+    "palette": {
+      "mode": "monochrome-plus-accent",
+      "maxColors": null,
+      "swatches": [
+        {
+          "name": "靛藍或深褐墨（依場景冷暖二選一）",
+          "hex": null,
+          "role": "ink",
+          "origin": "explicit"
+        },
+        {
+          "name": "老奶油紙色",
+          "hex": null,
+          "role": "background",
+          "origin": "explicit"
+        }
+      ],
+      "usage": [
+        "主要環境維持單色墨線及網點印刷",
+        "唯一主要地標可保留原有色彩與亮燈，但僅限照片確有此物",
+        "未提供原照，不能指認地標與原有燈色"
+      ]
+    },
+    "geometry": {
+      "family": "halftone-graphic",
+      "motifs": [
+        "粗網點",
+        "單墨城市剪影",
+        "粗糙印刷邊緣",
+        "局部保色的主體"
+      ],
+      "outline": {
+        "weight": "variable",
+        "character": "printed",
+        "color": "靛藍或深褐"
+      },
+      "edgeQuality": "printed-rough"
+    },
+    "material": {
+      "technique": "risograph",
+      "texture": [
+        "紙張顆粒",
+        "墨點飛白",
+        "舊印刷邊緣",
+        "輕微套印不準"
+      ],
+      "depth": "flat",
+      "shadow": "none"
+    },
+    "typography": {
+      "display": "小型打字機式標題（不是固定文案）",
+      "utility": "清楚的編輯式單色小字（網站需放大到可讀）",
+      "hierarchy": "簡短標題與水平細線，在大面積留白區形成秩序"
+    },
+    "composition": {
+      "focus": "主體與環境一色對比，保留大面積上方留白",
+      "whitespace": "generous",
+      "layers": "single-ink-with-accent",
+      "notes": [
+        "圖像原描述偏下方三分之二，這是海報資產構圖參考",
+        "網站只沿用閱讀層級和印刷質感，不固定整頁上空白下圖像"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "單色網點、破墨與紙張顆粒",
+      "保色的主體須有視覺上的獨特原因",
+      "整體仍能辨識場景的基本輪廓"
+    ],
+    "avoid": [
+      "高彩度霓虹",
+      "平滑無痕的寫實 3D",
+      "大量繽紛互搶焦點",
+      "為了復古效果虛構不存在的地標"
+    ],
+    "conditional": [
+      {
+        "when": "提供照片",
+        "rule": "同一地點／相機視角的建筑關係必須保留；僅照片確定的地標可有原色亮燈。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "new-style-pack",
+    "implementationTier": "new-style-pack",
+    "transferable": [
+      "近乎單墨的網站排版與限色提醒",
+      "粗網點、乾油墨顆粒作裝飾性紋理",
+      "網站標題帶打字機式編輯感",
+      "大留白、細規則線與稀疏版面"
+    ],
+    "assetTreatment": [
+      "先製作 monochrome 網點印刷插圖，若有實際圖片才評估局部保色",
+      "分離 ink / paper / accent；避免在文字背景上鋪滿高頻網點"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "畫面固定上下 1/3 留白、2/3 場景",
+        "reason": "海報圖像構圖，不可阻塞手機每日時間軸或資訊內容。"
+      },
+      {
+        "instruction": "右上角固定印「where [A] meets [B]. / Gathered Scenes / Zine v1.3」",
+        "reason": "海報專用文案，不應污染行程的真實標題與聯絡資訊。"
+      },
+      {
+        "instruction": "雙面保持同一視點、無任何標籤或額外文字",
+        "reason": "只適用指定雙版輸出；網站還是需要日期、行程與可操作標籤。"
+      }
+    ],
+    "componentRisks": [
+      "印刷網點若覆蓋小字會降低可讀性",
+      "單墨美術層與主要地標保色的規則需要分清資訊對比"
+    ],
+    "motion": "none"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "沒有照片，不能判斷冷暖色應用哪一款墨",
+      "沒有來源地標或亮燈狀態，不能進行『唯一地標保色』",
+      "右上標語中的 A/B 未提供"
+    ],
+    "conflicts": [
+      {
+        "issue": "同一提示詞指定右上角固定文字，又要求雙面『No labels, no extra text』。",
+        "handling": "視為不同資產排版要求互相衝突；轉站點時兩者都不帶入，若要製作原版印刷品才要求先決定有字或無字。"
+      }
+    ],
+    "assumptions": [
+      "網站標題顏色遵守易讀性，不實作強制隱藏標籤。",
+      "將靜態版畫／印章視覺轉為網站時建議不施加動畫，此為網站設計選擇而非來源文字指定。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}

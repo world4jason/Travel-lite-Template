@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "field-stamp",
+  "name": {
+    "zh": "手刻版畫田野章",
+    "en": "Field Stamp"
+  },
+  "sourceTask": "rubber-stamp",
+  "visual": {
+    "mood": [
+      "安靜",
+      "克制",
+      "真實手工",
+      "採集感",
+      "建築觀察",
+      "具有收藏性"
+    ],
+    "era": "旅行者田野觀察／手刻橡皮印章紀錄",
+    "palette": {
+      "mode": "source-derived",
+      "maxColors": 4,
+      "swatches": [],
+      "usage": [
+        "從實際照片取 2–4 個非高飽和 spot inks",
+        "可能候選為炭黑、深綠、磚紅、赭黃、石板藍或褐灰，不等於全部都用",
+        "只留少數強調色；沒照片時保持顏色未指定"
+      ]
+    },
+    "geometry": {
+      "family": "hand-carved",
+      "motifs": [
+        "手刻斷裂外輪廓",
+        "建築／屋頂／山稜提取出的代表片段",
+        "少量水紋或道路方向",
+        "2–4 塊互相錯位的印章色版"
+      ],
+      "outline": {
+        "weight": "variable",
+        "character": "engraved",
+        "color": "隨印泥選色"
+      },
+      "edgeQuality": "carved-rough"
+    },
+    "material": {
+      "technique": "rubber-stamp",
+      "texture": [
+        "刀刻斷裂",
+        "不均勻墨量",
+        "紙色穿透",
+        "乾墨顆粒",
+        "手工 1–2mm 套色偏移"
+      ],
+      "depth": "flat",
+      "shadow": "none"
+    },
+    "typography": {
+      "display": "印章旁少量地名／主題識別字體",
+      "utility": "克制略帶機械誤差的打字機小字；網站正文需維持正常清晰尺寸",
+      "hierarchy": "田野紀錄文字做次要索引，主體是可識別的壓縮場景"
+    },
+    "composition": {
+      "focus": "2–4 個可辨識場景特徵的集合",
+      "whitespace": "generous",
+      "layers": "stacked-graphic",
+      "notes": [
+        "保留原照片最具識別性的關係，而非完整描摹",
+        "圖像片段像旅行者現場筆記的印章",
+        "章型不必做圓章或郵票邊框"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "只選少量可辨識主體輪廓",
+      "印泥缺口、不均刻痕、手工套色",
+      "讓紙張底色穿透與表現原始形體"
+    ],
+    "avoid": [
+      "光滑向量 Logo",
+      "印章變成圓形紅色官章或郵票齒孔",
+      "塑料 3D、螢光、複雜漸層",
+      "沒有來源就加地標或建築",
+      "覆蓋原始照片（雙面照片比較時）"
+    ],
+    "conditional": [
+      {
+        "when": "使用者有提供照片",
+        "rule": "依原圖類型（山村、海岸、城市、山水）選 2–4 個確實存在的輪廓；來源不可辨時保留不確定。"
+      },
+      {
+        "when": "真的要產章票圖像",
+        "rule": "在圖像留白放少量英文地名、編號、詞語與年份；不應自動污染網站資訊卡片。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "new-style-pack",
+    "implementationTier": "new-style-pack",
+    "transferable": [
+      "2–4 色壓印徽章、章節 icon 與裝飾性分隔",
+      "可感受到版刻凹凸與飛白的線條",
+      "像田野筆記的少量打字機輔助文字",
+      "安靜寬鬆的版面與低對比紙底"
+    ],
+    "assetTreatment": [
+      "用簡化 SVG path 與程序化少量破線紋理，或採人工刻印再掃描圖資",
+      "局部 1–2mm 偏移只在插圖，不偏移導覽與可互動文字"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "每張圖像印 Location English / No. / 三個關鍵字／公曆年份",
+        "reason": "原始紀念章成品的專屬文字欄位，不能變成網站每張卡片的裝飾字串。"
+      },
+      {
+        "instruction": "必須在雙版輸出中保持左邊原始照片不變",
+        "reason": "原圖對照任務的限制；旅遊網站本身沒有這個左右分割排版。"
+      },
+      {
+        "instruction": "實際做 1–2mm 錯位的整張印章",
+        "reason": "在圖片檔可以用；不應對 HTML 表單文字與按鈕施加錯位。"
+      }
+    ],
+    "componentRisks": [
+      "粗破墨會降低小字可讀性，紋理限於裝飾圖像",
+      "僅照片提供時才選特定地標，否則使用通用觀察符號",
+      "細微壓印肌理是美術資產需求，純 CSS 未必能忠實實現"
+    ],
+    "motion": "none"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "沒有照片，無法抽取 2–4 種代表印色與地貌",
+      "沒有地名和編號，不產生印章文案",
+      "實體印章顆粒效果的量測細節未指定"
+    ],
+    "conflicts": [],
+    "assumptions": [
+      "視覺風格可轉成網站的 icon／section art，但原 stamp poster 複合格式不帶入網站。",
+      "將靜態版畫／印章視覺轉為網站時建議不施加動畫，此為網站設計選擇而非來源文字指定。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}

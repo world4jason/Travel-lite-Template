@@ -210,6 +210,18 @@ The included illustration files are in `assets/storybook/` and are **destination
 
 Storybook's stylesheet is **disabled in Editorial**; its font is requested only in Storybook and never blocks page load. The URL query override is only for *previewing appearance* and does not rewrite `trip.json`, change group decisions, or store an alternate style preference.
 
+## Style Prompt Lab — 將自然語言風格提示詞轉成 Style Brief
+
+原本 `editorial`、`storybook` 是已經開發的 **Style Pack**。若你有不同用途的提示詞（插畫、明信片、Risograph、手刻印章、復古海報），可以先交給 [Style Prompt Lab](./style-generator/README.md) 拆解，不必自己預先知道 CSS 或 SVG。
+
+- [使用者填空模板](./style-generator/templates/STYLE_REQUEST.md)
+- [可交給 LLM 使用的 Style Extractor Prompt](./style-generator/STYLE_EXTRACTOR_PROMPT.md)
+- [風格 JSON Schema](./style-generator/style.schema.json) 與 [六組實測範例](./style-generator/examples)
+- `npm run validate:styles`、`npm run test:styles`：驗證六組範例與規格約束，不需要 API Key
+- `npm run render:style-prompts`：把六份規格轉成[可重複填空的風格提示詞](./style-generator/generated-prompts)，仍不會修改網站 CSS
+
+**重要：** 目前已完成的是六種風格的 **Style Brief 抽取／評估**，不是六套會自動生效的網站外觀。自訂名稱不會被當作 `ui.visualStyle` 使用；若要從 Style Brief 產生真正 Style Pack，需在下一階段建立 CSS／SVG、視覺預覽與功能回歸測試。沒有來源照片時，抽取器不會憑空猜測地標、實際照片顏色、招牌或來源文字。
+
 ## Quick start
 
 1. Fork/use this repository as a base.
