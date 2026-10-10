@@ -1,0 +1,185 @@
+/* On-device Style Pack picker. Tokens and content are deliberately independent
+   of the published trip, sharing the same accessible controls across all packs.
+   SPDX-License-Identifier: AGPL-3.0-or-later */
+.style-settings {
+  display: grid;
+  gap: 13px;
+}
+.style-settings > div:first-child { display: grid; gap: 4px; }
+.style-settings h2 { margin: 2px 0 0; line-height: 1.2; }
+.style-settings .helper-text { margin: 0; line-height: 1.55; }
+.style-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.style-option {
+  appearance: none;
+  display: grid;
+  grid-template-rows: 56px auto auto;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+  min-height: 130px;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: 17px;
+  position: relative;
+  font-family: inherit;
+}
+.style-option strong {
+  font-size: .88rem;
+  font-family: inherit;
+  font-weight: 780;
+  line-height: 1.25;
+}
+.style-option small {
+  color: var(--muted);
+  font-size: .71rem;
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.style-option[aria-pressed="true"] {
+  border-color: var(--text);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  background: var(--accent-soft);
+}
+.style-option[aria-pressed="true"]::after {
+  content: "✓";
+  position: absolute;
+  top: 5px;
+  right: 6px;
+  min-width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  background: var(--surface);
+  color: var(--text);
+  font-size: .71rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.style-option:disabled { cursor: wait; opacity: .8; }
+.style-option:hover:not(:disabled) { border-color: var(--accent); }
+.style-option:focus-visible, .style-reset-button:focus-visible {
+  outline: 3px solid var(--text) !important;
+  outline-offset: 3px;
+}
+.style-preview {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  position: relative;
+  height: 56px;
+  border: 1px solid rgba(58, 59, 58, .3);
+  border-radius: 10px;
+  padding: 9px 15px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.style-preview > span { display: block; flex: 0 1 23%; position: relative; }
+.style-preview--editorial { background: #EBEEE7; border-radius: 3px; }
+.style-preview--editorial > span {
+  height: 23px; background: #587368; border-radius: 2px;
+}
+.style-preview--editorial > span:nth-child(2) { height: 37px; background: #BDCEBE; }
+.style-preview--editorial > span:nth-child(3) { height: 15px; background: #395247; }
+.style-preview--storybook { background: #FFFCF6; border: 2px solid #3E3A39; }
+.style-preview--storybook > span {
+  height: 21px; border: 2px solid #3E3A39; border-radius: 10px;
+  background: #F2A497;
+}
+.style-preview--storybook > span:nth-child(2) { height: 34px; background: #A8D3E6; }
+.style-preview--storybook > span:nth-child(3) { height: 27px; background: #B9DAA5; }
+.style-preview--candy { background: #FFF9EF; border: 2px solid #FFF9EF; border-radius: 20px; }
+.style-preview--candy > span {
+  height: 30px; background: #FFC1B3;
+  border: 3px solid #FFF9EF; border-radius: 999px 999px 13px 13px;
+}
+.style-preview--candy > span:nth-child(2) { height: 40px; background: #ACDAF4; border-radius: 23px; }
+.style-preview--candy > span:nth-child(3) { height: 22px; background: #BBE8D4; border-radius: 999px; }
+.style-preview--risograph { background: #F7F1E4 url("./assets/risograph/grain.svg") center / 130px; border-radius: 1px; }
+.style-preview--risograph > span {
+  height: 20px; background: #293C57; border-radius: 0;
+}
+.style-preview--risograph > span:nth-child(2) { height: 36px; background: #A84732; }
+.style-preview--risograph > span:nth-child(3) { height: 27px; background: #293C57; }
+.style-settings-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 13px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.style-reset-button {
+  flex: 0 0 auto;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 8px 13px;
+  cursor: pointer;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-family: inherit; font-size: .8rem; font-weight: 700; line-height: 1.4;
+}
+.style-reset-button[aria-pressed="true"] {
+  background: var(--accent-soft);
+  border-width: 2px;
+}
+.style-reset-button:disabled { cursor: wait; opacity: .8; }
+.style-settings .style-source { flex: 1 1 180px; font-size: .75rem; }
+/* Make a compact printer-like control for the print pack. */
+:root[data-visual-style="risograph"] .style-settings {
+  background: var(--riso-paper);
+}
+:root[data-visual-style="risograph"] .style-option {
+  border-radius: 0;
+  color: var(--riso-ink);
+  background: var(--riso-paper);
+  border: 1px solid var(--riso-ink);
+  font-family: var(--font-utility);
+}
+:root[data-visual-style="risograph"] .style-option strong {
+  font-family: var(--font-display);
+  font-size: 1rem;
+}
+:root[data-visual-style="risograph"] .style-option[aria-pressed="true"] {
+  outline: 2px solid var(--riso-ink);
+  background: #E8DDC8;
+}
+:root[data-visual-style="risograph"] .style-option[aria-pressed="true"]::after {
+  border-radius: 0;
+  color: var(--riso-paper);
+  background: var(--riso-ink);
+}
+:root[data-visual-style="risograph"] .style-reset-button {
+  background: var(--riso-paper);
+  border-radius: 0;
+  border-color: var(--riso-ink);
+}
+:root[data-visual-style="risograph"] .style-reset-button[aria-pressed="true"] {
+  color: var(--riso-paper);
+  background: var(--riso-ink);
+}
+@media (min-width: 700px) {
+  .style-options { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 349px) {
+  .style-option { min-height: 125px; padding: 8px; }
+  .style-option strong { font-size: .81rem; }
+  .style-option small { font-size: .67rem; }
+  .style-preview { padding-inline: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .style-option, .style-reset-button { transition: none !important; }
+}
