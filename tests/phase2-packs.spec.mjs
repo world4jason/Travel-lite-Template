@@ -92,7 +92,7 @@ test("Risograph has a distinct editorial print composition, halftone assets and 
   await page.screenshot({ path: "/tmp/tlt-phase2-risograph-day.png", fullPage: true });
   await page.locator(".bottom-nav [data-view='more']").click();
   await expect(page.locator("[data-motion-choice]")).toHaveCount(0);
-  await expect(page.locator(".settings-card")).toContainText("Static print-inspired");
+  await expect(page.locator(".settings-card:not(.style-settings)")).toContainText("Static print-inspired");
 });
 
 test("Candy supports reduced-motion by OS and an editable per-trip preference", async ({ page }) => {

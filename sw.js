@@ -1,4 +1,4 @@
-const CACHE = "travel-lite-shell-v26-stylepacks";
+const CACHE = "travel-lite-shell-v27-style-settings";
 const RUNTIME_CACHE = "travel-lite-runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -13,6 +13,7 @@ const CORE = [
   "./companion-ux.css",
   "./long-trip-nav.css",
   "./today-brief.css",
+  "./style-settings.css",
   "./storybook-theme.css",
   "./candy-theme.css",
   "./risograph-theme.css",

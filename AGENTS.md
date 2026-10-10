@@ -174,6 +174,8 @@ The original `editorial` style remains the default; only `ui.visualStyle` values
 
 Storybook, Candy and Risograph all use light surfaces. Storybook/Candy honor OS `prefers-reduced-motion` and the local More → Motion setting; Risograph remains static. Review [style-packs/README.md](./style-packs/README.md), test all four packs and preview overrides, and keep inaccessible color combinations out of text/focus states.
 
+The bounded **More → Appearance** selector allows visitors to pick from these four audited packs, stored under their own trip-ID-scoped `visualStyle` key in TravelLiteStorage. Precedence: whitelisted URL preview > on-device preference > published default. Switching must never modify shared `trip.json` or break checklists, local notes, navigation or offline cache. Selecting/resetting in More may clear the URL-only preview parameter while preserving deep links. `Follow trip default` must clear the local override.
+
 ## Offline / share / locale
 
 - show whether the traveller is seeing a network copy or an offline snapshot

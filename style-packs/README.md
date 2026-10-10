@@ -11,7 +11,11 @@ Travel Lite's **functional template** remains shared: Now / Trip / Map / Check /
 | `candy` | Phase 2, reviewed prototype | Rounded five-fill sticker art, big soft-radius cards and timeline | [Candy](https://world4jason.github.io/Travel-lite-Template/?previewStyle=candy#trip/overview) |
 | `risograph` | Phase 2, reviewed prototype | Single-ink editorial print, halftone skyline, paper grain, no motion | [Risograph](https://world4jason.github.io/Travel-lite-Template/?previewStyle=risograph#trip/overview) |
 
-Set the style for a newly generated trip by adding `"visualStyle": "candy"` or `"risograph"` inside `trip.json → ui`. This is site-level, shared presentation, **not** a device preference. Unsupported strings fall back to Editorial and are never interpreted as URLs, scripts or CSS. `?previewStyle=...` is a read-only appearance preview.
+Set the published default for a generated trip by adding `"visualStyle": "candy"` or `"risograph"` inside `trip.json → ui`. Visitors can switch among four built-in styles from **More → Appearance / 外觀**, saving a **per-trip device-only** preference without modifying `trip.json`. Use **Follow trip default** to remove that preference. A whitelisted `?previewStyle=...` URL overrides the device choice for that link's visit, without saving it. Precedence: valid URL preview > saved per-trip device choice > publisher's `ui.visualStyle` > Editorial. Unknown pack IDs never execute custom CSS, HTML or scripts.
+
+### Switch in More / Appearance
+
+Open **More → Appearance / 外觀**. Select a visual tile to apply it immediately (without reloading); the selection persists per trip on this device. **Follow trip default** clears the local choice. [See the mobile picker screenshot](./previews/style-settings-candy-mobile.png). Styles from a `?previewStyle=...` link are temporary and override the saved device choice only for that visit. Choosing or resetting inside More clears the URL-only override without losing the current page.
 
 ## Verified screenshots (same Tokyo Autumn data)
 

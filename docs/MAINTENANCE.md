@@ -91,7 +91,7 @@ The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead 
 
 ## Built-in Style Pack review (Storybook / Candy / Risograph)
 
-`npm run test:mobile` also runs `tests/style-options.spec.mjs` and `tests/phase2-packs.spec.mjs` (separate from the 32-day default fixture). Verify:
+`npm run test:mobile` also runs `tests/style-options.spec.mjs`, `tests/phase2-packs.spec.mjs` and `tests/style-settings.spec.mjs` (separate from the 32-day default fixture). Verify:
 
 - old trips with no `ui.visualStyle` render the same Editorial Atlas and still switch light/dark
 - invalid style selection falls back to Editorial
@@ -101,6 +101,9 @@ The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead 
 - the optional ordered timeline, TBD, transport labels and curated emphasis preserve actual itinerary truth
 - both OS reduced motion and the per-trip local motion control stop animations
 - no overlap/overflow at narrow, tablet and desktop widths, offline cache includes optional assets
+- More → Appearance instantly switches Editorial/Storybook/Candy/Risograph with no reload, persists per trip, preserves dark theme on returning to Editorial, and remains keyboard-reachable
+- URL preview takes precedence temporarily, choosing a local style removes preview URL while preserving hash and unrelated query parameters, Follow trip default clears local state
+- navigation immediately after an asynchronous checklist write cannot redraw a stale Check view over a newly selected Trip view
 
 External Google Fonts are optional, loaded without blocking first paint. Only style-specific icon/artwork metadata belongs in a generated trip; core navigation and live-map behavior stay shared.
 

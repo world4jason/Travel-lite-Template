@@ -7,6 +7,9 @@ const state = {
   todos: {},
   personalNote: "",
   theme: "system",
+  visualStyle: "editorial",
+  stylePreference: null, // per-trip and device-only
+  styleSource: "trip",
 };
 
 const VIEW_META = {
@@ -20,8 +23,9 @@ const VIEW_META = {
 const root = document.querySelector("#view-root");
 const bottomNav = document.querySelector("#bottom-nav");
 
-// Visual style is shared trip presentation, not a device-local choice.
-// A whitelisted URL override is only for read-only preview links.
+// The trip publishes a shared default. Each viewer can override it with a
+// whitelisted device-only style preference. A URL preview takes precedence for
+// the current link only; none of these operations edits shared trip data.
 const VISUAL_PACKS = Object.freeze({
   editorial: { css: [], lightOnly: false, timeline: false, motion: false },
   storybook: { css: ["storybook-style"], lightOnly: true, timeline: true, motion: true },
@@ -39,8 +43,11 @@ const packThemeColor = () => ({ storybook: "#FFFCF6", candy: "#FFF9EF",
 function activateVisualStyle() {
   let requested = "";
   try { requested = new URLSearchParams(window.location.search).get("previewStyle") || ""; } catch {}
-  const fromTrip = state.data?.ui?.visualStyle || "editorial";
-  state.visualStyle = VISUAL_STYLES.has(requested) ? requested : fromTrip;
+  const fromTrip = VISUAL_STYLES.has(state.data?.ui?.visualStyle)
+    ? state.data.ui.visualStyle : "editorial";
+  const isPreview = VISUAL_STYLES.has(requested);
+  state.visualStyle = isPreview ? requested : (state.stylePreference || fromTrip);
+  state.styleSource = isPreview ? "preview" : state.stylePreference ? "device" : "trip";
   document.documentElement.dataset.visualStyle = state.visualStyle;
 
   // Only audited, bundled pack IDs may activate stylesheets. No arbitrary
@@ -64,6 +71,37 @@ function activateVisualStyle() {
     }
     window.TravelLiteStorybookMotion?.init(state.data.trip.id);
   }
+}
+
+// Choosing in Settings removes only the appearance-preview parameter; it keeps
+// the route/hash and any unrelated parameters. The shared itinerary is untouched.
+function clearStylePreviewQuery() {
+  const url = new URL(window.location.href);
+  if (!url.searchParams.has("previewStyle")) return;
+  url.searchParams.delete("previewStyle");
+  history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+}
+
+async function chooseLocalStyle(choice) {
+  if (choice !== "default" && !VISUAL_STYLES.has(choice)) return false;
+  const next = choice === "default" ? null : choice;
+  if (next === null) {
+    await TravelLiteStorage.remove(tripKey("visualStyle"));
+  } else {
+    const stored = await TravelLiteStorage.set(tripKey("visualStyle"), next);
+    if (stored === false) return false;
+  }
+  state.stylePreference = next;
+  clearStylePreviewQuery();
+  activateVisualStyle();
+  applyTheme();
+  // Changing between fixed-light packs may not change data-theme, so refresh
+  // the shell explicitly as well as rerendering the active settings view.
+  window.dispatchEvent(new Event("travel-lite-style-changed"));
+  renderMore();
+  root.querySelector(next === null ? "[data-style-reset]" :
+    '[data-style-choice="' + next + '"]')?.focus({ preventScroll: true });
+  return true;
 }
 
 const escapeHtml = (value = "") => String(value)
@@ -395,12 +433,12 @@ function renderCheck() {
   root.querySelectorAll("[data-check-key]").forEach((input) => input.addEventListener("change", async () => {
     state.checks[input.dataset.checkKey] = input.checked;
     await TravelLiteStorage.set(tripKey("checks"), state.checks);
-    renderCheck();
+    if (state.view === "check") renderCheck();
   }));
   root.querySelectorAll("[data-todo-key]").forEach((input) => input.addEventListener("change", async () => {
     state.todos[input.dataset.todoKey] = input.checked;
     await TravelLiteStorage.set(tripKey("todos"), state.todos);
-    renderCheck();
+    if (state.view === "check") renderCheck();
   }));
 }
 
@@ -424,6 +462,48 @@ function renderMore() {
   const contacts = state.data.contacts.map((contact) => `<article class="info-row compact-row"><div><h3>${escapeHtml(contact.name)}</h3><p>${escapeHtml(contact.role || "")}</p></div>${contact.phone ? `<a class="inline-link" href="tel:${escapeAttr(contact.phone)}">${escapeHtml(contact.phone)}</a>` : ""}</article>`).join("");
   const journal = state.data.journal.map((entry) => `<article class="text-card"><p class="eyebrow">${escapeHtml(entry.date ? prettyDate(entry.date, { weekday: "short" }) : entry.mood || "Journal")}</p><h3>${escapeHtml(entry.title)}</h3><p>${escapeHtml(entry.body)}</p></article>`).join("");
   const links = state.data.links.map((link) => `<a class="file-row" href="${escapeAttr(link.url)}" target="_blank" rel="noreferrer"><span><strong>${escapeHtml(link.label)}</strong></span><span>↗</span></a>`).join("");
+  const names = { editorial: "Editorial", storybook: "Storybook",
+    candy: "Candy Geometry", risograph: "Risograph Zine" };
+  const isZh = /^zh/i.test(state.data.ui.locale || "");
+  const descriptions = {
+    editorial: isZh ? "經典編輯版 · 支援深色" : "Classic · light & dark",
+    storybook: isZh ? "日系繪本 · 插畫" : "Picture book · illustrated",
+    candy: isZh ? "糖果色塊 · 圓潤" : "Pastel · rounded stickers",
+    risograph: isZh ? "孔版印刷 · 復古" : "Print · indigo grain",
+  };
+  const defaultStyle = VISUAL_STYLES.has(state.data.ui.visualStyle)
+    ? state.data.ui.visualStyle : "editorial";
+  const choices = Object.keys(VISUAL_PACKS).map(id => `<button type="button"
+    class="style-option" data-style-choice="${id}" aria-pressed="${state.visualStyle === id}">
+      <span class="style-preview style-preview--${id}" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+      <strong>${names[id]}</strong><small>${descriptions[id]}</small>
+    </button>`).join("");
+  const origin = state.styleSource === "preview"
+    ? (isZh ? "目前為連結預覽；點選風格可保存在本裝置。" :
+        "Previewing a link. Choose a style to save it on this device.")
+    : state.styleSource === "device"
+      ? (isZh ? "已儲存在此裝置，不影響同行者。" :
+          "Saved on this device; other travellers are unaffected.")
+      : (isZh ? "目前使用共用行程的預設風格。" :
+          "Following the published trip's default.");
+  const styleChooser = `<section class="panel settings-card style-settings">
+    <div><p class="eyebrow">Appearance / 外觀</p>
+      <h2>${isZh ? "切換網站風格" : "Choose a visual style"}</h2>
+      <p class="helper-text">${isZh ? "立即切換，僅記錄在這台裝置。" :
+        "Switch instantly. Your choice stays on this device."}</p>
+    </div>
+    <div class="style-options" role="group"
+      aria-label="${isZh ? "可選網站風格" : "Available visual styles"}">${choices}</div>
+    <div class="style-settings-footer">
+      <button class="style-reset-button" type="button" data-style-reset
+        aria-pressed="${state.styleSource === "trip"}">
+        ${isZh ? "跟隨行程預設" : "Follow trip default"} · ${names[defaultStyle]}
+      </button>
+      <p class="helper-text style-source" role="status">${origin}</p>
+    </div>
+  </section>`;
   const appearance = isFixedLightStyle()
     ? `<section class="panel settings-card">
         <div><p class="eyebrow">Appearance</p><h2>${({storybook:"Storybook",candy:"Candy Geometry",risograph:"Risograph Zine"})[state.visualStyle]} · Light only</h2></div>
@@ -439,6 +519,7 @@ function renderMore() {
       </section>`
     : `<section class="panel settings-card"><div><p class="eyebrow">Appearance</p><h2>Theme</h2></div><div class="theme-switcher">${["system", "dark", "light"].map((theme) => `<button type="button" data-theme="${theme}" class="theme-button ${state.theme === theme ? "active" : ""}">${theme}</button>`).join("")}</div><div class="storage-status"><span>Local storage</span><strong id="storage-mode">${escapeHtml(TravelLiteStorage.getMode())}</strong></div></section>`;
   root.innerHTML = `<div class="view-stack">
+    ${styleChooser}
     <section class="panel local-note-card"><div class="check-title-row"><h2>Personal note</h2><span>this device</span></div><textarea id="personal-note" rows="4" placeholder="Gate change, room number, quick memo…">${escapeHtml(state.personalNote)}</textarea><p class="helper-text">Saved locally in IndexedDB; falls back to localStorage if needed.</p></section>
     ${detailsSection("Reservations", state.data.reservations.length, reservations, true)}
     ${detailsSection("Costs", state.data.costs.entries.length, costs)}
@@ -455,6 +536,16 @@ function renderMore() {
     state.personalNote = textarea.value;
     clearTimeout(noteTimer);
     noteTimer = setTimeout(() => TravelLiteStorage.set(tripKey("personalNote"), state.personalNote), 180);
+  });
+  root.querySelectorAll("[data-style-choice]").forEach(button => button.addEventListener("click", async () => {
+    button.disabled = true;
+    try { await chooseLocalStyle(button.dataset.styleChoice); }
+    finally { button.disabled = false; }
+  }));
+  root.querySelector("[data-style-reset]")?.addEventListener("click", async (event) => {
+    event.currentTarget.disabled = true;
+    try { await chooseLocalStyle("default"); }
+    finally { event.currentTarget.disabled = false; }
   });
   root.querySelectorAll("[data-theme]").forEach((button) => button.addEventListener("click", async () => {
     state.theme = button.dataset.theme;
@@ -574,6 +665,8 @@ async function registerServiceWorker() {
 async function boot() {
   try {
     state.data = await loadTripData();
+    const storedStyle = await TravelLiteStorage.get(tripKey("visualStyle"));
+    state.stylePreference = VISUAL_STYLES.has(storedStyle) ? storedStyle : null;
     activateVisualStyle();
     await hydrateLocalState();
     hydrateHeader();

@@ -166,7 +166,7 @@ Built-in companion/shell labels cover English and Traditional Chinese; trip cont
 
 ## Visual Style Packs — Editorial, Storybook, Candy and Risograph
 
-Travel Lite now ships **four reviewed site-level visual styles**. Editorial is still the default and supports Auto / Light / Dark. Storybook, Candy Geometry and Risograph Zine are fixed-light styles. All four reuse one itinerary, navigation, map, checklist and offline application; only their visual layout and bundled decorative assets differ. [See Style Pack implementation notes and source evidence](./style-packs/README.md).
+Travel Lite ships **four reviewed visual styles**. The publisher chooses the shared default; travellers may temporarily or persistently override the appearance on their own device. Editorial is still the default and supports Auto / Light / Dark. Storybook, Candy Geometry and Risograph Zine are fixed-light styles. All four reuse one itinerary, navigation, map, checklist and offline application; only their visual layout and bundled decorative assets differ. [See Style Pack implementation notes and source evidence](./style-packs/README.md).
 
 For one-click comparison with the built-in Tokyo sample (without changing its data):
 
@@ -174,6 +174,8 @@ For one-click comparison with the built-in Tokyo sample (without changing its da
 - [Storybook — illustrated notebook](https://world4jason.github.io/Travel-lite-Template/?previewStyle=storybook#trip/overview)
 - [Candy Geometry — rounded sticker art](https://world4jason.github.io/Travel-lite-Template/?previewStyle=candy#trip/overview)
 - [Risograph Zine — paper and indigo ink](https://world4jason.github.io/Travel-lite-Template/?previewStyle=risograph#trip/overview)
+
+**You can also switch directly in the website:** open **More → Appearance / 外觀**, select any of the four styles, or press **Follow trip default / 跟隨行程預設** to clear your personal preference. Switching is instant and does not reload or alter the public itinerary. Your selection is saved locally, per trip, in IndexedDB (with a localStorage fallback). A whitelisted `?previewStyle=...` sharing link temporarily overrides the device preference until you select or reset a style.
 
 To select a built-in Style Pack for a *generated trip*, set this in `trip.json` (replace `storybook` with `candy` or `risograph`):
 
@@ -186,7 +188,7 @@ To select a built-in Style Pack for a *generated trip*, set this in `trip.json` 
 }
 ```
 
-This is a snippet: retain the other existing `ui` and trip fields. Omit `visualStyle` or use `"editorial"` to retain the original look. Unknown values fall back to `editorial`. The trip data remains one source of truth, and there is no per-traveller style picker.
+This is a snippet: retain the other existing `ui` and trip fields. Omit `visualStyle` or use `"editorial"` to retain the original publisher default. Unknown values fall back to `editorial`. The trip data remains one source of truth: each traveller can pick among the same four installed packs locally without changing the publisher-selected default.
 
 Optional, **explicitly supplied** presentation metadata:
 

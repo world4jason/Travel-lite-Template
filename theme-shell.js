@@ -111,6 +111,10 @@
       updateButton();
       if (currentMode() === "system") rerenderMapIfVisible();
     });
+    window.addEventListener("travel-lite-style-changed", () => {
+      updateButton();
+      rerenderMapIfVisible();
+    });
 
     updateButton();
     // app.js dispatches travel-lite-ready once trip data and stored view/date are final (no timeout).
