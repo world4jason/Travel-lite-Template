@@ -170,9 +170,9 @@ Appearance must support `system`, `light`, and `dark`.
 
 ## Optional visual style
 
-The original `editorial` style remains the default; the explicitly authorized `ui.visualStyle: "storybook"` is a **site-level opt-in**. Preserve the current Editorial design and its Auto/Light/Dark behavior. The Storybook overlay must not leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
+The original `editorial` style remains the default; only `ui.visualStyle` values `storybook`, `candy` and `risograph` are audited **site-level opt-ins**. Preserve the current Editorial design and its Auto/Light/Dark behavior. None of the reviewed Style Pack overlays may leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
 
-Storybook only uses light surfaces. Respect OS `prefers-reduced-motion` and the local More → Motion setting; any animation must stop without breaking layout or functionality. Regression test both style paths and preview overrides.
+Storybook, Candy and Risograph all use light surfaces. Storybook/Candy honor OS `prefers-reduced-motion` and the local More → Motion setting; Risograph remains static. Review [style-packs/README.md](./style-packs/README.md), test all four packs and preview overrides, and keep inaccessible color combinations out of text/focus states.
 
 ## Offline / share / locale
 

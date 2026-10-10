@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "id": "candy",
+  "displayName": "Candy Geometry",
+  "sourceBriefId": "candy-geometry",
+  "sourceBriefPath": "../../style-generator/examples/candy-geometry.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/candy-geometry.md",
+  "visualStyle": "candy",
+  "status": "implemented-reviewed",
+  "implementationTier": "asset-and-token-variant",
+  "base": "storybook",
+  "lightOnly": true,
+  "motion": "gentle-and-reducible",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "css": [
+    "../../storybook-theme.css",
+    "../../candy-theme.css"
+  ],
+  "assetDirectory": "../../assets/candy",
+  "assets": [
+    "boat.svg",
+    "car.svg",
+    "city.svg",
+    "food.svg",
+    "hero.svg",
+    "hotel.svg",
+    "landmark.svg",
+    "map.svg",
+    "nature.svg",
+    "plane.svg",
+    "sea.svg",
+    "train.svg"
+  ],
+  "palette": {
+    "milk": "#FFF9EF",
+    "mint": "#BBE8D4",
+    "peach": "#FFC1B3",
+    "butter": "#FFE5A5",
+    "sky": "#ACDAF4"
+  },
+  "contrastInk": "#34424C",
+  "contrastInkException": "Dark ink for text, focus and card borders is an intentional accessibility exception to five illustration fill colors; no photo was available and hexes are implementation choices, not sampled.",
+  "scenePrinciples": [
+    "Use only five fills in illustration SVGs",
+    "No sharp angles, gradients or shadows",
+    "Rounded sticker shapes and soft paper-white dividing strokes"
+  ],
+  "acceptanceTests": [
+    "tests/phase2-packs.spec.mjs",
+    "tests/pack-manifests.test.mjs"
+  ],
+  "browserPreviews": [
+    "../previews/candy-overview-mobile.png",
+    "../previews/candy-overview-desktop.png",
+    "../previews/candy-day-mobile.png"
+  ]
+}

@@ -327,3 +327,6 @@ h2 { letter-spacing: -.025em; line-height: 1.12; }
 @media (prefers-reduced-motion: reduce) {
   .trip-cover img { transition: none; }
 }
+
+/* A site-level fixed-light pack must not expose the legacy theme toggle. */
+#quick-theme-toggle[hidden] { display: none !important; }

@@ -98,10 +98,10 @@ Do not accept arbitrary style names, URL-driven custom CSS, or styles inferred f
 ```
 
 - `theme` supports `system`, `light`, and `dark`
-- `visualStyle`: optional `editorial` (default/current style) or `storybook` (paper-white illustrated, light-only). Invalid values fall back to `editorial`.
+- `visualStyle`: optional `editorial` (default, supports Auto/Light/Dark), `storybook` (paper-white illustrated, light-only), `candy` (five-fill candy sticker variant, light-only), or `risograph` (monochrome print aesthetic, light-only). Invalid values fall back to `editorial`. [Reviewed pack manifests](../style-packs/README.md).
 - Arbitrary prompts and Style Brief files are **not** `ui.visualStyle` values. The [Style Prompt Lab](../style-generator/README.md) describes the offline, non-executable extraction step. Only Style Packs implemented and reviewed in code may become selectable.
-- The style is a shared presentation choice. A whitelisted `?previewStyle=storybook` URL can preview the same data without rewriting `trip.json`.
-- Storybook loads an optional local CSS overlay, generic SVG assets and Huninn when available; offline and non-Huninn fallbacks keep the site usable.
+- The style is a shared presentation choice. A whitelisted `?previewStyle=storybook`, `candy` or `risograph` URL can preview the **same data** without rewriting `trip.json`.
+- Storybook and Candy use Huninn when available with local generic SVGs; Candy adds a reviewed stylesheet overlay. Risograph uses an independent static print overlay. All packs cache their local assets offline. No arbitrary style name, URL or custom CSS can be loaded from `trip.json`.
 - built-in shell/companion labels cover English and Traditional Chinese
 - `labels` is optional and only overrides shell/companion copy; it is not a second itinerary translation
 - unused views may be removed from `bottomNav`

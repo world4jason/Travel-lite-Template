@@ -1,0 +1,329 @@
+/* Candy Geometry — opt-in Style Pack.
+ * Soft stickers and rounded, five-color flat illustrations.
+ * Ink on user-facing text/focus outlines is a necessary accessibility exception
+ * to the source prompt's five *illustration fills*. See manifest for rationale.
+ * SPDX-License-Identifier: AGPL-3.0-or-later */
+:root[data-visual-style="candy"] {
+  --candy-mint: #BBE8D4;
+  --candy-peach: #FFC1B3;
+  --candy-yellow: #FFE5A5;
+  --candy-sky: #ACDAF4;
+  --candy-milk: #FFF9EF;
+  --candy-ink: #34424C;
+  --paper: var(--candy-milk);
+  --ink: var(--candy-ink);
+  --muted-ink: #4E5860;
+  --coral: var(--candy-peach);
+  --yamabuki: var(--candy-yellow);
+  --water: var(--candy-sky);
+  --bamboo: var(--candy-mint);
+  --bg: var(--candy-milk) !important;
+  --bg-top: var(--candy-milk) !important;
+  --surface: #FFFFFF;
+  --surface-2: var(--candy-milk);
+  --text: var(--candy-ink);
+  --muted: #4E5860;
+  --line: var(--candy-ink);
+  --accent: var(--candy-ink) !important;
+  --accent-soft: var(--candy-mint);
+  --border-subtle: 3px solid var(--candy-milk);
+  --radius-md: 28px;
+  --radius-lg: 40px;
+  --font-display: "Huninn", system-ui, sans-serif;
+  --font-utility: "Huninn", system-ui, sans-serif;
+  color-scheme: light;
+}
+:root[data-visual-style="candy"] body {
+  background: var(--candy-milk) !important;
+  background-image: none !important;
+  color: var(--candy-ink);
+}
+:root[data-visual-style="candy"] :where(.trip-header, .trip-overview-hero,
+  .trip-overview-day, .trip-route-summary, .trip-day-view > .day-summary,
+  .trip-v2-timeline .trip-v2-item, .trip-highlight-card, .trip-open-decision,
+  .panel, .runtime-map-panel, .companion-window-card, .companion-focus,
+  .shell-context-slot, .bottom-nav) {
+  border: 3px solid var(--candy-milk);
+  border-radius: 34px;
+  outline: 2px solid var(--candy-ink);
+  outline-offset: -1px;
+  background: white;
+  color: var(--candy-ink);
+  box-shadow: none !important;
+}
+:root[data-visual-style="candy"] .trip-header {
+  background: var(--candy-sky);
+  border-radius: 40px;
+  padding: 19px 23px;
+}
+:root[data-visual-style="candy"] #trip-location {
+  background: var(--candy-yellow);
+  border: 3px solid var(--candy-milk);
+  color: var(--candy-ink);
+  border-radius: 999px;
+}
+:root[data-visual-style="candy"] #trip-title { letter-spacing: -.01em; }
+:root[data-visual-style="candy"] .live-time {
+  background: var(--candy-mint);
+  border: 3px solid var(--candy-milk);
+  color: var(--candy-ink);
+  border-radius: 24px;
+  padding: 9px 11px;
+}
+:root[data-visual-style="candy"] .live-time small { color: var(--candy-ink); }
+:root[data-visual-style="candy"] .companion-runtime-status,
+:root[data-visual-style="candy"] .companion-header-button {
+  background: var(--candy-yellow);
+  border: 2px solid var(--candy-ink);
+  border-radius: 18px;
+  color: var(--candy-ink);
+}
+:root[data-visual-style="candy"] .trip-overview-hero {
+  background: var(--candy-yellow);
+  border-radius: 42px;
+}
+:root[data-visual-style="candy"] .trip-overview-hero::after {
+  background-image: url("./assets/candy/hero.svg");
+  background-size: contain;
+  border-radius: 22px;
+}
+:root[data-visual-style="candy"] :is(.trip-overview-day, .trip-highlight-card,
+ .trip-open-decision) { border-radius: 32px; }
+:root[data-visual-style="candy"] .trip-overview-day:nth-child(4n+1) { background: var(--candy-peach); }
+:root[data-visual-style="candy"] .trip-overview-day:nth-child(4n+2) { background: var(--candy-sky); }
+:root[data-visual-style="candy"] .trip-overview-day:nth-child(4n+3) { background: var(--candy-mint); }
+:root[data-visual-style="candy"] .trip-overview-day:nth-child(4n+4) { background: var(--candy-yellow); }
+:root[data-visual-style="candy"] .trip-overview-day:hover { background: var(--candy-yellow); }
+:root[data-visual-style="candy"] .trip-overview-day::after {
+  background-image: url("./assets/candy/map.svg");
+  border-radius: 26px;
+}
+:root[data-visual-style="candy"] .trip-highlight-card { background: var(--candy-mint); }
+:root[data-visual-style="candy"] .trip-highlight-card:nth-child(2n) { background: var(--candy-peach); }
+:root[data-visual-style="candy"] .trip-open-decision { background: var(--candy-yellow); }
+:root[data-visual-style="candy"] :is(.trip-highlight-card, .trip-open-decision)::after {
+  background-image: url("./assets/candy/nature.svg");
+  border-radius: 20px;
+}
+:root[data-visual-style="candy"] .trip-overview-day-meta span {
+  background: var(--candy-milk);
+  border: 2px solid var(--candy-milk);
+  color: var(--candy-ink);
+}
+:root[data-visual-style="candy"] .trip-overview-stats span {
+  background: var(--candy-mint);
+  border: 2px solid var(--candy-milk);
+  color: var(--candy-ink);
+}
+:root[data-visual-style="candy"] .trip-overview-stats span:nth-child(2) { background: var(--candy-peach); }
+:root[data-visual-style="candy"] .trip-overview-stats span:nth-child(3) { background: var(--candy-sky); }
+:root[data-visual-style="candy"] .trip-overview-stats { border-top: 3px dotted var(--candy-ink); }
+:root[data-visual-style="candy"] .trip-day-view > .day-summary { background: var(--candy-sky); border-radius: 38px; }
+:root[data-visual-style="candy"] .trip-day-view > .day-summary::after { background-image: url("./assets/candy/city.svg"); }
+:root[data-visual-style="candy"] .trip-route-summary { background: white; border-radius: 32px; }
+:root[data-visual-style="candy"] .trip-route-endpoints {
+  border: 3px solid var(--candy-milk);
+  outline: 2px solid var(--candy-ink);
+  border-radius: 25px;
+  background: var(--candy-mint);
+}
+:root[data-visual-style="candy"] .trip-route-steps span {
+  background: var(--candy-milk);
+  border: 2px solid var(--candy-ink);
+  border-radius: 999px;
+}
+:root[data-visual-style="candy"] .trip-route-steps b { background: var(--candy-yellow); }
+:root[data-visual-style="candy"] .trip-v2-timeline::before {
+  width: 7px;
+  background: var(--candy-mint);
+  border: 2px solid var(--candy-milk);
+  border-radius: 999px;
+  left: 13px;
+}
+:root[data-visual-style="candy"] .trip-v2-timeline > .trip-stop-wrap::before {
+  background: var(--candy-peach);
+  border: 4px solid var(--candy-milk);
+  outline: 2px solid var(--candy-ink);
+  border-radius: 999px;
+  top: 24px;
+}
+:root[data-visual-style="candy"] .trip-v2-timeline > .trip-stop-wrap:nth-child(4n+2)::before { background: var(--candy-sky); }
+:root[data-visual-style="candy"] .trip-v2-timeline > .trip-stop-wrap:nth-child(4n+3)::before { background: var(--candy-yellow); }
+:root[data-visual-style="candy"] .trip-v2-timeline > .trip-stop-wrap:nth-child(4n+4)::before { background: var(--candy-mint); }
+:root[data-visual-style="candy"] .trip-v2-timeline .trip-v2-item {
+  border-radius: 31px;
+  background: white;
+}
+:root[data-visual-style="candy"] .trip-v2-timeline .trip-stop-wrap:nth-child(4n+1) .trip-v2-item { background: var(--candy-milk); }
+:root[data-visual-style="candy"] .trip-v2-timeline .trip-stop-wrap:nth-child(4n+2) .trip-v2-item { background: var(--candy-sky); }
+:root[data-visual-style="candy"] .trip-v2-timeline .trip-stop-wrap:nth-child(4n+3) .trip-v2-item { background: var(--candy-mint); }
+:root[data-visual-style="candy"] .trip-v2-timeline .trip-stop-wrap:nth-child(4n+4) .trip-v2-item { background: var(--candy-peach); }
+:root[data-visual-style="candy"] .trip-v2-timeline .trip-v2-item.trip-must-go { background: var(--candy-yellow); }
+:root[data-visual-style="candy"] .trip-v2-timeline .timeline-time {
+  color: var(--candy-ink);
+  border: 2px solid var(--candy-milk);
+  background: var(--candy-yellow);
+  border-radius: 100px;
+  padding: 6px 12px;
+}
+:root[data-visual-style="candy"] .trip-v2-timeline .timeline-time--floating { background: white; }
+:root[data-visual-style="candy"] :is(.must-go-tag, .transport-tag, .type-pill, .time-pill,
+ .trip-open-count, .summary-count) {
+  border: 2px solid var(--candy-milk);
+  color: var(--candy-ink);
+  background: var(--candy-yellow);
+  border-radius: 999px;
+}
+:root[data-visual-style="candy"] .must-go-tag { background: var(--candy-peach); }
+:root[data-visual-style="candy"] .transport-tag--flight { background: var(--candy-sky); }
+:root[data-visual-style="candy"] .transport-tag--drive { background: var(--candy-yellow); }
+:root[data-visual-style="candy"] .transport-tag--train { background: var(--candy-mint); }
+:root[data-visual-style="candy"] .transport-tag--boat { background: var(--candy-mint); }
+:root[data-visual-style="candy"] .trip-v2-timeline .trip-transfer {
+  border-left: 5px dotted var(--candy-ink);
+  background: var(--candy-milk);
+  border-radius: 17px;
+}
+:root[data-visual-style="candy"] :is(.day-chip, .place-chip, .theme-button, .long-trip-step) {
+  background: white;
+  border: 3px solid var(--candy-milk);
+  outline: 2px solid var(--candy-ink);
+  border-radius: 21px;
+  color: var(--candy-ink);
+}
+:root[data-visual-style="candy"] :is(.day-chip, .place-chip, .theme-button).active { background: var(--candy-yellow); }
+:root[data-visual-style="candy"] :is(.button-link, .trip-icon-action,
+ .trip-action-menu > summary, .trip-transfer-link, .companion-icon-action) {
+  background: white;
+  border: 2px solid var(--candy-ink);
+  border-radius: 21px;
+  color: var(--candy-ink);
+}
+:root[data-visual-style="candy"] .button-link.primary { background: var(--candy-peach); }
+:root[data-visual-style="candy"] .bottom-nav {
+  background: var(--candy-milk);
+  border: 3px solid var(--candy-milk);
+  border-radius: 32px;
+}
+:root[data-visual-style="candy"] .nav-item {
+  border-radius: 25px;
+  border: 2px solid transparent;
+  color: var(--candy-ink);
+}
+:root[data-visual-style="candy"] .nav-item.active {
+  background: var(--candy-mint);
+  border: 2px solid var(--candy-ink);
+}
+:root[data-visual-style="candy"] .nav-item:hover { background: var(--candy-yellow); }
+:root[data-visual-style="candy"] .check-item {
+  border: 2px solid var(--candy-ink);
+  border-radius: 23px;
+  background: var(--candy-milk);
+}
+:root[data-visual-style="candy"] .check-item input:checked + .checkbox-ui { background: var(--candy-mint); }
+:root[data-visual-style="candy"] .more-section > summary {
+  background: var(--candy-yellow);
+  border: 2px solid var(--candy-milk);
+  border-radius: 25px;
+}
+:root[data-visual-style="candy"] .more-section[open] > summary { border-radius: 25px 25px 0 0; }
+:root[data-visual-style="candy"] .cost-total { background: var(--candy-peach); }
+:root[data-visual-style="candy"] .motion-choice { border-radius: 100px; }
+:root[data-visual-style="candy"] .motion-choice[aria-pressed="true"] { background: var(--candy-mint); }
+:root[data-visual-style="candy"] .shell-overview-link.active { background: var(--candy-yellow); }
+:root[data-visual-style="candy"] .shell-day.active { background: var(--candy-mint); }
+:root[data-visual-style="candy"] .shell-context-slot { border-radius: 26px; }
+:root[data-visual-style="candy"] .map-stage { background: var(--candy-sky); border-radius: 24px; }
+
+/* Every decorative asset is local and whitelisted. No arbitrary URL is sourced
+   from trip data, even when the traveller supplies an illustration key. */
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="city"],
+  .trip-highlight-card[data-storybook-art="city"],
+  .trip-open-decision[data-storybook-art="city"],
+  .day-summary[data-storybook-art="city"])::after { background-image: url("./assets/candy/city.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="city"] .timeline-content::after { background-image: url("./assets/candy/city.svg"); }
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="nature"],
+  .trip-highlight-card[data-storybook-art="nature"],
+  .trip-open-decision[data-storybook-art="nature"],
+  .day-summary[data-storybook-art="nature"])::after { background-image: url("./assets/candy/nature.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="nature"] .timeline-content::after { background-image: url("./assets/candy/nature.svg"); }
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="map"],
+  .trip-highlight-card[data-storybook-art="map"],
+  .trip-open-decision[data-storybook-art="map"],
+  .day-summary[data-storybook-art="map"])::after { background-image: url("./assets/candy/map.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="map"] .timeline-content::after { background-image: url("./assets/candy/map.svg"); }
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="plane"],
+  .trip-highlight-card[data-storybook-art="plane"],
+  .trip-open-decision[data-storybook-art="plane"],
+  .day-summary[data-storybook-art="plane"])::after { background-image: url("./assets/candy/plane.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="plane"] .timeline-content::after { background-image: url("./assets/candy/plane.svg"); }
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="car"],
+  .trip-highlight-card[data-storybook-art="car"],
+  .trip-open-decision[data-storybook-art="car"],
+  .day-summary[data-storybook-art="car"])::after { background-image: url("./assets/candy/car.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="car"] .timeline-content::after { background-image: url("./assets/candy/car.svg"); }
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="train"],
+  .trip-highlight-card[data-storybook-art="train"],
+  .trip-open-decision[data-storybook-art="train"],
+  .day-summary[data-storybook-art="train"])::after { background-image: url("./assets/candy/train.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="train"] .timeline-content::after { background-image: url("./assets/candy/train.svg"); }
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="boat"],
+  .trip-highlight-card[data-storybook-art="boat"],
+  .trip-open-decision[data-storybook-art="boat"],
+  .day-summary[data-storybook-art="boat"])::after { background-image: url("./assets/candy/boat.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="boat"] .timeline-content::after { background-image: url("./assets/candy/boat.svg"); }
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="food"],
+  .trip-highlight-card[data-storybook-art="food"],
+  .trip-open-decision[data-storybook-art="food"],
+  .day-summary[data-storybook-art="food"])::after { background-image: url("./assets/candy/food.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="food"] .timeline-content::after { background-image: url("./assets/candy/food.svg"); }
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="hotel"],
+  .trip-highlight-card[data-storybook-art="hotel"],
+  .trip-open-decision[data-storybook-art="hotel"],
+  .day-summary[data-storybook-art="hotel"])::after { background-image: url("./assets/candy/hotel.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="hotel"] .timeline-content::after { background-image: url("./assets/candy/hotel.svg"); }
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="landmark"],
+  .trip-highlight-card[data-storybook-art="landmark"],
+  .trip-open-decision[data-storybook-art="landmark"],
+  .day-summary[data-storybook-art="landmark"])::after { background-image: url("./assets/candy/landmark.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="landmark"] .timeline-content::after { background-image: url("./assets/candy/landmark.svg"); }
+
+:root[data-visual-style="candy"] :is(
+  .trip-overview-day[data-storybook-art="sea"],
+  .trip-highlight-card[data-storybook-art="sea"],
+  .trip-open-decision[data-storybook-art="sea"],
+  .day-summary[data-storybook-art="sea"])::after { background-image: url("./assets/candy/sea.svg"); }
+:root[data-visual-style="candy"] .trip-v2-item[data-storybook-kind="sea"] .timeline-content::after { background-image: url("./assets/candy/sea.svg"); }
+
+@media (max-width: 520px) {
+  :root[data-visual-style="candy"] .trip-header { padding: 14px; border-radius: 32px; }
+  :root[data-visual-style="candy"] .trip-overview-hero { padding: 14px; border-radius: 33px; }
+  :root[data-visual-style="candy"] .trip-overview-day { border-radius: 26px; }
+  :root[data-visual-style="candy"] .trip-day-view > .day-summary { border-radius: 30px; }
+  :root[data-visual-style="candy"] .bottom-nav { border-radius: 25px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-visual-style="candy"] *,
+  :root[data-visual-style="candy"] *::before,
+  :root[data-visual-style="candy"] *::after { animation: none !important; transition: none !important; }
+}

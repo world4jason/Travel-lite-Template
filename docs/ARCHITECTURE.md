@@ -126,15 +126,15 @@ A trip/fork may override `mapStyleLight` / `mapStyleDark` in provider configurat
 
 ### Optional site-level style (2026-10 decision)
 
-The existing Editorial composition remains the **default**, with its regular `system` / `light` / `dark` themes. A second, explicitly opt-in `ui.visualStyle: "storybook"` renders the same trip content as an illustrated light-only travel notebook. Missing or invalid selections normalize to `editorial`.
+The existing Editorial composition remains the **default**, with its regular `system` / `light` / `dark` themes. Three explicitly opt-in, whitelisted `ui.visualStyle` values (`storybook`, `candy`, `risograph`) render the same trip content as light-only notebook, rounded sticker art or risograph print layouts. Missing or invalid selections normalize to `editorial`.
 
-The style is **shared site presentation**, chosen when publishing the trip rather than by individual travellers. The controlled preview URL `?previewStyle=storybook` is an appearance-only browser preview, not a mutation to shared truth. There is no style editor, template marketplace, or destination-driven automatic choice.
+The style is **shared site presentation**, chosen when publishing the trip rather than by individual travellers. The controlled preview URL `?previewStyle=<built-in-style-id>` is an appearance-only browser preview, not a mutation to shared truth. There is no style editor, template marketplace, or destination-driven automatic choice.
 
 - `storybook-theme.css` is entirely disabled on Editorial trips; this protects existing CSS tokens and responsive layouts.
 - `storybook-decor.js` maps whitelisted `illustration` keys to local generic SVGs, never arbitrary script/URL content or inferred title keywords.
 - `trip-view.js` shares the same content/actions and only changes markup composition for the optional illustrated timeline.
 - `storybook-motion.js` stores a **per-trip, device-local** motion preference; browser/OS `prefers-reduced-motion` remains authoritative.
-- Storybook pins a light visual surface; Editorial retains device theme changes and the light/dark map behavior.
+- Storybook, Candy and Risograph pin light visual surfaces; only Storybook/Candy use reduced-motion-aware gentle animation. Editorial retains device theme changes and the light/dark map behavior. Candy derives from Storybook with curated five-fill artwork and accessible ink exceptions. Risograph uses its own static print layout, grain and indigo typography.
 - Neither style can change route/timing, booking truth, privacy, local checklist state, hash links or the provider/handoff boundary.
 
 ## Shared truth vs local state
