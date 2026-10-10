@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "naive-city-sketch",
+  "name": {
+    "zh": "歐洲童趣城市速寫",
+    "en": "Naive City Sketch"
+  },
+  "sourceTask": "illustrated-travel-memory",
+  "visual": {
+    "mood": [
+      "溫暖",
+      "幽默",
+      "笨拙",
+      "手工",
+      "懷舊",
+      "生活感"
+    ],
+    "era": "1950–1960 年代歐洲城市繪本",
+    "palette": {
+      "mode": "adaptive",
+      "maxColors": 7,
+      "swatches": [],
+      "usage": [
+        "6–7 種城市感的霧面水粉色，依不同目的地調整",
+        "大面積天空保留紙面原色",
+        "輪廓以深藍墨或炭筆語言處理，避免擅自固定未指定 HEX"
+      ]
+    },
+    "geometry": {
+      "family": "naive-handdrawn",
+      "motifs": [
+        "歪斜建築和稀疏窗戶",
+        "大頭窄身細腿人物",
+        "不精確但能識別的街廓",
+        "稀疏生活小物"
+      ],
+      "outline": {
+        "weight": "thin",
+        "character": "irregular-ink",
+        "color": "藏藍或炭筆墨線"
+      },
+      "edgeQuality": "wobbly"
+    },
+    "material": {
+      "technique": "matte-gouache",
+      "texture": [
+        "霧面水粉平塗",
+        "筆邊不齊",
+        "少量留白接縫",
+        "輕微套印錯位"
+      ],
+      "depth": "flat",
+      "shadow": "none"
+    },
+    "typography": {
+      "display": "帶手寫性格、保留清楚識別的城市標題",
+      "utility": "可讀性良好的常規字體（實際字型未指定）",
+      "hierarchy": "底部少量手寫字僅適用插圖腳註，網站操作文字不得縮到看不清"
+    },
+    "composition": {
+      "focus": "一段帶幽默感的日常街景或人物動作",
+      "whitespace": "generous",
+      "layers": "flat",
+      "notes": [
+        "少量筆觸就能識別主角與街景",
+        "天空留大面積空白，不作寫實渲染"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "線條微抖與手繪不完美",
+      "歪斜但可辨識的生活街景",
+      "城市配色限制在 6–7 色"
+    ],
+    "avoid": [
+      "照片寫實",
+      "精修向量線稿",
+      "漸層與 3D",
+      "超細水彩",
+      "刻板地用名人代替普通在地生活"
+    ],
+    "conditional": [
+      {
+        "when": "有照片或確認好的目的地素材",
+        "rule": "普通在地生活、建築、人物造型應以來源場景為依據，而非憑空套用常見城市元素。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "new-style-pack",
+    "implementationTier": "new-style-pack",
+    "transferable": [
+      "抖動墨線邊框與水粉色塊",
+      "手寫風章節標題與手繪景物插畫",
+      "留白較多的城市繪本卡片布局",
+      "可辨但不必機械對齊的視覺裝飾"
+    ],
+    "assetTreatment": [
+      "插畫改用粗略 SVG path、不規則手繪線條或手繪 PNG（若後續產生素材）",
+      "為目的地建立普通居民、街角、房屋等可核實元素"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "人物必須大頭細腿，底部小手寫字",
+        "reason": "特定場景角色／插畫排版語言，不代表網站所有圖標必須有人物或所有正文必須變手寫。"
+      }
+    ],
+    "componentRisks": [
+      "故意抖動線條不可令按鈕 hit area 與 focus ring 變形",
+      "手繪字可能影響繁體中文長文閱讀，正文建議維持清楚字體"
+    ],
+    "motion": "inherit"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "沒有實際照片，也沒有城市資訊",
+      "尚未確定具體六至七色色碼",
+      "未指定可商用且能顯示中文的手寫字型"
+    ],
+    "conflicts": [],
+    "assumptions": [
+      "這一風格需要全新視覺字彙，不是只替 Storybook 改顏色。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}

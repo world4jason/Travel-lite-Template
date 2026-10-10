@@ -99,6 +99,7 @@ Do not accept arbitrary style names, URL-driven custom CSS, or styles inferred f
 
 - `theme` supports `system`, `light`, and `dark`
 - `visualStyle`: optional `editorial` (default/current style) or `storybook` (paper-white illustrated, light-only). Invalid values fall back to `editorial`.
+- Arbitrary prompts and Style Brief files are **not** `ui.visualStyle` values. The [Style Prompt Lab](../style-generator/README.md) describes the offline, non-executable extraction step. Only Style Packs implemented and reviewed in code may become selectable.
 - The style is a shared presentation choice. A whitelisted `?previewStyle=storybook` URL can preview the same data without rewriting `trip.json`.
 - Storybook loads an optional local CSS overlay, generic SVG assets and Huninn when available; offline and non-Huninn fallbacks keep the site usable.
 - built-in shell/companion labels cover English and Traditional Chinese

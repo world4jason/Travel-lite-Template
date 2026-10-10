@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "paper-collage",
+  "name": {
+    "zh": "層疊紙雕拼貼",
+    "en": "Layered Paper Collage"
+  },
+  "sourceTask": "paper-art",
+  "visual": {
+    "mood": [
+      "高端編輯感",
+      "溫潤",
+      "克制",
+      "手作",
+      "具空間層次"
+    ],
+    "era": null,
+    "palette": {
+      "mode": "source-derived",
+      "maxColors": null,
+      "swatches": [
+        {
+          "name": "溫暖象牙紙色",
+          "hex": null,
+          "role": "background",
+          "origin": "explicit"
+        }
+      ],
+      "usage": [
+        "有照片時從主要場景抽取少量協調色",
+        "構圖採暖色紙作底，主色與深色結構／亮面紙互相襯托",
+        "沒有來源圖不能假定主要鮮豔色"
+      ]
+    },
+    "geometry": {
+      "family": "layered-cutout",
+      "motifs": [
+        "大面積正負形",
+        "摺紙與剪紙的輪廓",
+        "前中後景遮罩",
+        "主題與背景紙層互相穿插"
+      ],
+      "outline": {
+        "weight": "none",
+        "character": "paper-cut",
+        "color": null
+      },
+      "edgeQuality": "hand-cut"
+    },
+    "material": {
+      "technique": "layered-paper",
+      "texture": [
+        "霧面卡紙",
+        "輕微紙纖維",
+        "可見紙層厚度",
+        "柔和接觸陰影"
+      ],
+      "depth": "shallow-layered",
+      "shadow": "contact-soft"
+    },
+    "typography": {
+      "display": "少量高辨識主標題可融入剪紙輪廓",
+      "utility": "纖細克制的現代編輯字體",
+      "hierarchy": "大標與極小輔助文字拉出尺度對比，不硬塞無來源標籤"
+    },
+    "composition": {
+      "focus": "清楚可辨的一個核心主體",
+      "whitespace": "generous",
+      "layers": "foreground-midground-background",
+      "notes": [
+        "利用遮罩、比例、軸線、留白來代替繁複細節",
+        "主體與紙層相互嵌入",
+        "排版優先清晰閱讀路徑"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "素材呈現手工紙層厚度與霧面質感",
+      "一個核心主題作視覺錨點",
+      "留白與前中後景形成清楚層級"
+    ],
+    "avoid": [
+      "塑料感 3D",
+      "廉價亮面卡紙效果",
+      "霓虹色與複雜漸層",
+      "把來源照片逐細節描摹"
+    ],
+    "conditional": [
+      {
+        "when": "有原始照片",
+        "rule": "從照片抽取可辨識主體、輪廓、姿勢及前中後景關係；不編造照片沒有的場景。"
+      },
+      {
+        "when": "需要網站特製插畫",
+        "rule": "依實際行程資訊選擇主體，產生有來源的剪紙素材，網站動態資訊保持原文。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "new-style-pack",
+    "implementationTier": "new-style-pack",
+    "transferable": [
+      "有明顯層疊高度的首頁 Hero",
+      "紙片式章節封面和資訊層次",
+      "暖象牙底與微小編輯排版",
+      "柔和接觸陰影但避免大面積卡片漂浮"
+    ],
+    "assetTreatment": [
+      "建立 3–5 個獨立 SVG 或 CSS 剪紙圖層",
+      "用有限色紙、投影和遮罩取代機械化仿真"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "從照片自動產生主標題和 2–4 組場景標記",
+        "reason": "屬海報排版／內容生成任務；旅行網站日期、標題應沿用 trip.json，不應被新編造文案覆蓋。"
+      },
+      {
+        "instruction": "不要使用年份",
+        "reason": "海報文案限制，旅程日期與年份屬功能資料，不能刪除。"
+      }
+    ],
+    "componentRisks": [
+      "過多紙層與模糊接觸陰影可能降低長篇行程可讀性",
+      "細小輔助文字不可照搬海報比例，要符合手機閱讀尺寸"
+    ],
+    "motion": "inherit"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "沒有來源照片，無法選擇照片代表色或主體",
+      "沒有指定具體紙張色碼與字型",
+      "不清楚使用者想要的是整站紙雕或只有首頁插圖"
+    ],
+    "conflicts": [],
+    "assumptions": [
+      "將紙張層次視為裝飾 UI 的材料語言，保留既有文字尺寸與功能層級。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}

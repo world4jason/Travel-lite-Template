@@ -4,7 +4,10 @@
   "type": "module",
   "scripts": {
     "test:mobile": "playwright test --project=chromium",
-    "test:mobile:headed": "playwright test --project=chromium --headed"
+    "test:mobile:headed": "playwright test --project=chromium --headed",
+    "test:styles": "node --test style-generator/tests/*.test.mjs",
+    "validate:styles": "node style-generator/validate-style.mjs style-generator/examples",
+    "render:style-prompts": "node style-generator/render-style-prompt.mjs style-generator/examples"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

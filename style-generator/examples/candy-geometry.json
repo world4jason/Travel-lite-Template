@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "candy-geometry",
+  "name": {
+    "zh": "圓潤糖果色塊",
+    "en": "Candy Geometry"
+  },
+  "sourceTask": "photo-restyle",
+  "visual": {
+    "mood": [
+      "童趣",
+      "清爽",
+      "圓潤",
+      "極簡"
+    ],
+    "era": null,
+    "palette": {
+      "mode": "fixed",
+      "maxColors": 5,
+      "swatches": [
+        {
+          "name": "薄荷綠",
+          "hex": null,
+          "role": "primary",
+          "origin": "explicit"
+        },
+        {
+          "name": "蜜桃粉",
+          "hex": null,
+          "role": "secondary",
+          "origin": "explicit"
+        },
+        {
+          "name": "奶油黃",
+          "hex": null,
+          "role": "accent",
+          "origin": "explicit"
+        },
+        {
+          "name": "天空藍",
+          "hex": null,
+          "role": "environment",
+          "origin": "explicit"
+        },
+        {
+          "name": "奶白色",
+          "hex": null,
+          "role": "background",
+          "origin": "explicit"
+        }
+      ],
+      "usage": [
+        "建築使用蜜桃粉或天空藍",
+        "樹木、紅葉和重點使用奶油黃或薄荷綠",
+        "奶白色作背景與色塊間隔；未提供精確 HEX，不可自行聲稱來源有指定色碼"
+      ]
+    },
+    "geometry": {
+      "family": "rounded-geometric",
+      "motifs": [
+        "圓角矩形與半圓拱頂",
+        "圓形／雲狀樹冠",
+        "山脊曲線與圓窗",
+        "獨立糖果貼紙形狀"
+      ],
+      "outline": {
+        "weight": "medium",
+        "character": "rounded-white",
+        "color": "奶白色（視覺上接近白色）"
+      },
+      "edgeQuality": "rounded-clean"
+    },
+    "material": {
+      "technique": "flat-illustration",
+      "texture": [
+        "大塊純色",
+        "乾淨分色"
+      ],
+      "depth": "flat",
+      "shadow": "none"
+    },
+    "typography": {
+      "display": "飽滿圓潤字形（僅標題風格，不編造招牌內容）",
+      "utility": "清楚易讀的圓潤無襯線",
+      "hierarchy": "圖像優先；重點文字簡短且不更動原有內容"
+    },
+    "composition": {
+      "focus": "單一主體與圓潤色塊辨識度",
+      "whitespace": "generous",
+      "layers": "flat",
+      "notes": [
+        "每個色塊像獨立貼紙",
+        "自然元素以簡單蓬鬆圓形組合",
+        "可選少量微笑表情，不覆蓋真實資訊"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "嚴格五種命名色系與大色塊",
+      "形狀不保留尖銳三角或銳角",
+      "色塊間保留約 2–3pt 的圓潤淺色邊線"
+    ],
+    "avoid": [
+      "照片寫實與擬真陰影",
+      "銳角和尖銳山頂",
+      "擅自改寫招牌文字或旅遊資訊"
+    ],
+    "conditional": [
+      {
+        "when": "提供來源照片且可看清招牌文字",
+        "rule": "保留可辨識的招牌內容；不清楚就標記待確認，不可自行創作。"
+      },
+      {
+        "when": "插圖需要表情裝飾且不影響真實紀錄",
+        "rule": "限 1–2 個極簡臉（兩點眼睛、微笑弧線、淺粉腮紅）。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "storybook",
+    "implementationTier": "asset-and-token-variant",
+    "transferable": [
+      "圓潤卡片和選取日期按鈕",
+      "嚴格五色 palette 配置",
+      "低密度資訊卡片與圓形圖標",
+      "非寫實 SVG 幾何插圖"
+    ],
+    "assetTreatment": [
+      "照片有提供時先確認可見主體再轉成圓潤幾何；無照片則只設計通用插圖",
+      "SVG 分色且邊角圓滑，保留重要景點識別輪廓"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "逐字保留照片中每個招牌",
+        "reason": "這是有來源照片時的資產忠實度規則，不是全站文字內容規則。"
+      }
+    ],
+    "componentRisks": [
+      "五色與『白色描邊』可能形成第六色；建議用奶白描邊保持嚴格五色",
+      "重要資訊不可因糖果簡化而難辨識",
+      "純粉黃薄色上的字須另檢查對比；需要非第六色深文字時先請使用者放寬限制"
+    ],
+    "motion": "inherit"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "未提供原始照片，無法提取實際建築／招牌",
+      "五種命名顏色未指定 HEX，不能冒充量測值",
+      "五色限制是否允許深色文字或純白邊線"
+    ],
+    "conflicts": [
+      {
+        "issue": "嚴格僅五色，卻指定純白描邊、可愛表情的眼睛文字可能需要第六色。",
+        "handling": "優先視為同色系奶白描邊；若需要純白或深墨則另外請求允許例外，且網頁文字對比不可犧牲。"
+      }
+    ],
+    "assumptions": [
+      "場景插畫以無裝飾性文字之幾何圖標演示，並非重建未提供照片的場景。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}
