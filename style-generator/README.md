@@ -88,7 +88,9 @@ node style-generator/render-style-prompt.mjs ./my-style-brief.json ./my-output-d
 | 來源照片必須有嗎？ | 不用，沒照片記錄 unknowns | 製作忠於照片的素材才需要 |
 | 會直接塞進 `trip.json` 嗎？ | **不會** | 只有已安裝、白名單允許的 `ui.visualStyle` 才能選用 |
 
-第二階段已完成兩個人工實作並驗收的網站風格：**Candy Geometry**（Storybook 的色塊／素材變體）和 **Risograph Zine**（獨立印刷風格）。[查看兩套真正可使用的 Style Pack 和預覽](../style-packs/README.md)。兩份來源 JSON 仍是 `brief-only`（描述來源，不是可執行程式）；只有經審核的 CSS／SVG pack 才列入 `ui.visualStyle` 白名單。若要擴充第三種請參考 [Style Pack Implementation Prompt](./templates/STYLE_PACK_IMPLEMENTATION_PROMPT.md)，不要把 Spec 當作已經部署的網站風格。
+第二階段已完成**六個人工實作並驗收的網站風格**，包含 Candy Geometry、Paper Collage、Naive City Sketch、Risograph Zine、Taiwan Retro Poster、Field Stamp。另有 Editorial 和原 Megan Storybook，形成八套 Style Pack／九種外觀。[查看可用的 Style Pack 與測試](../style-packs/README.md)。
+
+這六份原始來源 JSON 依然標為 `brief-only`，用來追溯當初的風格敘述，不是可執行程式；真正可選用的是另外經過程式碼與視覺驗收的 CSS／SVG + Manifest。下一個未知提示詞的 [E2E 驗收 Runbook](./NEXT_PROMPT_E2E.md) 已定義：抽取、審查、產生素材／樣式、模板／Megan 雙站一致性驗收、上線確認。
 
 ## 這版抽取器的限制
 

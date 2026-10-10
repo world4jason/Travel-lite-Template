@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" role="img" aria-label="paper-collage illustrative travel art"><defs><filter id="contact" x="-8%" y="-8%" width="125%" height="128%"><feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="soft"/><feOffset in="soft" dx="0" dy="3" result="lower"/><feComponentTransfer in="lower" result="shadow"><feFuncA type="linear" slope=".23"/></feComponentTransfer><feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge></filter><pattern id="fiber" width="21" height="24" patternUnits="userSpaceOnUse"><path d="M3 5l2 1m8 8l2-1m4 6h1" stroke="#856D5A" opacity=".18" stroke-width=".6"/></pattern></defs>
+<rect width="640" height="380" rx="32" fill="#FAF3E4"/>
+<g filter="url(#contact)"><path d="M26 260Q105 181 192 237Q285 126 370 199Q462 151 614 236V342H26Z" fill="#E9C69E"/></g>
+<g filter="url(#contact)"><path d="M26 275Q153 197 255 257Q341 168 454 243Q545 212 614 263V341H26Z" fill="#467C78"/></g>
+<g filter="url(#contact)"><circle cx="486" cy="91" r="49" fill="#F0B87B"/></g>
+<g filter="url(#contact)"><path d="M29 306Q103 275 169 303Q252 260 331 307Q431 272 512 299Q583 267 611 290V347H29Z" fill="#9FCCD0"/></g>
+<g filter="url(#contact)"><path d="M58 314Q179 292 271 316Q420 288 588 315" fill="none" stroke="#FAF3E4" stroke-width="15" stroke-linecap="round"/></g>
+<g filter="url(#contact)"><rect x="116" y="184" width="129" height="131" rx="6" fill="#F2DCC8"/></g>
+<g filter="url(#contact)"><path d="M108 189L179 137L257 187Z" fill="#D98D87"/></g>
+<g filter="url(#contact)"><rect x="146" y="222" width="33" height="44" rx="3" fill="#9FCCD0"/><rect x="196" y="222" width="30" height="44" rx="3" fill="#9FCCD0"/></g>
+<g filter="url(#contact)"><rect x="175" y="273" width="34" height="42" rx="4" fill="#F0B87B"/></g>
+<g filter="url(#contact)"><path d="M378 318l-1-113" fill="none" stroke="#E9C69E" stroke-width="19" stroke-linecap="round"/></g>
+<g filter="url(#contact)"><circle cx="373" cy="184" r="44" fill="#467C78"/><circle cx="342" cy="209" r="29" fill="#467C78"/><circle cx="406" cy="209" r="31" fill="#467C78"/></g>
+<rect width="640" height="380" rx="32" fill="url(#fiber)" opacity=".65"/></svg>

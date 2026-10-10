@@ -1,0 +1,191 @@
+/* Paper Collage — multi-layer matte cardstock, gentle contact shadows,
+   cut edges and an editorial typography system.
+   Only activates with a reviewed paper-collage pack; no data injection.
+   SPDX-License-Identifier: AGPL-3.0-or-later */
+:root[data-visual-style="paper-collage"] {
+  --paper:#FAF3E4; --ink:#304C49; --muted-ink:#526563;
+  --coral:#D98D87; --yamabuki:#F0B87B; --water:#9FCCD0; --bamboo:#80A49B;
+  --bg:#FAF3E4;--bg-top:#FAF3E4;--surface:#FFF9EE;--surface-2:#F4E7D6;
+  --text:#304C49;--muted:#526563;--line:#304C49;--accent:#304C49 !important;
+  --accent-soft:#D8E8DF;--radius-lg:18px;--radius-md:12px;--shadow:none;
+  --font-display:Georgia,"Iowan Old Style",serif;--font-utility:Arial,"Noto Sans TC",system-ui,sans-serif;
+  color-scheme:light;
+}
+:root[data-visual-style="paper-collage"] body {
+  background:#FAF3E4 !important;
+  background-image:none !important;
+  color:#304C49;
+}
+:root[data-visual-style="paper-collage"] h1,
+:root[data-visual-style="paper-collage"] h2,
+:root[data-visual-style="paper-collage"] h3 { font-family:var(--font-display);letter-spacing:-.026em;font-weight:700;line-height:1.22; }
+:root[data-visual-style="paper-collage"] .eyebrow {
+  color:#526563;letter-spacing:.16em;font-size:.69rem;font-weight:700;text-transform:uppercase;
+}
+:root[data-visual-style="paper-collage"] :is(.trip-header,.trip-overview-hero,
+  .trip-overview-day,.trip-highlight-card,.trip-open-decision,.trip-route-summary,
+  .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,.panel,
+  .runtime-map-panel,.companion-focus,.companion-window-card,.shell-context-slot,.bottom-nav) {
+  background:#FFF9EE;border:1px solid #D3C7B6;border-radius:16px;
+  box-shadow:0 5px 0 #E1D2BF,0 9px 14px rgba(58,69,58,.12) !important;
+  color:#304C49;
+}
+:root[data-visual-style="paper-collage"] .trip-header {
+  background:#F4E7D6;border:1px solid #D5C3AC;border-radius:15px;padding:17px 22px;
+}
+:root[data-visual-style="paper-collage"] #trip-location {
+  background:#9FCCD0;color:#304C49;border:0;border-radius:3px;
+  padding:5px 12px;font-weight:700;font-size:.75rem;
+}
+:root[data-visual-style="paper-collage"] #trip-title {font-size:clamp(1.5rem,4vw,2.65rem);}
+:root[data-visual-style="paper-collage"] .live-time {
+  background:#F8EEE0;border:1px solid #D3C7B6;color:#304C49;border-radius:3px;
+}
+:root[data-visual-style="paper-collage"] .trip-overview-hero {
+  background:#F2E2CF;grid-template-columns:minmax(0,1fr) minmax(130px,46%);
+  border-radius:18px;min-height:240px;padding:22px;
+}
+:root[data-visual-style="paper-collage"] .trip-overview-hero > h2 {
+  font:700 clamp(1.8rem,4vw,3.4rem)/1.13 var(--font-display);
+}
+:root[data-visual-style="paper-collage"] .trip-overview-hero::after {
+  background-image:url("./assets/paper-collage/hero.svg");
+  animation:paper-drift 9s ease-in-out infinite;
+  width:100%;aspect-ratio:640/380;align-self:center;
+}
+:root[data-visual-style="paper-collage"] .trip-overview-stats {
+  border-top:1px solid #A99985;padding-top:13px;
+}
+:root[data-visual-style="paper-collage"] .trip-overview-stats span {
+  border:1px solid #C6B49F;border-radius:3px;background:#FFF7EB;color:#304C49;
+}
+:root[data-visual-style="paper-collage"] .trip-overview-day {
+  position:relative;overflow:visible;border-radius:12px;min-height:148px;
+  background:#E6EEDA;
+}
+:root[data-visual-style="paper-collage"] .trip-overview-day:nth-child(4n+2) {background:#D3E4E6;}
+:root[data-visual-style="paper-collage"] .trip-overview-day:nth-child(4n+3) {background:#F2E0CF;}
+:root[data-visual-style="paper-collage"] .trip-overview-day:nth-child(4n+4) {background:#F7E2CF;}
+:root[data-visual-style="paper-collage"] .trip-overview-day::after {
+  background-image:url("./assets/paper-collage/marker.svg");
+  animation:none;
+}
+:root[data-visual-style="paper-collage"] .trip-overview-day-meta span {
+  border:0;border-radius:2px;background:#FFF9EE;color:#304C49;font-size:.73rem;
+}
+:root[data-visual-style="paper-collage"] .trip-overview-day h3 {
+  font:700 1.24rem/1.22 var(--font-display);color:#304C49;
+}
+:root[data-visual-style="paper-collage"] .trip-highlight-card {
+  background:#E3EBD9;border:1px solid #C9D0BF;border-radius:9px;
+}
+:root[data-visual-style="paper-collage"] .trip-highlight-card:nth-child(even) {background:#E5E5DF;}
+:root[data-visual-style="paper-collage"] .trip-open-decision {background:#F2DFCA;border-radius:9px;}
+:root[data-visual-style="paper-collage"] :is(.trip-highlight-card,.trip-open-decision)::after {
+  background-image:url("./assets/paper-collage/street.svg");
+  animation:none;
+}
+:root[data-visual-style="paper-collage"] .trip-day-view > .day-summary {
+  background:#D9E4DE;min-height:155px;border-radius:12px;
+}
+:root[data-visual-style="paper-collage"] .trip-day-view > .day-summary h2 {
+  font:700 clamp(1.65rem,4vw,2.8rem)/1.16 var(--font-display);
+}
+:root[data-visual-style="paper-collage"] .trip-day-view > .day-summary::after {
+  background-image:url("./assets/paper-collage/street.svg");animation:none;
+}
+:root[data-visual-style="paper-collage"] .trip-route-summary {
+  border-radius:9px;background:#FFF9EE;
+}
+:root[data-visual-style="paper-collage"] .trip-route-endpoints {
+  border:1px solid #D6C6B2;border-radius:4px;background:#F2E4D0;color:#304C49;
+}
+:root[data-visual-style="paper-collage"] .trip-route-steps span {
+  background:#DCE9E2;border:0;border-radius:3px;color:#304C49;
+}
+:root[data-visual-style="paper-collage"] .trip-v2-timeline::before {
+  background:#A6BCB6;width:5px;border-radius:0;
+}
+:root[data-visual-style="paper-collage"] .trip-v2-timeline > .trip-stop-wrap::before {
+  background:#F0B87B;border:3px solid #FFF9EE;outline:1px solid #A2B3AF;
+  border-radius:2px;transform:rotate(-4deg);
+}
+:root[data-visual-style="paper-collage"] .trip-v2-timeline .trip-v2-item {
+  background:#FFF9EE;border-radius:9px;border:1px solid #D4C7B7;padding:18px;
+}
+:root[data-visual-style="paper-collage"] .trip-v2-timeline .trip-stop-wrap:nth-child(even) .trip-v2-item {
+  background:#F3EBDE;
+}
+:root[data-visual-style="paper-collage"] .trip-v2-timeline .timeline-time {
+  border:0;border-radius:3px;background:#9FCCD0;color:#304C49;
+  padding:4px 8px;
+}
+:root[data-visual-style="paper-collage"] .trip-v2-timeline .timeline-time--floating {
+  background:#EAE2D8;color:#526563;
+}
+:root[data-visual-style="paper-collage"] :is(.type-pill,.must-go-tag,.transport-tag,.time-pill,
+  .summary-count,.trip-open-count) {
+  background:#D5E7DE;border:1px solid #B5CBC0;border-radius:4px;color:#304C49;
+}
+:root[data-visual-style="paper-collage"] .must-go-tag {
+  background:#F0B87B;border-color:#D5A36D;
+}
+:root[data-visual-style="paper-collage"] .trip-transfer {
+  background:transparent;border-left:2px dotted #8BA39B;
+}
+:root[data-visual-style="paper-collage"] :is(.day-chip,.place-chip,.long-trip-step,
+  .button-link,.trip-icon-action,.trip-action-menu > summary,.motion-choice,.theme-button) {
+  background:#FFF9EE;color:#304C49;border:1px solid #C8B8A7;border-radius:5px;
+}
+:root[data-visual-style="paper-collage"] :is(.day-chip,.place-chip,.motion-choice).active,
+:root[data-visual-style="paper-collage"] .day-chip.active {
+  background:#D5E7DE;
+}
+:root[data-visual-style="paper-collage"] .bottom-nav {
+  border-radius:13px;background:#FFF9EE;padding:7px;gap:4px;
+}
+:root[data-visual-style="paper-collage"] .nav-item {
+  border-radius:5px;color:#304C49;background:transparent;border:0;
+}
+:root[data-visual-style="paper-collage"] .nav-item.active {
+  background:#D2E4DD;border:1px solid #98ADA5;color:#304C49;
+}
+:root[data-visual-style="paper-collage"] .check-item {
+  border:1px solid #D2C5B3;border-radius:4px;background:#FFF9EE;
+}
+:root[data-visual-style="paper-collage"] .more-section > summary,
+:root[data-visual-style="paper-collage"] .cost-total {
+  background:#DDE9DF;border:1px solid #C1D1C4;border-radius:5px;
+}
+:root[data-visual-style="paper-collage"] .style-option {border-radius:5px;}
+:root[data-visual-style="paper-collage"] .style-option[aria-pressed="true"] {background:#DDE9DF;}
+:root[data-visual-style="paper-collage"] .map-stage {border:1px solid #D6C4AD;border-radius:7px;}
+@keyframes paper-drift {
+  0%,100% {transform:translateY(0)}
+  50% {transform:translateY(-3px)}
+}
+@media (max-width:520px) {
+  :root[data-visual-style="paper-collage"] .trip-overview-hero {padding:16px;grid-template-columns:minmax(0,1fr) 106px;min-height:0;}
+  :root[data-visual-style="paper-collage"] .trip-overview-hero > h2 {font-size:clamp(1.35rem,6vw,2rem)}
+  :root[data-visual-style="paper-collage"] .trip-overview-day {padding:14px;}
+  :root[data-visual-style="paper-collage"] .trip-day-view > .day-summary {padding:16px 94px 16px 15px;}
+  :root[data-visual-style="paper-collage"] .trip-day-view > .day-summary::after {width:74px;height:74px;right:10px;}
+  :root[data-visual-style="paper-collage"] .trip-v2-timeline .trip-v2-item {padding:12px;}
+}
+@media (prefers-reduced-motion:reduce) {
+  :root[data-visual-style="paper-collage"] *,:root[data-visual-style="paper-collage"] *::before,
+  :root[data-visual-style="paper-collage"] *::after {animation:none!important;transition:none!important;}
+}
+
+/* On compact screens keep the paper scene legible instead of shrinking it to
+   a postage-stamp ornament. The same motif still carries no place claim. */
+@media (max-width:520px) {
+ :root[data-visual-style="paper-collage"] .trip-overview-hero {
+   display:grid;grid-template-columns:minmax(0,1fr);
+   grid-template-areas:"eyebrow" "title" "subtitle" "art" "stats";
+   gap:6px;padding:15px;
+ }
+ :root[data-visual-style="paper-collage"] .trip-overview-hero::after {
+   grid-area:art;width:100%;aspect-ratio:640/380;max-height:none;justify-self:stretch;margin:8px 0;
+ }
+}

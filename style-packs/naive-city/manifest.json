@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "naive-city",
+  "displayName": "Naive City Sketch",
+  "sourceBriefId": "naive-city-sketch",
+  "sourceBriefPath": "../../style-generator/examples/naive-city-sketch.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/naive-city-sketch.md",
+  "stage": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "naive-city",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "gentle-and-reducible",
+  "css": [
+    "../../storybook-theme.css",
+    "../../naive-city-theme.css"
+  ],
+  "assetDirectory": "../../assets/naive-city",
+  "assets": [
+    "hero.svg",
+    "marker.svg"
+  ],
+  "palette": {
+    "warm-paper": "#FAF5E9",
+    "navy": "#233C65",
+    "gouache-salmon": "#D88F87",
+    "ochre": "#E3B15A",
+    "gouache-green": "#8CA78C"
+  },
+  "materialRules": [
+    "wobbly broken lines and intentionally imperfect geometry",
+    "hand-drawn ordinary street without recognizable invented landmark",
+    "flat matte-gouache blocks",
+    "six-or-seven-color restrained scene with paper sky"
+  ],
+  "sourceVsOutputBoundary": "The source character pose and bottom handwritten caption remain illustration suggestions, not mandatory website text.",
+  "acceptanceTests": [
+    "tests/nine-looks.spec.mjs",
+    "tests/four-pack-manifests.test.mjs"
+  ]
+}

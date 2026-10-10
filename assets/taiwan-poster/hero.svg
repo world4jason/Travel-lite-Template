@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 380" role="img" aria-label="taiwan-poster illustrative travel art"><defs><pattern id="dust" width="19" height="21" patternUnits="userSpaceOnUse"><circle cx="3" cy="4" r=".8" fill="#F5E7C4" opacity=".29"/><circle cx="14" cy="15" r=".6" fill="#143C56" opacity=".32"/></pattern><pattern id="halftone" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="2" cy="3" r="1.2" fill="#143C56" opacity=".35"/></pattern></defs><rect width="640" height="380" fill="#E3AF50"/>
+<path d="M0 160Q65 130 138 172Q199 141 250 180Q310 136 368 175Q440 140 490 177Q548 139 640 178V243H0Z" fill="#F5E7C4" opacity=".95"/>
+<path d="M0 242L54 211L88 230L118 201L158 241L224 213L270 241L328 220L387 245L469 212L514 240L579 221L640 246V380H0Z" fill="#42717C"/>
+<path d="M3 273V174H80V269H99V145H163V276H193V187H244V276H270V121H342V273H378V158H437V274H454V211H515V272H539V167H602V283H639V380H0V280Z" fill="#F5E7C4"/>
+<path d="M85 181v80M113 170v83M139 174v79M276 153v93M301 148v91M330 162v88M382 186v70M411 184v71M543 195v63M568 195v62" stroke="#143C56" stroke-width="10" opacity=".78"/>
+<path d="M0 0h90Q100 75 144 82L165 0H227L211 42L256 0H325L255 84L195 110L154 171L77 245L20 262L76 145L34 167Z" fill="#143C56"/>
+<path d="M33 22Q107 1 146 29Q177 0 249 5M19 62Q106 42 155 60Q202 28 255 48M61 112Q99 92 144 111Q187 66 237 87" fill="none" stroke="#143C56" stroke-width="26" stroke-linecap="round"/>
+<path d="M0 295Q180 276 640 302V380H0Z" fill="#143C56"/>
+<path d="M22 349Q215 324 633 351" fill="none" stroke="#E3AF50" stroke-width="7" stroke-dasharray="38 28" opacity=".8"/>
+<path d="M449 266h112q15 1 19 23v39H437v-38q3-24 12-24Z" fill="#B64D33" stroke="#F5E7C4" stroke-width="5"/>
+<path d="M458 273h88l7 27h-103Z" fill="#F5E7C4"/><path d="M472 273v29M514 273v29" stroke="#143C56" stroke-width="4"/>
+<circle cx="470" cy="329" r="12" fill="#143C56" stroke="#F5E7C4" stroke-width="3"/><circle cx="546" cy="329" r="12" fill="#143C56" stroke="#F5E7C4" stroke-width="3"/>
+<path d="M0 0h640v380H0Z" fill="url(#dust)" opacity=".55"/>
+<rect x="4" y="4" width="632" height="372" fill="none" stroke="#F5E7C4" stroke-width="8"/></svg>

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "field-stamp",
+  "displayName": "Field Stamp",
+  "sourceBriefId": "field-stamp",
+  "sourceBriefPath": "../../style-generator/examples/field-stamp.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/field-stamp.md",
+  "stage": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "field-stamp",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "none",
+  "css": [
+    "../../storybook-theme.css",
+    "../../field-stamp-theme.css"
+  ],
+  "assetDirectory": "../../assets/field-stamp",
+  "assets": [
+    "hero.svg",
+    "marker.svg"
+  ],
+  "palette": {
+    "ivory": "#F7F0E3",
+    "dark-green": "#293C31",
+    "clay": "#A76D52",
+    "slate": "#617E81"
+  },
+  "materialRules": [
+    "2-4 spot color pressed-field stamp",
+    "rough hand-carved fractures and missing ink",
+    "slight ink misregistration inside artwork only",
+    "quiet typewriter field-notes rhythm and asymmetric stamp borders"
+  ],
+  "sourceVsOutputBoundary": "No fixed field record number, latitude, location text or invented year; actual travel fields are shown from trip.json only.",
+  "acceptanceTests": [
+    "tests/nine-looks.spec.mjs",
+    "tests/four-pack-manifests.test.mjs"
+  ]
+}

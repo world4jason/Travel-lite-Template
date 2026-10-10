@@ -10,12 +10,16 @@ Travel Lite's **functional template** remains shared: Now / Trip / Map / Check /
 | `storybook` | Stable opt-in | Ink outlined paper-white illustrations, Huninn, gentle motion | [Storybook](https://world4jason.github.io/Travel-lite-Template/?previewStyle=storybook#trip/overview) |
 | `candy` | Phase 2, reviewed prototype | Rounded five-fill sticker art, big soft-radius cards and timeline | [Candy](https://world4jason.github.io/Travel-lite-Template/?previewStyle=candy#trip/overview) |
 | `risograph` | Phase 2, reviewed prototype | Single-ink editorial print, halftone skyline, paper grain, no motion | [Risograph](https://world4jason.github.io/Travel-lite-Template/?previewStyle=risograph#trip/overview) |
+| `paper-collage` | Reviewed | layered cardstock, paper fibers, contact shadows | [Paper Collage](https://world4jason.github.io/Travel-lite-Template/?previewStyle=paper-collage#trip/overview) |
+| `naive-city` | Reviewed | 1950s-inspired wobbly ink, imperfect city gouache and lots of sky | [Naive City](https://world4jason.github.io/Travel-lite-Template/?previewStyle=naive-city#trip/overview) |
+| `taiwan-poster` | Reviewed | warm yellow, navy architecture, vermilion print accent, poster typography | [Taiwan Poster](https://world4jason.github.io/Travel-lite-Template/?previewStyle=taiwan-poster#trip/overview) |
+| `field-stamp` | Reviewed | hand-carved missing ink, rustic stamp forms and field-notes typography | [Field Stamp](https://world4jason.github.io/Travel-lite-Template/?previewStyle=field-stamp#trip/overview) |
 
-Set the published default for a generated trip by adding `"visualStyle": "candy"` or `"risograph"` inside `trip.json → ui`. Visitors can switch among four built-in styles from **More → Appearance / 外觀**, saving a **per-trip device-only** preference without modifying `trip.json`. Use **Follow trip default** to remove that preference. A whitelisted `?previewStyle=...` URL overrides the device choice for that link's visit, without saving it. Precedence: valid URL preview > saved per-trip device choice > publisher's `ui.visualStyle` > Editorial. Unknown pack IDs never execute custom CSS, HTML or scripts.
+Set the published default for a generated trip by adding `"visualStyle": "candy"` or `"risograph"` inside `trip.json → ui`. Visitors can switch among eight built-in Style Packs from **More → Appearance / 外觀**, saving a **per-trip device-only** preference without modifying `trip.json`. Use **Follow trip default** to remove that preference. A whitelisted `?previewStyle=...` URL overrides the device choice for that link's visit, without saving it. Precedence: valid URL preview > saved per-trip device choice > publisher's `ui.visualStyle` > Editorial. Unknown pack IDs never execute custom CSS, HTML or scripts.
 
 ### Switch in More / Appearance
 
-Open **More → Appearance / 外觀**. Select a visual tile to apply it immediately (without reloading); the selection persists per trip on this device. **Follow trip default** clears the local choice. [See the mobile picker screenshot](./previews/style-settings-candy-mobile.png). Styles from a `?previewStyle=...` link are temporary and override the saved device choice only for that visit. Choosing or resetting inside More clears the URL-only override without losing the current page.
+Open **More → Appearance / 外觀**. Choose among **nine visible looks** (Editorial Light and Dark are two color modes of the same built-in Editorial pack; seven others are dedicated packs). Select a visual tile to apply it immediately (without reloading); the selection persists per trip on this device. **Follow trip default** clears the local choice. [See the mobile picker screenshot](./previews/style-settings-candy-mobile.png). Styles from a `?previewStyle=...` link are temporary and override the saved device choice only for that visit. Choosing or resetting inside More clears the URL-only override without losing the current page.
 
 ## Verified screenshots (same Tokyo Autumn data)
 
@@ -25,10 +29,14 @@ These are **real Playwright browser captures**, not mockups or AI-generated scre
 | --- | --- | --- | --- |
 | Candy Geometry | [Overview](./previews/candy-overview-mobile.png) | [Overview](./previews/candy-overview-desktop.png) | [Day timeline](./previews/candy-day-mobile.png) |
 | Risograph Zine | [Overview](./previews/risograph-overview-mobile.png) | [Overview](./previews/risograph-overview-desktop.png) | [Day timeline](./previews/risograph-day-mobile.png) |
+| Paper Collage | [Overview](./previews/paper-collage-mobile.png) | [Overview](./previews/paper-collage-desktop.png) | — |
+| Naive City Sketch | [Overview](./previews/naive-city-mobile.png) | [Overview](./previews/naive-city-desktop.png) | — |
+| Taiwan Retro Poster | [Overview](./previews/taiwan-poster-mobile.png) | [Overview](./previews/taiwan-poster-desktop.png) | — |
+| Field Stamp | [Overview](./previews/field-stamp-mobile.png) | [Overview](./previews/field-stamp-desktop.png) | — |
 
 ## What is actually generated from Style Briefs?
 
-These two packs are the **first real implementation experiment** for [Style Prompt Lab](../style-generator/README.md). They are deliberately different types of work, even though their input comes from the same extractor workflow.
+Candy and Risograph were the **first implementation experiment** for [Style Prompt Lab](../style-generator/README.md). They are deliberately different types of work, even though their input comes from the same extractor workflow.
 
 ### Candy Geometry: token + asset variation
 
@@ -71,9 +79,36 @@ Neither brief nor manifest is dynamically parsed by browsers. Manifests are for 
 npm install
 npm run test:styles       # prompts/briefs only
 npm run test:packs        # manifest ↔ brief ↔ assets, five SVG fill checks, WCAG contrast checks
-npm run test:mobile       # all mobile/desktop views and both new visual packs
+npm run test:mobile       # all mobile/desktop views, nine appearance choices and offline
+MEGAN_LOCAL_REPO=/path/to/Megan-trip npm run test:style-parity # two-site parity
 ```
 
-Specific browser tests: [`tests/phase2-packs.spec.mjs`](../tests/phase2-packs.spec.mjs). They compare both styles using **the same trip**, verify old pack isolation, semantic timeline, offline assets, motion, phone-to-desktop responsiveness and major navigation views.
+Browser tests: [`tests/phase2-packs.spec.mjs`](../tests/phase2-packs.spec.mjs) and [`tests/nine-looks.spec.mjs`](../tests/nine-looks.spec.mjs). They compare styles using **the same trip**, verify existing pack isolation, semantic timeline, offline assets, reduced motion, cross-device responsiveness and all five views.
 
-When adding a fifth style, do not merely append an arbitrary `visualStyle` from an LLM. Create a reviewed pack/manifest, honor source-photo uncertainty and ship local assets, add an explicit registry entry plus a new CSS link, then run the complete regression suite.
+When adding the next pack, do not merely append an arbitrary `visualStyle` from an LLM. Create a reviewed pack/manifest, honor source-photo uncertainty and ship local assets, add an explicit registry entry plus a new CSS link, then run the complete regression suite.
+
+
+## Four additional styles: the remaining source prompts
+
+The following four source briefs are now represented by actual, reviewed CSS/SVG Style Packs rather than only fill-in prompts:
+
+| Brief → Pack | Implementation approach | Evidence boundary |
+| --- | --- | --- |
+| [Layered Paper Collage](../style-generator/examples/paper-collage.json) → [manifest](./paper-collage/manifest.json) | feather-light stacked cardstock, locally designed cutout masks/contact shadows and editorial typography | The source prompt's photographed pose/subject and tiny poster labels are **asset-only**, not web data |
+| [Naive City Sketch](../style-generator/examples/naive-city-sketch.json) → [manifest](./naive-city/manifest.json) | hand-wobbled navy contours, matte gouache-like fields, crooked ordinary street and generous paper sky | No identifiable invented landmark or photographed people; human style descriptions are illustrative only |
+| [Taiwan Retro Poster](../style-generator/examples/taiwan-retro-poster.json) → [manifest](./taiwan-poster/manifest.json) | reference-informed honey/indigo/brick screenprint palette, large travel scene, oversized **real trip title**, restrained editorial small type | The four user-supplied Taiwanese posters are **style references only**. Their exact signs, towns, year, brand and layouts are never embedded in the website |
+| [Field Stamp](../style-generator/examples/field-stamp.json) → [manifest](./field-stamp/manifest.json) | uneven carved ink, 2–4 spot colors, broken dry strokes and field-note typography | No fabricated location, travel record number or site photo transformation |
+
+All four are whitelisted in `VISUAL_PACKS`. Their reference portraits/signs are **not travel facts**. Unlike the original photo-to-postcard tasks, these Site Style Packs use generic decorative vector art and leave place names, dates and descriptions to the site's authentic `trip.json`.
+
+### Cross-project parity acceptance
+
+Shared runtime files and pack CSS must be **byte-identical** between the published template and a generated trip such as [Megan-trip](https://github.com/world4jason/Megan-trip). Only the original travel data, manifest, app icon, title and optional destination-specific artwork should differ.
+
+Run (with both clones available):
+
+```bash
+MEGAN_LOCAL_REPO=../Megan-trip node scripts/verify-style-parity.mjs
+```
+
+This checks SHA-256 of shared code plus browser-computed text/font/surface/border tokens on the **same nine appearance choices** in two real, different trips. A site-scoped service-worker cache prefix prevents two GitHub Pages project sites on the same `github.io` origin from deleting each other's caches.

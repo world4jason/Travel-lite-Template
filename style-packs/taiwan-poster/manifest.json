@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "taiwan-poster",
+  "displayName": "Taiwan Retro Poster",
+  "sourceBriefId": "taiwan-retro-poster",
+  "sourceBriefPath": "../../style-generator/examples/taiwan-retro-poster.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/taiwan-retro-poster.md",
+  "stage": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "taiwan-poster",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "none",
+  "css": [
+    "../../storybook-theme.css",
+    "../../taiwan-poster-theme.css"
+  ],
+  "assetDirectory": "../../assets/taiwan-poster",
+  "assets": [
+    "hero.svg",
+    "marker.svg"
+  ],
+  "palette": {
+    "ivory": "#F5E7C4",
+    "indigo": "#143C56",
+    "ochre": "#E3AF50",
+    "vermilion": "#B64D33",
+    "olive": "#778366"
+  },
+  "materialRules": [
+    "screenprinted warm-honey field and deep navy architecture",
+    "large scene-first poster hero, oversized actual trip title and editorial microtype",
+    "paper grain and limited highlight red",
+    "scene is *generic* geometry; reference posters inspire art direction only"
+  ],
+  "sourceVsOutputBoundary": "No fixed MR.PARROT, year, city claim or copied signs. User reference images are art direction, not the true Tokyo/Ishigaki itinerary photo.",
+  "acceptanceTests": [
+    "tests/nine-looks.spec.mjs",
+    "tests/four-pack-manifests.test.mjs"
+  ]
+}

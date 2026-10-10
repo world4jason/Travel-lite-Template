@@ -183,3 +183,37 @@
 @media (prefers-reduced-motion: reduce) {
   .style-option, .style-reset-button { transition: none !important; }
 }
+
+
+/* All nine appearances fit as a 2-column mobile / 3- or 4-column desktop grid. */
+.style-options {grid-template-columns:repeat(2,minmax(0,1fr));}
+.style-preview--editorial-light {background:#EDEEE9; border-radius:3px;}
+.style-preview--editorial-light > span {height:27px;background:#687F74;border-radius:2px;}
+.style-preview--editorial-light > span:nth-child(2) {height:35px;background:#BCD0C2;}
+.style-preview--editorial-light > span:nth-child(3) {height:20px;background:#4B675E;}
+.style-preview--editorial-dark {background:#202B29;border:1px solid #9EB5A5;border-radius:3px;}
+.style-preview--editorial-dark > span {height:27px;background:#8EA99A;border-radius:2px;}
+.style-preview--editorial-dark > span:nth-child(2) {height:35px;background:#526E62;}
+.style-preview--editorial-dark > span:nth-child(3) {height:20px;background:#C8DBCF;}
+.style-preview--paper-collage {background:#FAF3E4;}
+.style-preview--paper-collage > span {background:#D98D87;border-radius:3px;transform:rotate(-8deg);height:32px;box-shadow:3px 3px #DAC8B4;}
+.style-preview--paper-collage > span:nth-child(2) {background:#9FCCD0;height:38px;transform:rotate(6deg);}
+.style-preview--paper-collage > span:nth-child(3) {background:#467C78;height:24px;transform:rotate(-4deg);}
+.style-preview--naive-city {background:#FAF5E9;}
+.style-preview--naive-city > span {background:#D88F87;border:2px solid #233C65;border-radius:9px 2px 6px 3px;height:30px;transform:rotate(-7deg);}
+.style-preview--naive-city > span:nth-child(2) {background:#E3B15A;height:42px;transform:rotate(5deg);}
+.style-preview--naive-city > span:nth-child(3) {background:#8CA78C;height:24px;transform:rotate(-3deg);}
+.style-preview--taiwan-poster {background:#E3AF50;border:1px solid #143C56;border-radius:1px;}
+.style-preview--taiwan-poster > span {background:#143C56;height:40px;border-radius:0;}
+.style-preview--taiwan-poster > span:nth-child(2) {height:31px;background:#B64D33;}
+.style-preview--taiwan-poster > span:nth-child(3) {height:46px;background:#143C56;}
+.style-preview--field-stamp {background:#F7F0E3;border:1px dashed #293C31;border-radius:1px;}
+.style-preview--field-stamp > span {height:29px;background:#293C31;border-radius:0;transform:rotate(3deg);}
+.style-preview--field-stamp > span:nth-child(2) {height:38px;background:#A76D52;transform:rotate(-5deg);}
+.style-preview--field-stamp > span:nth-child(3) {height:23px;background:#617E81;transform:rotate(7deg);}
+@media(min-width:700px) and (max-width:1050px) {
+  .style-options {grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media(min-width:1051px) {
+  .style-options {grid-template-columns:repeat(3,minmax(0,1fr));}
+}

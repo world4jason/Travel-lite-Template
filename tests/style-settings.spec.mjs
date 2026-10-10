@@ -20,20 +20,20 @@ const pageStyles = async page => page.evaluate(() => Object.fromEntries(
   ["storybook-style", "candy-style", "risograph-style"]
     .map(id => [id, !document.getElementById(id).disabled])));
 
-test("Settings / More lists four selectable styles and a visible follow-default control", async ({ page }) => {
+test("Settings / More lists nine selectable appearances and a visible follow-default control", async ({ page }) => {
   await page.goto("/#trip/overview");
   await active(page,"editorial");
   await openMore(page);
   await expect(page.locator(".style-settings")).toContainText("Choose a visual style");
-  await expect(page.locator(".style-option")).toHaveCount(4);
-  await expect(page.locator('[data-style-choice="editorial"]')).toHaveAttribute("aria-pressed","true");
+  await expect(page.locator(".style-option")).toHaveCount(9);
+  await expect(page.locator('[data-style-choice="editorial-light"]')).toHaveAttribute("aria-pressed","true");
   await expect(page.locator("[data-style-reset]")).toContainText("Follow trip default");
   await expect(page.locator("[data-style-reset]")).toHaveAttribute("aria-pressed","true");
   await expect(page.locator(".style-source")).toContainText("published trip");
   await expect(page.locator(".style-settings")).toBeInViewport();
 });
 
-test("switches all four looks live without navigating or mutating shared trip data", async ({ page }) => {
+test("switches all previously supported looks live without navigating or mutating shared trip data", async ({ page }) => {
   await page.goto("/#trip/overview");
   await openMore(page);
   // Same-document history/hash changes are not full reloads. Track the
@@ -43,17 +43,17 @@ test("switches all four looks live without navigating or mutating shared trip da
     ["candy", "rgb(255, 249, 239)", [true,true,false]],
     ["risograph","rgb(247, 241, 228)", [false,false,true]],
     ["storybook","rgb(255, 252, 246)", [true,false,false]],
-    ["editorial",null,[false,false,false]],
+    ["editorial-light",null,[false,false,false]],
   ]) {
     await select(page,pack).click();
-    await active(page,pack);
+    await active(page,pack === "editorial-light" ? "editorial" : pack);
     await expect(select(page,pack)).toHaveAttribute("aria-pressed","true");
     await expect(page.locator(".style-settings")).toBeVisible();
     await expect(page.locator("#trip-title")).toHaveText("Tokyo Autumn");
     await expect.poll(async () => Object.values(await pageStyles(page))).toEqual(enabled);
     if (body) await expect.poll(() =>
       page.evaluate(() => getComputedStyle(document.body).backgroundColor)).toBe(body);
-    await expect(page.locator("#quick-theme-toggle")).toHaveJSProperty("hidden",pack !== "editorial");
+    await expect(page.locator("#quick-theme-toggle")).toHaveJSProperty("hidden",pack !== "editorial-light");
     expect(await page.evaluate(() => window.__stylePageNonce)).toBe("stable-document");
     expect((await page.evaluate(() => state.data.ui.visualStyle))).toBe("editorial");
   }
@@ -136,7 +136,7 @@ test("returning from light-only packs to Editorial restores stored dark theme an
   await active(page,"candy");
   await expect(page.locator("html")).toHaveAttribute("data-theme","light");
   await expect(page.locator("#quick-theme-toggle")).toBeHidden();
-  await select(page,"editorial").click();
+  await select(page,"editorial-dark").click();
   await active(page,"editorial");
   await expect(page.locator("html")).toHaveAttribute("data-theme","dark");
   await expect(page.locator("#quick-theme-toggle")).toHaveJSProperty("hidden",false);
@@ -183,8 +183,18 @@ test.describe("device-local chooser offline", () => {
     await context.setOffline(true);
     await page.reload({waitUntil:"domcontentloaded"});
     await active(page,"risograph");
-    await expect(page.locator(".style-option")).toHaveCount(4);
+    await expect(page.locator(".style-option")).toHaveCount(9);
     await select(page,"candy").click();
     await active(page,"candy");
   });
+});
+
+test("choosing and resetting style does not raise JavaScript page errors",async({page})=>{
+ const failures=[];
+ page.on("pageerror",error=>failures.push(error.message));
+ await page.goto("/#more");
+ await page.locator("[data-style-choice='field-stamp']").click();
+ await page.locator("[data-style-reset]").click();
+ await expect(page.locator("html")).toHaveAttribute("data-visual-style","editorial");
+ expect(failures).toEqual([]);
 });

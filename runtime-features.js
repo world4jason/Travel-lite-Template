@@ -174,9 +174,10 @@
 
     const mappable = items.filter(itemCoordinates);
     if (!mappable.length) {
+      const zh = /^zh/i.test(state.data?.ui?.locale || "");
       container.innerHTML = `<div class="map-library-state map-library-fallback" role="status">
         <span class="map-state-mark" aria-hidden="true">⌖</span>
-        <div><p class="eyebrow">Spatial reference</p><strong>No mapped stops for this day</strong><p>The itinerary still works normally. Use the stop details and map handoff below when available.</p></div>
+        <div><p class="eyebrow">${zh ? "地點位置" : "Spatial reference"}</p><strong>${zh ? "尚未標註精確座標" : "No mapped stops for this day"}</strong><p>${zh ? "原始資料未提供精確經緯度，請透過地點詳細資訊與 Google Maps 導航。" : "The itinerary still works normally. Use the stop details and map handoff below when available."}</p></div>
       </div>`;
       return;
     }
