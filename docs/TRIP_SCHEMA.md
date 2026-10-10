@@ -77,9 +77,9 @@ Rules:
 - `focalPoint` is optional and limited to `center | top | bottom | left | right`; unknown values normalize to `center`
 - cover failure collapses back to the canonical no-cover composition
 - same-origin media can benefit from the existing runtime cache after first fetch; cross-origin HTTPS media is not guaranteed offline
-- trip data cannot provide CSS, HTML, font URLs, motion settings, density modes, or visual presets
+- trip data cannot provide arbitrary CSS, HTML, fonts, motion code, or free-form visual presets; the only optional selection is the bounded `ui.visualStyle` enum described below
 
-Do not add `ui.visualPreset` or a trip-type theme selector. All trips use the same Travel Lite composition system.
+Do not accept arbitrary style names, URL-driven custom CSS, or styles inferred from a destination or `trip.type`.
 
 ## `ui`
 
@@ -87,6 +87,7 @@ Do not add `ui.visualPreset` or a trip-type theme selector. All trips use the sa
 {
   "defaultView": "now",
   "theme": "system",
+  "visualStyle": "editorial",
   "locale": "zh-TW",
   "labels": {
     "navNow": "現在",
@@ -97,6 +98,9 @@ Do not add `ui.visualPreset` or a trip-type theme selector. All trips use the sa
 ```
 
 - `theme` supports `system`, `light`, and `dark`
+- `visualStyle`: optional `editorial` (default/current style) or `storybook` (paper-white illustrated, light-only). Invalid values fall back to `editorial`.
+- The style is a shared presentation choice. A whitelisted `?previewStyle=storybook` URL can preview the same data without rewriting `trip.json`.
+- Storybook loads an optional local CSS overlay, generic SVG assets and Huninn when available; offline and non-Huninn fallbacks keep the site usable.
 - built-in shell/companion labels cover English and Traditional Chinese
 - `labels` is optional and only overrides shell/companion copy; it is not a second itinerary translation
 - unused views may be removed from `bottomNav`
@@ -156,6 +160,10 @@ Keep this section small. It is an overview/decision aid, not a recommendation fe
 }
 ```
 
+### Optional illustrated day marker
+
+A day may supply an `illustration` key (for example `"city"` or `"boat"`) **only for Storybook's decorative image**. The base view ignores this artwork hint. Omitted or invalid values use a generic local icon. All icon keys are whitelisted in `storybook-decor.js`; never supply arbitrary URLs or CSS from itinerary data.
+
 ### Route summary
 
 `routeSummary` is optional. If omitted, the Trip view derives a simple route from item titles. Use it when a shorter human-friendly route is more useful than raw stop names.
@@ -199,6 +207,22 @@ Rules:
 - timed starts use local trip time in `HH:MM`
 - provide `end` when possible so the Now reference window is more accurate
 - resolve `lat`/`lng` during vibe-time for real planned stops when practical
+
+### Optional travel mode / curated highlights / illustrations
+
+For a genuinely source-supported leg, the item may include:
+
+```json
+{
+  "transportMode": "train",
+  "mustGo": true,
+  "illustration": "train"
+}
+```
+
+- `transportMode` must be an explicit `flight | drive | boat | train | bus | walk` known from the source. It displays a small label, not actual route optimization. Unknown modes are ignored.
+- `mustGo: true` is **editor-selected emphasis**, never automatically inferred from a famous stop, paid booking, or location. It is not a proof of a reservation. Avoid labeling tentative options as confirmed plans.
+- `illustration` is a **whitelisted decorative key**, not a URL. Allowed: `map`, `city`, `plane`, `car`, `train`, `boat`, `food`, `hotel`, `landmark`, `nature`, `sea`. It has no navigation/state meaning.
 
 ### Floating / TBD time
 

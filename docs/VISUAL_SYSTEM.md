@@ -2,7 +2,7 @@
 
 Status: **Approved direction for Epic #43, defined by #50**
 
-This document is the implementation contract for the selected Travel Lite visual direction. It defines the reusable visual/composition system only. It does not change product semantics, shared/local-state behavior, trip schema behavior, navigation jobs, or the static/no-build architecture.
+This document is primarily the implementation contract for the default Editorial Atlas direction. The opt-in Storybook exception is specified under Trip identity variability below. It defines the reusable visual/composition system only. It does not change product semantics, shared/local-state behavior, trip schema behavior, navigation jobs, or the static/no-build architecture.
 
 ## Direction: Editorial Atlas
 
@@ -466,7 +466,7 @@ Desktop must not become a stretched mobile card column.
 
 # Light and dark themes
 
-Both themes are first-class.
+For the default Editorial style, both light and dark modes are first-class. Storybook is deliberately light-only and respects reduced-motion preferences.
 
 Dark mode is not a mechanical inversion.
 
@@ -485,51 +485,29 @@ The editorial hierarchy and composition must remain recognizable in both themes.
 
 # Trip identity variability contract
 
-## Decision: no visual preset catalog
+## Bounded, opt-in visual style
 
-Travel Lite does **not** need multiple named visual presets.
+The original Editorial Atlas remains the **default system**. A later product decision adds exactly one other named site-level style, `storybook`, validated through `ui.visualStyle`.
 
-One adaptable default direction is sufficient because trip identity can already vary meaningfully through content and bounded data-driven identity inputs without changing the product’s composition language.
+This is a **bounded exception** to the original 2026-09 no-preset direction. It was informed by a real user trip implementation and a requirement to reuse that outcome. It is not permission to expand into an unrestricted preset market, style picker in the application, or destination-dependent appearance inference.
 
-A preset catalog would add:
+| Style | Role | Allowed appearance |
+| --- | --- | --- |
+| `editorial` | default, backwards compatible | existing Editorial Atlas, Auto/Light/Dark, trip accent |
+| `storybook` | explicit publisher opt-in | paper white, 3px ink contours, large radii, Huninn, gentle SVG travel illustrations, light-only, reduced-motion support |
 
-- an extra choice for itinerary-generating agents;
-- a larger QA matrix;
-- pressure for trip-type/destination heuristics;
-- risk that different trips become different products;
+Shared and invariant across styles:
 
-without improving the core traveller job.
+- single `trip.json` source of facts and state semantics
+- Now / Trip / Map / Check / More jobs and deep links
+- read-only itinerary/decisions and source order
+- offline support, weather/map fallbacks and specialist handoffs
+- semantic labels, focus states, legible contrast, keyboard and motion accessibility
+- phone, compact desktop and wide desktop reachability
 
-Therefore #46 should be **re-scoped to implement/validate bounded trip identity variables**, not to introduce multiple art directions.
+The visual language may vary **within these two controlled styles** (font families, surface grammar, radius, illustrations, timeline composition); the itinerary data model and workflow do not fork.
 
-## Allowed trip-to-trip variation
-
-Later implementation may allow bounded inputs such as:
-
-- trip title/subtitle/location;
-- accent color, subject to contrast-safe fallback/correction;
-- optional cover/media reference;
-- media focal position/crop metadata if needed;
-- ordinary trip content density produced by the itinerary itself.
-
-## Invariant across all trips
-
-Trips must not change:
-
-- typography families/roles;
-- core spacing scale;
-- composition archetypes;
-- navigation model;
-- semantic order;
-- interaction model;
-- surface grammar;
-- radius/elevation philosophy;
-- motion language;
-- accessibility behavior;
-- state meanings;
-- product semantics.
-
-No trip may select a different “theme personality” that changes these fundamentals.
+Storybook supports only built-in SVG illustration keys in `assets/storybook/`. Unknown art keys use the generic fallback and do not request remote images. No trip content may inject CSS, arbitrary URLs, scripts, fonts, animations, or external presets. Styles are applied by an isolated disabled-until-opted-in stylesheet, so default Editorial rendering remains unaffected.
 
 ---
 
