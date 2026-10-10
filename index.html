@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="./companion-ux.css" />
     <link rel="stylesheet" href="./long-trip-nav.css" />
     <link rel="stylesheet" href="./today-brief.css" />
+    <!-- Disabled unless the trip selects ui.visualStyle=storybook. -->
+    <link id="storybook-style" rel="stylesheet" href="./storybook-theme.css" disabled />
   </head>
   <body>
     <div class="app-shell">
@@ -33,6 +35,7 @@
     <template id="error-template"><section class="panel empty-state"><p class="eyebrow">Could not load trip data</p><h2>Open this site through a web server or GitHub Pages.</h2><p>Travel Lite reads <code>trip.json</code> and keeps a local IndexedDB snapshot after the first successful visit.</p></section></template>
     <script src="./bootstrap.js" defer></script>
     <script src="./storage.js" defer></script>
+    <script src="./storybook-motion.js" defer></script>
     <script src="./app.js" defer></script>
     <script src="./trip-view.js" defer></script>
     <script src="./runtime-providers.js" defer></script>
@@ -45,5 +48,6 @@
     <script src="./timezone.js" defer></script>
     <script src="./long-trip-nav.js" defer></script>
     <script src="./today-brief.js" defer></script>
+    <script src="./storybook-decor.js" defer></script>
   </body>
 </html>

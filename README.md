@@ -164,6 +164,52 @@ The base template keeps localization lightweight. Set a shell locale and optiona
 
 Built-in companion/shell labels cover English and Traditional Chinese; trip content itself remains whatever language the generating agent writes.
 
+## Optional visual style: Storybook
+
+Travel Lite now has two **site-level presentation styles**. The existing layout remains the default and still supports Auto / Light / Dark. The optional Storybook style adapts the illustrated Ishigaki experiment into **generic travel artwork**; it uses paper white, ink outlines, flat coral/yellow/blue/green colors, Huninn when available, illustrated day cards, a continuous daily timeline, optional mode/highlight tags, and gentle reduced-motion-aware animations.
+
+For one-click comparison with the built-in Tokyo sample (without changing its data):
+
+- [Editorial — original template](https://world4jason.github.io/Travel-lite-Template/#trip/overview)
+- [Storybook — temporary preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=storybook#trip/overview)
+
+To select Storybook permanently for a *generated trip*, set this in `trip.json`:
+
+```json
+{
+  "ui": {
+    "visualStyle": "storybook",
+    "theme": "system"
+  }
+}
+```
+
+This is a snippet: retain the other existing `ui` and trip fields. Omit `visualStyle` or use `"editorial"` to retain the original look. Unknown values fall back to `editorial`. The trip data remains one source of truth, and there is no per-traveller style picker.
+
+Optional, **explicitly supplied** presentation metadata:
+
+```json
+{
+  "illustration": "train",
+  "items": [
+    {
+      "id": "train-to-hotel",
+      "start": "10:30",
+      "title": "Train to the hotel",
+      "transportMode": "train",
+      "mustGo": true,
+      "illustration": "train"
+    }
+  ]
+}
+```
+
+Here, `illustration` at the day or item level uses a **safe built-in icon key** (`map`, `city`, `plane`, `car`, `train`, `boat`, `food`, `hotel`, `landmark`, `nature`, `sea`). The example combines a day-level illustration with an item. Only mark a stop `mustGo: true` when your trip's editor has explicitly prioritized it; it does **not** mean that a booking is confirmed. Declare `transportMode` only when your plans actually say `flight`, `drive`, `boat`, `train`, `bus` or `walk`—never infer route geometry or transport times from a stop's name.
+
+The included illustration files are in `assets/storybook/` and are **destination-neutral**. When making a new trip, you can replace `assets/storybook/hero.svg` with a locally designed destination illustration without changing the data schema. Storybook uses **light only**, preserves the existing checklist/notes/offline features, and has **More → Motion** options: Follow device or Reduce motion. System `prefers-reduced-motion` always disables animation, even when the local option says Follow device.
+
+Storybook's stylesheet is **disabled in Editorial**; its font is requested only in Storybook and never blocks page load. The URL query override is only for *previewing appearance* and does not rewrite `trip.json`, change group decisions, or store an alternate style preference.
+
 ## Quick start
 
 1. Fork/use this repository as a base.

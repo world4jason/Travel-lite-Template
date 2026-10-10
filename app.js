@@ -20,6 +20,38 @@ const VIEW_META = {
 const root = document.querySelector("#view-root");
 const bottomNav = document.querySelector("#bottom-nav");
 
+// Visual style is shared trip presentation, not a device-local choice.
+// A whitelisted URL override is only for read-only preview links.
+const VISUAL_STYLES = new Set(["editorial", "storybook"]);
+const isStorybook = () => state.visualStyle === "storybook";
+
+function activateVisualStyle() {
+  let requested = "";
+  try { requested = new URLSearchParams(window.location.search).get("previewStyle") || ""; } catch {}
+  const fromTrip = state.data?.ui?.visualStyle || "editorial";
+  state.visualStyle = VISUAL_STYLES.has(requested) ? requested : fromTrip;
+  document.documentElement.dataset.visualStyle = state.visualStyle;
+
+  // Keep the old stylesheet entirely disabled on the default layout:
+  // no higher specificity or palette leakage for existing trips.
+  const sheet = document.querySelector("#storybook-style");
+  if (sheet) sheet.disabled = !isStorybook();
+
+  if (isStorybook()) {
+    // This is intentionally not a blocking font stylesheet.
+    if (!document.querySelector("#storybook-font")) {
+      const font = document.createElement("link");
+      font.id = "storybook-font";
+      font.rel = "stylesheet";
+      font.href = "https://fonts.googleapis.com/css2?family=Huninn&display=swap";
+      font.media = "print";
+      font.onload = () => { font.media = "all"; };
+      document.head.appendChild(font);
+    }
+    window.TravelLiteStorybookMotion?.init(state.data.trip.id);
+  }
+}
+
 const escapeHtml = (value = "") => String(value)
   .replaceAll("&", "&amp;")
   .replaceAll("<", "&lt;")
@@ -125,6 +157,7 @@ function normalizeData(raw) {
   data.journal ||= [];
   data.links ||= [];
   data.ui ||= {};
+  data.ui.visualStyle = VISUAL_STYLES.has(data.ui.visualStyle) ? data.ui.visualStyle : "editorial";
   data.ui.bottomNav ||= ["now", "trip", "map", "check", "more"];
   data.days.forEach((day, dayIndex) => {
     day.id ||= `day-${dayIndex + 1}`;
@@ -377,6 +410,20 @@ function renderMore() {
   const contacts = state.data.contacts.map((contact) => `<article class="info-row compact-row"><div><h3>${escapeHtml(contact.name)}</h3><p>${escapeHtml(contact.role || "")}</p></div>${contact.phone ? `<a class="inline-link" href="tel:${escapeAttr(contact.phone)}">${escapeHtml(contact.phone)}</a>` : ""}</article>`).join("");
   const journal = state.data.journal.map((entry) => `<article class="text-card"><p class="eyebrow">${escapeHtml(entry.date ? prettyDate(entry.date, { weekday: "short" }) : entry.mood || "Journal")}</p><h3>${escapeHtml(entry.title)}</h3><p>${escapeHtml(entry.body)}</p></article>`).join("");
   const links = state.data.links.map((link) => `<a class="file-row" href="${escapeAttr(link.url)}" target="_blank" rel="noreferrer"><span><strong>${escapeHtml(link.label)}</strong></span><span>↗</span></a>`).join("");
+  const appearance = isStorybook()
+    ? `<section class="panel settings-card">
+        <div><p class="eyebrow">Appearance</p><h2>Storybook · Light only</h2></div>
+        <p class="helper-text">Gentle illustrated motion follows your device accessibility settings.</p>
+        <div class="motion-preference">
+          <h3>Motion / 動態效果</h3>
+          <div class="motion-options" role="group" aria-label="Motion preference">
+            ${[["system", "Follow device · 跟隨裝置"], ["reduce", "Reduce motion · 減少動畫"]]
+              .map(([mode, label]) => `<button type="button" class="motion-choice" data-motion-choice="${mode}" aria-pressed="${window.TravelLiteStorybookMotion?.get() === mode}">${label}</button>`).join("")}
+          </div>
+        </div>
+        <div class="storage-status"><span>Local storage</span><strong id="storage-mode">${escapeHtml(TravelLiteStorage.getMode())}</strong></div>
+      </section>`
+    : `<section class="panel settings-card"><div><p class="eyebrow">Appearance</p><h2>Theme</h2></div><div class="theme-switcher">${["system", "dark", "light"].map((theme) => `<button type="button" data-theme="${theme}" class="theme-button ${state.theme === theme ? "active" : ""}">${theme}</button>`).join("")}</div><div class="storage-status"><span>Local storage</span><strong id="storage-mode">${escapeHtml(TravelLiteStorage.getMode())}</strong></div></section>`;
   root.innerHTML = `<div class="view-stack">
     <section class="panel local-note-card"><div class="check-title-row"><h2>Personal note</h2><span>this device</span></div><textarea id="personal-note" rows="4" placeholder="Gate change, room number, quick memo…">${escapeHtml(state.personalNote)}</textarea><p class="helper-text">Saved locally in IndexedDB; falls back to localStorage if needed.</p></section>
     ${detailsSection("Reservations", state.data.reservations.length, reservations, true)}
@@ -386,7 +433,7 @@ function renderMore() {
     ${detailsSection("Contacts", state.data.contacts.length, contacts)}
     ${detailsSection("Journal", state.data.journal.length, journal)}
     ${detailsSection("Links", state.data.links.length, links)}
-    <section class="panel settings-card"><div><p class="eyebrow">Appearance</p><h2>Theme</h2></div><div class="theme-switcher">${["system", "dark", "light"].map((theme) => `<button type="button" data-theme="${theme}" class="theme-button ${state.theme === theme ? "active" : ""}">${theme}</button>`).join("")}</div><div class="storage-status"><span>Local storage</span><strong id="storage-mode">${escapeHtml(TravelLiteStorage.getMode())}</strong></div></section>
+    ${appearance}
   </div>`;
   const textarea = root.querySelector("#personal-note");
   let noteTimer;
@@ -401,11 +448,17 @@ function renderMore() {
     await TravelLiteStorage.set(tripKey("theme"), state.theme);
     renderMore();
   }));
+  root.querySelectorAll("[data-motion-choice]").forEach((button) => button.addEventListener("click", () => {
+    if (!window.TravelLiteStorybookMotion?.set(button.dataset.motionChoice)) return;
+    root.querySelectorAll("[data-motion-choice]").forEach((choice) =>
+      choice.setAttribute("aria-pressed", String(choice.dataset.motionChoice === window.TravelLiteStorybookMotion.get())));
+  }));
 }
 
 function applyTheme() {
-  document.documentElement.dataset.theme = state.theme;
-  document.documentElement.style.colorScheme = state.theme === "system" ? "light dark" : state.theme;
+  const mode = isStorybook() ? "light" : state.theme;
+  document.documentElement.dataset.theme = mode;
+  document.documentElement.style.colorScheme = mode === "system" ? "light dark" : mode;
 }
 
 function render() {
@@ -451,7 +504,7 @@ function hydrateHeader() {
   const { trip } = state.data;
   document.title = `${trip.title} · Travel Lite`;
   document.documentElement.style.setProperty("--accent", trip.accent);
-  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", trip.themeColor || "#0b1020");
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", isStorybook() ? "#FFFCF6" : (trip.themeColor || "#0b1020"));
   document.querySelector("#trip-location").textContent = trip.homeLabel || "Travel Lite";
   document.querySelector("#trip-title").textContent = trip.title;
   document.querySelector("#trip-meta").textContent = `${trip.subtitle || ""}${trip.subtitle ? " · " : ""}${dateRangeLabel(trip)}`;
@@ -507,6 +560,7 @@ async function registerServiceWorker() {
 async function boot() {
   try {
     state.data = await loadTripData();
+    activateVisualStyle();
     await hydrateLocalState();
     hydrateHeader();
     updateClock();

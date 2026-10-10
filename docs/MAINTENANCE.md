@@ -31,6 +31,8 @@ node --check runtime-google.js
 node --check runtime-handoff.js
 node --check theme-shell.js
 node --check sw.js
+node --check storybook-motion.js
+node --check storybook-decor.js
 ```
 
 Also parse:
@@ -85,6 +87,21 @@ The primary invariant is that the document shell never becomes wider than the vi
 A second invariant covers controls: every visible interactive element (links, buttons, selects, summaries, inputs) must lie horizontally inside the viewport and must not overlap another control in the same layer. Fixed/sticky chrome and the absolutely positioned body of an open `<details>` popover count as their own layers; only the known horizontal rails (`.day-tabs`, `.place-chips`, `.trip-route-steps`) are exempt, so vertically scrolling desktop rails are still checked. Every overflow menu and info card in the fixture is opened and checked explicitly, because left-edge clipping does not create document overflow. Each control is also scrolled to the viewport centre and must be the `elementFromPoint` target at its own centre: fixed/sticky chrome covering it is a failure, and only an open `<details>` popover may cover it. A permanent negative test covers content with an oversized fixed bottom nav and with a sticky layer, and adds a control that can never be scrolled into view, and expects each to fail.
 
 The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead of the CDN, answers map style requests with a minimal local style (tiles are blocked), and checks the Map view only after a real map has initialised; a silent fallback fails the run. The fallback message has its own test, and the Map is rechecked after selecting another stop. When `runtime-features.js` moves to a new MapLibre version, bump the devDependency to the same version; the spec refuses to run if they differ.
+
+## Optional Storybook regression
+
+`npm run test:mobile` also runs `tests/style-options.spec.mjs` (separate from the 32-day default fixture). Verify:
+
+- old trips with no `ui.visualStyle` render the same Editorial Atlas and still switch light/dark
+- invalid style selection falls back to Editorial
+- explicit `storybook` and the `?previewStyle=storybook` URL render correctly
+- Storybook white-paper/card tokens do not leak into Editorial
+- SVG art keys are whitelisted, the generic fallback applies, and the default artwork is destination-neutral
+- the optional ordered timeline, TBD, transport labels and curated emphasis preserve actual itinerary truth
+- both OS reduced motion and the per-trip local motion control stop animations
+- no overlap/overflow at narrow, tablet and desktop widths, offline cache includes optional assets
+
+External Google Fonts are optional, loaded without blocking first paint. Only style-specific icon/artwork metadata belongs in a generated trip; core navigation and live-map behavior stay shared.
 
 ## Product acceptance
 

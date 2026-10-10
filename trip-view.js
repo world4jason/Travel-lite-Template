@@ -1,6 +1,30 @@
 /* Trip overview + compact day timeline. SPDX-License-Identifier: AGPL-3.0-or-later */
 (() => {
   let tripMode = "overview";
+  let lastRenderedDate = null;
+  const TRANSPORT_MODES = Object.freeze({
+    flight: { zh: "飛機", en: "Flight", symbol: "✈" },
+    drive: { zh: "自駕", en: "Drive", symbol: "▰" },
+    boat: { zh: "搭船", en: "Boat", symbol: "≈" },
+    train: { zh: "火車", en: "Train", symbol: "≋" },
+    bus: { zh: "巴士", en: "Bus", symbol: "▰" },
+    walk: { zh: "步行", en: "Walk", symbol: "↗" },
+  });
+  function localized(zh, en) {
+    return /^zh/i.test(state.data?.ui?.locale || "") ? zh : en;
+  }
+  function transportTag(item) {
+    const mode = Object.hasOwn(TRANSPORT_MODES, item.transportMode) ? TRANSPORT_MODES[item.transportMode] : null;
+    if (!mode) return "";
+    const name = localized(mode.zh, mode.en);
+    return `<span class="transport-tag transport-tag--${item.transportMode}" aria-label="${escapeAttr(name)}"><span aria-hidden="true">${mode.symbol}</span>${escapeHtml(name)}</span>`;
+  }
+  function timeLabel(item) {
+    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(item.start || "")) {
+      return `<span class="timeline-time timeline-time--floating">${localized("時間未定", "Time TBD")}</span>`;
+    }
+    return `<time class="timeline-time" datetime="${escapeAttr(item.start)}">${escapeHtml(item.start)}</time>`;
+  }
 
   function safeUrl(rawUrl, protocols = ["http:", "https:"]) {
     if (!rawUrl) return "";
@@ -140,6 +164,7 @@
   }
 
   function renderOverview() {
+    lastRenderedDate = null;
     const days = state.data.days || [];
     const highlights = Array.isArray(state.data.highlights) ? state.data.highlights : [];
     const openDecisions = days.flatMap((day) => unresolvedItems(day).map((item) => ({ day, item })));
@@ -181,31 +206,62 @@
   }
 
   function renderDay(day) {
+    const storybook = typeof isStorybook === "function" && isStorybook();
+    const isNewDay = lastRenderedDate !== day.date;
+    lastRenderedDate = day.date;
+
     const currentDate = zonedNow(state.data.trip.timezone).date;
     const now = zonedNow(state.data.trip.timezone);
     const timeline = (day.items || []).map((item, index) => {
-      const isCurrent = day.date === currentDate && now.minuteOfDay >= toMinutes(item.start) && now.minuteOfDay < toMinutes(item.end || item.start);
+      const validTime = /^([01]\d|2[0-3]):[0-5]\d$/.test(item.start || "");
+      const isCurrent = (!storybook || validTime) && day.date === currentDate &&
+        now.minuteOfDay >= toMinutes(item.start) &&
+        now.minuteOfDay < toMinutes(item.end || item.start);
+
+      const kind = item.type ? `<span class="type-pill">${escapeHtml(item.type)}</span>` : "";
+      const highlight = item.mustGo === true
+        ? `<span class="must-go-tag" aria-label="${localized("編輯精選", "Curated highlight")}">${localized("★ 必去", "★ Highlight")}</span>`
+        : "";
+      const mode = transportTag(item);
+      const itemTop = `<div class="trip-item-top"><div><div class="item-heading"><h3>${escapeHtml(item.title)}</h3>${highlight}${kind}</div>${mode ? `<div class="trip-transport-meta">${mode}</div>` : ""}${item.location ? `<p>${escapeHtml(item.location)}</p>` : ""}</div>${compactActions(item)}</div>`;
+      const details = `<div class="timeline-content">${itemTop}${item.note ? `<p class="timeline-note">${escapeHtml(item.note)}</p>` : ""}${supplementaryContent(item)}</div>`;
+      const currentClass = isCurrent ? "current" : "";
+      if (storybook) {
+        return `<li class="trip-stop-wrap">
+          <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}">
+            ${timeLabel(item)}${details}
+          </article>${index < day.items.length - 1 ? transferHtml(item) : ""}
+        </li>`;
+      }
       return `<div class="trip-stop-wrap">
-        <article class="timeline-item trip-v2-item ${isCurrent ? "current" : ""}">
+        <article class="timeline-item trip-v2-item ${currentClass}">
           <div class="timeline-time">${escapeHtml(item.start || "TBD")}</div>
           <div class="timeline-rail"><div class="timeline-dot"></div></div>
-          <div class="timeline-content">
-            <div class="trip-item-top"><div><div class="item-heading"><h3>${escapeHtml(item.title)}</h3>${item.type ? `<span class="type-pill">${escapeHtml(item.type)}</span>` : ""}</div>${item.location ? `<p>${escapeHtml(item.location)}</p>` : ""}</div>${compactActions(item)}</div>
-            ${item.note ? `<p class="timeline-note">${escapeHtml(item.note)}</p>` : ""}
-            ${supplementaryContent(item)}
-          </div>
-        </article>
-        ${index < day.items.length - 1 ? transferHtml(item) : ""}
+          ${details}
+        </article>${index < day.items.length - 1 ? transferHtml(item) : ""}
       </div>`;
     }).join("");
 
-    root.innerHTML = `<div class="trip-v2 trip-day-view">
-      ${tripTabs()}
-      <section class="day-summary composition-identity"><p class="eyebrow">${escapeHtml(day.label || "")} · ${prettyDate(day.date, { weekday: "short" })}</p><h2>${escapeHtml(day.title || "Trip")}</h2><p>${day.items?.length || 0} planned stop${day.items?.length === 1 ? "" : "s"}</p>${day.note ? `<p class="day-note">${escapeHtml(day.note)}</p>` : ""}</section>
-      ${routeSummaryCard(day)}
-      <section class="timeline trip-v2-timeline composition-sequence">${timeline || `<div class="empty-state"><p>No plans yet.</p></div>`}</section>
-    </div>`;
+    const summary = `<section class="day-summary composition-identity">
+        <p class="eyebrow">${escapeHtml(day.label || "")} · ${prettyDate(day.date, { weekday: "short" })}</p>
+        <h2>${escapeHtml(day.title || "Trip")}</h2>
+        <p>${day.items?.length || 0} ${localized("項行程", "planned stops")}</p>
+        ${day.note ? `<p class="day-note">${escapeHtml(day.note)}</p>` : ""}
+      </section>`;
 
+    const timelineView = storybook
+      ? `<section class="trip-timeline-section" aria-label="${localized("每日時間軸", "Day timeline")}">
+          <div class="trip-timeline-heading"><h3>${localized("每日時間軸", "Day timeline")}</h3><p>${localized("依原行程順序排列 · 未定時間保留彈性", "Published order · flexible times stay flexible")}</p></div>
+          <ol class="timeline trip-v2-timeline">${timeline || `<li class="empty-state"><p>No plans yet.</p></li>`}</ol>
+        </section>`
+      : `<section class="timeline trip-v2-timeline composition-sequence">${timeline || `<div class="empty-state"><p>No plans yet.</p></div>`}</section>`;
+
+    root.innerHTML = `<div class="trip-v2 trip-day-view ${storybook && isNewDay ? "day-switch-enter" : ""}">
+      ${tripTabs()}
+      ${summary}
+      ${routeSummaryCard(day)}
+      ${timelineView}
+    </div>`;
     attachOverviewHandlers();
   }
 

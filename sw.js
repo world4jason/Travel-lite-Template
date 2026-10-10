@@ -1,4 +1,4 @@
-const CACHE = "travel-lite-shell-v24";
+const CACHE = "travel-lite-shell-v25-storybook";
 const RUNTIME_CACHE = "travel-lite-runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -13,6 +13,7 @@ const CORE = [
   "./companion-ux.css",
   "./long-trip-nav.css",
   "./today-brief.css",
+  "./storybook-theme.css",
   "./bootstrap.js",
   "./storage.js",
   "./app.js",
@@ -27,7 +28,22 @@ const CORE = [
   "./timezone.js",
   "./long-trip-nav.js",
   "./today-brief.js",
+  "./storybook-motion.js",
+  "./storybook-decor.js",
   "./trip.json",
+  "./assets/storybook/hero.svg",
+  "./assets/storybook/map.svg",
+  "./assets/storybook/city.svg",
+  "./assets/storybook/plane.svg",
+  "./assets/storybook/car.svg",
+  "./assets/storybook/train.svg",
+  "./assets/storybook/boat.svg",
+  "./assets/storybook/food.svg",
+  "./assets/storybook/hotel.svg",
+  "./assets/storybook/landmark.svg",
+  "./assets/storybook/nature.svg",
+  "./assets/storybook/sea.svg",
+
   "./manifest.webmanifest",
   "./icon.svg"
 ].map(scopeUrl);

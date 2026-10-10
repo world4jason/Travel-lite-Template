@@ -464,3 +464,25 @@
   font-size: var(--text-sm);
   line-height: 1.4;
 }
+
+
+/* Optional source-authored travel modes and editorial highlights.
+   Quiet in the default style; Storybook provides its own colored pills.
+   No trip receives badges unless it explicitly supplies metadata. */
+.must-go-tag, .transport-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 26px;
+  padding: 3px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: .74rem;
+  font-weight: 760;
+  white-space: nowrap;
+}
+.trip-transport-meta { display: flex; flex-wrap: wrap; gap: 7px; margin: 7px 0; }

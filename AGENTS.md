@@ -158,6 +158,12 @@ Appearance must support `system`, `light`, and `dark`.
 - maps should follow the effective light/dark mode unless a trip explicitly overrides the styles
 - never encode important meaning only through color
 
+## Optional visual style
+
+The original `editorial` style remains the default; the explicitly authorized `ui.visualStyle: "storybook"` is a **site-level opt-in**. Preserve the current Editorial design and its Auto/Light/Dark behavior. The Storybook overlay must not leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
+
+Storybook only uses light surfaces. Respect OS `prefers-reduced-motion` and the local More → Motion setting; any animation must stop without breaking layout or functionality. Regression test both style paths and preview overrides.
+
 ## Offline / share / locale
 
 - show whether the traveller is seeing a network copy or an offline snapshot

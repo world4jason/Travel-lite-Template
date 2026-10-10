@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 365" role="img" aria-label="城市、山丘與小火車的旅行繪本風景">
+<rect x="6" y="6" width="628" height="353" rx="36" fill="#FFFCF6" stroke="#3E3A39" stroke-width="7"/>
+<path d="M12 40Q12 12 46 12H596Q628 12 628 46V290H12Z" fill="#A8D3E6"/>
+<circle cx="499" cy="75" r="37" fill="#F6D27A" stroke="#3E3A39" stroke-width="6"/>
+<path d="M34 97q18-17 38 0q20-15 43 1m187-48q15-14 34 0" fill="none" stroke="#3E3A39" stroke-width="5" stroke-linecap="round"/>
+<path d="M12 232Q90 141 174 211Q260 91 346 199Q409 145 488 217Q542 164 628 218V350H12Z" fill="#B9DAA5" stroke="#3E3A39" stroke-width="6"/>
+<path d="M20 297Q180 268 335 292T620 284" fill="none" stroke="#3E3A39" stroke-width="7" stroke-linecap="round"/>
+<path d="M50 260h315v61H50Z" fill="#FFFCF6" stroke="#3E3A39" stroke-width="6"/>
+<rect x="64" y="215" width="233" height="96" rx="24" fill="#F2A497" stroke="#3E3A39" stroke-width="6"/>
+<rect x="86" y="238" width="75" height="46" rx="10" fill="#A8D3E6" stroke="#3E3A39" stroke-width="6"/>
+<rect x="182" y="238" width="75" height="46" rx="10" fill="#A8D3E6" stroke="#3E3A39" stroke-width="6"/>
+<circle cx="111" cy="316" r="18" fill="#3E3A39"/><circle cx="250" cy="316" r="18" fill="#3E3A39"/>
+<circle cx="111" cy="316" r="8" fill="#FFFCF6"/><circle cx="250" cy="316" r="8" fill="#FFFCF6"/>
+<path d="M404 280h29V182h57v98h33V153h46v127h30" fill="#FFFCF6" stroke="#3E3A39" stroke-width="6" stroke-linejoin="round"/>
+<path d="M442 203h18m-18 23h18m75-49h20m-20 25h20" stroke="#3E3A39" stroke-width="6" stroke-linecap="round"/>
+</svg>
