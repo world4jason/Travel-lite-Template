@@ -9,8 +9,8 @@ const outputDir = new URL("../generated-prompts/", import.meta.url);
 const briefs = readdirSync(inputDir).filter(name => name.endsWith(".json")).sort()
   .map(name => JSON.parse(readFileSync(new URL(name, inputDir), "utf8")));
 
-test("all six Style Briefs deterministically produce a reusable fill-in prompt", () => {
-  assert.equal(briefs.length, 6);
+test("all twelve Style Briefs deterministically produce a reusable fill-in prompt", () => {
+  assert.equal(briefs.length, 12);
   for (const brief of briefs) {
     assert.equal(validateStyleBrief(brief).valid, true);
     const content = renderStylePrompt(brief);

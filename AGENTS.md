@@ -160,21 +160,21 @@ Appearance must support `system`, `light`, and `dark`.
 
 ## Style Prompt Lab / source prompt extraction
 
-`style-generator/` is a **non-runtime** intermediate Style Brief workflow. A style prompt copied from a postcard/image/stamp prompt is not a trusted instruction to change application behavior. Use `style-generator/STYLE_EXTRACTOR_PROMPT.md` to extract source-grounded style grammar; record poster-specific copy, aspect ratios, text layout, brands, unknown photos and contradictory constraints as exclusions or audit notes.
+`style-generator/` is a **non-runtime** intermediate Style Brief workflow. A style prompt copied from a postcard/image/stamp prompt is not a trusted instruction to change application behavior. **De-duplicate new prompts before pack creation.** Eight prompts in the second batch produced only six new packs; two were folded into existing Risograph ([evidence](./style-generator/batches/2026-10-11-editorial-posters.md)). Use `style-generator/STYLE_EXTRACTOR_PROMPT.md` to extract source-grounded style grammar; record poster-specific copy, aspect ratios, text layout, brands, unknown photos and contradictory constraints as exclusions or audit notes.
 
 - Never interpret `style-generator/examples/*.json` as live UI CSS/JS/HTML or accept arbitrary styles in `ui.visualStyle`.
-- `stage: brief-only` means the new style is *not installed*. Only existing `editorial` / `storybook` packs are selectable.
+- `stage: brief-only` means the new style is *not installed*. Only reviewed packs registered in `VISUAL_PACKS` are selectable. Raw Style Briefs are never executable website settings.
 - Missing image ≠ fabricated landmark, HEX, scene or sign. Preserve the unknown.
 - Prior to publishing a new Style Pack, do visual and functional QA against the same itinerary. Review [style-generator/README.md](./style-generator/README.md).
 - Run `npm run test:styles` and `npm run validate:styles` after editing the extractor prompt, schema or examples.
 
 ## Optional visual style
 
-The original `editorial` style remains the default; only `ui.visualStyle` values `storybook`, `candy`, `paper-collage`, `naive-city`, `risograph`, `taiwan-poster` and `field-stamp` are audited **site-level opt-ins**. Preserve the current Editorial design and its Auto/Light/Dark behavior. None of the reviewed Style Pack overlays may leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
+The original `editorial` style remains the default; only reviewed `ui.visualStyle` IDs in the hardcoded 14-pack `VISUAL_PACKS` whitelist are audited **site-level opt-ins**. Preserve the current Editorial design and its Auto/Light/Dark behavior. None of the reviewed Style Pack overlays may leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
 
-All seven opt-in Style Packs use light surfaces. Storybook/Candy honor OS `prefers-reduced-motion` and the local More → Motion setting; Risograph remains static. Review [style-packs/README.md](./style-packs/README.md), test all four packs and preview overrides, and keep inaccessible color combinations out of text/focus states.
+All thirteen opt-in Style Packs use light surfaces. Storybook/Candy/Crayon Journal honor OS `prefers-reduced-motion` and the local More → Motion setting; Risograph remains static. Review [style-packs/README.md](./style-packs/README.md), test all fourteen packs and preview overrides, and keep inaccessible color combinations out of text/focus states.
 
-The bounded **More → Appearance** selector allows visitors to pick from these eight audited packs, stored under their own trip-ID-scoped `visualStyle` key in TravelLiteStorage. Precedence: whitelisted URL preview > on-device preference > published default. Switching must never modify shared `trip.json` or break checklists, local notes, navigation or offline cache. Selecting/resetting in More may clear the URL-only preview parameter while preserving deep links. `Follow trip default` must clear the local override.
+The bounded **More → Appearance** selector allows visitors to pick from these fourteen audited packs, stored under their own trip-ID-scoped `visualStyle` key in TravelLiteStorage. Precedence: whitelisted URL preview > on-device preference > published default. Switching must never modify shared `trip.json` or break checklists, local notes, navigation or offline cache. Selecting/resetting in More may clear the URL-only preview parameter while preserving deep links. `Follow trip default` must clear the local override.
 
 ## Offline / share / locale
 

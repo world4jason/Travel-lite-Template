@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "quiet-acrylic",
+  "displayName": "Quiet Acrylic",
+  "sourceBriefId": "quiet-acrylic",
+  "sourceBriefPath": "../../style-generator/examples/quiet-acrylic.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/quiet-acrylic.md",
+  "stage": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "quiet-acrylic",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "none",
+  "css": [
+    "../../storybook-theme.css",
+    "../../quiet-acrylic-theme.css"
+  ],
+  "assetDirectory": "../../assets/quiet-acrylic",
+  "assets": [
+    "hero.svg",
+    "marker.svg"
+  ],
+  "browserPreviews": [
+    "../previews/quiet-acrylic-mobile.png",
+    "../previews/quiet-acrylic-desktop.png",
+    "../previews/quiet-acrylic-day-mobile.png"
+  ],
+  "materialRules": [
+    "tiny 10–20% drawn focal object on 80% paper",
+    "thin wavering ink and sparse acrylic fills",
+    "no crayon, collage or heavy gouache",
+    "very restrained book-cover editorial layout"
+  ],
+  "sourceVsOutputBoundary": "Prompts referred to image-to-poster tasks. The trip sites have no destination source photograph; 3:4, split 50/50 photo panels, exact caption words, source-only features and fixed magazine labels were deliberately excluded. Any custom HEX is a design proposal, not measured from a real travel photo.",
+  "acceptanceTests": [
+    "tests/second-prompt-batch.spec.mjs",
+    "tests/second-batch-manifests.test.mjs",
+    "scripts/verify-style-parity.mjs"
+  ]
+}

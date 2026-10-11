@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "crayon-journal",
+  "displayName": "Crayon Journal",
+  "sourceBriefId": "crayon-journal",
+  "sourceBriefPath": "../../style-generator/examples/crayon-journal.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/crayon-journal.md",
+  "stage": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "crayon-journal",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "gentle-and-reducible",
+  "css": [
+    "../../storybook-theme.css",
+    "../../crayon-journal-theme.css"
+  ],
+  "assetDirectory": "../../assets/crayon-journal",
+  "assets": [
+    "hero.svg",
+    "marker.svg"
+  ],
+  "browserPreviews": [
+    "../previews/crayon-journal-mobile.png",
+    "../previews/crayon-journal-desktop.png",
+    "../previews/crayon-journal-day-mobile.png"
+  ],
+  "materialRules": [
+    "2–5 horizontal memory objects, not nine-grid",
+    "opaque waxy pigment with paper holes and crayon hatching",
+    "gentle movement with reduced-motion support"
+  ],
+  "sourceVsOutputBoundary": "Prompts referred to image-to-poster tasks. The trip sites have no destination source photograph; 3:4, split 50/50 photo panels, exact caption words, source-only features and fixed magazine labels were deliberately excluded. Any custom HEX is a design proposal, not measured from a real travel photo.",
+  "acceptanceTests": [
+    "tests/second-prompt-batch.spec.mjs",
+    "tests/second-batch-manifests.test.mjs",
+    "scripts/verify-style-parity.mjs"
+  ]
+}

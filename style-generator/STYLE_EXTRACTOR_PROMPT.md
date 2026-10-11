@@ -50,6 +50,16 @@
 
 若能合理繼續，就把缺少的輸入放到 `audit.unknowns`，不要因沒有照片而拒絕所有風格抽取。
 
+### Step 3.5 — 與已完成的 Style Pack 去重（先於新建風格）
+
+當一次提交包含多段照片／明信片／網站提示詞時，先按照四個維度比對**材質（Riso／蠟筆／水粉／硬邊）**、**幾何（鋸齒／抖動／多邊形）**、**構圖（九格／橫向／大量留白）**、**字體／資訊密度**，做一張「來源 → 已有 pack／新增 pack」矩陣。
+
+- 顏色和 Mood 差異不足以獨立拆 Pack；同樣的紙感或復古氛圍也不代表所有構圖相同。
+- 可被現有 Pack 實質涵蓋時，選那個 Pack 作為 `recommendedBase`，不要重複增加一個幾乎相同的選項。與既有 Risograph 非常相似的兩份來源都應合併在同一個風格。
+- 有**實質材料／構圖／元件差異**（例如九格塗鴉 vs 橫向蠟筆、厚水粉 vs 細線壓克力）才新增 Pack。
+- [第二批八段來源的實際去重案例](./batches/2026-10-11-editorial-posters.md) 可用來驗證判斷。
+- 去重／分流是編輯或 LLM 的決策，Schema 本身不會憑 JSON 自動理解自然語言。
+
 ### Step 4 — 評估轉入網站的方式
 
 選擇 `webTranslation.implementationTier`：
@@ -58,7 +68,7 @@
 - **asset-and-token-variant**：視覺結構可沿用 Storybook/Editorial，需新增 SVG／素材處理。
 - **new-style-pack**：需要新排版、印刷材質、元件與獨立可測的 Style Pack。
 
-`webTranslation.recommendedBase` 可以是 `storybook`、`editorial` 或 `new-style-pack`，但這只是候選實作方案，不代表新 Style Pack 已存在。
+`webTranslation.recommendedBase` 可選任何在 Schema 中列出的**現有、已驗收 Style Pack ID**，或 `new-style-pack`。若只是加素材或字體，優先引用現成 Pack 而不是假裝產出全新風格；此欄只是實作建議，**不代表新 Pack 已存在**。
 
 所有 Style Pack 都必須保留原有 `Now / Trip / Map / Check / More`、正確行程、旅客局部資料與無障礙功能。**Style Brief 本身不能作為可執行 CSS、JS 或 HTML 注入網站。**
 
@@ -69,7 +79,7 @@
 - `schemaVersion: "1.0.0"`
 - `stage: "brief-only"`
 - `audit.photoProvided`：如只有文字、沒有附圖，為 `false`，而 `audit.basis` 為 `text-only`。真正看過來源照片並核實場景時才可使用 `photoProvided: true` + `basis: text-and-image`，不能僅憑提示詞中的「已上傳照片」字樣聲稱真的看過圖。
-- `visual.geometry.family`／`visual.material.technique` 等是**可擴充的短英文 slug**，六組範例只是參考，不是唯一風格清單；未知風格可創新名稱（例如 `pixel-grid`、`pixel-art`）。
+- `visual.geometry.family`／`visual.material.technique` 等是**可擴充的短英文 slug**，十二組範例只是參考，不是唯一風格清單；未知風格可創新名稱（例如 `pixel-grid`、`pixel-art`）。
 - `visual.palette.swatches[].hex`：來源沒有明確 hex 時使用 `null`。
 - `constraints.conditional`：對照片忠實度、可見招牌等寫清楚啟用條件。
 - `webTranslation.excludedOriginalInstructions`：原提示詞有海報／明信片專用限制時，應逐項列出；本來就是網站風格描述時可用空陣列，無須杜撰。

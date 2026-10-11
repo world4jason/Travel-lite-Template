@@ -1,0 +1,269 @@
+/* doodle-memory-grid: original, source-reviewed visual style. SPDX-License-Identifier: AGPL-3.0-or-later
+ * Derived from text-only Style Brief; no original travel photo was supplied.
+ * Do not copy 3:4, photo-preservation instructions, invented captions or slogans.
+ * The main SVG is decorative and is not a source for actual trip facts. */
+:root[data-visual-style="doodle-memory-grid"] {
+ --paper:#FBF6EA; --ink:#514D51; --muted-ink:#514D51;
+ --bg:#FBF6EA; --bg-top:#FBF6EA; --surface:#FFFAF1;
+ --surface-2:#F2E7D8; --text:#514D51; --muted:#514D51;
+ --line:#514D51; --accent:#514D51 !important;
+ --accent-soft:#E7C986; --coral:#A3C5D5;
+ --yamabuki:#E7C986; --water:#E7C986; --bamboo:#F2E7D8;
+ --radius-lg:17px 24px 15px 22px; --radius-md:17px 24px 15px 22px;
+ --font-display:"Comic Sans MS", "Chalkboard SE", "Huninn", sans-serif; --font-utility:"Huninn", "Noto Sans TC", system-ui, sans-serif;
+ --shadow:none; --shadow-float:none; color-scheme:light;
+}
+:root[data-visual-style="doodle-memory-grid"] body {
+ background:#FBF6EA !important;
+ background-image:none !important;
+ color:#514D51; font-family:var(--font-utility);
+}
+:root[data-visual-style="doodle-memory-grid"] :is(h1,h2,h3,h4) {
+ color:#514D51; font-family:var(--font-display);
+ letter-spacing:-.018em;line-height:1.21; font-weight:700;
+}
+:root[data-visual-style="doodle-memory-grid"] .eyebrow {
+ color:#514D51; font-size:.73rem;
+ letter-spacing:.10em; text-transform:uppercase;
+}
+:root[data-visual-style="doodle-memory-grid"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
+ .trip-highlight-card,.trip-open-decision,.trip-route-summary,
+ .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
+ .panel,.runtime-map-panel,.companion-window-card,.companion-focus,
+ .shell-context-slot,.bottom-nav) {
+ background:#FFFAF1; border:2px dashed #514D51;
+ border-radius:17px 24px 15px 22px; box-shadow:none!important; color:#514D51;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-header {
+ background:#FFFAF1;padding:17px 21px;
+}
+:root[data-visual-style="doodle-memory-grid"] #trip-location {
+ background:#E7C986;color:#514D51;
+ border:1px solid #514D51; border-radius:17px 24px 15px 22px;
+ padding:4px 9px;font-size:.74rem;
+}
+:root[data-visual-style="doodle-memory-grid"] #trip-title {
+ font:700 clamp(1.65rem,4vw,2.7rem)/1.12 var(--font-display);
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-meta {color:#514D51;}
+:root[data-visual-style="doodle-memory-grid"] .live-time {
+ background:#F2E7D8;color:#514D51;
+ border:2px dashed #514D51;border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] .live-time small {color:#514D51;}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-hero {
+ display:grid;min-height:0;gap:8px;
+ grid-template-columns:minmax(0,1fr);
+ grid-template-areas:"eyebrow" "title" "subtitle" "art" "stats";
+ padding:21px 20px;
+ background:#FFFAF1;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-hero > .eyebrow {grid-area:eyebrow;margin:0;}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-hero > h2 {
+ grid-area:title;max-width:100%;min-width:0;
+ font:700 clamp(2rem,4.8vw,3.65rem)/1.11 var(--font-display);
+ margin:0;overflow-wrap:anywhere;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-hero > p:last-of-type {
+ grid-area:subtitle;max-width:100%;color:#514D51;
+ font-size:.82rem;line-height:1.5;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-hero::after {
+ content:""; grid-area:art;display:block;
+ width:100%;height:auto; aspect-ratio:760/430;
+ background:url("./assets/doodle-memory-grid/hero.svg") center/contain no-repeat;
+ min-width:0;margin:7px 0 0;align-self:end;
+ animation:none;pointer-events:none;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-stats {
+ grid-area:stats;display:flex;flex-wrap:wrap;gap:8px;
+ border-top:1px solid #514D51;padding-top:12px;
+ margin-top:9px;width:100%;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-stats span {
+ padding:5px 9px;background:#F2E7D8;
+ border:1px solid #514D51;border-radius:17px 24px 15px 22px;
+ color:#514D51;font-size:.75rem;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-stats strong {color:#514D51;}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day {
+ position:relative;min-height:132px;
+ border:2px dashed #514D51;background:#FFFAF1;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day:nth-child(even) {background:#F2E7D8;}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day::after {
+ content:"";background:url("./assets/doodle-memory-grid/marker.svg") center/contain no-repeat;
+ border-radius:17px 24px 15px 22px;animation:none;pointer-events:none;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day-meta span {
+ background:#E7C986;border:1px solid #514D51;
+ color:#514D51;border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day-meta time {color:#514D51;}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day h3 {
+ font:700 1.18rem/1.2 var(--font-display);
+ color:#514D51;max-width:100%;overflow-wrap:anywhere;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day p {color:#514D51;}
+:root[data-visual-style="doodle-memory-grid"] .trip-highlight-card {
+ background:#F2E7D8;border:2px dashed #514D51;
+ border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-open-decision {background:#FFFAF1;}
+:root[data-visual-style="doodle-memory-grid"] :is(.trip-highlight-card,.trip-open-decision)::after {
+ background:url("./assets/doodle-memory-grid/marker.svg") center/contain no-repeat;
+ animation:none;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-day-view > .day-summary {
+ background:#F2E7D8;min-height:144px;
+ padding:19px 116px 20px 19px;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-day-view > .day-summary h2 {
+ font:700 clamp(1.55rem,4vw,2.6rem)/1.14 var(--font-display);
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-day-view > .day-summary::after {
+ background:url("./assets/doodle-memory-grid/marker.svg") center/contain no-repeat;
+ animation:none;width:93px;height:93px;right:12px;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-route-summary {
+ background:#FFFAF1;border:2px dashed #514D51;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-route-heading h3 {
+ font:700 1.16rem/1.25 var(--font-display);
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-route-endpoints {
+ border:1px solid #514D51;border-radius:17px 24px 15px 22px;
+ background:#F2E7D8;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-route-steps span {
+ color:#514D51;background:#FFFAF1;
+ border:1px solid #514D51;border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline::before {
+ background:#514D51;width:3px;left:13px;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline > .trip-stop-wrap::before {
+ background:#E7C986;border:2px solid #514D51;
+ border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline .trip-v2-item {
+ border:2px dashed #514D51;border-radius:17px 24px 15px 22px;
+ background:#FFFAF1;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline .trip-stop-wrap:nth-child(even) .trip-v2-item {
+ background:#F2E7D8;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline .timeline-content h3 {
+ color:#514D51;font:700 1.12rem/1.3 var(--font-display);
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline .timeline-time {
+ color:#514D51;background:#E7C986;
+ border:1px solid #514D51;border-radius:17px 24px 15px 22px;
+ padding:5px 8px;font-weight:740;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline .timeline-time--floating {
+ color:#514D51;background:#FFFAF1;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline .timeline-note {color:#514D51;}
+:root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline .trip-transfer {
+ color:#514D51;background:transparent;
+ border-left:2px dashed #514D51;border-radius:0;
+}
+:root[data-visual-style="doodle-memory-grid"] :is(.type-pill,.must-go-tag,.transport-tag,.time-pill,
+ .summary-count,.trip-open-count) {
+ background:#E7C986;color:#514D51;
+ border:1px solid #514D51;border-radius:17px 24px 15px 22px;
+ font-size:.75rem;
+}
+:root[data-visual-style="doodle-memory-grid"] .must-go-tag {background:#A3C5D5;color:#514D51;}
+:root[data-visual-style="doodle-memory-grid"] :is(.day-chip,.place-chip,.long-trip-step,
+ .button-link,.trip-icon-action,.trip-action-menu > summary,
+ .theme-button,.motion-choice) {
+ background:#FFFAF1;border:1px solid #514D51;
+ color:#514D51;border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] :is(.day-chip,.place-chip).active,
+:root[data-visual-style="doodle-memory-grid"] .motion-choice[aria-pressed="true"] {
+ background:#E7C986;color:#514D51;
+}
+:root[data-visual-style="doodle-memory-grid"] .day-chip.active small {color:#514D51;}
+:root[data-visual-style="doodle-memory-grid"] .bottom-nav {
+ background:#FBF6EA;border:2px dashed #514D51;
+ border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] .nav-item {
+ color:#514D51;border-radius:17px 24px 15px 22px;background:transparent;
+}
+:root[data-visual-style="doodle-memory-grid"] .nav-item.active {
+ background:#E7C986;color:#514D51;
+ border:1px solid #514D51;
+}
+:root[data-visual-style="doodle-memory-grid"] .check-item {
+ background:#FFFAF1;border:2px dashed #514D51;
+ border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] .more-section > summary,
+:root[data-visual-style="doodle-memory-grid"] .cost-total {
+ background:#F2E7D8;border:1px solid #514D51;
+ border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] .style-option {
+ background:#FFFAF1;color:#514D51;
+ border:2px dashed #514D51;border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] .style-option[aria-pressed="true"] {
+ background:#E7C986;outline:2px solid #514D51;
+}
+:root[data-visual-style="doodle-memory-grid"] .map-stage {
+ border:1px solid #514D51;border-radius:17px 24px 15px 22px;
+}
+:root[data-visual-style="doodle-memory-grid"] .shell-day.active {
+ background:#E7C986;color:#514D51;
+}
+
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-hero {
+ border:2px dashed #514D51;padding:17px 19px;
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-hero::after {background-size:contain;}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day:nth-child(3n+1) {
+ background:#FFFAF1;transform:rotate(-.1deg);
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day:nth-child(3n+2) {background:#F2E7D8;}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day:nth-child(3n+3) {
+ background:#E5EDEA;transform:rotate(.25deg);
+}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-day::after {transform:rotate(-6deg);}
+:root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline .trip-v2-item {border-style:dashed;}
+:root[data-visual-style="doodle-memory-grid"] .trip-overview-stats span {border-style:dashed;}
+
+@media(max-width:520px){
+ :root[data-visual-style="doodle-memory-grid"] .trip-header {padding:13px;}
+ :root[data-visual-style="doodle-memory-grid"] .trip-overview-hero {
+  grid-template-columns:minmax(0,1fr);padding:13px;
+  gap:6px;
+ }
+ :root[data-visual-style="doodle-memory-grid"] .trip-overview-hero > h2 {
+  font-size:clamp(1.7rem,6vw,2.15rem);
+ }
+ :root[data-visual-style="doodle-memory-grid"] .trip-overview-hero::after {
+  width:100%;aspect-ratio:760/430;max-width:100%;margin:8px 0 0;
+ }
+ :root[data-visual-style="doodle-memory-grid"] .trip-overview-day {min-height:118px;padding:14px;}
+ :root[data-visual-style="doodle-memory-grid"] .trip-day-view > .day-summary {
+  padding:14px 80px 15px 13px;min-height:124px;
+ }
+ :root[data-visual-style="doodle-memory-grid"] .trip-day-view > .day-summary::after {
+  width:65px;height:65px;right:8px;
+ }
+ :root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline .trip-v2-item {padding:12px;}
+}
+@media(prefers-reduced-motion:reduce){
+ :root[data-visual-style="doodle-memory-grid"] *,:root[data-visual-style="doodle-memory-grid"] *::before,:root[data-visual-style="doodle-memory-grid"] *::after {
+  animation:none!important;transition:none!important;
+ }
+}
+:root[data-visual-style="doodle-memory-grid"][data-motion="reduce"] *,
+:root[data-visual-style="doodle-memory-grid"][data-motion="reduce"] *::before,
+:root[data-visual-style="doodle-memory-grid"][data-motion="reduce"] *::after {
+ animation:none!important;transition:none!important;
+}

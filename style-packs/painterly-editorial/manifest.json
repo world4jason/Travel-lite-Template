@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "painterly-editorial",
+  "displayName": "Painterly Editorial",
+  "sourceBriefId": "painterly-editorial",
+  "sourceBriefPath": "../../style-generator/examples/painterly-editorial.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/painterly-editorial.md",
+  "stage": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "painterly-editorial",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "none",
+  "css": [
+    "../../storybook-theme.css",
+    "../../painterly-editorial-theme.css"
+  ],
+  "assetDirectory": "../../assets/painterly-editorial",
+  "assets": [
+    "hero.svg",
+    "marker.svg"
+  ],
+  "browserPreviews": [
+    "../previews/painterly-editorial-mobile.png",
+    "../previews/painterly-editorial-desktop.png",
+    "../previews/painterly-editorial-day-mobile.png"
+  ],
+  "materialRules": [
+    "airy cool pastel palette",
+    "matte gouache/acrylic brush grain and dry edges",
+    "one loose composition not crowded cards",
+    "no copied photo halves"
+  ],
+  "sourceVsOutputBoundary": "Prompts referred to image-to-poster tasks. The trip sites have no destination source photograph; 3:4, split 50/50 photo panels, exact caption words, source-only features and fixed magazine labels were deliberately excluded. Any custom HEX is a design proposal, not measured from a real travel photo.",
+  "acceptanceTests": [
+    "tests/second-prompt-batch.spec.mjs",
+    "tests/second-batch-manifests.test.mjs",
+    "scripts/verify-style-parity.mjs"
+  ]
+}

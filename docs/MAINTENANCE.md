@@ -89,9 +89,9 @@ A second invariant covers controls: every visible interactive element (links, bu
 
 The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead of the CDN, answers map style requests with a minimal local style (tiles are blocked), and checks the Map view only after a real map has initialised; a silent fallback fails the run. The fallback message has its own test, and the Map is rechecked after selecting another stop. When `runtime-features.js` moves to a new MapLibre version, bump the devDependency to the same version; the spec refuses to run if they differ.
 
-## Built-in Style Pack review (Storyboard / Candy / Paper / Naive / Risograph / Taiwan Poster / Stamp)
+## Built-in Style Pack review (14 audited packs, 15 visible looks)
 
-`npm run test:mobile` also runs `tests/style-options.spec.mjs`, `tests/phase2-packs.spec.mjs` and `tests/style-settings.spec.mjs` and `tests/nine-looks.spec.mjs` (separate from the 32-day default fixture). Verify:
+`npm run test:mobile` also runs `tests/style-options.spec.mjs`, `tests/phase2-packs.spec.mjs`, `tests/style-settings.spec.mjs`, `tests/nine-looks.spec.mjs` and `tests/second-prompt-batch.spec.mjs` (separate from the 32-day default fixture). Verify:
 
 - old trips with no `ui.visualStyle` render the same Editorial Atlas and still switch light/dark
 - invalid style selection falls back to Editorial
@@ -101,7 +101,7 @@ The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead 
 - the optional ordered timeline, TBD, transport labels and curated emphasis preserve actual itinerary truth
 - both OS reduced motion and the per-trip local motion control stop animations
 - no overlap/overflow at narrow, tablet and desktop widths, offline cache includes optional assets
-- More → Appearance instantly switches Editorial/Storybook/Candy/Risograph with no reload, persists per trip, preserves dark theme on returning to Editorial, and remains keyboard-reachable
+- More → Appearance instantly switches all fifteen appearances with no reload, persists per trip, preserves dark theme on returning to Editorial, and remains keyboard-reachable
 - URL preview takes precedence temporarily, choosing a local style removes preview URL while preserving hash and unrelated query parameters, Follow trip default clears local state
 - navigation immediately after an asynchronous checklist write cannot redraw a stale Check view over a newly selected Trip view
 

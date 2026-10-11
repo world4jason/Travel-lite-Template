@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "doodle-memory-grid",
+  "name": {
+    "zh": "手帳九宮格塗鴉",
+    "en": "Doodle Memory Grid"
+  },
+  "sourceTask": "photo-editorial-poster",
+  "visual": {
+    "mood": [
+      "私密手帳",
+      "童趣但克制",
+      "鬆弛",
+      "視覺回憶"
+    ],
+    "era": "旅行手帳、獨立出版、當代版畫風格",
+    "palette": {
+      "mode": "source-derived",
+      "maxColors": 5,
+      "swatches": [
+        {
+          "name": "柔暖紙白",
+          "hex": null,
+          "role": "background",
+          "origin": "explicit"
+        },
+        {
+          "name": "柔黑細線",
+          "hex": null,
+          "role": "ink",
+          "origin": "explicit"
+        }
+      ],
+      "usage": [
+        "來源色票待照片或設計方案確認",
+        "柔和局部彩鉛色塊",
+        "紙面留白"
+      ]
+    },
+    "geometry": {
+      "family": "loose-nine-doodle-grid",
+      "motifs": [
+        "3×3 九個小記憶單元",
+        "輕微移位",
+        "未閉合手繪",
+        "少量星點波浪"
+      ],
+      "outline": {
+        "weight": "variable",
+        "character": "irregular-ink",
+        "color": "柔和炭灰"
+      },
+      "edgeQuality": "wobbly"
+    },
+    "material": {
+      "technique": "crayon-pencil",
+      "texture": [
+        "彩鉛與蠟筆乾色",
+        "鬆散筆畫",
+        "手工紙顆粒"
+      ],
+      "depth": "flat",
+      "shadow": "none"
+    },
+    "typography": {
+      "display": "輕鬆不完美手寫",
+      "utility": "主介面使用清晰字體",
+      "hierarchy": "手寫標題只是裝飾語法，不固定引言"
+    },
+    "composition": {
+      "focus": "鬆散九宮格裡的九個抽象旅行圖示",
+      "whitespace": "generous",
+      "layers": "flat",
+      "notes": [
+        "九宮格只在 Hero 裝飾",
+        "不得把真實 5 或 30 個活動造假成九個"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "九個小單元",
+      "蠟筆填色",
+      "留白"
+    ],
+    "avoid": [
+      "固定 3:4 版式",
+      "臆造九個行程",
+      "規則印刷直線格"
+    ],
+    "conditional": [
+      {
+        "when": "另外提供真正的旅行目的地來源照片",
+        "rule": "只把核實可見主體、構圖與招牌用在場景資產；目前只有風格文字，不能編造地標或照片資訊。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "new-style-pack",
+    "implementationTier": "new-style-pack",
+    "transferable": [
+      "九格圖示系統",
+      "手寫風卡片",
+      "非制式網格"
+    ],
+    "assetTreatment": [
+      "九種抽象形狀的本地 SVG",
+      "乾筆顆粒但不遮文字"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "頂半部原片下半部九格",
+        "reason": "雙聯海報比例不屬網站功能。"
+      },
+      {
+        "instruction": "九個圖示必須都來自相片",
+        "reason": "缺少原照片，僅使用通用旅行形狀。"
+      }
+    ],
+    "componentRisks": [
+      "不得假稱九個示意圖就是九個真實站點"
+    ],
+    "motion": "none"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "沒有要重繪的旅行來源照片；實際場景、人物、位置與真實照片色票未知。",
+      "新網站的 HEX 是設計建議，不是從原照片量測。"
+    ],
+    "conflicts": [],
+    "assumptions": [
+      "此 JSON 僅描述視覺風格而非網站功能或已完工的 CSS。",
+      "所有旅程事實必須來自既有 trip.json，泛用裝飾圖不得假裝真實景點。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}
