@@ -99,6 +99,7 @@ try {
     const ctx=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:"block"});
     const page=await ctx.newPage();
     await page.goto("http://127.0.0.1:"+port+"/#more");
+    await page.locator("[data-style-picker-open]").click();
     await page.locator('[data-style-choice="'+style+'"]').click();
     await page.waitForFunction(color=>{
       const links=[...document.querySelectorAll("link[id$='-style']")];

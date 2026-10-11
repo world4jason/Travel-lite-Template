@@ -127,8 +127,8 @@ async function chooseLocalStyle(choice) {
   // the shell explicitly as well as rerendering the active settings view.
   window.dispatchEvent(new Event("travel-lite-style-changed"));
   renderMore();
-  root.querySelector(next === null ? "[data-style-reset]" :
-    '[data-style-choice="' + choice + '"]')?.focus({ preventScroll: true });
+  // Focus is restored by the dialog handler *after* its async save releases
+  // the disabled selection button, or by the dialog close event on mobile.
   return true;
 }
 
@@ -481,6 +481,76 @@ function detailsSection(title, count, body, open = false) {
   return `<details class="panel more-section" ${open ? "open" : ""}><summary><span>${escapeHtml(title)}</span><span class="summary-count">${count}</span></summary><div class="more-body">${body}</div></details>`;
 }
 
+// Native modal dialog provides browser-managed focus trapping and Escape.
+// At narrow widths it is a bottom sheet; on desktop a right-side drawer.
+// The underlying app remains untouched and inert while the chooser is open.
+function ensureStylePickerDialog(markup, selectedChoice, origin) {
+  let dialog = document.getElementById("style-picker-dialog");
+  if (!dialog) {
+    dialog = document.createElement("dialog");
+    dialog.id = "style-picker-dialog";
+    dialog.className = "style-picker-dialog";
+    dialog.setAttribute("aria-labelledby", "style-picker-title");
+    dialog.setAttribute("aria-describedby", "style-picker-description");
+    document.body.appendChild(dialog);
+    dialog.addEventListener("close", () => {
+      document.documentElement.classList.remove("style-picker-is-open");
+      if (state.view === "more") {
+        root.querySelector("[data-style-picker-open]")?.focus({ preventScroll: true });
+      }
+    });
+    dialog.addEventListener("click", async (event) => {
+      const close = event.target.closest("[data-style-picker-close]");
+      if (close) {
+        dialog.close();
+        return;
+      }
+      if (event.target === dialog) {
+        const area = dialog.getBoundingClientRect();
+        if (event.clientX < area.left || event.clientX > area.right ||
+            event.clientY < area.top || event.clientY > area.bottom) {
+          dialog.close();
+        }
+        return;
+      }
+      const button = event.target.closest("[data-style-choice], [data-style-reset]");
+      if (!button || dialog.dataset.busy === "true") return;
+      dialog.dataset.busy = "true";
+      button.disabled = true;
+      const choice = button.hasAttribute("data-style-reset")
+        ? "default" : button.dataset.styleChoice;
+      let preserveDesktopFocus = false;
+      try {
+        const saved = await chooseLocalStyle(choice);
+        if (saved && window.matchMedia("(max-width: 767px)").matches) {
+          // A bottom sheet obscures the result. Close it after a selection so
+          // the traveller immediately sees the chosen style on their trip.
+          dialog.close();
+        } else if (saved) {
+          preserveDesktopFocus = true;
+        }
+      } finally {
+        button.disabled = false;
+        delete dialog.dataset.busy;
+        // Focusing a disabled button silently fails. Restore focus only now.
+        if (preserveDesktopFocus && dialog.open) button.focus({ preventScroll: true });
+      }
+    });
+  }
+
+  // A style switch can render More again while this same dialog is open.
+  // Preserve its scroll position and selected keyboard focus in that case.
+  if (!dialog.open) dialog.innerHTML = markup;
+  dialog.querySelectorAll("[data-style-choice]").forEach((option) => {
+    option.setAttribute("aria-pressed", String(option.dataset.styleChoice === selectedChoice));
+  });
+  dialog.querySelector("[data-style-reset]")?.setAttribute(
+    "aria-pressed", String(state.styleSource === "trip"));
+  const status = dialog.querySelector(".style-source");
+  if (status) status.textContent = origin;
+  return dialog;
+}
+
 function renderMore() {
   const moreZh = /^zh/i.test(state.data.ui.locale || "");
   const labelMore = (english, chinese) => moreZh ? chinese : english;
@@ -554,21 +624,52 @@ function renderMore() {
       : (isZh ? "目前使用共用行程的預設風格。" :
           "Following the published trip's default.");
   const styleChooser = `<section class="panel settings-card style-settings">
-    <div><p class="eyebrow">Appearance / 外觀</p>
-      <h2>${isZh ? "切換網站風格" : "Choose a visual style"}</h2>
-      <p class="helper-text">${isZh ? "立即切換，僅記錄在這台裝置。" :
-        "Switch instantly. Your choice stays on this device."}</p>
-    </div>
-    <div class="style-options" role="group"
-      aria-label="${isZh ? "十五種可選網站外觀" : "Fifteen available appearances"}">${optionMarkup}</div>
-    <div class="style-settings-footer">
-      <button class="style-reset-button" type="button" data-style-reset
-        aria-pressed="${state.styleSource === "trip"}">
-        ${isZh ? "跟隨行程預設" : "Follow trip default"} · ${names[defaultAppearance]}
-      </button>
-      <p class="helper-text style-source" role="status">${origin}</p>
-    </div>
+    <button type="button" class="style-picker-trigger" data-style-picker-open
+      aria-haspopup="dialog" aria-controls="style-picker-dialog">
+      <span class="style-preview style-preview--${selectedChoice}" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+      <span class="style-picker-trigger-copy">
+        <span class="eyebrow">Appearance / 外觀</span>
+        <strong>${names[selectedChoice]}</strong>
+        <small>${isZh ? "切換網站風格" : "Change visual style"}</small>
+      </span>
+      <span class="style-picker-trigger-action" aria-hidden="true">
+        ${isZh ? "選擇" : "Choose"} <span>→</span>
+      </span>
+    </button>
+    <p class="helper-text style-source" role="status">${origin}</p>
   </section>`;
+  const dialogMarkup = `<div class="style-picker-header">
+    <div>
+      <span class="style-picker-handle" aria-hidden="true"></span>
+      <p class="eyebrow">Appearance / 外觀</p>
+      <h2 id="style-picker-title">${isZh ? "切換網站風格" : "Choose a visual style"}</h2>
+      <p id="style-picker-description" class="helper-text">
+        ${isZh ? "共 15 種外觀，只更改本裝置。選擇後可立即預覽。" :
+          "15 looks. Changes apply only on this device."}
+      </p>
+    </div>
+    <button type="button" class="style-picker-close" data-style-picker-close
+      aria-label="${isZh ? "關閉風格選擇" : "Close style picker"}">×</button>
+  </div>
+  <div class="style-picker-scroll" role="region"
+    aria-label="${isZh ? "所有風格選項" : "All visual style choices"}">
+    <div class="style-options" role="group"
+      aria-label="${isZh ? "十五種可選網站外觀" : "Fifteen available appearances"}">
+      ${optionMarkup}
+    </div>
+  </div>
+  <div class="style-picker-footer">
+    <button class="style-reset-button" type="button" data-style-reset
+      aria-pressed="${state.styleSource === "trip"}">
+      ${isZh ? "跟隨行程預設" : "Follow trip default"} · ${names[defaultAppearance]}
+    </button>
+    <button type="button" class="style-picker-done" data-style-picker-close>
+      ${isZh ? "完成" : "Done"}
+    </button>
+    <p class="helper-text style-source" role="status">${origin}</p>
+  </div>`;
   const appearance = isFixedLightStyle()
     ? `<section class="panel settings-card">
         <div><p class="eyebrow">Appearance</p><h2>${names[state.visualStyle]} · Light only</h2></div>
@@ -595,25 +696,21 @@ function renderMore() {
     ${detailsSection(labelMore("Links", "實用連結"), state.data.links.length, links)}
     ${appearance}
   </div>`;
+  const dialog = ensureStylePickerDialog(dialogMarkup, selectedChoice, origin);
+  root.querySelector("[data-style-picker-open]")?.addEventListener("click", () => {
+    if (dialog.open) return;
+    dialog.showModal();
+    document.documentElement.classList.add("style-picker-is-open");
+    const selected = dialog.querySelector('[data-style-choice="' + selectedChoice + '"]');
+    selected?.focus({ preventScroll: true });
+    selected?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  });
   const textarea = root.querySelector("#personal-note");
   let noteTimer;
   textarea?.addEventListener("input", () => {
     state.personalNote = textarea.value;
     clearTimeout(noteTimer);
     noteTimer = setTimeout(() => TravelLiteStorage.set(tripKey("personalNote"), state.personalNote), 180);
-  });
-  root.querySelectorAll("[data-style-choice]").forEach(button => button.addEventListener("click", async () => {
-    button.disabled = true;
-    try { await chooseLocalStyle(button.dataset.styleChoice); }
-    finally { button.disabled = false; }
-  }));
-  root.querySelector("[data-style-reset]")?.addEventListener("click", async (event) => {
-    // Event.currentTarget is cleared after the first await. Capture the
-    // button synchronously; the selector's original node may be re-rendered.
-    const button = event.currentTarget;
-    button.disabled = true;
-    try { await chooseLocalStyle("default"); }
-    finally { button.disabled = false; }
   });
   root.querySelectorAll("[data-theme]").forEach((button) => button.addEventListener("click", async () => {
     state.theme = button.dataset.theme;

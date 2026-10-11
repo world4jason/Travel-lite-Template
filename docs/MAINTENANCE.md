@@ -91,7 +91,7 @@ The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead 
 
 ## Built-in Style Pack review (14 audited packs, 15 visible looks)
 
-`npm run test:mobile` also runs `tests/style-options.spec.mjs`, `tests/phase2-packs.spec.mjs`, `tests/style-settings.spec.mjs`, `tests/nine-looks.spec.mjs` and `tests/second-prompt-batch.spec.mjs` (separate from the 32-day default fixture). Verify:
+`npm run test:mobile` also runs `tests/style-options.spec.mjs`, `tests/phase2-packs.spec.mjs`, `tests/style-settings.spec.mjs`, `tests/nine-looks.spec.mjs`, `tests/second-prompt-batch.spec.mjs` and `tests/responsive-style-picker.spec.mjs` (separate from the 32-day default fixture). Verify:
 
 - old trips with no `ui.visualStyle` render the same Editorial Atlas and still switch light/dark
 - invalid style selection falls back to Editorial
@@ -102,6 +102,9 @@ The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead 
 - both OS reduced motion and the per-trip local motion control stop animations
 - no overlap/overflow at narrow, tablet and desktop widths, offline cache includes optional assets
 - More → Appearance instantly switches all fifteen appearances with no reload, persists per trip, preserves dark theme on returning to Editorial, and remains keyboard-reachable
+- collapsed More control stays compact; 320–767px modal bottom sheet keeps header/footer fixed while tile grid scrolls, selecting a tile closes the sheet; ≥768px right drawer remains open for live style comparisons
+- native dialog must close through Escape, backdrop click, Done/×, preserve focus trapping, return focus to the current trigger after re-render, and honor reduced motion
+- verify screenshots for both viewport modes and real Megan-trip before merging or publishing
 - URL preview takes precedence temporarily, choosing a local style removes preview URL while preserving hash and unrelated query parameters, Follow trip default clears local state
 - navigation immediately after an asynchronous checklist write cannot redraw a stale Check view over a newly selected Trip view
 

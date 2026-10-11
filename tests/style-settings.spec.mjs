@@ -11,6 +11,26 @@ test.use({ viewport: { width: 390, height: 844 } });
 test.beforeEach(async ({ page }) => closeExternalFonts(page));
 
 const select = (page, id) => page.locator('[data-style-choice="' + id + '"]');
+const openPicker = async page => {
+  if (!await page.locator("#style-picker-dialog").evaluate(el => el.open)) {
+    await page.locator("[data-style-picker-open]").click();
+  }
+  await expect(page.locator("#style-picker-dialog")).toBeVisible();
+};
+const choose = async (page, id) => {
+  await openPicker(page);
+  await select(page, id).click();
+  await expect(page.locator("html")).toHaveAttribute("data-visual-style",
+    id.startsWith("editorial-") ? "editorial" : id);
+  if ((page.viewportSize()?.width ?? 390) < 768) {
+    await expect(page.locator("#style-picker-dialog")).toHaveJSProperty("open", false);
+  }
+};
+const reset = async page => {
+  await openPicker(page);
+  await page.locator("#style-picker-dialog [data-style-reset]").click();
+};
+
 const active = (page, id) => expect(page.locator("html")).toHaveAttribute("data-visual-style", id);
 const openMore = async page => {
   await page.locator('.bottom-nav [data-view="more"]').click();
@@ -24,12 +44,15 @@ test("Settings / More lists fifteen selectable appearances and a visible follow-
   await page.goto("/#trip/overview");
   await active(page,"editorial");
   await openMore(page);
-  await expect(page.locator(".style-settings")).toContainText("Choose a visual style");
+  await expect(page.locator(".style-settings")).toContainText("Change visual style");
+  await expect(page.locator("[data-style-picker-open]")).toBeVisible();
+  await expect(page.locator("#style-picker-dialog")).not.toBeVisible();
+  await openPicker(page);
   await expect(page.locator(".style-option")).toHaveCount(15);
   await expect(page.locator('[data-style-choice="editorial-light"]')).toHaveAttribute("aria-pressed","true");
   await expect(page.locator("[data-style-reset]")).toContainText("Follow trip default");
   await expect(page.locator("[data-style-reset]")).toHaveAttribute("aria-pressed","true");
-  await expect(page.locator(".style-source")).toContainText("published trip");
+  await expect(page.locator(".style-settings .style-source")).toContainText("published trip");
   await expect(page.locator(".style-settings")).toBeInViewport();
 });
 
@@ -45,7 +68,7 @@ test("switches all previously supported looks live without navigating or mutatin
     ["storybook","rgb(255, 252, 246)", [true,false,false]],
     ["editorial-light",null,[false,false,false]],
   ]) {
-    await select(page,pack).click();
+    await choose(page,pack);
     await active(page,pack === "editorial-light" ? "editorial" : pack);
     await expect(select(page,pack)).toHaveAttribute("aria-pressed","true");
     await expect(page.locator(".style-settings")).toBeVisible();
@@ -58,13 +81,13 @@ test("switches all previously supported looks live without navigating or mutatin
     expect((await page.evaluate(() => state.data.ui.visualStyle))).toBe("editorial");
   }
   await expect(page.locator("[data-style-reset]")).toHaveAttribute("aria-pressed","false");
-  await expect(page.locator(".style-source")).toContainText("Saved on this device");
+  await expect(page.locator(".style-settings .style-source")).toContainText("Saved on this device");
 });
 
 test("selection persists across reload but does not change existing deep link or checklist", async ({ page }) => {
   await page.goto("/#trip/overview");
   await openMore(page);
-  await select(page,"candy").click();
+  await choose(page,"candy");
   await active(page,"candy");
   await expect.poll(() => page.evaluate(() =>
     TravelLiteStorage.get("sample-tokyo-2026:visualStyle"))).toBe("candy");
@@ -86,14 +109,14 @@ test("selection persists across reload but does not change existing deep link or
 test("a shared preview URL overrides the device temporarily, and Settings clears the URL override when saving", async ({ page }) => {
   await page.goto("/#more");
   await openMore(page);
-  await select(page,"candy").click();
+  await choose(page,"candy");
   await active(page,"candy");
   await page.goto("/?foo=bar&previewStyle=risograph#more");
   await active(page,"risograph");
-  await expect(page.locator(".style-source")).toContainText("Previewing a link");
+  await expect(page.locator(".style-settings .style-source")).toContainText("Previewing a link");
   expect(await page.evaluate(() => TravelLiteStorage.get("sample-tokyo-2026:visualStyle"))).toBe("candy");
 
-  await select(page,"storybook").click();
+  await choose(page,"storybook");
   await active(page,"storybook");
   expect(new URL(page.url()).searchParams.get("previewStyle")).toBe(null);
   expect(new URL(page.url()).searchParams.get("foo")).toBe("bar");
@@ -115,13 +138,13 @@ test("Follow trip default clears local selection and respects a published Storyb
   await openMore(page);
   await active(page,"storybook");
   await expect(page.locator("[data-style-reset]")).toContainText("Storybook");
-  await select(page,"risograph").click();
+  await choose(page,"risograph");
   await active(page,"risograph");
   await expect(page.locator("[data-style-reset]")).toHaveAttribute("aria-pressed","false");
-  await page.locator("[data-style-reset]").click();
+  await reset(page);
   await active(page,"storybook");
   await expect(page.locator("[data-style-reset]")).toHaveAttribute("aria-pressed","true");
-  await expect(page.locator(".style-source")).toContainText("published trip");
+  await expect(page.locator(".style-settings .style-source")).toContainText("published trip");
   expect(await page.evaluate(() => TravelLiteStorage.get("published-book-default-trip:visualStyle"))).toBe(null);
   await page.reload();
   await active(page,"storybook");
@@ -132,11 +155,11 @@ test("returning from light-only packs to Editorial restores stored dark theme an
   await openMore(page);
   await page.locator('button[data-theme="dark"]').click();
   await expect(page.locator("html")).toHaveAttribute("data-theme","dark");
-  await select(page,"candy").click();
+  await choose(page,"candy");
   await active(page,"candy");
   await expect(page.locator("html")).toHaveAttribute("data-theme","light");
   await expect(page.locator("#quick-theme-toggle")).toBeHidden();
-  await select(page,"editorial-dark").click();
+  await choose(page,"editorial-dark");
   await active(page,"editorial");
   await expect(page.locator("html")).toHaveAttribute("data-theme","dark");
   await expect(page.locator("#quick-theme-toggle")).toHaveJSProperty("hidden",false);
@@ -147,6 +170,7 @@ test("the style picker supports keyboard input, manual motion preferences, and 3
   await page.setViewportSize({width:320,height:568});
   await page.goto("/#more");
   await openMore(page);
+  await openPicker(page);
   const target = select(page,"candy");
   await target.focus();
   await page.keyboard.press("Enter");
@@ -155,10 +179,10 @@ test("the style picker supports keyboard input, manual motion preferences, and 3
   await expect(page.locator("[data-motion-choice]")).toHaveCount(2);
   await page.locator('[data-motion-choice="reduce"]').click();
   await expect(page.locator("html")).toHaveAttribute("data-motion","reduce");
-  await select(page,"risograph").click();
+  await choose(page,"risograph");
   await active(page,"risograph");
   await expect(page.locator("[data-motion-choice]")).toHaveCount(0);
-  await select(page,"candy").click();
+  await choose(page,"candy");
   await expect(page.locator('[data-motion-choice="reduce"]')).toHaveAttribute("aria-pressed","true");
   for (const width of [320,390,820,1100,1600]) {
     await page.setViewportSize({width,height:width<600?740:900});
@@ -176,7 +200,7 @@ test.describe("device-local chooser offline", () => {
     const preloaded=await page.evaluate(async () =>
       Boolean(await caches.match(new URL("./style-settings.css",location.href).href)));
     expect(preloaded).toBe(true);
-    await select(page,"risograph").click();
+    await choose(page,"risograph");
     await active(page,"risograph");
     await expect.poll(() => page.evaluate(() =>
       TravelLiteStorage.get("sample-tokyo-2026:visualStyle"))).toBe("risograph");
@@ -184,7 +208,7 @@ test.describe("device-local chooser offline", () => {
     await page.reload({waitUntil:"domcontentloaded"});
     await active(page,"risograph");
     await expect(page.locator(".style-option")).toHaveCount(15);
-    await select(page,"candy").click();
+    await choose(page,"candy");
     await active(page,"candy");
   });
 });
@@ -193,8 +217,8 @@ test("choosing and resetting style does not raise JavaScript page errors",async(
  const failures=[];
  page.on("pageerror",error=>failures.push(error.message));
  await page.goto("/#more");
- await page.locator("[data-style-choice='field-stamp']").click();
- await page.locator("[data-style-reset]").click();
+ await choose(page,"field-stamp");
+ await reset(page);
  await expect(page.locator("html")).toHaveAttribute("data-visual-style","editorial");
  expect(failures).toEqual([]);
 });
