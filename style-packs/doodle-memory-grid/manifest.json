@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "doodle-memory-grid",
+  "displayName": "Doodle Memory Grid",
+  "sourceBriefId": "doodle-memory-grid",
+  "sourceBriefPath": "../../style-generator/examples/doodle-memory-grid.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/doodle-memory-grid.md",
+  "stage": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "doodle-memory-grid",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "none",
+  "css": [
+    "../../storybook-theme.css",
+    "../../doodle-memory-grid-theme.css"
+  ],
+  "assetDirectory": "../../assets/doodle-memory-grid",
+  "assets": [
+    "hero.svg",
+    "marker.svg"
+  ],
+  "browserPreviews": [
+    "../previews/doodle-memory-grid-mobile.png",
+    "../previews/doodle-memory-grid-desktop.png",
+    "../previews/doodle-memory-grid-day-mobile.png"
+  ],
+  "materialRules": [
+    "exactly nine decoratively drawn items in loose 3-by-3 alignment",
+    "crayon/colored pencil grain and imperfect outlines",
+    "no nine-fake-destinations inference",
+    "functional itinerary remains its real stop count"
+  ],
+  "sourceVsOutputBoundary": "Prompts referred to image-to-poster tasks. The trip sites have no destination source photograph; 3:4, split 50/50 photo panels, exact caption words, source-only features and fixed magazine labels were deliberately excluded. Any custom HEX is a design proposal, not measured from a real travel photo.",
+  "acceptanceTests": [
+    "tests/second-prompt-batch.spec.mjs",
+    "tests/second-batch-manifests.test.mjs",
+    "scripts/verify-style-parity.mjs"
+  ]
+}

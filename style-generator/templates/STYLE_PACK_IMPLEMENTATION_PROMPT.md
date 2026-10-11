@@ -1,6 +1,6 @@
 # Style Brief → 網站 Style Pack 的第二階段提示詞
 
-> 本檔是後續風格實作的**指引**，不是能自動生成 CSS 的執行器。目前六組風格提示詞均已擁有人工設計、實作及驗收的 Style Pack，對應 [Style Pack Gallery](../../style-packs/README.md)；但本模板本身仍是供未來未知 Prompt 使用的開發指引，不會自動產生新的 CSS。下一個 prompt 需再執行 [E2E 驗收](../NEXT_PROMPT_E2E.md)。
+> 本檔是後續風格實作的**指引**，不是能自動生成 CSS 的執行器。目前兩批十二組去重後的風格提示詞均已擁有人工設計、實作及驗收的 Style Pack，對應 [Style Pack Gallery](../../style-packs/README.md)；但本模板本身仍是供未來未知 Prompt 使用的開發指引，不會自動產生新的 CSS。下一個 prompt 需再執行 [E2E 驗收](../NEXT_PROMPT_E2E.md)。
 
 你是 Travel-lite-Template 的前端工程師與視覺設計師。使用通過 `style.schema.json` 的 `Style Brief` 作為唯一視覺規格來源，先對既有 `editorial` / `storybook` 視覺和元件盤點差異，再選擇最小可行的實作範圍。
 

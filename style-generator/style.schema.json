@@ -344,8 +344,20 @@
       "properties": {
         "recommendedBase": {
           "enum": [
-            "storybook",
             "editorial",
+            "storybook",
+            "candy",
+            "risograph",
+            "paper-collage",
+            "naive-city",
+            "taiwan-poster",
+            "field-stamp",
+            "quiet-linocut",
+            "doodle-memory-grid",
+            "crayon-journal",
+            "painterly-editorial",
+            "geometric-print",
+            "quiet-acrylic",
             "new-style-pack"
           ]
         },

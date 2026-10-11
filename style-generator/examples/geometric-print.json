@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "geometric-print",
+  "name": {
+    "zh": "硬邊新幾何版畫",
+    "en": "Geometric Print"
+  },
+  "sourceTask": "photo-editorial-poster",
+  "visual": {
+    "mood": [
+      "理性",
+      "克制",
+      "硬邊",
+      "高級版畫"
+    ],
+    "era": "旅行手帳、獨立出版、當代版畫風格",
+    "palette": {
+      "mode": "source-derived",
+      "maxColors": 6,
+      "swatches": [
+        {
+          "name": "暖米白",
+          "hex": null,
+          "role": "background",
+          "origin": "explicit"
+        }
+      ],
+      "usage": [
+        "5–6 主色（具體色碼待設計）",
+        "明暗色面而非描邊建模",
+        "極少量顆粒"
+      ]
+    },
+    "geometry": {
+      "family": "hard-edge-polyhedra",
+      "motifs": [
+        "三角形與矩形切面",
+        "弧形點綴",
+        "銳利多邊形",
+        "多面光影色階"
+      ],
+      "outline": {
+        "weight": "none",
+        "character": "clean",
+        "color": null
+      },
+      "edgeQuality": "geometric-crisp"
+    },
+    "material": {
+      "technique": "flat-polyhedral-print",
+      "texture": [
+        "輕微印刷顆粒",
+        "色版輕偏差"
+      ],
+      "depth": "flat",
+      "shadow": "none"
+    },
+    "typography": {
+      "display": "強烈乾淨的藝術字",
+      "utility": "閱讀型無襯線",
+      "hierarchy": "簡約色塊主副資訊"
+    },
+    "composition": {
+      "focus": "一個銳利幾何主體，保留紙面大留白",
+      "whitespace": "generous",
+      "layers": "flat",
+      "notes": [
+        "源照片拓樸規則不適用沒有照片的網站"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "色面沒有描邊與陰影",
+      "銳利切面與負空間"
+    ],
+    "avoid": [
+      "蠟筆痕",
+      "柔化寫實",
+      "3D",
+      "浮誇漸層"
+    ],
+    "conditional": [
+      {
+        "when": "另外提供真正的旅行目的地來源照片",
+        "rule": "只把核實可見主體、構圖與招牌用在場景資產；目前只有風格文字，不能編造地標或照片資訊。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "new-style-pack",
+    "implementationTier": "new-style-pack",
+    "transferable": [
+      "幾何色塊主視覺",
+      "乾淨切面 UI"
+    ],
+    "assetTreatment": [
+      "無描邊多邊形 SVG",
+      "極少量印刷紋理"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "原圖的主角姿態完全對應",
+        "reason": "缺少照片，不應推定人或動物。"
+      },
+      {
+        "instruction": "固定 NO.07 與 SEA BREEZE 等文案",
+        "reason": "示例文案不得取代行程真實資訊。"
+      }
+    ],
+    "componentRisks": [
+      "圖像無描邊不代表互動控件可缺焦點狀態"
+    ],
+    "motion": "none"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "沒有要重繪的旅行來源照片；實際場景、人物、位置與真實照片色票未知。",
+      "新網站的 HEX 是設計建議，不是從原照片量測。"
+    ],
+    "conflicts": [],
+    "assumptions": [
+      "此 JSON 僅描述視覺風格而非網站功能或已完工的 CSS。",
+      "所有旅程事實必須來自既有 trip.json，泛用裝飾圖不得假裝真實景點。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}

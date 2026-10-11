@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "quiet-linocut",
+  "displayName": "Quiet Linocut",
+  "sourceBriefId": "quiet-linocut",
+  "sourceBriefPath": "../../style-generator/examples/quiet-linocut.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/quiet-linocut.md",
+  "stage": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "quiet-linocut",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "none",
+  "css": [
+    "../../storybook-theme.css",
+    "../../quiet-linocut-theme.css"
+  ],
+  "assetDirectory": "../../assets/quiet-linocut",
+  "assets": [
+    "hero.svg",
+    "marker.svg"
+  ],
+  "browserPreviews": [
+    "../previews/quiet-linocut-mobile.png",
+    "../previews/quiet-linocut-desktop.png",
+    "../previews/quiet-linocut-day-mobile.png"
+  ],
+  "materialRules": [
+    "2–3 spot inks on torn-edged paper",
+    "small lower-right subject and bottom horizon",
+    "wide upper-left negative space; engraved rough ink",
+    "static editorial type"
+  ],
+  "sourceVsOutputBoundary": "Prompts referred to image-to-poster tasks. The trip sites have no destination source photograph; 3:4, split 50/50 photo panels, exact caption words, source-only features and fixed magazine labels were deliberately excluded. Any custom HEX is a design proposal, not measured from a real travel photo.",
+  "acceptanceTests": [
+    "tests/second-prompt-batch.spec.mjs",
+    "tests/second-batch-manifests.test.mjs",
+    "scripts/verify-style-parity.mjs"
+  ]
+}

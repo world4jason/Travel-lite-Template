@@ -3,7 +3,7 @@
 // shell/runtime, and activating one cannot delete the other's cache.
 const CACHE_PREFIX = "travel-lite:" + new URL(self.registration.scope).pathname
   .replace(/[^a-z0-9]/gi, "-") + ":";
-const CACHE = CACHE_PREFIX + "shell-v29-nine-looks";
+const CACHE = CACHE_PREFIX + "shell-v30-fifteen-looks";
 const RUNTIME_CACHE = CACHE_PREFIX + "runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -26,6 +26,12 @@ const CORE = [
   "./naive-city-theme.css",
   "./taiwan-poster-theme.css",
   "./field-stamp-theme.css",
+  "./quiet-linocut-theme.css",
+  "./doodle-memory-grid-theme.css",
+  "./crayon-journal-theme.css",
+  "./painterly-editorial-theme.css",
+  "./geometric-print-theme.css",
+  "./quiet-acrylic-theme.css",
   "./bootstrap.js",
   "./storage.js",
   "./app.js",
@@ -79,6 +85,18 @@ const CORE = [
   "./assets/taiwan-poster/marker.svg",
   "./assets/field-stamp/hero.svg",
   "./assets/field-stamp/marker.svg",
+  "./assets/quiet-linocut/hero.svg",
+  "./assets/quiet-linocut/marker.svg",
+  "./assets/doodle-memory-grid/hero.svg",
+  "./assets/doodle-memory-grid/marker.svg",
+  "./assets/crayon-journal/hero.svg",
+  "./assets/crayon-journal/marker.svg",
+  "./assets/painterly-editorial/hero.svg",
+  "./assets/painterly-editorial/marker.svg",
+  "./assets/geometric-print/hero.svg",
+  "./assets/geometric-print/marker.svg",
+  "./assets/quiet-acrylic/hero.svg",
+  "./assets/quiet-acrylic/marker.svg",
 
   "./manifest.webmanifest",
   "./icon.svg"

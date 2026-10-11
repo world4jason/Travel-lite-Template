@@ -20,12 +20,12 @@ const pageStyles = async page => page.evaluate(() => Object.fromEntries(
   ["storybook-style", "candy-style", "risograph-style"]
     .map(id => [id, !document.getElementById(id).disabled])));
 
-test("Settings / More lists nine selectable appearances and a visible follow-default control", async ({ page }) => {
+test("Settings / More lists fifteen selectable appearances and a visible follow-default control", async ({ page }) => {
   await page.goto("/#trip/overview");
   await active(page,"editorial");
   await openMore(page);
   await expect(page.locator(".style-settings")).toContainText("Choose a visual style");
-  await expect(page.locator(".style-option")).toHaveCount(9);
+  await expect(page.locator(".style-option")).toHaveCount(15);
   await expect(page.locator('[data-style-choice="editorial-light"]')).toHaveAttribute("aria-pressed","true");
   await expect(page.locator("[data-style-reset]")).toContainText("Follow trip default");
   await expect(page.locator("[data-style-reset]")).toHaveAttribute("aria-pressed","true");
@@ -183,7 +183,7 @@ test.describe("device-local chooser offline", () => {
     await context.setOffline(true);
     await page.reload({waitUntil:"domcontentloaded"});
     await active(page,"risograph");
-    await expect(page.locator(".style-option")).toHaveCount(9);
+    await expect(page.locator(".style-option")).toHaveCount(15);
     await select(page,"candy").click();
     await active(page,"candy");
   });

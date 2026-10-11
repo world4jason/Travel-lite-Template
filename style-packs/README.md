@@ -14,12 +14,18 @@ Travel Lite's **functional template** remains shared: Now / Trip / Map / Check /
 | `naive-city` | Reviewed | 1950s-inspired wobbly ink, imperfect city gouache and lots of sky | [Naive City](https://world4jason.github.io/Travel-lite-Template/?previewStyle=naive-city#trip/overview) |
 | `taiwan-poster` | Reviewed | warm yellow, navy architecture, vermilion print accent, poster typography | [Taiwan Poster](https://world4jason.github.io/Travel-lite-Template/?previewStyle=taiwan-poster#trip/overview) |
 | `field-stamp` | Reviewed | hand-carved missing ink, rustic stamp forms and field-notes typography | [Field Stamp](https://world4jason.github.io/Travel-lite-Template/?previewStyle=field-stamp#trip/overview) |
+| `quiet-linocut` | Reviewed · second prompt batch | Quiet Linocut — 版刻詩意 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=quiet-linocut#trip/overview) |
+| `doodle-memory-grid` | Reviewed · second prompt batch | Doodle Memory Grid — 九格塗鴉 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=doodle-memory-grid#trip/overview) |
+| `crayon-journal` | Reviewed · second prompt batch | Crayon Journal — 蠟筆日記 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=crayon-journal#trip/overview) |
+| `painterly-editorial` | Reviewed · second prompt batch | Painterly Editorial — 柔彩筆觸 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=painterly-editorial#trip/overview) |
+| `geometric-print` | Reviewed · second prompt batch | Geometric Print — 硬邊幾何 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=geometric-print#trip/overview) |
+| `quiet-acrylic` | Reviewed · second prompt batch | Quiet Acrylic — 極簡細線壓克力 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=quiet-acrylic#trip/overview) |
 
-Set the published default for a generated trip by adding `"visualStyle": "candy"` or `"risograph"` inside `trip.json → ui`. Visitors can switch among eight built-in Style Packs from **More → Appearance / 外觀**, saving a **per-trip device-only** preference without modifying `trip.json`. Use **Follow trip default** to remove that preference. A whitelisted `?previewStyle=...` URL overrides the device choice for that link's visit, without saving it. Precedence: valid URL preview > saved per-trip device choice > publisher's `ui.visualStyle` > Editorial. Unknown pack IDs never execute custom CSS, HTML or scripts.
+Set the published default for a generated trip by adding `"visualStyle": "candy"` or `"risograph"` inside `trip.json → ui`. Visitors can switch among fourteen built-in Style Packs from **More → Appearance / 外觀**, saving a **per-trip device-only** preference without modifying `trip.json`. Use **Follow trip default** to remove that preference. A whitelisted `?previewStyle=...` URL overrides the device choice for that link's visit, without saving it. Precedence: valid URL preview > saved per-trip device choice > publisher's `ui.visualStyle` > Editorial. Unknown pack IDs never execute custom CSS, HTML or scripts.
 
 ### Switch in More / Appearance
 
-Open **More → Appearance / 外觀**. Choose among **nine visible looks** (Editorial Light and Dark are two color modes of the same built-in Editorial pack; seven others are dedicated packs). Select a visual tile to apply it immediately (without reloading); the selection persists per trip on this device. **Follow trip default** clears the local choice. [See the mobile picker screenshot](./previews/style-settings-candy-mobile.png). Styles from a `?previewStyle=...` link are temporary and override the saved device choice only for that visit. Choosing or resetting inside More clears the URL-only override without losing the current page.
+Open **More → Appearance / 外觀**. Choose among **fifteen visible looks** (Editorial Light and Dark are two color modes of the same built-in Editorial pack; thirteen others are dedicated packs). Select a visual tile to apply it immediately (without reloading); the selection persists per trip on this device. **Follow trip default** clears the local choice. [See the mobile picker screenshot](./previews/style-settings-candy-mobile.png). Styles from a `?previewStyle=...` link are temporary and override the saved device choice only for that visit. Choosing or resetting inside More clears the URL-only override without losing the current page.
 
 ## Verified screenshots (same Tokyo Autumn data)
 
@@ -79,7 +85,7 @@ Neither brief nor manifest is dynamically parsed by browsers. Manifests are for 
 npm install
 npm run test:styles       # prompts/briefs only
 npm run test:packs        # manifest ↔ brief ↔ assets, five SVG fill checks, WCAG contrast checks
-npm run test:mobile       # all mobile/desktop views, nine appearance choices and offline
+npm run test:mobile       # all mobile/desktop views, fifteen appearance choices and offline
 MEGAN_LOCAL_REPO=/path/to/Megan-trip npm run test:style-parity # two-site parity
 ```
 
@@ -111,4 +117,20 @@ Run (with both clones available):
 MEGAN_LOCAL_REPO=../Megan-trip node scripts/verify-style-parity.mjs
 ```
 
-This checks SHA-256 of shared code plus browser-computed text/font/surface/border tokens on the **same nine appearance choices** in two real, different trips. A site-scoped service-worker cache prefix prevents two GitHub Pages project sites on the same `github.io` origin from deleting each other's caches.
+This checks SHA-256 of shared code plus browser-computed text/font/surface/border tokens on the **same fifteen appearance choices** in two real, different trips. A site-scoped service-worker cache prefix prevents two GitHub Pages project sites on the same `github.io` origin from deleting each other's caches.
+
+
+## Second unknown-prompt batch (2026-10-11)
+
+Eight different photo/poster prompts were first [deduplicated and stripped of photo-output constraints](../style-generator/batches/2026-10-11-editorial-posters.md). Two were appropriately mapped to existing Risograph; six required genuine new material / layout grammar. The six new packs each have a source-valid [Style Brief](../style-generator/examples), deterministic generated editable prompt, reviewed manifest, local CSS/SVG and real browser screenshots. No actual source destination photo was provided, so illustrations are **generic** and color HEX values are explicitly new design proposals.
+
+| New Style Pack | Mobile | Desktop | Day timeline |
+| --- | --- | --- | --- |
+| Quiet Linocut — 版刻詩意 | [Mobile](./previews/quiet-linocut-mobile.png) | [Desktop](./previews/quiet-linocut-desktop.png) | [Day](./previews/quiet-linocut-day-mobile.png) |
+| Doodle Memory Grid — 九格塗鴉 | [Mobile](./previews/doodle-memory-grid-mobile.png) | [Desktop](./previews/doodle-memory-grid-desktop.png) | [Day](./previews/doodle-memory-grid-day-mobile.png) |
+| Crayon Journal — 蠟筆日記 | [Mobile](./previews/crayon-journal-mobile.png) | [Desktop](./previews/crayon-journal-desktop.png) | [Day](./previews/crayon-journal-day-mobile.png) |
+| Painterly Editorial — 柔彩筆觸 | [Mobile](./previews/painterly-editorial-mobile.png) | [Desktop](./previews/painterly-editorial-desktop.png) | [Day](./previews/painterly-editorial-day-mobile.png) |
+| Geometric Print — 硬邊幾何 | [Mobile](./previews/geometric-print-mobile.png) | [Desktop](./previews/geometric-print-desktop.png) | [Day](./previews/geometric-print-day-mobile.png) |
+| Quiet Acrylic — 極簡細線壓克力 | [Mobile](./previews/quiet-acrylic-mobile.png) | [Desktop](./previews/quiet-acrylic-desktop.png) | [Day](./previews/quiet-acrylic-day-mobile.png) |
+
+**Next-step gate:** only style descriptors matter when ingesting a photo-to-poster prompt: do not accept exact source photo content, 3:4/50-50 layout, fake caption or fixed date/brand as website requirements. See [the repeatable E2E workflow](../style-generator/NEXT_PROMPT_E2E.md).

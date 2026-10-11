@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "quiet-acrylic",
+  "name": {
+    "zh": "留白細線壓克力書封",
+    "en": "Quiet Acrylic"
+  },
+  "sourceTask": "photo-editorial-poster",
+  "visual": {
+    "mood": [
+      "安靜",
+      "精緻",
+      "極簡",
+      "不幼稚"
+    ],
+    "era": "旅行手帳、獨立出版、當代版畫風格",
+    "palette": {
+      "mode": "source-derived",
+      "maxColors": 4,
+      "swatches": [
+        {
+          "name": "手工紙白",
+          "hex": null,
+          "role": "background",
+          "origin": "explicit"
+        }
+      ],
+      "usage": [
+        "不超過四種主色",
+        "細墨線和局部霧面壓克力色面"
+      ]
+    },
+    "geometry": {
+      "family": "fine-line-tiny-subject",
+      "motifs": [
+        "主體小約 10–20%",
+        "細線略微搖晃",
+        "大片空白",
+        "少量完整壓克力色面"
+      ],
+      "outline": {
+        "weight": "thin",
+        "character": "irregular-ink",
+        "color": "柔暗墨線"
+      },
+      "edgeQuality": "wobbly"
+    },
+    "material": {
+      "technique": "sparse-acrylic",
+      "texture": [
+        "少量乾筆",
+        "粗紙纖維",
+        "輕微破墨線"
+      ],
+      "depth": "flat",
+      "shadow": "none"
+    },
+    "typography": {
+      "display": "獨立出版的安靜大標",
+      "utility": "高對比可閱讀小字",
+      "hierarchy": "旅程資訊優先於裝飾小詩"
+    },
+    "composition": {
+      "focus": "中心偏下的極小主體，紙面大量空白",
+      "whitespace": "generous",
+      "layers": "flat",
+      "notes": [
+        "不採蠟筆或九宮格",
+        "小主體僅是插畫構圖而非小文字"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "極小主體與巨大留白",
+      "少量手畫線與壓克力色塊"
+    ],
+    "avoid": [
+      "水彩暈染",
+      "蠟筆彩鉛",
+      "大面積水粉",
+      "精修向量"
+    ],
+    "conditional": [
+      {
+        "when": "另外提供真正的旅行目的地來源照片",
+        "rule": "只把核實可見主體、構圖與招牌用在場景資產；目前只有風格文字，不能編造地標或照片資訊。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "new-style-pack",
+    "implementationTier": "new-style-pack",
+    "transferable": [
+      "靜謐藝術封面的 Hero",
+      "極度減量的裝飾"
+    ],
+    "assetTreatment": [
+      "中心小型薄線 SVG",
+      "約 80% 留白的紙面"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "原始照片主體必須可辨識",
+        "reason": "沒有來源照片，主體只能是泛用旅行符號。"
+      },
+      {
+        "instruction": "自動加入地點年份編號",
+        "reason": "只使用真實 trip.json 已提供的內容。"
+      }
+    ],
+    "componentRisks": [
+      "主體小不能造成網站標題和時間縮小"
+    ],
+    "motion": "none"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "沒有要重繪的旅行來源照片；實際場景、人物、位置與真實照片色票未知。",
+      "新網站的 HEX 是設計建議，不是從原照片量測。"
+    ],
+    "conflicts": [],
+    "assumptions": [
+      "此 JSON 僅描述視覺風格而非網站功能或已完工的 CSS。",
+      "所有旅程事實必須來自既有 trip.json，泛用裝飾圖不得假裝真實景點。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}

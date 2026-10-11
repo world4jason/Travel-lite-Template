@@ -217,3 +217,51 @@
 @media(min-width:1051px) {
   .style-options {grid-template-columns:repeat(3,minmax(0,1fr));}
 }
+
+/* Real, bundled thumbnail for Quiet Linocut; not a photo-derived icon. */
+.style-preview--quiet-linocut {
+ background:#F4EDDD url("./assets/quiet-linocut/marker.svg") center / auto 94% no-repeat;
+ border-radius:1px;
+ border:1px solid #67726D;
+}
+.style-preview--quiet-linocut > span { opacity:0; }
+
+/* Real, bundled thumbnail for Doodle Memory Grid; not a photo-derived icon. */
+.style-preview--doodle-memory-grid {
+ background:#FBF6EA url("./assets/doodle-memory-grid/marker.svg") center / auto 94% no-repeat;
+ border-radius:9px;
+ border:1px solid #67726D;
+}
+.style-preview--doodle-memory-grid > span { opacity:0; }
+
+/* Real, bundled thumbnail for Crayon Journal; not a photo-derived icon. */
+.style-preview--crayon-journal {
+ background:#FAF2E6 url("./assets/crayon-journal/marker.svg") center / auto 94% no-repeat;
+ border-radius:9px;
+ border:1px solid #67726D;
+}
+.style-preview--crayon-journal > span { opacity:0; }
+
+/* Real, bundled thumbnail for Painterly Editorial; not a photo-derived icon. */
+.style-preview--painterly-editorial {
+ background:#F4F7F1 url("./assets/painterly-editorial/marker.svg") center / auto 94% no-repeat;
+ border-radius:9px;
+ border:1px solid #67726D;
+}
+.style-preview--painterly-editorial > span { opacity:0; }
+
+/* Real, bundled thumbnail for Geometric Print; not a photo-derived icon. */
+.style-preview--geometric-print {
+ background:#F5F0E5 url("./assets/geometric-print/marker.svg") center / auto 94% no-repeat;
+ border-radius:1px;
+ border:1px solid #67726D;
+}
+.style-preview--geometric-print > span { opacity:0; }
+
+/* Real, bundled thumbnail for Quiet Acrylic; not a photo-derived icon. */
+.style-preview--quiet-acrylic {
+ background:#FCFAF3 url("./assets/quiet-acrylic/marker.svg") center / auto 94% no-repeat;
+ border-radius:1px;
+ border:1px solid #67726D;
+}
+.style-preview--quiet-acrylic > span { opacity:0; }

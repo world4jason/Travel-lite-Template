@@ -6,7 +6,9 @@ const packs={
   "field-stamp":{css:"field-stamp-style",color:"rgb(247, 240, 227)",asset:"field-stamp/hero.svg"},
 };
 const all=["editorial-light","editorial-dark","storybook","candy",
-  "paper-collage","naive-city","risograph","taiwan-poster","field-stamp"];
+  "paper-collage","naive-city","risograph","taiwan-poster","field-stamp",
+  "quiet-linocut","doodle-memory-grid","crayon-journal","painterly-editorial",
+  "geometric-print","quiet-acrylic"];
 test.use({viewport:{width:390,height:844},locale:"en-US"});
 test.beforeEach(async({page})=>{
   await page.route("https://fonts.googleapis.com/**",r=>r.fulfill({status:200,contentType:"text/css",body:""}));
@@ -39,14 +41,14 @@ for(const [pack,spec] of Object.entries(packs)){
     await page.locator(".trip-overview-day").first().click();
     await expect(page.locator("ol.trip-v2-timeline > li")).toHaveCount(4);
     await page.locator(".bottom-nav [data-view='more']").click();
-    await expect(page.locator(".style-option")).toHaveCount(9);
+    await expect(page.locator(".style-option")).toHaveCount(15);
     await expect(page.locator('[data-style-choice="'+pack+'"]')).toHaveAttribute("aria-pressed","true");
   });
 }
 
-test("nine choices include two Editorial color modes and seven independent packs",async({page})=>{
+test("fifteen choices include two Editorial color modes and seven independent packs",async({page})=>{
  await page.goto("/#more");
- await expect(page.locator(".style-option")).toHaveCount(9);
+ await expect(page.locator(".style-option")).toHaveCount(15);
  for(const id of all)await expect(page.locator('[data-style-choice="'+id+'"]')).toHaveCount(1);
  await page.locator('[data-style-choice="editorial-dark"]').click();
  await expect(page.locator("html")).toHaveAttribute("data-visual-style","editorial");
@@ -127,6 +129,6 @@ test.describe("style assets available offline",()=>{
    await context.setOffline(true);
    await page.reload({waitUntil:"domcontentloaded"});
    await expect(page.locator("html")).toHaveAttribute("data-visual-style","taiwan-poster");
-   await expect(page.locator(".style-option")).toHaveCount(9);
+   await expect(page.locator(".style-option")).toHaveCount(15);
  });
 });

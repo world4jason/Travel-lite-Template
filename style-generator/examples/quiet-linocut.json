@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "quiet-linocut",
+  "name": {
+    "zh": "極簡版刻靜謐誌",
+    "en": "Quiet Linocut"
+  },
+  "sourceTask": "photo-editorial-poster",
+  "visual": {
+    "mood": [
+      "安靜",
+      "旅行札記",
+      "極簡",
+      "詩意"
+    ],
+    "era": "旅行手帳、獨立出版、當代版畫風格",
+    "palette": {
+      "mode": "source-derived",
+      "maxColors": 3,
+      "swatches": [
+        {
+          "name": "奶油紙色",
+          "hex": null,
+          "role": "background",
+          "origin": "explicit"
+        },
+        {
+          "name": "深海軍藍",
+          "hex": null,
+          "role": "ink",
+          "origin": "explicit"
+        },
+        {
+          "name": "褪色柔彩",
+          "hex": null,
+          "role": "secondary",
+          "origin": "explicit"
+        }
+      ],
+      "usage": [
+        "2–3 限色印刷",
+        "深海軍藍用於結構",
+        "照片主色僅於有來源照片時抽取"
+      ]
+    },
+    "geometry": {
+      "family": "small-subject-linocut",
+      "motifs": [
+        "右下小剪影",
+        "左上大留白",
+        "不規則右側紙邊",
+        "底部窄地平線"
+      ],
+      "outline": {
+        "weight": "thin",
+        "character": "engraved",
+        "color": "深海軍藍"
+      },
+      "edgeQuality": "carved-rough"
+    },
+    "material": {
+      "technique": "linocut-risograph",
+      "texture": [
+        "乾墨破洞",
+        "紙纖維",
+        "輕微套色偏移"
+      ],
+      "depth": "flat",
+      "shadow": "none"
+    },
+    "typography": {
+      "display": "安靜獨立刊物標題",
+      "utility": "細小等寬風格但維持手機可讀字級",
+      "hierarchy": "裝飾性小詩不可代替真實行程標題"
+    },
+    "composition": {
+      "focus": "右下小主體與上左大留白",
+      "whitespace": "generous",
+      "layers": "single-ink-with-accent",
+      "notes": [
+        "撕紙邊緣僅素材裝飾",
+        "保留閱讀空間"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "小主體與寬闊空白",
+      "版刻乾墨與不整齊紙邊"
+    ],
+    "avoid": [
+      "假地標",
+      "光滑塑膠",
+      "把撕紙缺口延伸到按鈕"
+    ],
+    "conditional": [
+      {
+        "when": "另外提供真正的旅行目的地來源照片",
+        "rule": "只把核實可見主體、構圖與招牌用在場景資產；目前只有風格文字，不能編造地標或照片資訊。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "new-style-pack",
+    "implementationTier": "new-style-pack",
+    "transferable": [
+      "極簡角落主體 Hero",
+      "柔和復古出版字級",
+      "少色刻印配色"
+    ],
+    "assetTreatment": [
+      "小型原創旅行物件 SVG",
+      "撕右邊與底部水平線只在插圖"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "圖片右下的主角必須來自照片",
+        "reason": "照片未提供，無法核實主角或姿勢。"
+      },
+      {
+        "instruction": "左下角固定兩行英詩",
+        "reason": "這是明信片格式文案，不可擅自編造。"
+      }
+    ],
+    "componentRisks": [
+      "大留白不可隱藏真實時間軸與導航"
+    ],
+    "motion": "none"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "沒有要重繪的旅行來源照片；實際場景、人物、位置與真實照片色票未知。",
+      "新網站的 HEX 是設計建議，不是從原照片量測。"
+    ],
+    "conflicts": [],
+    "assumptions": [
+      "此 JSON 僅描述視覺風格而非網站功能或已完工的 CSS。",
+      "所有旅程事實必須來自既有 trip.json，泛用裝飾圖不得假裝真實景點。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}

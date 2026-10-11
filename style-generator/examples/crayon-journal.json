@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "crayon-journal",
+  "name": {
+    "zh": "蠟筆旅行記憶",
+    "en": "Crayon Journal"
+  },
+  "sourceTask": "photo-editorial-poster",
+  "visual": {
+    "mood": [
+      "鬆弛",
+      "溫暖",
+      "可收藏",
+      "蠟筆手感"
+    ],
+    "era": "旅行手帳、獨立出版、當代版畫風格",
+    "palette": {
+      "mode": "source-derived",
+      "maxColors": 4,
+      "swatches": [
+        {
+          "name": "溫暖象牙紙",
+          "hex": null,
+          "role": "background",
+          "origin": "explicit"
+        }
+      ],
+      "usage": [
+        "柔和但色彩仍然有生命力",
+        "2–4 種記憶色"
+      ]
+    },
+    "geometry": {
+      "family": "horizontal-mini-memory",
+      "motifs": [
+        "2–5 個橫向小物件",
+        "粗顆粒蠟筆",
+        "不規則斜線",
+        "手繪不完美"
+      ],
+      "outline": {
+        "weight": "variable",
+        "character": "irregular-ink",
+        "color": "柔黑線"
+      },
+      "edgeQuality": "wobbly"
+    },
+    "material": {
+      "technique": "grainy-crayon",
+      "texture": [
+        "密集短斜蠟筆線",
+        "塗色略越界",
+        "底紙顆粒"
+      ],
+      "depth": "flat",
+      "shadow": "none"
+    },
+    "typography": {
+      "display": "可辨的手寫感標題",
+      "utility": "手機文字維持正常對比",
+      "hierarchy": "僅使用真實旅程文字"
+    },
+    "composition": {
+      "focus": "居中的小型橫向旅行記憶場景",
+      "whitespace": "generous",
+      "layers": "flat",
+      "notes": [
+        "不用九宮格",
+        "上半相片框是原始任務而非網站構圖"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "2–5 物件橫向佈局",
+      "明顯蠟筆乾筆顆粒"
+    ],
+    "avoid": [
+      "平滑 SVG 質感",
+      "水彩渲染",
+      "相片對半分"
+    ],
+    "conditional": [
+      {
+        "when": "另外提供真正的旅行目的地來源照片",
+        "rule": "只把核實可見主體、構圖與招牌用在場景資產；目前只有風格文字，不能編造地標或照片資訊。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "new-style-pack",
+    "implementationTier": "new-style-pack",
+    "transferable": [
+      "小場景時間軸視覺",
+      "有紋理色塊和線稿"
+    ],
+    "assetTreatment": [
+      "橫向蠟筆場景插圖",
+      "少量粗色塊與乾筆線"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "固定上半照片下半插畫",
+        "reason": "原始海報版型不可套在網站。"
+      },
+      {
+        "instruction": "固定兩句英文手寫文案",
+        "reason": "沒有來源文字不自動生成假標語。"
+      }
+    ],
+    "componentRisks": [
+      "避免蠟筆顆粒降低資訊可讀性"
+    ],
+    "motion": "gentle"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "沒有要重繪的旅行來源照片；實際場景、人物、位置與真實照片色票未知。",
+      "新網站的 HEX 是設計建議，不是從原照片量測。"
+    ],
+    "conflicts": [],
+    "assumptions": [
+      "此 JSON 僅描述視覺風格而非網站功能或已完工的 CSS。",
+      "所有旅程事實必須來自既有 trip.json，泛用裝飾圖不得假裝真實景點。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}

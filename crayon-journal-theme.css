@@ -1,0 +1,268 @@
+/* crayon-journal: original, source-reviewed visual style. SPDX-License-Identifier: AGPL-3.0-or-later
+ * Derived from text-only Style Brief; no original travel photo was supplied.
+ * Do not copy 3:4, photo-preservation instructions, invented captions or slogans.
+ * The main SVG is decorative and is not a source for actual trip facts. */
+:root[data-visual-style="crayon-journal"] {
+ --paper:#FAF2E6; --ink:#53565D; --muted-ink:#53565D;
+ --bg:#FAF2E6; --bg-top:#FAF2E6; --surface:#FFF9ED;
+ --surface-2:#F1DFCA; --text:#53565D; --muted:#53565D;
+ --line:#53565D; --accent:#53565D !important;
+ --accent-soft:#D7AD69; --coral:#76AEB5;
+ --yamabuki:#D7AD69; --water:#D7AD69; --bamboo:#F1DFCA;
+ --radius-lg:23px 13px 26px 17px; --radius-md:23px 13px 26px 17px;
+ --font-display:"Comic Sans MS", "Chalkboard SE", "Huninn", sans-serif; --font-utility:"Huninn", "Noto Sans TC", system-ui, sans-serif;
+ --shadow:none; --shadow-float:none; color-scheme:light;
+}
+:root[data-visual-style="crayon-journal"] body {
+ background:#FAF2E6 !important;
+ background-image:none !important;
+ color:#53565D; font-family:var(--font-utility);
+}
+:root[data-visual-style="crayon-journal"] :is(h1,h2,h3,h4) {
+ color:#53565D; font-family:var(--font-display);
+ letter-spacing:-.018em;line-height:1.21; font-weight:700;
+}
+:root[data-visual-style="crayon-journal"] .eyebrow {
+ color:#53565D; font-size:.73rem;
+ letter-spacing:.10em; text-transform:uppercase;
+}
+:root[data-visual-style="crayon-journal"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
+ .trip-highlight-card,.trip-open-decision,.trip-route-summary,
+ .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
+ .panel,.runtime-map-panel,.companion-window-card,.companion-focus,
+ .shell-context-slot,.bottom-nav) {
+ background:#FFF9ED; border:2px solid #53565D;
+ border-radius:23px 13px 26px 17px; box-shadow:none!important; color:#53565D;
+}
+:root[data-visual-style="crayon-journal"] .trip-header {
+ background:#FFF9ED;padding:17px 21px;
+}
+:root[data-visual-style="crayon-journal"] #trip-location {
+ background:#D7AD69;color:#53565D;
+ border:1px solid #53565D; border-radius:23px 13px 26px 17px;
+ padding:4px 9px;font-size:.74rem;
+}
+:root[data-visual-style="crayon-journal"] #trip-title {
+ font:700 clamp(1.65rem,4vw,2.7rem)/1.12 var(--font-display);
+}
+:root[data-visual-style="crayon-journal"] .trip-meta {color:#53565D;}
+:root[data-visual-style="crayon-journal"] .live-time {
+ background:#F1DFCA;color:#53565D;
+ border:2px solid #53565D;border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] .live-time small {color:#53565D;}
+:root[data-visual-style="crayon-journal"] .trip-overview-hero {
+ display:grid;min-height:0;gap:8px;
+ grid-template-columns:minmax(0,1fr);
+ grid-template-areas:"eyebrow" "title" "subtitle" "art" "stats";
+ padding:21px 20px;
+ background:#FFF9ED;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-hero > .eyebrow {grid-area:eyebrow;margin:0;}
+:root[data-visual-style="crayon-journal"] .trip-overview-hero > h2 {
+ grid-area:title;max-width:100%;min-width:0;
+ font:700 clamp(2rem,4.8vw,3.65rem)/1.11 var(--font-display);
+ margin:0;overflow-wrap:anywhere;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-hero > p:last-of-type {
+ grid-area:subtitle;max-width:100%;color:#53565D;
+ font-size:.82rem;line-height:1.5;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-hero::after {
+ content:""; grid-area:art;display:block;
+ width:100%;height:auto; aspect-ratio:760/430;
+ background:url("./assets/crayon-journal/hero.svg") center/contain no-repeat;
+ min-width:0;margin:7px 0 0;align-self:end;
+ animation:none;pointer-events:none;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-stats {
+ grid-area:stats;display:flex;flex-wrap:wrap;gap:8px;
+ border-top:1px solid #53565D;padding-top:12px;
+ margin-top:9px;width:100%;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-stats span {
+ padding:5px 9px;background:#F1DFCA;
+ border:1px solid #53565D;border-radius:23px 13px 26px 17px;
+ color:#53565D;font-size:.75rem;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-stats strong {color:#53565D;}
+:root[data-visual-style="crayon-journal"] .trip-overview-day {
+ position:relative;min-height:132px;
+ border:2px solid #53565D;background:#FFF9ED;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-day:nth-child(even) {background:#F1DFCA;}
+:root[data-visual-style="crayon-journal"] .trip-overview-day::after {
+ content:"";background:url("./assets/crayon-journal/marker.svg") center/contain no-repeat;
+ border-radius:23px 13px 26px 17px;animation:none;pointer-events:none;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-day-meta span {
+ background:#D7AD69;border:1px solid #53565D;
+ color:#53565D;border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-day-meta time {color:#53565D;}
+:root[data-visual-style="crayon-journal"] .trip-overview-day h3 {
+ font:700 1.18rem/1.2 var(--font-display);
+ color:#53565D;max-width:100%;overflow-wrap:anywhere;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-day p {color:#53565D;}
+:root[data-visual-style="crayon-journal"] .trip-highlight-card {
+ background:#F1DFCA;border:2px solid #53565D;
+ border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] .trip-open-decision {background:#FFF9ED;}
+:root[data-visual-style="crayon-journal"] :is(.trip-highlight-card,.trip-open-decision)::after {
+ background:url("./assets/crayon-journal/marker.svg") center/contain no-repeat;
+ animation:none;
+}
+:root[data-visual-style="crayon-journal"] .trip-day-view > .day-summary {
+ background:#F1DFCA;min-height:144px;
+ padding:19px 116px 20px 19px;
+}
+:root[data-visual-style="crayon-journal"] .trip-day-view > .day-summary h2 {
+ font:700 clamp(1.55rem,4vw,2.6rem)/1.14 var(--font-display);
+}
+:root[data-visual-style="crayon-journal"] .trip-day-view > .day-summary::after {
+ background:url("./assets/crayon-journal/marker.svg") center/contain no-repeat;
+ animation:none;width:93px;height:93px;right:12px;
+}
+:root[data-visual-style="crayon-journal"] .trip-route-summary {
+ background:#FFF9ED;border:2px solid #53565D;
+}
+:root[data-visual-style="crayon-journal"] .trip-route-heading h3 {
+ font:700 1.16rem/1.25 var(--font-display);
+}
+:root[data-visual-style="crayon-journal"] .trip-route-endpoints {
+ border:1px solid #53565D;border-radius:23px 13px 26px 17px;
+ background:#F1DFCA;
+}
+:root[data-visual-style="crayon-journal"] .trip-route-steps span {
+ color:#53565D;background:#FFF9ED;
+ border:1px solid #53565D;border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] .trip-v2-timeline::before {
+ background:#53565D;width:3px;left:13px;
+}
+:root[data-visual-style="crayon-journal"] .trip-v2-timeline > .trip-stop-wrap::before {
+ background:#D7AD69;border:2px solid #53565D;
+ border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] .trip-v2-timeline .trip-v2-item {
+ border:2px solid #53565D;border-radius:23px 13px 26px 17px;
+ background:#FFF9ED;
+}
+:root[data-visual-style="crayon-journal"] .trip-v2-timeline .trip-stop-wrap:nth-child(even) .trip-v2-item {
+ background:#F1DFCA;
+}
+:root[data-visual-style="crayon-journal"] .trip-v2-timeline .timeline-content h3 {
+ color:#53565D;font:700 1.12rem/1.3 var(--font-display);
+}
+:root[data-visual-style="crayon-journal"] .trip-v2-timeline .timeline-time {
+ color:#53565D;background:#D7AD69;
+ border:1px solid #53565D;border-radius:23px 13px 26px 17px;
+ padding:5px 8px;font-weight:740;
+}
+:root[data-visual-style="crayon-journal"] .trip-v2-timeline .timeline-time--floating {
+ color:#53565D;background:#FFF9ED;
+}
+:root[data-visual-style="crayon-journal"] .trip-v2-timeline .timeline-note {color:#53565D;}
+:root[data-visual-style="crayon-journal"] .trip-v2-timeline .trip-transfer {
+ color:#53565D;background:transparent;
+ border-left:2px dashed #53565D;border-radius:0;
+}
+:root[data-visual-style="crayon-journal"] :is(.type-pill,.must-go-tag,.transport-tag,.time-pill,
+ .summary-count,.trip-open-count) {
+ background:#D7AD69;color:#53565D;
+ border:1px solid #53565D;border-radius:23px 13px 26px 17px;
+ font-size:.75rem;
+}
+:root[data-visual-style="crayon-journal"] .must-go-tag {background:#76AEB5;color:#53565D;}
+:root[data-visual-style="crayon-journal"] :is(.day-chip,.place-chip,.long-trip-step,
+ .button-link,.trip-icon-action,.trip-action-menu > summary,
+ .theme-button,.motion-choice) {
+ background:#FFF9ED;border:1px solid #53565D;
+ color:#53565D;border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] :is(.day-chip,.place-chip).active,
+:root[data-visual-style="crayon-journal"] .motion-choice[aria-pressed="true"] {
+ background:#D7AD69;color:#53565D;
+}
+:root[data-visual-style="crayon-journal"] .day-chip.active small {color:#53565D;}
+:root[data-visual-style="crayon-journal"] .bottom-nav {
+ background:#FAF2E6;border:2px solid #53565D;
+ border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] .nav-item {
+ color:#53565D;border-radius:23px 13px 26px 17px;background:transparent;
+}
+:root[data-visual-style="crayon-journal"] .nav-item.active {
+ background:#D7AD69;color:#53565D;
+ border:1px solid #53565D;
+}
+:root[data-visual-style="crayon-journal"] .check-item {
+ background:#FFF9ED;border:2px solid #53565D;
+ border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] .more-section > summary,
+:root[data-visual-style="crayon-journal"] .cost-total {
+ background:#F1DFCA;border:1px solid #53565D;
+ border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] .style-option {
+ background:#FFF9ED;color:#53565D;
+ border:2px solid #53565D;border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] .style-option[aria-pressed="true"] {
+ background:#D7AD69;outline:2px solid #53565D;
+}
+:root[data-visual-style="crayon-journal"] .map-stage {
+ border:1px solid #53565D;border-radius:23px 13px 26px 17px;
+}
+:root[data-visual-style="crayon-journal"] .shell-day.active {
+ background:#D7AD69;color:#53565D;
+}
+
+:root[data-visual-style="crayon-journal"] .trip-overview-hero {
+ border:2px solid #53565D;padding:15px 19px;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-hero::after {
+ background-size:contain;transform:rotate(-.4deg);
+ animation:crayon-drift 9s ease-in-out infinite;
+}
+:root[data-visual-style="crayon-journal"] .trip-overview-day:nth-child(even) {background:#E8F0E9;}
+:root[data-visual-style="crayon-journal"] .trip-overview-day::after {transform:rotate(4deg);}
+:root[data-visual-style="crayon-journal"] .trip-v2-timeline .trip-v2-item {border-style:dashed;}
+@keyframes crayon-drift {
+ 0%,100%{translate:0 0}50%{translate:0 -2px}
+}
+
+@media(max-width:520px){
+ :root[data-visual-style="crayon-journal"] .trip-header {padding:13px;}
+ :root[data-visual-style="crayon-journal"] .trip-overview-hero {
+  grid-template-columns:minmax(0,1fr);padding:13px;
+  gap:6px;
+ }
+ :root[data-visual-style="crayon-journal"] .trip-overview-hero > h2 {
+  font-size:clamp(1.7rem,6vw,2.15rem);
+ }
+ :root[data-visual-style="crayon-journal"] .trip-overview-hero::after {
+  width:100%;aspect-ratio:760/430;max-width:100%;margin:8px 0 0;
+ }
+ :root[data-visual-style="crayon-journal"] .trip-overview-day {min-height:118px;padding:14px;}
+ :root[data-visual-style="crayon-journal"] .trip-day-view > .day-summary {
+  padding:14px 80px 15px 13px;min-height:124px;
+ }
+ :root[data-visual-style="crayon-journal"] .trip-day-view > .day-summary::after {
+  width:65px;height:65px;right:8px;
+ }
+ :root[data-visual-style="crayon-journal"] .trip-v2-timeline .trip-v2-item {padding:12px;}
+}
+@media(prefers-reduced-motion:reduce){
+ :root[data-visual-style="crayon-journal"] *,:root[data-visual-style="crayon-journal"] *::before,:root[data-visual-style="crayon-journal"] *::after {
+  animation:none!important;transition:none!important;
+ }
+}
+:root[data-visual-style="crayon-journal"][data-motion="reduce"] *,
+:root[data-visual-style="crayon-journal"][data-motion="reduce"] *::before,
+:root[data-visual-style="crayon-journal"][data-motion="reduce"] *::after {
+ animation:none!important;transition:none!important;
+}

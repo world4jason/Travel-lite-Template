@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "geometric-print",
+  "displayName": "Geometric Print",
+  "sourceBriefId": "geometric-print",
+  "sourceBriefPath": "../../style-generator/examples/geometric-print.json",
+  "generatedPromptPath": "../../style-generator/generated-prompts/geometric-print.md",
+  "stage": "implemented-reviewed",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "geometric-print",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "none",
+  "css": [
+    "../../storybook-theme.css",
+    "../../geometric-print-theme.css"
+  ],
+  "assetDirectory": "../../assets/geometric-print",
+  "assets": [
+    "hero.svg",
+    "marker.svg"
+  ],
+  "browserPreviews": [
+    "../previews/geometric-print-mobile.png",
+    "../previews/geometric-print-desktop.png",
+    "../previews/geometric-print-day-mobile.png"
+  ],
+  "materialRules": [
+    "hard-edged polygon planes without outlines or shadows in SVG",
+    "5–6 muted ink planes plus paper base",
+    "structured negative space and abstract subject",
+    "no copied pose or labels"
+  ],
+  "sourceVsOutputBoundary": "Prompts referred to image-to-poster tasks. The trip sites have no destination source photograph; 3:4, split 50/50 photo panels, exact caption words, source-only features and fixed magazine labels were deliberately excluded. Any custom HEX is a design proposal, not measured from a real travel photo.",
+  "acceptanceTests": [
+    "tests/second-prompt-batch.spec.mjs",
+    "tests/second-batch-manifests.test.mjs",
+    "scripts/verify-style-parity.mjs"
+  ]
+}

@@ -35,6 +35,12 @@ const VISUAL_PACKS = Object.freeze({
   "naive-city": { css: ["storybook-style", "naive-city-style"], lightOnly: true, timeline: true, motion: true },
   "taiwan-poster": { css: ["storybook-style", "taiwan-poster-style"], lightOnly: true, timeline: true, motion: false },
   "field-stamp": { css: ["storybook-style", "field-stamp-style"], lightOnly: true, timeline: true, motion: false },
+  "quiet-linocut": { css: ["storybook-style", "quiet-linocut-style"], lightOnly: true, timeline: true, motion: false },
+  "doodle-memory-grid": { css: ["storybook-style", "doodle-memory-grid-style"], lightOnly: true, timeline: true, motion: false },
+  "crayon-journal": { css: ["storybook-style", "crayon-journal-style"], lightOnly: true, timeline: true, motion: true },
+  "painterly-editorial": { css: ["storybook-style", "painterly-editorial-style"], lightOnly: true, timeline: true, motion: false },
+  "geometric-print": { css: ["storybook-style", "geometric-print-style"], lightOnly: true, timeline: true, motion: false },
+  "quiet-acrylic": { css: ["storybook-style", "quiet-acrylic-style"], lightOnly: true, timeline: true, motion: false },
 });
 const VISUAL_STYLES = new Set(Object.keys(VISUAL_PACKS));
 const isStorybook = () => state.visualStyle === "storybook";
@@ -43,7 +49,13 @@ const isFixedLightStyle = () => VISUAL_PACKS[state.visualStyle]?.lightOnly === t
 const hasIllustrationMotion = () => VISUAL_PACKS[state.visualStyle]?.motion === true;
 const packThemeColor = () => ({ storybook: "#FFFCF6", candy: "#FFF9EF",
   risograph: "#F7F1E4", "paper-collage": "#FAF3E4", "naive-city": "#FAF5E9",
-  "taiwan-poster": "#F5E7C4", "field-stamp": "#F7F0E3" })[state.visualStyle] || "#f5f6f2";
+  "taiwan-poster": "#F5E7C4", "field-stamp": "#F7F0E3",
+  "quiet-linocut": "#F4EDDD",
+  "doodle-memory-grid": "#FBF6EA",
+  "crayon-journal": "#FAF2E6",
+  "painterly-editorial": "#F4F7F1",
+  "geometric-print": "#F5F0E5",
+  "quiet-acrylic": "#FCFAF3" })[state.visualStyle] || "#f5f6f2";
 
 function activateVisualStyle() {
   let requested = "";
@@ -59,12 +71,13 @@ function activateVisualStyle() {
   // prompt text, URL or style manifest gets interpreted as CSS or JavaScript.
   const pack = VISUAL_PACKS[state.visualStyle];
   for (const id of ["storybook-style", "candy-style", "risograph-style",
-    "paper-collage-style", "naive-city-style", "taiwan-poster-style", "field-stamp-style"]) {
+    "paper-collage-style", "naive-city-style", "taiwan-poster-style", "field-stamp-style",
+    "quiet-linocut-style", "doodle-memory-grid-style", "crayon-journal-style", "painterly-editorial-style", "geometric-print-style", "quiet-acrylic-style"]) {
     const sheet = document.getElementById(id);
     if (sheet) sheet.disabled = !pack.css.includes(id);
   }
 
-  if (["storybook", "candy", "naive-city"].includes(state.visualStyle)) {
+  if (["storybook", "candy", "naive-city", "doodle-memory-grid", "crayon-journal"].includes(state.visualStyle)) {
     // Only styles that actually use Huninn request it; retro print and paper
     // styles retain their specified editorial/print fonts without network font requests.
     if (!document.querySelector("#storybook-font")) {
@@ -485,10 +498,17 @@ function renderMore() {
     "paper-collage": "Paper Collage", "naive-city": "Naive City Sketch",
     risograph: "Risograph Zine", "taiwan-poster": "Taiwan Retro Poster",
     "field-stamp": "Field Stamp",
+    "quiet-linocut": "Quiet Linocut",
+    "doodle-memory-grid": "Doodle Memory Grid",
+    "crayon-journal": "Crayon Journal",
+    "painterly-editorial": "Painterly Editorial",
+    "geometric-print": "Geometric Print",
+    "quiet-acrylic": "Quiet Acrylic",
   };
   const choices = [
     "editorial-light", "editorial-dark", "storybook", "candy", "paper-collage",
     "naive-city", "risograph", "taiwan-poster", "field-stamp",
+    "quiet-linocut", "doodle-memory-grid", "crayon-journal", "painterly-editorial", "geometric-print", "quiet-acrylic",
   ];
   const isZh = /^zh/i.test(state.data.ui.locale || "");
   const descriptions = {
@@ -501,6 +521,12 @@ function renderMore() {
     risograph: isZh ? "孔版印刷 · 復古" : "Print · indigo grain",
     "taiwan-poster": isZh ? "台灣海報 · 網印" : "Retro poster · screenprint",
     "field-stamp": isZh ? "田野印章 · 手刻" : "Field notes · carved stamp",
+    "quiet-linocut": isZh ? "極簡版刻 · 安靜留白" : "Linocut · quiet margins",
+    "doodle-memory-grid": isZh ? "九宮格 · 手繪塗鴉" : "Nine-grid · doodle journal",
+    "crayon-journal": isZh ? "蠟筆日記 · 小場景" : "Crayon · mini memory",
+    "painterly-editorial": isZh ? "水粉筆觸 · 柔彩" : "Gouache · airy editorial",
+    "geometric-print": isZh ? "硬邊幾何 · 色版" : "Hard-edge · flat polygons",
+    "quiet-acrylic": isZh ? "留白小主體 · 細線" : "Sparse · acrylic cover",
   };
   const defaultStyle = VISUAL_STYLES.has(state.data.ui.visualStyle)
     ? state.data.ui.visualStyle : "editorial";
@@ -534,7 +560,7 @@ function renderMore() {
         "Switch instantly. Your choice stays on this device."}</p>
     </div>
     <div class="style-options" role="group"
-      aria-label="${isZh ? "九種可選網站外觀" : "Nine available appearances"}">${optionMarkup}</div>
+      aria-label="${isZh ? "十五種可選網站外觀" : "Fifteen available appearances"}">${optionMarkup}</div>
     <div class="style-settings-footer">
       <button class="style-reset-button" type="button" data-style-reset
         aria-pressed="${state.styleSource === "trip"}">

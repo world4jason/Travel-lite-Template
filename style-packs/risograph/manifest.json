@@ -43,5 +43,39 @@
     "../previews/risograph-overview-mobile.png",
     "../previews/risograph-overview-desktop.png",
     "../previews/risograph-day-mobile.png"
+  ],
+  "supplementaryPromptReferences": [
+    {
+      "batch": "2026-10-11-editorial-posters",
+      "section": "② RISO EDITORIAL ILLUSTRATION",
+      "decision": "extends-approved-risograph",
+      "styleDNA": [
+        "2–4 spot inks as optional variant",
+        "loose hand-drawn broken strokes and imperfect closures",
+        "subtle registration misalignment and uneven ink",
+        "paper fibers and restrained layout"
+      ],
+      "excludedOriginalTask": [
+        "extract recognizable people or objects from an unprovided source photo",
+        "optional invented photo date, coordinates or magazine captions"
+      ]
+    },
+    {
+      "batch": "2026-10-11-editorial-posters",
+      "section": "④ VINTAGE ZINE PRINT",
+      "decision": "near-exact-duplicate-of-original-risograph",
+      "styleDNA": [
+        "aged cream paper",
+        "indigo or sepia ink",
+        "halftone and grain",
+        "deliberate negative space"
+      ],
+      "excludedOriginalTask": [
+        "where [A] meets [B]",
+        "Gathered Scenes",
+        "Zine v1.3",
+        "photo source fidelity claims"
+      ]
+    }
   ]
 }

@@ -1,8 +1,8 @@
 # Style Prompt Lab — 提示詞 → 可重用風格規格
 
-> **Status: extraction prototype / brief-only.** 這一層已實際拆解六種不同目的的自然語言風格提示詞，並可用 Node.js 零額外套件驗證結果；**不是已自動生成六套可直接部署的 CSS**。
+> **Status: extraction prototype / brief-only.** 這一層已實際整理兩批不同用途的自然語言風格提示詞、總計十二份去重後的 Style Brief，並可用 Node.js 零額外套件驗證結果；**不是已自動生成六套可直接部署的 CSS**。
 
-Travel Lite 原本已有 **Functional Template**（行程、地圖、清單、Now 等）以及 **Editorial / Storybook** 兩個已完成的 Style Pack。
+Travel Lite 已有 **Functional Template**（行程、地圖、清單、Now 等）及 14 套可用、已驗收的 Style Pack。兩批文字提示詞的 12 份 Style Brief 是規格來源，而不是直接注入程式的 CSS。
 
 本實驗補的是中間一層：
 
@@ -37,7 +37,7 @@ Travel-lite-Template 網站（不改真實行程和共用狀態）
 ```bash
 npm run validate:styles
 npm run test:styles
-npm run render:style-prompts    # 將六個標準案例轉成可再填空的 Markdown Prompt
+npm run render:style-prompts    # 將十二個標準案例轉成可再填空的 Markdown Prompt
 # 驗證／渲染單一新 Style Brief：
 node style-generator/validate-style.mjs ./my-style-brief.json
 node style-generator/render-style-prompt.mjs ./my-style-brief.json ./my-output-dir
@@ -45,7 +45,7 @@ node style-generator/render-style-prompt.mjs ./my-style-brief.json ./my-output-d
 
 **注意：** `validate:styles` 只檢查範例資料夾，個別新檔案要用最後一行命令。驗證器檢查 Schema 中本專案使用的核心子集，加上固定色數／圖片佐證等跨欄位規則；不是通用完整 JSON Schema 引擎。由 LLM 產生 JSON 的步驟發生在聊天／LLM 工具中，Node 指令本身**不會呼叫 LLM**，不會憑空把一句話編譯成 CSS；`render:style-prompts` 只會把已驗證 JSON 確定性地轉成可填空 Markdown。
 
-## 六組跨用途挑戰：實際抽出的風格
+## 第一批六組跨用途挑戰：實際抽出的風格
 
 | 來源提示詞 | 抽出風格 | 主要可移植語言 | 必須丟棄或變條件式 | 網站改造級別 |
 | --- | --- | --- | --- | --- |
@@ -58,7 +58,7 @@ node style-generator/render-style-prompt.mjs ./my-style-brief.json ./my-output-d
 
 這六份 JSON **是本次由 LLM 根據使用者提供的文字手動抽取的案例**，沒有另外執行模型 API 或真正檢視來源照片。每份 `audit.photoProvided=false`、`basis=text-only`，也沒有把「沒有提供色碼」偷變成自己猜的 HEX。它們的 `stage` 均為 `brief-only`。
 
-## 六份已生成、可直接填空的 Style Prompt
+## 可直接填空的 Style Prompt（兩批共十二份）
 
 經過 `Style Brief JSON → render-style-prompt.mjs`，可自動產生統一格式、保留視覺特徵的 Markdown 模板：
 
@@ -68,8 +68,18 @@ node style-generator/render-style-prompt.mjs ./my-style-brief.json ./my-output-d
 - [Risograph Zine](./generated-prompts/risograph-zine.md)
 - [Taiwan Retro Poster](./generated-prompts/taiwan-retro-poster.md)
 - [Field Stamp](./generated-prompts/field-stamp.md)
+- [Quiet Linocut](./generated-prompts/quiet-linocut.md)
+- [Doodle Memory Grid](./generated-prompts/doodle-memory-grid.md)
+- [Crayon Journal](./generated-prompts/crayon-journal.md)
+- [Painterly Editorial](./generated-prompts/painterly-editorial.md)
+- [Geometric Print](./generated-prompts/geometric-print.md)
+- [Quiet Acrylic](./generated-prompts/quiet-acrylic.md)
 
 這些檔案都有 `{{DESTINATION_OR_TRIP_CONTEXT}}`、`{{REFERENCE_PHOTO_OR_NONE}}`、`{{EXTRA_STYLE_CONSTRAINTS_OR_NONE}}` 等可填欄位，也清楚標明哪些原始海報要求應排除。它們是可提交給 LLM 的**第二階段設計任務描述**，不是可部署 CSS。來源照片未提供時，不會推斷真實場景。
+
+## 第二批：八段來源，去重後六種新的視覺語法
+
+[查看來源 → 既有 Pack／新增 Pack 的去重矩陣、保留風格特徵與排除原任務規則](./batches/2026-10-11-editorial-posters.md)。兩段 RISO／Zine 原提示詞與既有 Risograph 重疊，因此只新增六份 Style Brief／六套視覺風格。
 
 ## 具體測出來的 4 個風險
 
@@ -88,14 +98,14 @@ node style-generator/render-style-prompt.mjs ./my-style-brief.json ./my-output-d
 | 來源照片必須有嗎？ | 不用，沒照片記錄 unknowns | 製作忠於照片的素材才需要 |
 | 會直接塞進 `trip.json` 嗎？ | **不會** | 只有已安裝、白名單允許的 `ui.visualStyle` 才能選用 |
 
-第二階段已完成**六個人工實作並驗收的網站風格**，包含 Candy Geometry、Paper Collage、Naive City Sketch、Risograph Zine、Taiwan Retro Poster、Field Stamp。另有 Editorial 和原 Megan Storybook，形成八套 Style Pack／九種外觀。[查看可用的 Style Pack 與測試](../style-packs/README.md)。
+第二階段已完成**十二個人工實作並驗收的提示詞來源網站風格**，包含 Candy Geometry、Paper Collage、Naive City Sketch、Risograph Zine、Taiwan Retro Poster、Field Stamp。另有 Editorial 和原 Megan Storybook，形成十四套 Style Pack／十五種外觀。[查看可用的 Style Pack 與測試](../style-packs/README.md)。
 
-這六份原始來源 JSON 依然標為 `brief-only`，用來追溯當初的風格敘述，不是可執行程式；真正可選用的是另外經過程式碼與視覺驗收的 CSS／SVG + Manifest。下一個未知提示詞的 [E2E 驗收 Runbook](./NEXT_PROMPT_E2E.md) 已定義：抽取、審查、產生素材／樣式、模板／Megan 雙站一致性驗收、上線確認。
+這十二份原始來源 JSON 依然標為 `brief-only`，用來追溯當初的風格敘述，不是可執行程式；真正可選用的是另外經過程式碼與視覺驗收的 CSS／SVG + Manifest。下一個未知提示詞的 [E2E 驗收 Runbook](./NEXT_PROMPT_E2E.md) 已定義：抽取、審查、產生素材／樣式、模板／Megan 雙站一致性驗收、上線確認。
 
 ## 這版抽取器的限制
 
 - LLM 的實際抽取品質取決於模型，單靠 JSON Schema 無法保證主觀美學理解正確。
-- 現在是六份有代表性的**人工審閱標準案例**與有效性測試；尚未搭建批量 LLM API Pipeline 或自動反覆視覺迭代。
+- 現在是十二份有代表性的**人工審閱標準案例**與有效性測試；尚未搭建批量 LLM API Pipeline 或自動反覆視覺迭代。
 - 自訂風格名字（如 `pixel-art`、`woodcut`）可成為新的 Brief 值，不代表 runtime 會自動載入這些 Style Pack。
 - 對照片要求的文字辨識、實際建築比例與顏色抽取，需收到照片才可另外執行。
 

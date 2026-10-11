@@ -11,11 +11,11 @@ const cases = files.map(file => JSON.parse(readFileSync(new URL(file, dir), "utf
 const byId = new Map(cases.map(c => [c.id, c]));
 const duplicate = value => JSON.parse(JSON.stringify(value));
 
-test("six unrelated prompts preserve six distinct visual languages", () => {
-  assert.equal(cases.length, 6);
-  assert.equal(new Set(cases.map(c => c.id)).size, 6);
-  assert.equal(new Set(cases.map(c => c.visual.geometry.family)).size, 6);
-  assert.equal(new Set(cases.map(c => c.visual.material.technique)).size, 6);
+test("twelve extracted prompts preserve twelve distinct visual languages", () => {
+  assert.equal(cases.length, 12);
+  assert.equal(new Set(cases.map(c => c.id)).size, 12);
+  assert.equal(new Set(cases.map(c => c.visual.geometry.family)).size, 12);
+  assert.equal(new Set(cases.map(c => c.visual.material.technique)).size, 12);
   for (const brief of cases) {
     const checked = validateStyleBrief(brief);
     assert.deepEqual(checked.errors, [], brief.id);
@@ -152,4 +152,28 @@ test("short website-first prompts are valid without photo rules or postcard excl
   website.audit.unknowns = [];
   website.audit.conflicts = [];
   assert.deepEqual(validateStyleBrief(website).errors, []);
+});
+
+
+test("similar second-batch Riso language can recommend the existing approved pack", () => {
+  const nearDuplicate = duplicate(byId.get("quiet-linocut"));
+  nearDuplicate.id = "reused-riso-brief";
+  nearDuplicate.webTranslation.recommendedBase = "risograph";
+  nearDuplicate.webTranslation.implementationTier = "asset-and-token-variant";
+  assert.deepEqual(validateStyleBrief(nearDuplicate).errors, []);
+  const bad = duplicate(nearDuplicate);
+  bad.webTranslation.recommendedBase = "https://evil.invalid/arbitrary.css";
+  assert.equal(validateStyleBrief(bad).valid, false);
+});
+
+test("new eight-prompt audit distinguishes six new briefs from two Riso near-duplicates", () => {
+  const audit = readFileSync(new URL("../batches/2026-10-11-editorial-posters.md", import.meta.url), "utf8");
+  for (const id of ["quiet-linocut", "doodle-memory-grid", "crayon-journal",
+    "painterly-editorial", "geometric-print", "quiet-acrylic"]) {
+    assert.ok(byId.has(id));
+    assert.ok(audit.includes(id), "missing " + id);
+  }
+  assert.ok(audit.includes("②"));
+  assert.ok(audit.includes("④"));
+  assert.ok(audit.includes("Risograph"));
 });

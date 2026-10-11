@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0.0",
+  "id": "painterly-editorial",
+  "name": {
+    "zh": "柔彩繪畫編輯風",
+    "en": "Painterly Editorial"
+  },
+  "sourceTask": "photo-editorial-poster",
+  "visual": {
+    "mood": [
+      "安靜",
+      "明亮",
+      "柔和",
+      "療癒",
+      "高級"
+    ],
+    "era": "旅行手帳、獨立出版、當代版畫風格",
+    "palette": {
+      "mode": "adaptive",
+      "maxColors": 6,
+      "swatches": [
+        {
+          "name": "象牙米白",
+          "hex": null,
+          "role": "background",
+          "origin": "explicit"
+        },
+        {
+          "name": "淡天空藍",
+          "hex": null,
+          "role": "primary",
+          "origin": "explicit"
+        },
+        {
+          "name": "霧藍",
+          "hex": null,
+          "role": "secondary",
+          "origin": "explicit"
+        },
+        {
+          "name": "柔桃色",
+          "hex": null,
+          "role": "accent",
+          "origin": "explicit"
+        }
+      ],
+      "usage": [
+        "淺藍系柔彩",
+        "霧面水粉與壓克力筆跡",
+        "建議色碼是網站新設計，不是原圖色"
+      ]
+    },
+    "geometry": {
+      "family": "soft-painterly-composition",
+      "motifs": [
+        "霧面厚筆觸",
+        "大片色面",
+        "柔和方向性",
+        "低密度編輯構圖"
+      ],
+      "outline": {
+        "weight": "none",
+        "character": "paper-cut",
+        "color": null
+      },
+      "edgeQuality": "hand-cut"
+    },
+    "material": {
+      "technique": "gouache-acrylic",
+      "texture": [
+        "可見筆毛",
+        "局部色料堆積",
+        "乾筆刷痕"
+      ],
+      "depth": "shallow-layered",
+      "shadow": "none"
+    },
+    "typography": {
+      "display": "安靜高級的編輯襯線",
+      "utility": "清晰幾何無襯線",
+      "hierarchy": "主副標層次乾淨、無假話語"
+    },
+    "composition": {
+      "focus": "大面積柔彩色塊與清楚閱讀路徑",
+      "whitespace": "generous",
+      "layers": "foreground-midground-background",
+      "notes": [
+        "不固定上下各半",
+        "不複製照片中的物件"
+      ]
+    }
+  },
+  "constraints": {
+    "must": [
+      "實際刷毛質地",
+      "大片空氣感的淡藍與米白"
+    ],
+    "avoid": [
+      "硬邊多邊形",
+      "螢光漸層",
+      "商業卡通"
+    ],
+    "conditional": [
+      {
+        "when": "另外提供真正的旅行目的地來源照片",
+        "rule": "只把核實可見主體、構圖與招牌用在場景資產；目前只有風格文字，不能編造地標或照片資訊。"
+      }
+    ]
+  },
+  "webTranslation": {
+    "recommendedBase": "new-style-pack",
+    "implementationTier": "new-style-pack",
+    "transferable": [
+      "筆觸編輯式 Hero",
+      "透氣的卡片排版"
+    ],
+    "assetTreatment": [
+      "乾刷與色塊蒙版 SVG",
+      "半霧面筆觸"
+    ],
+    "excludedOriginalInstructions": [
+      {
+        "instruction": "頂半照片底半繪畫",
+        "reason": "圖片出稿規則，不代表網站版型。"
+      },
+      {
+        "instruction": "自動用照片產生文案",
+        "reason": "以行程的真實文字為準。"
+      }
+    ],
+    "componentRisks": [
+      "淡色背景上的文字要保證對比"
+    ],
+    "motion": "none"
+  },
+  "audit": {
+    "photoProvided": false,
+    "basis": "text-only",
+    "unknowns": [
+      "沒有要重繪的旅行來源照片；實際場景、人物、位置與真實照片色票未知。",
+      "新網站的 HEX 是設計建議，不是從原照片量測。"
+    ],
+    "conflicts": [],
+    "assumptions": [
+      "此 JSON 僅描述視覺風格而非網站功能或已完工的 CSS。",
+      "所有旅程事實必須來自既有 trip.json，泛用裝飾圖不得假裝真實景點。"
+    ],
+    "confidence": "high"
+  },
+  "stage": "brief-only"
+}
