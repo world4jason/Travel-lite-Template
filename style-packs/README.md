@@ -25,7 +25,14 @@ Set the published default for a generated trip by adding `"visualStyle": "candy"
 
 ### Switch in More / Appearance
 
-Open **More → Appearance / 外觀**. Choose among **fifteen visible looks** (Editorial Light and Dark are two color modes of the same built-in Editorial pack; thirteen others are dedicated packs). Select a visual tile to apply it immediately (without reloading); the selection persists per trip on this device. **Follow trip default** clears the local choice. [See the mobile picker screenshot](./previews/style-settings-candy-mobile.png). Styles from a `?previewStyle=...` link are temporary and override the saved device choice only for that visit. Choosing or resetting inside More clears the URL-only override without losing the current page.
+Open **More → Appearance / 外觀**. The page now shows only the **current visual style**, with one "Change" trigger. It opens a native HTML `<dialog>` containing **15 choices** (Editorial Light/Dark plus thirteen distinct Style Packs). At 767px and below it renders as a **bottom sheet**, scrolling the options while keeping header/footer reachable; selecting auto-closes to reveal the new page appearance. On tablets/desktops (≥768px), it renders a **right-side drawer**, remaining open for consecutive live comparisons. Both modes support Escape, close button, backdrop click, keyboard focus containment/return and OS reduced-motion. Styles persist per trip on this device. **Follow trip default** clears the local choice. [See the mobile bottom-sheet screenshot](./previews/style-picker-mobile-sheet.png). Styles from a `?previewStyle=...` link are temporary and override the saved device choice only for that visit. Choosing or resetting inside More clears the URL-only override without losing the current page.
+
+### Responsive Style Picker screenshots
+
+These are real browser captures from Playwright at mobile/desktop viewports, not promotional mockups.
+
+- [Phone: collapsed More setting](./previews/style-picker-mobile-compact.png) · [Bottom sheet open](./previews/style-picker-mobile-sheet.png) · [Bottom sheet scrolled to later styles](./previews/style-picker-mobile-scrolled.png)
+- [Desktop: collapsed More setting](./previews/style-picker-desktop-compact.png) · [Right drawer open](./previews/style-picker-desktop-drawer.png)
 
 ## Verified screenshots (same Tokyo Autumn data)
 

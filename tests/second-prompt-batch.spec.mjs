@@ -48,7 +48,7 @@ for(const [id,color] of Object.entries(styleMap)){
 }
 test("fifteen styles available without extra duplicate Riso entries",async({page})=>{
  await page.goto("/#more");
- await page.locator(".style-option").first().waitFor();
+ await page.locator("[data-style-picker-open]").waitFor();
  const ids=await page.locator("[data-style-choice]").evaluateAll(nodes=>nodes.map(x=>x.dataset.styleChoice));
  expect(ids.length).toBe(15);
  expect(new Set(ids).size).toBe(15);
@@ -71,6 +71,7 @@ test("crayon journal respects OS motion and device setting; other new styles sta
  await expect.poll(()=>page.locator(".style-option[data-style-choice='crayon-journal']")
  .getAttribute("aria-pressed")).toBe("true");
  for(const id of ["quiet-linocut","geometric-print","painterly-editorial"]){
+   await page.locator("[data-style-picker-open]").click();
    await page.locator('[data-style-choice="'+id+'"]').click();
    await expect(page.locator("[data-motion-choice]")).toHaveCount(0);
  }
@@ -112,12 +113,13 @@ test.describe("second prompt pack offline cache",()=>{
  test.use({serviceWorkers:"allow"});
  test("six CSS and six heroes are precached and retain preference offline",async({page,context})=>{
    await page.goto("/#more");
-   await page.locator(".style-option").first().waitFor();
+   await page.locator("[data-style-picker-open]").waitFor();
    await page.waitForFunction(()=>Boolean(navigator.serviceWorker?.controller),null,{timeout:15000});
    const paths=all.flatMap(id=>["./"+id+"-theme.css","./assets/"+id+"/hero.svg"]);
    const cache=await page.evaluate(async paths=>Promise.all(paths.map(async p=>
       Boolean(await caches.match(new URL(p,location.href).href)))),paths);
    expect(cache).toEqual(paths.map(()=>true));
+   await page.locator("[data-style-picker-open]").click();
    await page.locator('[data-style-choice="quiet-acrylic"]').click();
    await expect.poll(()=>page.evaluate(()=>
      TravelLiteStorage.get("sample-tokyo-2026:visualStyle"))).toBe("quiet-acrylic");

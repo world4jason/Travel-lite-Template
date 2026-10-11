@@ -50,15 +50,19 @@ test("fifteen choices include two Editorial color modes and seven independent pa
  await page.goto("/#more");
  await expect(page.locator(".style-option")).toHaveCount(15);
  for(const id of all)await expect(page.locator('[data-style-choice="'+id+'"]')).toHaveCount(1);
+ await page.locator("[data-style-picker-open]").click();
  await page.locator('[data-style-choice="editorial-dark"]').click();
  await expect(page.locator("html")).toHaveAttribute("data-visual-style","editorial");
  await expect(page.locator("html")).toHaveAttribute("data-theme","dark");
  await expect(page.locator('[data-style-choice="editorial-dark"]')).toHaveAttribute("aria-pressed","true");
+ await page.locator("[data-style-picker-open]").click();
  await page.locator('[data-style-choice="editorial-light"]').click();
  await expect(page.locator("html")).toHaveAttribute("data-theme","light");
+ await page.locator("[data-style-picker-open]").click();
  await page.locator('[data-style-choice="taiwan-poster"]').click();
  await expect(page.locator("html")).toHaveAttribute("data-visual-style","taiwan-poster");
  await expect(page.locator("html")).toHaveAttribute("data-theme","light");
+ await page.locator("[data-style-picker-open]").click();
  await page.locator("[data-style-reset]").click();
  await expect(page.locator("html")).toHaveAttribute("data-visual-style","editorial");
  await expect(page.locator("html")).toHaveAttribute("data-theme","system");
@@ -123,7 +127,8 @@ test.describe("style assets available offline",()=>{
    const cached=await page.evaluate(async paths=>
       Promise.all(paths.map(async path=>Boolean(await caches.match(new URL(path,location.href).href)))),paths);
    expect(cached).toEqual(paths.map(()=>true));
-   await page.locator('[data-style-choice="taiwan-poster"]').click();
+   await page.locator("[data-style-picker-open]").click();
+ await page.locator('[data-style-choice="taiwan-poster"]').click();
    await expect.poll(()=>page.evaluate(() =>
      TravelLiteStorage.get("sample-tokyo-2026:visualStyle"))).toBe("taiwan-poster");
    await context.setOffline(true);

@@ -508,6 +508,16 @@ This is a **bounded exception** to the original 2026-09 no-preset direction. It 
 | `geometric-print` | source-audited second prompt | hard-edged polygon print without illustration outlines or shadows |
 | `quiet-acrylic` | source-audited second prompt | tiny thin-line acrylic motif and very large ivory-paper whitespace |
 
+### Responsive Appearance selector: progressive disclosure
+
+Do not permanently render fifteen visual tiles in the More page. Show one compact row with **the currently selected Style Pack** and a clear "Change visual style" action.
+
+- **Narrow phone (≤767px):** activate a native modal **bottom sheet**, occupying at most 88dvh by default; only the tiles scroll. Header, reset and close stay available. Selecting a tile applies it and closes the sheet so the actual itinerary is visible.
+- **Tablet / desktop (≥768px):** activate a native modal **right drawer** (max-width 550px). The rest of the page remains behind a dim overlay. The drawer stays open after selection for quick consecutive comparisons until user closes it.
+- **Keyboard / accessibility:** use `dialog.showModal()` so background becomes inert, focus stays within, Escape closes and focus returns to the refreshed trigger. All controls must have usable sizes and visible focus rings. Backdrop and dedicated close/done actions also dismiss the panel.
+- **No new style-choice mode setting:** one consistent trigger chooses the right presentation by viewport; do not create redundant user preferences for disclosure mechanism. The existing local Style Pack preference and shared trip facts remain unchanged.
+- **Reduced motion:** entrance animations are decorative only and disabled under `prefers-reduced-motion` or saved motion reduction. Smaller 320×568 phones, landscape rotations and wide desktops must keep the picker footer reachable without horizontal scrolling.
+
 Shared and invariant across styles:
 
 - single `trip.json` source of facts and state semantics
