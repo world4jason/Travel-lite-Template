@@ -169,7 +169,7 @@
     const booklet = format === "a5";
     const chinese = lang === "zh";
     const cover = `<section class="cover ${booklet ? "booklet-cover" : ""}">
-      <p class="eyebrow">${chinese ? "旅行小手冊" : booklet ? "Travel booklet" : "Travel itinerary"}</p>
+      <p class="eyebrow">${booklet ? (chinese ? "旅行小手冊" : "Travel booklet") : (chinese ? "完整行程" : "Travel itinerary")}</p>
       <h1>${html(model.title)}</h1>
       ${model.subtitle ? `<p class="subtitle">${html(model.subtitle)}</p>` : ""}
       <p class="range">${html(model.startDate)} – ${html(model.endDate)}</p>

@@ -135,3 +135,57 @@ test("stable calendar UID cannot collide when IDs contain punctuation", () => {
   const uid = (output) => output.text.match(/UID:([^\r\n]+)/)[1];
   assert.notEqual(uid(one), uid(two));
 });
+
+// Review #76: verify item > day > trip precedence in one itinerary spanning
+// the European DST change, with explicit UTC values (no inferred durations).
+test("ICS preserves item → day → trip timezones with precise UTC start/end across Europe DST", () => {
+  const data = fixture([], "Asia/Tokyo");
+  data.days = [
+    { id: "amsterdam", date: "2026-03-29", timezone: "Europe/Amsterdam", items: [
+      { id: "ny-override", title: "New York appointment", timezone: "America/New_York",
+        start: "09:30", end: "10:30" },
+      { id: "day-fallback", title: "Amsterdam breakfast", start: "09:30", end: "10:30" },
+      { id: "dst-gap", title: "Amsterdam missing hour", start: "02:30" }
+    ] },
+    { id: "tokyo", date: "2026-03-29", items: [
+      { id: "trip-fallback", title: "Tokyo call", start: "09:30", end: "10:30" }
+    ] }
+  ];
+
+  const result = core.buildIcs(data, api, { nowMs: 0 });
+  assert.equal(result.included, 3);
+  assert.deepEqual(result.skipReasons, {
+    noTime: 0, invalidTimeZone: 0, invalidDateOrTime: 1, missingId: 0
+  });
+
+  function eventNamed(summary) {
+    const event = result.text.split("BEGIN:VEVENT\r\n")
+      .find((block) => block.includes("SUMMARY:" + summary + "\r\n"));
+    assert.ok(event, "event not present: " + summary);
+    return event.split("END:VEVENT\r\n")[0];
+  }
+
+  // On 2026-03-29 Europe/Amsterdam has switched to UTC+02.
+  const override = eventNamed("New York appointment");
+  assert.match(override, /DTSTART:20260329T133000Z\r\n/); // NY EDT UTC-4
+  assert.match(override, /DTEND:20260329T143000Z\r\n/);
+
+  const dayFallback = eventNamed("Amsterdam breakfast");
+  assert.match(dayFallback, /DTSTART:20260329T073000Z\r\n/); // CEST UTC+2
+  assert.match(dayFallback, /DTEND:20260329T083000Z\r\n/);
+
+  const tripFallback = eventNamed("Tokyo call");
+  assert.match(tripFallback, /DTSTART:20260329T003000Z\r\n/); // JST UTC+9
+  assert.match(tripFallback, /DTEND:20260329T013000Z\r\n/);
+  assert.doesNotMatch(result.text, /SUMMARY:Amsterdam missing hour/);
+});
+
+test("Chinese print cover distinguishes A4 itinerary from A5 booklet", () => {
+  const data = fixture([{ id: "morning", title: "Tokyo", start: "09:00" }]);
+  const a4 = core.printHtml(data, "a4", "zh");
+  const a5 = core.printHtml(data, "a5", "zh");
+  assert.match(a4, /<p class="eyebrow">完整行程<\/p>/);
+  assert.doesNotMatch(a4, /<p class="eyebrow">旅行小手冊<\/p>/);
+  assert.match(a5, /<p class="eyebrow">旅行小手冊<\/p>/);
+  assert.doesNotMatch(a5, /<p class="eyebrow">完整行程<\/p>/);
+});

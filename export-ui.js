@@ -45,8 +45,17 @@
     const alarmMinutes = raw === 30 ? 30 : 0;
     try {
       const result = core.buildIcs(state.data, globalThis.TravelLiteTime, { alarmMinutes });
+      const reasons = result.skipReasons;
+      const reasonText = [
+        reasons.noTime && label(`${reasons.noTime} without fixed time`, `${reasons.noTime} 個時間未定`),
+        reasons.invalidDateOrTime && label(`${reasons.invalidDateOrTime} invalid/ambiguous time`, `${reasons.invalidDateOrTime} 個時間無法確認`),
+        reasons.invalidTimeZone && label(`${reasons.invalidTimeZone} invalid time zone`, `${reasons.invalidTimeZone} 個時區無效`),
+        reasons.missingId && label(`${reasons.missingId} missing stable ID`, `${reasons.missingId} 個缺少穩定 ID`)
+      ].filter(Boolean).join("; ");
+      const status = label(`Exported ${result.included} events. ${result.skipped} skipped${reasonText ? ": " + reasonText : ""}.`,
+        `已匯出 ${result.included} 個活動；略過 ${result.skipped} 個${reasonText ? "：" + reasonText : ""}。`);
       if (!result.included) {
-        setStatus(label("No events with valid scheduled times to export.", "沒有可匯出的有效固定時間活動。"));
+        setStatus(status);
         return;
       }
       const objectUrl = URL.createObjectURL(new Blob([result.text], { type: "text/calendar;charset=utf-8" }));
@@ -58,15 +67,7 @@
       anchor.click();
       anchor.remove();
       window.setTimeout(() => URL.revokeObjectURL(objectUrl), 10_000);
-      const reasons = result.skipReasons;
-      const reasonText = [
-        reasons.noTime && label(`${reasons.noTime} without fixed time`, `${reasons.noTime} 個時間未定`),
-        reasons.invalidDateOrTime && label(`${reasons.invalidDateOrTime} invalid/ambiguous time`, `${reasons.invalidDateOrTime} 個時間無法確認`),
-        reasons.invalidTimeZone && label(`${reasons.invalidTimeZone} invalid time zone`, `${reasons.invalidTimeZone} 個時區無效`),
-        reasons.missingId && label(`${reasons.missingId} missing stable ID`, `${reasons.missingId} 個缺少穩定 ID`)
-      ].filter(Boolean).join("; ");
-      setStatus(label(`Exported ${result.included} events. ${result.skipped} skipped${reasonText ? ": " + reasonText : ""}.`,
-        `已匯出 ${result.included} 個活動；略過 ${result.skipped} 個${reasonText ? "：" + reasonText : ""}。`));
+      setStatus(status);
     } catch (error) {
       console.warn("Travel Lite ICS export", error);
       setStatus(label("Calendar export failed. Please check itinerary times.", "日曆匯出失敗，請檢查行程時間與時區。"));

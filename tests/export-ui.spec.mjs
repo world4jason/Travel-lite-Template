@@ -154,3 +154,69 @@ test("installed PWA keeps the export launcher and ICS working after offline relo
     await context.close();
   }
 });
+
+// Review #76: the zero-export path must report the same count and reasons
+// as a successful download, while never creating an empty ICS file.
+async function loadExportFixture(page, data) {
+  await page.unroute("**/trip.json");
+  await page.route("**/trip.json", (route) => route.fulfill({
+    status: 200, contentType: "application/json", body: JSON.stringify(data)
+  }));
+  await page.reload();
+  await expect(page.locator("#travel-export-actions")).toBeVisible();
+  await page.evaluate(() => {
+    window.__icsBlobAttempts = 0;
+    const create = URL.createObjectURL.bind(URL);
+    URL.createObjectURL = (...args) => {
+      window.__icsBlobAttempts += 1;
+      return create(...args);
+    };
+  });
+}
+
+test("all-TBD trip shows zero-export skip count in zh-TW and never downloads", async ({ page }) => {
+  const data = structuredClone(trip);
+  data.ui.locale = "zh-TW";
+  data.days = [{ ...data.days[0], id: "all-tbd", items: [
+    { id: "tbd1", title: "Flexible museum", start: "TBD" },
+    { id: "tbd2", title: "Free afternoon" }
+  ] }];
+  await loadExportFixture(page, data);
+  let downloaded = false;
+  page.on("download", () => { downloaded = true; });
+  await page.locator('[data-travel-export="ics"]').click();
+  await expect(page.locator("#travel-export-status"))
+    .toContainText("已匯出 0 個活動；略過 2 個：2 個時間未定");
+  expect(await page.evaluate(() => window.__icsBlobAttempts)).toBe(0);
+  expect(downloaded).toBe(false);
+});
+
+test("invalid DST, zone, missing ID and TBD show all skip reasons without a download", async ({ page }) => {
+  const data = structuredClone(trip);
+  data.trip.timezone = "America/New_York";
+  data.ui.locale = "en";
+  data.days = [{ ...data.days[0], id: "invalid-day", date: "2026-03-08",
+    timezone: "America/New_York", items: [
+      { id: "dst-gap", title: "Nonexistent DST hour", start: "02:30" },
+      { id: "bad-zone", title: "Invalid zone", start: "09:00", timezone: "Mars/Olympus" },
+      { id: "missing-id", title: "Missing ID", start: "11:00" },
+      { id: "tbd", title: "Untimed stop", start: "TBD" }
+    ] }];
+  await loadExportFixture(page, data);
+  // normalizeData supplies missing IDs by design; emulate corrupted runtime
+  // input after normalization to cover the exporter rejection path.
+  await page.evaluate(() => {
+    state.data.days[0].items.find((item) => item.title === "Missing ID").id = "";
+  });
+  let downloaded = false;
+  page.on("download", () => { downloaded = true; });
+  await page.locator('[data-travel-export="ics"]').click();
+  const status = page.locator("#travel-export-status");
+  await expect(status).toContainText("Exported 0 events. 4 skipped");
+  await expect(status).toContainText("1 without fixed time");
+  await expect(status).toContainText("1 invalid/ambiguous time");
+  await expect(status).toContainText("1 invalid time zone");
+  await expect(status).toContainText("1 missing stable ID");
+  expect(await page.evaluate(() => window.__icsBlobAttempts)).toBe(0);
+  expect(downloaded).toBe(false);
+});

@@ -109,7 +109,7 @@ Open **More → Export / 匯出** to take a snapshot of the *published, read-onl
 
 **Important limits:** PDF and imported calendar files are **snapshots**. Re-importing an ICS may duplicate events; importing does not keep future edits in sync. Reminder delivery depends on the receiving calendar. A5 is sequential reading order, **not** duplex booklet imposition. Mobile browsers may need permission to open a new tab for print preview.
 
-Exports use the same `trip.json` as the website. A4/A5 include only a minimal confirmed-booking overview from published fields; **private on-device notes, checklist completion, booking tokens and unpublished files are not exported by default**. No map-image provider or online fonts are needed to print text.
+Exports use the same published `trip.json` as the website. A4/A5 print **published itinerary text (including `item.note`) and selected confirmed-booking summary fields as supplied**, without automatic secret/token scrubbing. **Remove private credentials, tokens, and other sensitive material before publishing `trip.json`**; both the public site and printed copies can expose it. Device-local personal notes and checklist completion are not included. No map-image provider or online fonts are needed to print text.
 
 Implementation: `export-core.js` (print/ICS functions), `export-ui.js` (More actions), `export.css` (screen launcher). Run:
 
