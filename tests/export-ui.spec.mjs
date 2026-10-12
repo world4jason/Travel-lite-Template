@@ -144,6 +144,12 @@ test("installed PWA keeps the export launcher and ICS working after offline relo
       offlinePage.locator('[data-travel-export="ics"]').click()
     ]);
     expect(download.suggestedFilename()).toMatch(/\.ics$/);
+    const [popup] = await Promise.all([
+      offlinePage.waitForEvent("popup"),
+      offlinePage.locator('[data-travel-export="a4"]').click()
+    ]);
+    await expect(popup.locator("h1")).toContainText("Tokyo Autumn");
+    await popup.close();
   } finally {
     await context.close();
   }
