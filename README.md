@@ -63,6 +63,7 @@ Also included:
 請依序執行：
 1. 先讀來源模板的 AGENTS.md、docs/TRIP_SCHEMA.md、
    docs/SOURCE_NORMALIZATION.md、docs/TIMEZONE.md。
+   若無法讀取行程檔案／網址，先請我補充，不可假裝已取得資料。
 2. 在目標位置建立全新的 Repository：若來源已啟用 GitHub Template，
    優先使用模板；否則複製程式到獨立的新 Repo。確認 git remote 指向
    目標 Repo，不要修改或 Push 到 world4jason/Travel-lite-Template。
@@ -100,6 +101,7 @@ Interface locale: zh-TW unless the itinerary asks for another locale
 
 1. Read AGENTS.md, docs/TRIP_SCHEMA.md, docs/SOURCE_NORMALIZATION.md,
    and docs/TIMEZONE.md in the source repository before changing files.
+   If the itinerary is inaccessible, request access rather than guessing.
 2. Create an independent repository at the destination. Use GitHub's
    template workflow if the source is enabled as a template; otherwise
    copy the source into a NEW repository. Verify the git remote points
