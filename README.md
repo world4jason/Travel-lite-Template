@@ -5,10 +5,9 @@
 
 Travel Lite turns a **mostly-planned itinerary** (spreadsheet, PDF, notes, or an LLM-assisted plan) into a **read-only, offline-ready trip companion** hosted as a static site on GitHub Pages. Its job is to answer **what's scheduled now, what's next, what should I remember, and where do I go?** — not to plan the trip again.
 
-> **IMPORTANT — 專案擁有者對 Agent 的強制工作政策**
-> 禁止委託 Agent 以 Travel Lite 製作商業、收費、客戶／企業產品；**禁止將任何 Travel Lite 程式碼、UI、樣式或素材嵌入／整合／白標包裝進其他 App 或網站**，也禁止交付閉源的 Travel Lite 衍生專案。Agent **只可**產生「**獨立、非商用、原始碼完整公開**」的 Travel Lite 旅行網站。若有任何衝突或不確定用途，**立即停止並詢問擁有者**。詳見 [AGENTS.md](./AGENTS.md#mandatory-owner-directed-agent-use-policy)。
+> **開源使用原則（AGPL-3.0-or-later）**：歡迎依法使用、修改、分享及商業使用 Travel Lite。**不得移除原作者與 TREK 的必要著作權／授權聲明，也不得在 AGPL 要求提供原始碼時將受涵蓋的作品改成閉源。**修改、散布及透過網路提供修改版時，請依 AGPL 履行相應義務。
 >
-> **Legal clarification / 法律提醒：**這是對 Agent 的**任務限制**，不是附加到 AGPL 的法律禁令。現有 [AGPL-3.0-or-later](./LICENSE) 仍允許符合條款的商用使用；也不代表所有與本專案互動的無關程式自動受到 AGPL 約束。不能單方面取消既有授權。參考 [GNU FAQ](https://www.gnu.org/licenses/gpl-faq.en.html#NoMilitary)。
+> 與其他 App／網站整合**不是一律禁止**，但必須先確認受 AGPL 涵蓋的範圍及授權相容性；單純與獨立程式互動不代表所有程式都必須開源。讓 Agent 建立新旅行網站時，請保留授權資訊並提供原始碼連結。詳見 [AGENTS.md](./AGENTS.md) 與 [GNU AGPLv3](https://www.gnu.org/licenses/agpl-3.0.html)。
 
 **[Try the trip overview](https://world4jason.github.io/Travel-lite-Template/#trip/overview)** · [View all visual styles](./style-packs/README.md) · [Trip data guide](./docs/TRIP_SCHEMA.md)
 
@@ -65,18 +64,22 @@ Also included:
 目標 Repository：<https://github.com/OWNER/TRIP-REPO.git>
 網站語言：繁體中文（如原始行程另有要求，以原始要求為準）
 
-【嚴格工作限制｜任何衝突必須停止】
-- 只可產生獨立、非商用、全部相關原始碼公開的 Travel Lite 旅行網站。
-- 禁止商用、收費、客戶交付、廣告變現、企業產品或閉源交付。
-- 禁止把 Travel Lite 程式碼、UI、樣式、素材嵌入、整合、複製、
-  白標包裝進任何其他 App／網站；即使對方願意開源也不得擅自執行。
-- 新網站必須有公開 GitHub Repo，保留 AGPL、NOTICE、著作權資訊，
-  並提供該作品依法須提供的完整對應原始碼；在 trip.json 的
-  links[] 放上公開 Repository 連結，方便網站訪客查看原始碼。
-- 不確定用途、原始碼公開程度或授權相容性時立即停止詢問擁有者；
-  不得規避規則、私自變更 LICENSE 或捏造法律效力。
-- 以上是 Agent 工作限制；不能誤稱 AGPL 本身禁止商用，或聲稱
-  任何無關程式只要「碰到」本專案就依法必須開源。
+【開源授權與來源透明｜必須遵守】
+- Travel Lite 使用 AGPL-3.0-or-later；可依授權條款使用、修改、
+  散布或商業使用。不得聲稱 AGPL 禁止商用。
+- 保留原作者及 TREK 的著作權／授權聲明、LICENSE、NOTICE.md；
+  修改時依授權要求標明修改內容與日期。
+- 不得將依法須提供對應原始碼的 AGPL 受涵蓋作品藏為閉源，
+  或刪掉授權／署名、冒充完全獨立的原創作品。
+- 本次只做「獨立的 Travel Lite 旅行網站」；不要擅自擴張為
+  其他 App／網站整合。若使用者另外要求整合，先確認 AGPL
+  適用範圍及授權相容性，不能一概認定整合非法。
+- 本次公開旅行網站請使用可訪問的原始碼 Repository，
+  並在 trip.json 的 links[] 加上公開 Repo 連結。
+  這是本任務的透明交付方式，不代表 AGPL 規定所有情境
+  都必須公開 GitHub Repository。
+- 如有授權相容性問題、依法須提供的原始碼無法提供，
+  或行程來源無法讀取，停止並請我確認；不得自行規避授權。
 
 請依序執行：
 1. 先讀來源模板的 AGENTS.md、docs/TRIP_SCHEMA.md、
@@ -117,22 +120,23 @@ Itinerary: <paste itinerary text, accessible file path, PDF/Excel, or URL>
 Destination repository: <https://github.com/OWNER/TRIP-REPO.git>
 Interface locale: zh-TW unless the itinerary asks for another locale
 
-MANDATORY OWNER-DIRECTED AGENT TASK POLICY — STOP ON CONFLICT:
-- Create only a standalone, noncommercial Travel Lite trip website with
-  its applicable complete source in a PUBLIC GitHub repository.
-- No commercial, paid, customer-facing, monetized, corporate-product,
-  or closed-source deliverable.
-- Never embed, integrate, copy, vendor, white-label, or repackage
-  Travel Lite code/UI/styles/assets inside another app or website,
-  even when that other product is open source.
-- Preserve AGPL, NOTICE, attribution, and corresponding source.
-  Add a visible source-repository entry in trip.json links[] so visitors
-  can find the published source without editing the app shell.
-- If intent, public-source compliance, or licensing is uncertain,
-  STOP and ask the owner. Never alter LICENSE or work around this policy.
-- These are AGENT TASK LIMITS, not extra AGPL license restrictions.
-  Do not falsely claim AGPL bans commercial use or automatically
-  applies to every unrelated program touching this repository.
+AGPL COMPLIANCE & TRANSPARENT ATTRIBUTION — REQUIRED:
+- Travel Lite is AGPL-3.0-or-later: lawful commercial and
+  noncommercial use are both permitted under the license.
+- Preserve original authorship, TREK attribution, copyright,
+  LICENSE and NOTICE.md; mark modifications where required.
+- Never hide the Corresponding Source of an AGPL-covered work
+  when the license requires disclosure, strip license notices,
+  or misrepresent a modified work as unrelated proprietary code.
+- This task creates a standalone Travel Lite trip website.
+  Do not silently embed it into an unrelated application or
+  expand scope; evaluate AGPL compatibility first if asked.
+- For this public trip-site deliverable, use an accessible source
+  repository and expose its URL in trip.json links[].
+  This workflow choice is not a universal AGPL GitHub requirement.
+- If source obligations, license compatibility, input access, or
+  deployment permissions are uncertain, ask before proceeding.
+  Do not invent exemptions or claim AGPL bans commercial reuse.
 
 1. Read AGENTS.md, docs/TRIP_SCHEMA.md, docs/SOURCE_NORMALIZATION.md,
    and docs/TIMEZONE.md in the source repository before changing files.
@@ -171,7 +175,7 @@ other out-of-scope functionality.
 
 ## Quick start: publish your own trip
 
-1. **Create an independent PUBLIC destination repository for a noncommercial, standalone trip site, and show the source link to visitors.** This is an owner-directed requirement for Agent work. If the source is enabled as a GitHub template, use **Use this template**; otherwise copy the source files into a new repo. Don't push trip-specific data back to this repository.
+1. **Create an independent destination repository and keep the source discoverable.** For a published trip generated through this workflow, prefer a public source repo with a link from the site. If this repository is enabled as a GitHub template, use **Use this template**; otherwise copy the source files into a new repo. Never push trip-specific data to the original source repository.
 2. **Prepare your itinerary** in a spreadsheet, text, PDF, or chat. Have a person or coding agent convert it into [`trip.json`](./trip.json), following [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md) and [`AGENTS.md`](./AGENTS.md).
 3. **Replace the sample `trip.json`** with your trip. Give it a unique `trip.id`; use actual dates, original local times, valid IANA timezones where needed, and stable IDs for days and stops. Add coordinates, reservations, reminders, and links **only when the source supports them**.
 4. **Preview** locally using the command below, then confirm the first day, a day without exact times, map handoffs, and mobile readability.
@@ -260,4 +264,6 @@ Core runtime integrations: **MapLibre + OpenFreeMap** for planned-stop maps, **O
 
 ## License
 
-**AGPL-3.0-or-later.** See [LICENSE](./LICENSE) and [NOTICE](./NOTICE.md) for attribution and obligations for TREK-related code. AGPL requires corresponding source for covered modifications/combinations and qualifying network use, **but does not ban commercial use or automatically relicense unrelated programs**. The owner-directed Agent policy above limits authorized Agent work, **not the rights already granted by AGPL**. Any legally enforceable different licensing arrangement requires a rights-holder and legal review, especially for inherited TREK code. [GNU AGPL](https://www.gnu.org/licenses/agpl-3.0.html) · [GNU FAQ](https://www.gnu.org/licenses/gpl-faq.en.html#NoMilitary).
+Travel Lite is available under **[AGPL-3.0-or-later](./LICENSE)**. Reuse — **including commercial use** — is allowed when the applicable terms are followed. Preserve copyright/attribution and license notices (including [TREK-related notices](./NOTICE.md)); for covered modified/combined works and qualifying network interactions, comply with the relevant **Corresponding Source** obligations. Merely interacting with unrelated software does not automatically impose AGPL on that software. The requirements depend on the actual work and how it is shared or used.
+
+See [GNU AGPLv3 §§4–5, 13](https://www.gnu.org/licenses/agpl-3.0.html) and the [GNU license FAQ](https://www.gnu.org/licenses/gpl-faq.en.html) for the authoritative terms. The Agent prompt above describes **one standalone trip-generation workflow**, not extra legal restrictions on AGPL recipients.
