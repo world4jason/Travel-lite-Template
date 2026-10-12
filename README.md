@@ -115,9 +115,10 @@ Also included:
 5. 依 docs/MAINTENANCE.md 驗證行程資料、無固定時間的日子、
    地圖外部連結與版面；至少檢查手機 390×844、
    桌面 1100×900（或更大）及 More → Links 的原始碼連結。
-   檢查 trip.json.ui.locale 與使用者指定值一致；在實際網站確認
-   導覽選單／介面標籤顯示對應語言（預設 zh-TW：現在、行程、地圖、
-   清單、更多），不能僅檢查行程內文。
+   檢查 trip.json.ui.locale 與使用者指定值一致；確認實際
+   主要導覽標籤使用對應語言（預設 zh-TW：現在、行程、地圖、
+   清單、更多），不能僅檢查行程內文。若其他介面區塊
+   仍是英文，須列為已知語系限制並回報，不得宣稱整站已翻譯。
    環境允許時執行以下指令：
      npm install
      npx playwright install chromium
@@ -204,10 +205,11 @@ AGPL COMPLIANCE & TRANSPARENT ATTRIBUTION — REQUIRED:
 5. Follow docs/MAINTENANCE.md to check itinerary accuracy, untimed days,
    external map links, mobile (390×844), desktop (1100×900 or larger),
    and the destination Source Code link under More → Links.
-   Assert trip.json.ui.locale matches the chosen interface language,
-   then confirm the rendered navigation/shell labels use that language
-   (default en: Now / Trip / Map / Check / More). Checking only
-   itinerary content is insufficient.
+   Assert trip.json.ui.locale matches the chosen interface language;
+   verify the rendered primary navigation labels (default en:
+   Now / Trip / Map / Check / More), not only itinerary text.
+   Report other interface labels that remain untranslated instead
+   of claiming full-site localization.
    If the environment supports it, run:
      npm install
      npx playwright install chromium
