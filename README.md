@@ -45,9 +45,96 @@ Also included:
 
 **Travel Lite is not:** a trip planner/editor, navigation engine, live transit tracker, booking manager, reviews database, or real-time group chat. It links to specialist tools rather than rebuilding them.
 
+## Create a trip site with an AI agent (copy & paste)
+
+**No coding required from the traveler.** Give a coding agent access to the itinerary and a GitHub account authorized to create the destination repository. Replace the **itinerary** and **destination repository** placeholders below, then paste the whole prompt into your agent.
+
+### 繁體中文｜直接複製給 Agent
+
+```text
+請幫我把以下「已規劃好的行程」製作成獨立的 Travel Lite 旅遊網站，
+並發佈到 GitHub Pages。請實際完成，而不只是提供操作教學。
+
+來源模板：https://github.com/world4jason/Travel-lite-Template
+行程資料：<貼上行程全文、檔案路徑，或可讀取的 PDF／Excel／網頁網址>
+目標 Repository：<https://github.com/OWNER/TRIP-REPO.git>
+網站語言：繁體中文（如原始行程另有要求，以原始要求為準）
+
+請依序執行：
+1. 先讀來源模板的 AGENTS.md、docs/TRIP_SCHEMA.md、
+   docs/SOURCE_NORMALIZATION.md、docs/TIMEZONE.md。
+2. 在目標位置建立全新的 Repository：若來源已啟用 GitHub Template，
+   優先使用模板；否則複製程式到獨立的新 Repo。確認 git remote 指向
+   目標 Repo，不要修改或 Push 到 world4jason/Travel-lite-Template。
+   若目標 Repo 已有其他內容，先確認，禁止直接覆蓋。
+3. 從提供的行程來源產生新 trip.json，取代東京示範行程。
+   保留真實的日期、當地時間、景點順序、住宿和交通資訊；
+   未提供的時間維持 TBD，不得臆造路線、座標、費用或訂位狀態。
+   跨國旅程依 item → day → trip 設定有效時區；使用穩定的 ID。
+4. 維持既有唯讀網站的功能與外觀架構。優先只修改 trip.json
+   及確實需要的行程圖片／素材；保留 LICENSE、NOTICE.md。
+   公開網站不得上傳護照、密碼、完整訂位憑證或其他敏感資料。
+5. 先驗證行程內容、手機與桌面顯示、地圖外部連結、
+   沒有固定時間的日子，以及現有回歸測試（可執行時）。
+6. Push 到目標 Repo 的 main，設定 GitHub Pages 使用
+   main / (root)，等待發佈並實際開啟網站，確認可正常讀取。
+   若無權限建立 Repo 或啟用 Pages，說明阻礙並提供剩餘步驟，
+   不可宣稱已部署成功。
+
+完成後請回覆：GitHub Repo URL、GitHub Pages URL、
+驗收結果、未確認或缺少的行程資訊。不要順便新增規劃器、
+登入／同步後端、即時導航或其他不在此需求內的功能。
+```
+
+<details>
+<summary>English — copy/paste agent prompt</summary>
+
+```text
+Create a NEW Travel Lite trip companion from the planned itinerary below
+and publish it to GitHub Pages. Perform the work, not just explain it.
+
+Source: https://github.com/world4jason/Travel-lite-Template
+Itinerary: <paste itinerary text, accessible file path, PDF/Excel, or URL>
+Destination repository: <https://github.com/OWNER/TRIP-REPO.git>
+Interface locale: zh-TW unless the itinerary asks for another locale
+
+1. Read AGENTS.md, docs/TRIP_SCHEMA.md, docs/SOURCE_NORMALIZATION.md,
+   and docs/TIMEZONE.md in the source repository before changing files.
+2. Create an independent repository at the destination. Use GitHub's
+   template workflow if the source is enabled as a template; otherwise
+   copy the source into a NEW repository. Verify the git remote points
+   to the destination. Never push to the original template. Do not
+   overwrite an existing destination repository without confirmation.
+3. Replace the Tokyo demo in trip.json with a source-faithful version of
+   the supplied itinerary. Keep original dates, local times, stop order,
+   and confirmed facts. Leave unknown times as TBD; do not invent
+   coordinates, transfers, fares, booking status, or resolved decisions.
+   Use stable IDs and item → day → trip timezone precedence.
+4. Preserve the existing read-only site, LICENSE, and NOTICE.md.
+   Prefer changing trip.json and only genuinely needed trip assets.
+   Never publish secrets, passport data, or full booking credentials.
+5. Validate itinerary content, phone/desktop layout, external map links,
+   untimed days, and available regression tests.
+6. Push to the destination's main branch, configure GitHub Pages to
+   deploy from main / (root), and verify the live URL loads correctly.
+   If permissions block creation/deployment, report the exact blocker
+   and remaining steps rather than claiming success.
+
+Finish with: destination GitHub repository URL, live GitHub Pages URL,
+validation evidence, and unresolved/missing itinerary information.
+Do not add a planner, backend, user accounts, live navigation, or
+other out-of-scope functionality.
+```
+
+</details>
+
+**GitHub template note:** The **Use this template** button and `gh repo create --template` work only after the source repository owner enables **Settings → General → Template repository**. Until then, create a separate destination repo and copy the source files; don't push changes to this repo. See [GitHub's template repository guide](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository).
+
+**Security and deployment:** A public GitHub Pages site may expose everything committed to `trip.json`. Don't include passports, passwords, private booking tokens, or sensitive personal documents. [GitHub Pages publishing setup](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) may require repository permissions. The agent must verify the published site before reporting deployment as complete.
+
 ## Quick start: publish your own trip
 
-1. **Fork or use this repository as a template.** Keep the static app files.
+1. **Create an independent destination repository.** If the source is enabled as a GitHub template, use **Use this template**; otherwise copy the source files into a new repo. Don't push trip-specific data back to this repository.
 2. **Prepare your itinerary** in a spreadsheet, text, PDF, or chat. Have a person or coding agent convert it into [`trip.json`](./trip.json), following [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md) and [`AGENTS.md`](./AGENTS.md).
 3. **Replace the sample `trip.json`** with your trip. Give it a unique `trip.id`; use actual dates, original local times, valid IANA timezones where needed, and stable IDs for days and stops. Add coordinates, reservations, reminders, and links **only when the source supports them**.
 4. **Preview** locally using the command below, then confirm the first day, a day without exact times, map handoffs, and mobile readability.
