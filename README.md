@@ -232,9 +232,9 @@ For a full gallery, style IDs, preview links, optional illustration metadata, an
 The following are **open GitHub issues, not features currently available in the live site**:
 
 - [#70 Export features](https://github.com/world4jason/Travel-lite-Template/issues/70), split into [#71 A4 printable itinerary/PDF](https://github.com/world4jason/Travel-lite-Template/issues/71), [#72 A5 page-by-page travel booklet](https://github.com/world4jason/Travel-lite-Template/issues/72), and [#73 iCalendar `.ics` export](https://github.com/world4jason/Travel-lite-Template/issues/73).
-- [#74 Leaflet vs MapLibre evaluation](https://github.com/world4jason/Travel-lite-Template/issues/74). The live map **currently uses MapLibre**, not Leaflet.
-
 These are intentionally small, incremental extensions that keep GitHub Pages static deployment and the read-only trip model.
+
+**Map engine:** [#74 Leaflet vs MapLibre evaluation](https://github.com/world4jason/Travel-lite-Template/issues/74) is **complete**; the decision was to retain MapLibre. No Leaflet migration is planned.
 
 ## Development and reference docs
 
