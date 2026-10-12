@@ -106,12 +106,18 @@ Also included:
    保留真實的日期、當地時間、景點順序、住宿和交通資訊；
    未提供的時間維持 TBD，不得臆造路線、座標、費用或訂位狀態。
    跨國旅程依 item → day → trip 設定有效時區；使用穩定的 ID。
+   網站介面預設為繁體中文：明確設定 trip.json 的 ui.locale = "zh-TW"，
+   只有我另行指定網站語言時才改成對應 locale。
+   不要沿用東京示範的 "en"；原始行程文字不必自行翻譯。
 4. 維持既有唯讀網站的功能與外觀架構。優先只修改 trip.json
    及確實需要的行程圖片／素材；保留 LICENSE、NOTICE.md。
    公開網站不得上傳護照、密碼、完整訂位憑證或其他敏感資料。
 5. 依 docs/MAINTENANCE.md 驗證行程資料、無固定時間的日子、
    地圖外部連結與版面；至少檢查手機 390×844、
    桌面 1100×900（或更大）及 More → Links 的原始碼連結。
+   檢查 trip.json.ui.locale 與使用者指定值一致；在實際網站確認
+   導覽選單／介面標籤顯示對應語言（預設 zh-TW：現在、行程、地圖、
+   清單、更多），不能僅檢查行程內文。
    環境允許時執行以下指令：
      npm install
      npx playwright install chromium
@@ -189,12 +195,19 @@ AGPL COMPLIANCE & TRANSPARENT ATTRIBUTION — REQUIRED:
    and confirmed facts. Leave unknown times as TBD; do not invent
    coordinates, transfers, fares, booking status, or resolved decisions.
    Use stable IDs and item → day → trip timezone precedence.
+   Explicitly set trip.json.ui.locale = "en" for this English starter,
+   unless I request another interface language (e.g. "zh-TW").
+   Do not leave an old demo locale or auto-translate source itinerary text.
 4. Preserve the existing read-only site, LICENSE, and NOTICE.md.
    Prefer changing trip.json and only genuinely needed trip assets.
    Never publish secrets, passport data, or full booking credentials.
 5. Follow docs/MAINTENANCE.md to check itinerary accuracy, untimed days,
    external map links, mobile (390×844), desktop (1100×900 or larger),
    and the destination Source Code link under More → Links.
+   Assert trip.json.ui.locale matches the chosen interface language,
+   then confirm the rendered navigation/shell labels use that language
+   (default en: Now / Trip / Map / Check / More). Checking only
+   itinerary content is insufficient.
    If the environment supports it, run:
      npm install
      npx playwright install chromium
