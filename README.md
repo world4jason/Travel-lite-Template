@@ -33,7 +33,7 @@ A travel companion can be generated for a different destination by changing **tr
 | **Trip** | Scan all days, follow the planned stop order, read transfers, highlights, and open decisions |
 | **Map** | See the planned stops and open a selected place in Google Maps for navigation |
 | **Check** | Tick off a personal packing list and tasks **on this device** |
-| **More** | Find shared reference information such as reservations, notes, links and contacts, plus device-local quick notes |
+| **More** | Find reservations, references, and a personal note; export the trip as A4/A5 printable pages or an `.ics` calendar |
 
 Also included:
 
@@ -99,14 +99,26 @@ For a full gallery, style IDs, preview links, optional illustration metadata, an
 - [Style Packs: all 14 packs / 15 appearances](./style-packs/README.md)
 - [Style Prompt Lab: turn visual prompts into reviewed style briefs](./style-generator/README.md)
 
-## Planned, not shipped yet
+## Export your trip: PDF / booklet / calendar
 
-The following are **open GitHub issues, not features currently available in the live site**:
+Open **More → Export / 匯出** to take a snapshot of the *published, read-only* trip:
 
-- [#70 Export features](https://github.com/world4jason/Travel-lite-Template/issues/70), split into [#71 A4 printable itinerary/PDF](https://github.com/world4jason/Travel-lite-Template/issues/71), [#72 A5 page-by-page travel booklet](https://github.com/world4jason/Travel-lite-Template/issues/72), and [#73 iCalendar `.ics` export](https://github.com/world4jason/Travel-lite-Template/issues/73).
-- [#74 Leaflet vs MapLibre evaluation](https://github.com/world4jason/Travel-lite-Template/issues/74). The live map **currently uses MapLibre**, not Leaflet.
+- **A4 itinerary:** opens a dedicated print preview. Choose **Print / Save PDF** in the new tab and use your browser's print-to-PDF or printer.
+- **A5 booklet:** same workflow, with a cover, trip-at-a-glance page, and separate day sections. Long days may span several printed pages rather than shrinking to illegible text.
+- **Calendar (.ics):** downloads scheduled events for importing into Apple Calendar, Google Calendar, or Outlook. Choose **None** or a **30-minute-before** alarm. Events without fixed start times (TBD) are skipped and counted in the status text.
 
-These are intentionally small, incremental extensions that keep GitHub Pages static deployment and the read-only trip model.
+**Important limits:** PDF and imported calendar files are **snapshots**. Re-importing an ICS may duplicate events; importing does not keep future edits in sync. Reminder delivery depends on the receiving calendar. A5 is sequential reading order, **not** duplex booklet imposition. Mobile browsers may need permission to open a new tab for print preview.
+
+Exports use the same `trip.json` as the website. A4/A5 include only a minimal confirmed-booking overview from published fields; **private on-device notes, checklist completion, booking tokens and unpublished files are not exported by default**. No map-image provider or online fonts are needed to print text.
+
+Implementation: `export-core.js` (print/ICS functions), `export-ui.js` (More actions), `export.css` (screen launcher). Run:
+
+```bash
+npm run test:export            # RFC 5545, DST, text folding and print-model checks
+npm run test:mobile            # existing UI + export popup/download/PDF smoke tests
+```
+
+Related work: [#70 A4/A5/ICS](https://github.com/world4jason/Travel-lite-Template/issues/70). **Maps remain MapLibre**; [#74](https://github.com/world4jason/Travel-lite-Template/issues/74) compared Leaflet's markers/polylines without changing the engine.
 
 ## Development and reference docs
 
