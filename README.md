@@ -74,16 +74,29 @@ Also included:
 - 本次只做「獨立的 Travel Lite 旅行網站」；不要擅自擴張為
   其他 App／網站整合。若使用者另外要求整合，先確認 AGPL
   適用範圍及授權相容性，不能一概認定整合非法。
-- 本次公開旅行網站請使用可訪問的原始碼 Repository，
-  並在 trip.json 的 links[] 加上公開 Repo 連結。
-  這是本任務的透明交付方式，不代表 AGPL 規定所有情境
-  都必須公開 GitHub Repository。
+- 本次公開旅行網站應提供可訪問的新專案原始碼 Repository。
+  在 trip.json 最上層的 links[] 新增原始碼連結，保留原有連結；
+  以下是局部 JSON 範例，絕對不能用它覆蓋整份 trip.json：
+  {
+    "links": [
+      {
+        "label": "Source Code / 原始碼",
+        "url": "https://github.com/OWNER/TRIP-REPO"
+      }
+    ]
+  }
+  將網址替換成「新建立的目標 Repository」，不可指向原始模板。
+  網站部署後，展開 More → Links（更多 → 實用連結），
+  點擊 Source Code / 原始碼，確認開啟目標 Repository。
+  這是本任務的公開原始碼交付方式，不代表 AGPL 規定所有情境
+  都必須使用公開的 GitHub Repository。
 - 如有授權相容性問題、依法須提供的原始碼無法提供，
   或行程來源無法讀取，停止並請我確認；不得自行規避授權。
 
 請依序執行：
 1. 先讀來源模板的 AGENTS.md、docs/TRIP_SCHEMA.md、
-   docs/SOURCE_NORMALIZATION.md、docs/TIMEZONE.md。
+   docs/SOURCE_NORMALIZATION.md、docs/TIMEZONE.md、
+   docs/MAINTENANCE.md（驗收與測試步驟）。
    若無法讀取行程檔案／網址，先請我補充，不可假裝已取得資料。
 2. 在目標位置建立全新的 Repository：若來源已啟用 GitHub Template，
    優先使用模板；否則複製程式到獨立的新 Repo。確認 git remote 指向
@@ -96,15 +109,25 @@ Also included:
 4. 維持既有唯讀網站的功能與外觀架構。優先只修改 trip.json
    及確實需要的行程圖片／素材；保留 LICENSE、NOTICE.md。
    公開網站不得上傳護照、密碼、完整訂位憑證或其他敏感資料。
-5. 先驗證行程內容、手機與桌面顯示、地圖外部連結、
-   沒有固定時間的日子，以及現有回歸測試（可執行時）。
+5. 依 docs/MAINTENANCE.md 驗證行程資料、無固定時間的日子、
+   地圖外部連結與版面；至少檢查手機 390×844、
+   桌面 1100×900（或更大）及 More → Links 的原始碼連結。
+   環境允許時執行以下指令：
+     npm install
+     npx playwright install chromium
+     npm run test:mobile
+   逐項記錄 PASS／FAIL／NOT RUN；無法執行時說明原因，
+   不能把未執行的項目宣稱為通過。失敗應修正或明確回報。
 6. Push 到目標 Repo 的 main，設定 GitHub Pages 使用
    main / (root)，等待發佈並實際開啟網站，確認可正常讀取。
    若無權限建立 Repo 或啟用 Pages，說明阻礙並提供剩餘步驟，
    不可宣稱已部署成功。
 
 完成後請回覆：GitHub Repo URL、GitHub Pages URL、
-驗收結果、未確認或缺少的行程資訊。不要順便新增規劃器、
+測試指令與 PASS／FAIL／NOT RUN 結果及原因、
+手機／桌面檢查、More → Links 連結驗證、
+實際開啟 GitHub Pages URL 的證據，以及未確認的行程資訊。
+不要順便新增規劃器、
 登入／同步後端、即時導航或其他不在此需求內的功能。
 ```
 
@@ -132,14 +155,29 @@ AGPL COMPLIANCE & TRANSPARENT ATTRIBUTION — REQUIRED:
   Do not silently embed it into an unrelated application or
   expand scope; evaluate AGPL compatibility first if asked.
 - For this public trip-site deliverable, use an accessible source
-  repository and expose its URL in trip.json links[].
+  repository. Add the source link at the ROOT of trip.json's links[]
+  without deleting existing entries; this is a PARTIAL JSON example,
+  not a replacement for the full itinerary:
+  {
+    "links": [
+      {
+        "label": "Source Code / 原始碼",
+        "url": "https://github.com/OWNER/TRIP-REPO"
+      }
+    ]
+  }
+  Replace OWNER/TRIP-REPO with the NEW destination repository URL,
+  never the upstream Travel-lite-Template. On the published site,
+  expand More → Links and click Source Code / 原始碼 to verify the
+  link really opens the new repository.
   This workflow choice is not a universal AGPL GitHub requirement.
 - If source obligations, license compatibility, input access, or
   deployment permissions are uncertain, ask before proceeding.
   Do not invent exemptions or claim AGPL bans commercial reuse.
 
 1. Read AGENTS.md, docs/TRIP_SCHEMA.md, docs/SOURCE_NORMALIZATION.md,
-   and docs/TIMEZONE.md in the source repository before changing files.
+   docs/TIMEZONE.md, and docs/MAINTENANCE.md (validation workflow)
+   in the source repository before changing files.
    If the itinerary is inaccessible, request access rather than guessing.
 2. Create an independent repository at the destination. Use GitHub's
    template workflow if the source is enabled as a template; otherwise
@@ -154,15 +192,25 @@ AGPL COMPLIANCE & TRANSPARENT ATTRIBUTION — REQUIRED:
 4. Preserve the existing read-only site, LICENSE, and NOTICE.md.
    Prefer changing trip.json and only genuinely needed trip assets.
    Never publish secrets, passport data, or full booking credentials.
-5. Validate itinerary content, phone/desktop layout, external map links,
-   untimed days, and available regression tests.
+5. Follow docs/MAINTENANCE.md to check itinerary accuracy, untimed days,
+   external map links, mobile (390×844), desktop (1100×900 or larger),
+   and the destination Source Code link under More → Links.
+   If the environment supports it, run:
+     npm install
+     npx playwright install chromium
+     npm run test:mobile
+   Record PASS / FAIL / NOT RUN for each check and include reasons
+   for failures or skipped tests. Never claim an unrun check passed.
 6. Push to the destination's main branch, configure GitHub Pages to
    deploy from main / (root), and verify the live URL loads correctly.
    If permissions block creation/deployment, report the exact blocker
    and remaining steps rather than claiming success.
 
-Finish with: destination GitHub repository URL, live GitHub Pages URL,
-validation evidence, and unresolved/missing itinerary information.
+Finish with: destination repository URL and live GitHub Pages URL;
+exact test commands with PASS / FAIL / NOT RUN results and reasons;
+mobile/desktop viewport findings; verified More → Links destination
+URL; evidence that the live Pages URL really loads; and any
+unresolved or missing itinerary facts.
 Do not add a planner, backend, user accounts, live navigation, or
 other out-of-scope functionality.
 ```
