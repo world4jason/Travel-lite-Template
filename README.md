@@ -118,7 +118,7 @@ and publish it to GitHub Pages. Perform the work, not just explain it.
 Source: https://github.com/world4jason/Travel-lite-Template
 Itinerary: <paste itinerary text, accessible file path, PDF/Excel, or URL>
 Destination repository: <https://github.com/OWNER/TRIP-REPO.git>
-Interface locale: zh-TW unless the itinerary asks for another locale
+Interface locale: en (change to zh-TW for Traditional Chinese)
 
 AGPL COMPLIANCE & TRANSPARENT ATTRIBUTION — REQUIRED:
 - Travel Lite is AGPL-3.0-or-later: lawful commercial and
