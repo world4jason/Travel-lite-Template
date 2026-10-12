@@ -13,8 +13,22 @@ When acting as a coding agent:
 1. **Preserve attribution and licensing.** Keep the applicable `LICENSE`, `NOTICE.md`, SPDX/copyright notices, upstream TREK notices, and legally required no-warranty statements. Clearly mark modifications and their dates when required by AGPL.
 2. **Meet the actual source obligations.** When distributing an AGPL-covered modified/combined work, comply with the applicable license and make its **Corresponding Source** available as required. For a modified version supporting remote network interaction, respect AGPL §13's source offer to its remote users. Do not replace the license with proprietary terms or strip source/attribution to evade obligations.
 3. **Keep the requested workflow in scope.** When asked to generate a trip from this template, create an **independent trip companion**, rather than silently embedding it into a larger app, adding a backend, or redesigning unrelated code. This is a **task-scope rule**, not a general ban on AGPL-compliant embedding or commercial use.
-4. **Make the source discoverable in the generated public trip site.** Prefer an accessible public repository and add a source link using `trip.json` `links[]` (shown in More → Links), without changing the app shell. Public source on GitHub is a practical project workflow, **not a universal AGPL mandate**. Do not publish secrets or personal travel credentials merely to make a repo public.
-5. **Stop on a real blocker.** If the source is unavailable, proposed licensing is incompatible, corresponding source cannot be supplied where required, or the requested integration exceeds the defined task, ask for clarification. **Do not invent legal exceptions**, but do not reject otherwise lawful reuse solely because it is commercial.
+4. **Make the source discoverable in the generated public trip site.** Prefer an accessible public repository and append a source link to the **top-level** `trip.json.links[]` array without deleting existing links. The runtime's More → Links renderer expects objects with `label` and `url`:
+
+   ```json
+   {
+     "links": [
+       {
+         "label": "Source Code / 原始碼",
+         "url": "https://github.com/OWNER/TRIP-REPO"
+       }
+     ]
+   }
+   ```
+
+   This is a **partial example**, not a replacement for the complete `trip.json`. Substitute the **new destination repository** URL, never the upstream Travel Lite template. Check in the rendered destination site that **More → Links** can be expanded, the label is visible, and clicking it opens the destination. A publicly linked source repository is the default *trip-generation workflow*, **not a universal AGPL mandate**. Do not publish secrets or travel credentials merely to make source public.
+5. **Provide reproducible acceptance evidence.** Read `docs/MAINTENANCE.md`; if the environment supports it, run `npm install`, `npx playwright install chromium`, and `npm run test:mobile`. Check phone (390×844), desktop (1100×900 or larger), itinerary correctness and the live GitHub Pages URL. Report the exact commands and **PASS / FAIL / NOT RUN** with reasons; do not claim unexecuted tests passed. Do not silently skip a failing acceptance criterion.
+6. **Stop on a real blocker.** If the source is unavailable, proposed licensing is incompatible, corresponding source cannot be supplied where required, or the requested integration exceeds the defined task, ask for clarification. **Do not invent legal exceptions**, but do not reject otherwise lawful reuse solely because it is commercial.
 
 **Scope distinction:** Copyleft applies to works covered by AGPL in the circumstances specified by the license; merely interacting with an independent program or distributing unrelated code alongside it does not by itself make all that code AGPL. Whether an integration forms a covered combined work can require case-specific review.
 
