@@ -209,3 +209,118 @@ test('never imports an unscoped legacy snapshot belonging to another trip', asyn
   await expect(page.locator('#view-root')).toContainText('Could not load trip data');
   await expect(page.locator('#trip-title')).not.toHaveText('Legacy Beta');
 });
+
+// Review #84 follow-up: an ONLINE boot must also ignore the old site's
+// unchecked localStorage/IndexedDB keys. The offline-snapshot test alone does
+// not exercise the legacy checklist import path.
+test('online boot ignores legacy checklist values, even with matching trip.id', async ({ page }) => {
+  const config = {
+    trips: { alpha: trip('same-id', 'New Alpha'), beta: trip('same-id', 'Old Beta') },
+    blocked: new Set(),
+  };
+  await mountSites(page, config);
+  await visit(page, 'beta', 'Old Beta');
+  await page.evaluate(async () => {
+    localStorage.setItem('travel-lite:same-id:checks', JSON.stringify({ 'test:packing': true }));
+    await new Promise((resolvePromise, rejectPromise) => {
+      const request = indexedDB.open('travel-lite', 1);
+      request.onupgradeneeded = () => request.result.createObjectStore('kv', { keyPath: 'key' });
+      request.onerror = () => rejectPromise(request.error);
+      request.onsuccess = () => {
+        const db = request.result;
+        const tx = db.transaction('kv', 'readwrite');
+        tx.objectStore('kv').put({ key: 'same-id:checks', value: { 'test:packing': true } });
+        tx.oncomplete = () => { db.close(); resolvePromise(); };
+        tx.onerror = () => rejectPromise(tx.error);
+      };
+    });
+  });
+
+  await visit(page, 'alpha', 'New Alpha'); // successful trip.json fetch
+  const result = await page.evaluate(async () => ({
+    checks: state.checks,
+    scopedChecks: await TravelLiteStorage.get(tripKey('checks')),
+    legacyLocal: localStorage.getItem('travel-lite:same-id:checks'),
+  }));
+  expect(result.checks).toEqual({});
+  expect(result.scopedChecks).toBeNull();
+  expect(JSON.parse(result.legacyLocal)).toEqual({ 'test:packing': true });
+});
+
+test('updating published trip.json keeps same-site device choices and loads fresh facts', async ({ page }) => {
+  const config = {
+    trips: { alpha: trip('stable-id', 'Alpha first version'), beta: trip('other', 'Beta') },
+    blocked: new Set(),
+  };
+  await mountSites(page, config);
+  const firstSite = await visit(page, 'alpha', 'Alpha first version');
+  await page.evaluate(async () => {
+    await TravelLiteStorage.set(tripKey('checks'), { 'bag:passport': true });
+    await TravelLiteStorage.set(tripKey('personalNote'), 'Remember the tickets');
+    await TravelLiteStorage.set(tripKey('visualStyle'), 'candy');
+    await TravelLiteStorage.set(tripKey('ui:view'), 'trip');
+  });
+
+  // Same site and trip ID; new published data, not a new application.
+  config.trips.alpha.trip.title = 'Alpha revised itinerary';
+  config.trips.alpha.days[0].items.push({
+    id: 'added-stop', title: 'New confirmed stop', start: '16:00', type: 'place',
+  });
+  const revisited = await visit(page, 'alpha', 'Alpha revised itinerary');
+  expect(revisited).toBe(firstSite);
+  const result = await page.evaluate(() => ({
+    checks: state.checks,
+    note: state.personalNote,
+    style: state.visualStyle,
+    view: state.view,
+    hasUpdatedStop: state.data.days[0].items.some((item) => item.id === 'added-stop'),
+  }));
+  expect(result).toEqual({
+    checks: { 'bag:passport': true },
+    note: 'Remember the tickets',
+    style: 'candy',
+    view: 'trip',
+    hasUpdatedStop: true,
+  });
+});
+
+test('a real Service Worker preserves this site\'s data through an offline reload', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ baseURL, serviceWorkers: 'allow' });
+  try {
+    const offlinePage = await context.newPage();
+    await offlinePage.goto('/', { waitUntil: 'domcontentloaded' });
+    await expect(offlinePage.locator('#trip-title')).toContainText('Tokyo Autumn');
+    const initial = await offlinePage.evaluate(async () => {
+      await TravelLiteStorage.set(tripKey('personalNote'), 'Offline local-only note');
+      await TravelLiteStorage.set(tripKey('checks'), { 'offline:bag': true });
+      return {
+        siteId: TravelLiteSiteStorage.siteId,
+        database: TravelLiteSiteStorage.databaseName,
+      };
+    });
+    await offlinePage.waitForFunction(
+      () => Boolean(navigator.serviceWorker?.controller), null, { timeout: 12_000 },
+    );
+
+    await context.setOffline(true);
+    await offlinePage.reload({ waitUntil: 'domcontentloaded' });
+    await expect(offlinePage.locator('#trip-title')).toContainText('Tokyo Autumn');
+    const after = await offlinePage.evaluate(async () => ({
+      siteId: TravelLiteSiteStorage.siteId,
+      database: TravelLiteSiteStorage.databaseName,
+      source: TravelLiteRuntimeStatus.tripSource,
+      note: state.personalNote,
+      checks: state.checks,
+      scopeCaches: (await caches.keys()).filter((key) =>
+        key.startsWith('travel-lite:') && key.includes('shell-v33-site-storage-scope')),
+    }));
+    expect(after.siteId).toBe(initial.siteId);
+    expect(after.database).toBe(initial.database);
+    expect(after.source).toBe('cache');
+    expect(after.note).toBe('Offline local-only note');
+    expect(after.checks).toEqual({ 'offline:bag': true });
+    expect(after.scopeCaches.length).toBeGreaterThanOrEqual(1);
+  } finally {
+    await context.close();
+  }
+});

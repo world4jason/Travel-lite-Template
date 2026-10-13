@@ -310,8 +310,11 @@ the published itinerary online will receive a fresh isolated offline cache.
 
 Regression command: `npx playwright test tests/site-storage.spec.mjs --project=chromium`.
 This covers two same-origin sites, blocked `trip.json` fallback, duplicate
-trip IDs, localStorage fallback and ambiguous legacy values. This is a local
-Playwright test; no GitHub Actions workflow is required.
+trip IDs, localStorage fallback, ambiguous legacy snapshots/checklists,
+successful online boot without importing old checklist state, same-site
+published itinerary revisions preserving private state, and a real
+Service Worker offline reload. This is a local Playwright test; no GitHub
+Actions workflow is required.
 
 Stable IDs are part of the data contract.
 
