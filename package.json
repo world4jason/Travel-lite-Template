@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test:export": "node --test tests/export-core.test.mjs",
     "test:mobile": "playwright test --project=chromium",
     "test:mobile:headed": "playwright test --project=chromium --headed",
     "test:styles": "node --test style-generator/tests/*.test.mjs",

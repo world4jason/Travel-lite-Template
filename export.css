@@ -1,0 +1,25 @@
+/* Lightweight More export launcher; print pages use their own scoped CSS.
+ * SPDX-License-Identifier: AGPL-3.0-or-later */
+.travel-export-panel { display: grid; gap: 12px; padding: 18px; }
+.travel-export-heading { display: grid; gap: 4px; }
+.travel-export-heading h2 { margin: 0; font-size: clamp(1.05rem, 2vw, 1.35rem); }
+.travel-export-heading p { margin: 0; }
+.travel-export-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 10px; }
+.travel-export-buttons button {
+  min-width: 0; min-height: 46px; padding: 10px 12px;
+  font: inherit; font-weight: 650; line-height: 1.3;
+  color: var(--text, #26342f); background: var(--surface, #fff);
+  border: 1px solid var(--line, #bdc5bf); border-radius: 10px;
+  cursor: pointer; text-align: left; overflow-wrap: anywhere;
+}
+.travel-export-buttons button:focus-visible, .travel-export-alarm select:focus-visible {
+  outline: 3px solid var(--accent, #4f6f5e); outline-offset: 3px;
+}
+.travel-export-alarm { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: .93rem; }
+.travel-export-alarm select {
+  font: inherit; padding: 8px 10px; max-width: 100%; min-height: 44px;
+  background: var(--surface, #fff); color: var(--text, #26342f);
+  border: 1px solid var(--line, #bdc5bf); border-radius: 7px;
+}
+.travel-export-status { margin: 0; font-size: .92rem; overflow-wrap: anywhere; }
+.travel-export-status:empty { display: none; }
