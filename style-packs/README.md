@@ -2,6 +2,8 @@
 
 Travel Lite's **functional template** remains shared: Now / Trip / Map / Check / More, deep links, itinerary/timezone facts, notes, tickets, maps, and offline behavior. A Style Pack changes only visual representation and permitted illustration assets.
 
+> **Proposed / not yet a selectable Style Pack:** [Vintage Watercolor Travel Guide Art Direction](../docs/VINTAGE_WATERCOLOR_STYLE_BRIEF.md) (Issue #79). The reference booklet contributes *visual language only*, never its itinerary content. Website implementation is #81; A5 print adaptation is #80. No new `ui.visualStyle` value exists until those deliverables are reviewed.
+
 ## Built-in styles
 
 | `ui.visualStyle` | Status | Layout and materials | Live preview (same Tokyo sample) |
