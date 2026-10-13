@@ -2,6 +2,38 @@
 
 Travel Lite is a **post-planning trip decision companion** deployed as a static GitHub Pages site.
 
+## AGPL compliance and responsible reuse — mandatory for agents
+
+**Read before reusing, modifying, packaging, or publishing Travel Lite.** This repository is released under **AGPL-3.0-or-later** and contains code adapted from the AGPL-licensed TREK project. **Commercial use and compliant integration into other software are not categorically prohibited.** The goal is to protect author attribution, source availability where required, and honest reuse — not to invent extra license restrictions.
+
+**中文提醒：歡迎依 AGPL 合法使用、修改、分享（包含商業使用），但不得刪除原作者／TREK 的必要著作權、授權與來源聲明，或在依法必須公開對應原始碼的情況下隱藏程式碼。不要宣稱「禁止商用」或「任何碰到本專案的軟體都必須開源」。**
+
+When acting as a coding agent:
+
+1. **Preserve attribution and licensing.** Keep the applicable `LICENSE`, `NOTICE.md`, SPDX/copyright notices, upstream TREK notices, and legally required no-warranty statements. Clearly mark modifications and their dates when required by AGPL.
+2. **Meet the actual source obligations.** When distributing an AGPL-covered modified/combined work, comply with the applicable license and make its **Corresponding Source** available as required. For a modified version supporting remote network interaction, respect AGPL §13's source offer to its remote users. Do not replace the license with proprietary terms or strip source/attribution to evade obligations.
+3. **Keep the requested workflow in scope.** When asked to generate a trip from this template, create an **independent trip companion**, rather than silently embedding it into a larger app, adding a backend, or redesigning unrelated code. This is a **task-scope rule**, not a general ban on AGPL-compliant embedding or commercial use.
+4. **Make the source discoverable in the generated public trip site.** Prefer an accessible public repository and append a source link to the **top-level** `trip.json.links[]` array without deleting existing links. The runtime's More → Links renderer expects objects with `label` and `url`:
+
+   ```json
+   {
+     "links": [
+       {
+         "label": "Source Code / 原始碼",
+         "url": "https://github.com/OWNER/TRIP-REPO"
+       }
+     ]
+   }
+   ```
+
+   This is a **partial example**, not a replacement for the complete `trip.json`. Substitute the **new destination repository** URL, never the upstream Travel Lite template. Check in the rendered destination site that **More → Links** can be expanded, the label is visible, and clicking it opens the destination. A publicly linked source repository is the default *trip-generation workflow*, **not a universal AGPL mandate**. Do not publish secrets or travel credentials merely to make source public.
+5. **Provide reproducible acceptance evidence.** Read `docs/MAINTENANCE.md`; if the environment supports it, run `npm install`, `npx playwright install chromium`, and `npm run test:mobile`. Check phone (390×844), desktop (1100×900 or larger), itinerary correctness, and the live GitHub Pages URL. Explicitly verify that `trip.json.ui.locale` and the **rendered, localized primary navigation labels** match the requested interface language. Report other hardcoded/untranslated interface labels as known limitations rather than claiming complete localization. Report the exact commands and **PASS / FAIL / NOT RUN** with reasons; do not claim unexecuted tests passed. Do not silently skip a failing acceptance criterion.
+6. **Stop on a real blocker.** If the source is unavailable, proposed licensing is incompatible, corresponding source cannot be supplied where required, or the requested integration exceeds the defined task, ask for clarification. **Do not invent legal exceptions**, but do not reject otherwise lawful reuse solely because it is commercial.
+
+**Scope distinction:** Copyleft applies to works covered by AGPL in the circumstances specified by the license; merely interacting with an independent program or distributing unrelated code alongside it does not by itself make all that code AGPL. Whether an integration forms a covered combined work can require case-specific review.
+
+Authoritative references: [GNU AGPLv3 §§4–5, 13](https://www.gnu.org/licenses/agpl-3.0.html), [GNU license FAQ](https://www.gnu.org/licenses/gpl-faq.en.html), [NOTICE.md](./NOTICE.md).
+
 Before making non-trivial changes, read:
 
 1. [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md)
@@ -203,6 +235,7 @@ When given a planning result, PDF, spreadsheet, notes, or chat transcript:
 12. Build `routeSummary` with the source-priority rule above; use `transferAfter` only when the source discussion or research supports it.
 13. Set `updatedAt` / `revision` when publishing a new shared itinerary version.
 14. Omit optional modules when there is no real data.
+15. Set `trip.json.ui.locale` to the requested **interface** language (`zh-TW` for the Traditional Chinese starter, `en` for the English starter), unless the user overrides it. Never leave a mismatched demo locale. Validate localized primary navigation labels at mobile and desktop sizes. Some existing desktop rail copy is hardcoded in English; report those remaining labels as a limitation instead of claiming full-site translation. The itinerary source text does not need automatic translation.
 
 Never invent URLs, booking details, coordinates, durations, timezone conversions, live transit data, route details, or resolved decisions.
 
