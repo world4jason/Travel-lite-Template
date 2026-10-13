@@ -295,6 +295,27 @@ Keep runtime caching bounded. Do not turn the Service Worker into an unbounded m
 
 ## Storage compatibility
 
+Each independently deployed travel site has its own local storage scope,
+derived from the site's canonical script/base URL by `site-scope.js`. The
+`storage.js` IndexedDB database, fallback localStorage keys, the network
+freshness timestamp, and Storybook motion preference must use that scope.
+Sites published under different paths on the **same** GitHub Pages origin
+must not share any snapshot, personal notes, checks, or appearance values,
+even if both source trips have the same `trip.id`.
+
+Legacy pre-scoping values have no reliable owning-site identifier. **Do not
+auto-import or delete these values**. Existing users may need to re-enter
+some device-only state once after the site-isolation fix; users who load
+the published itinerary online will receive a fresh isolated offline cache.
+
+Regression command: `npx playwright test tests/site-storage.spec.mjs --project=chromium`.
+This covers two same-origin sites, blocked `trip.json` fallback, duplicate
+trip IDs, localStorage fallback, ambiguous legacy snapshots/checklists,
+successful online boot without importing old checklist state, same-site
+published itinerary revisions preserving private state, and a real
+Service Worker offline reload. This is a local Playwright test; no GitHub
+Actions workflow is required.
+
 Stable IDs are part of the data contract.
 
 Changing these can reset local state:

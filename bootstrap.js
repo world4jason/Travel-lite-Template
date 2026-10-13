@@ -1,10 +1,12 @@
 /* Network/bootstrap status for the static companion. SPDX-License-Identifier: AGPL-3.0-or-later */
 (() => {
   const nativeFetch = window.fetch.bind(window);
-  const lastNetworkKey = "travel-lite:last-network-trip-at";
+  const lastNetworkKey = TravelLiteSiteStorage.localKey("last-network-trip-at");
+  let previousNetworkAt = "";
+  try { previousNetworkAt = localStorage.getItem(lastNetworkKey) || ""; } catch {}
   const status = window.TravelLiteRuntimeStatus = {
     tripSource: "loading",
-    lastNetworkAt: localStorage.getItem(lastNetworkKey) || "",
+    lastNetworkAt: previousNetworkAt,
     online: navigator.onLine,
   };
 

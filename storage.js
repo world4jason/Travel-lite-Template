@@ -1,5 +1,7 @@
 const TravelLiteStorage = (() => {
-  const DB_NAME = "travel-lite";
+  // Isolated per deployed site, not merely per origin or itinerary trip.id.
+  // Old unscoped databases are intentionally left untouched and not auto-imported.
+  const DB_NAME = TravelLiteSiteStorage.databaseName;
   const DB_VERSION = 1;
   const STORE = "kv";
   let dbPromise;
@@ -31,7 +33,7 @@ const TravelLiteStorage = (() => {
 
   function fallbackGet(key) {
     try {
-      const raw = localStorage.getItem(`travel-lite:${key}`);
+      const raw = localStorage.getItem(TravelLiteSiteStorage.localKey(key));
       return raw == null ? null : JSON.parse(raw);
     } catch {
       return null;
@@ -40,7 +42,7 @@ const TravelLiteStorage = (() => {
 
   function fallbackSet(key, value) {
     try {
-      localStorage.setItem(`travel-lite:${key}`, JSON.stringify(value));
+      localStorage.setItem(TravelLiteSiteStorage.localKey(key), JSON.stringify(value));
       return true;
     } catch {
       return false;
@@ -72,7 +74,7 @@ const TravelLiteStorage = (() => {
 
   async function remove(key) {
     const db = await openDb();
-    try { localStorage.removeItem(`travel-lite:${key}`); } catch {}
+    try { localStorage.removeItem(TravelLiteSiteStorage.localKey(key)); } catch {}
     if (!db) return;
     await new Promise((resolve) => {
       const tx = db.transaction(STORE, "readwrite");
