@@ -5,6 +5,37 @@
 
 Travel Lite turns a **mostly-planned itinerary** (spreadsheet, PDF, notes, or an LLM-assisted plan) into a **read-only, offline-ready trip companion** hosted as a static site on GitHub Pages. Its job is to answer **what's scheduled now, what's next, what should I remember, and where do I go?** — not to plan the trip again.
 
+## Create a trip site with an AI agent (copy & paste)
+
+Replace the itinerary and destination repository placeholders, then paste the prompt into your coding agent. Detailed workflow and validation rules live in [AGENTS.md](./AGENTS.md).
+
+### 繁體中文｜直接複製給 Agent
+
+```text
+請幫我把以下「已規劃好的行程」製作成獨立的 Travel Lite 旅遊網站，
+並發佈到 GitHub Pages。請實際完成，而不只是提供操作教學。
+
+來源模板：https://github.com/world4jason/Travel-lite-Template
+行程資料：<貼上行程全文、檔案路徑，或可讀取的 PDF／Excel／網頁網址>
+目標 Repository：<https://github.com/OWNER/TRIP-REPO.git>
+網站語言：繁體中文（如原始行程另有要求，以原始要求為準）
+```
+
+<details>
+<summary>English — copy/paste agent prompt</summary>
+
+```text
+Create a NEW Travel Lite trip companion from the planned itinerary below
+and publish it to GitHub Pages. Perform the work, not just explain it.
+
+Source: https://github.com/world4jason/Travel-lite-Template
+Itinerary: <paste itinerary text, accessible file path, PDF/Excel, or URL>
+Destination repository: <https://github.com/OWNER/TRIP-REPO.git>
+Interface locale: en (change to zh-TW for Traditional Chinese)
+```
+
+</details>
+
 **[Try the trip overview](https://world4jason.github.io/Travel-lite-Template/#trip/overview)** · [View all visual styles](./style-packs/README.md) · [Trip data guide](./docs/TRIP_SCHEMA.md)
 
 > **Demo note:** The bundled Tokyo example is dated **October 3–5, 2026**. Outside those dates, the [Now view](https://world4jason.github.io/Travel-lite-Template/#now) correctly shows the trip as completed. Use **Trip overview** to explore the sample itinerary.
@@ -46,6 +77,11 @@ Also included:
 **Travel Lite is not:** a trip planner/editor, navigation engine, live transit tracker, booking manager, reviews database, or real-time group chat. It links to specialist tools rather than rebuilding them.
 
 ## Quick start: publish your own trip
+
+**GitHub template note:** The **Use this template** button and `gh repo create --template` work only after the source repository owner enables **Settings → General → Template repository**. Until then, create a separate destination repo and copy the source files; don't push changes to this repo. See [GitHub's template repository guide](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository).
+
+**Security and deployment:** A public GitHub Pages site may expose everything committed to `trip.json`. Don't include passports, passwords, private booking tokens, or sensitive personal documents. [GitHub Pages publishing setup](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) may require repository permissions. The agent must verify the published site before reporting deployment as complete.
+
 
 1. **Create an independent destination repository and keep the source discoverable.** For a published trip generated through this workflow, prefer a public source repo with a link from the site. If this repository is enabled as a GitHub template, use **Use this template**; otherwise copy the source files into a new repo. Never push trip-specific data to the original source repository.
 2. **Prepare your itinerary** in a spreadsheet, text, PDF, or chat. Have a person or coding agent convert it into [`trip.json`](./trip.json), following [`docs/TRIP_SCHEMA.md`](./docs/TRIP_SCHEMA.md) and [`AGENTS.md`](./AGENTS.md).
@@ -121,41 +157,6 @@ npm run test:mobile            # existing UI + export popup/download/PDF smoke t
 Related work: [#70 A4/A5/ICS](https://github.com/world4jason/Travel-lite-Template/issues/70). **Maps remain MapLibre**; [#74](https://github.com/world4jason/Travel-lite-Template/issues/74) compared Leaflet's markers/polylines without changing the engine.
 
 **Map engine:** [#74 Leaflet vs MapLibre evaluation](https://github.com/world4jason/Travel-lite-Template/issues/74) is **complete**; the decision was to retain MapLibre. No Leaflet migration is planned.
-
-## Create a trip site with an AI agent (copy & paste)
-
-Replace the itinerary and destination repository placeholders, then paste the prompt into your coding agent. Detailed workflow and validation rules live in [AGENTS.md](./AGENTS.md).
-
-### 繁體中文｜直接複製給 Agent
-
-```text
-請幫我把以下「已規劃好的行程」製作成獨立的 Travel Lite 旅遊網站，
-並發佈到 GitHub Pages。請實際完成，而不只是提供操作教學。
-
-來源模板：https://github.com/world4jason/Travel-lite-Template
-行程資料：<貼上行程全文、檔案路徑，或可讀取的 PDF／Excel／網頁網址>
-目標 Repository：<https://github.com/OWNER/TRIP-REPO.git>
-網站語言：繁體中文（如原始行程另有要求，以原始要求為準）
-```
-
-<details>
-<summary>English — copy/paste agent prompt</summary>
-
-```text
-Create a NEW Travel Lite trip companion from the planned itinerary below
-and publish it to GitHub Pages. Perform the work, not just explain it.
-
-Source: https://github.com/world4jason/Travel-lite-Template
-Itinerary: <paste itinerary text, accessible file path, PDF/Excel, or URL>
-Destination repository: <https://github.com/OWNER/TRIP-REPO.git>
-Interface locale: en (change to zh-TW for Traditional Chinese)
-```
-
-</details>
-
-**GitHub template note:** The **Use this template** button and `gh repo create --template` work only after the source repository owner enables **Settings → General → Template repository**. Until then, create a separate destination repo and copy the source files; don't push changes to this repo. See [GitHub's template repository guide](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-template-repository).
-
-**Security and deployment:** A public GitHub Pages site may expose everything committed to `trip.json`. Don't include passports, passwords, private booking tokens, or sensitive personal documents. [GitHub Pages publishing setup](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) may require repository permissions. The agent must verify the published site before reporting deployment as complete.
 
 ## Development and reference docs
 
