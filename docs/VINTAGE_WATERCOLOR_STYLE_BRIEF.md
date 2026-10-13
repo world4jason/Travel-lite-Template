@@ -131,6 +131,6 @@ This is an **offline review artifact**. Do not register a `vintage-watercolor` r
 - [ ] Produce original visual specimen/screenshots and compare with existing Storybook/Painterly/Naive styles.
 - [ ] Review candidate original/reusable illustration assets and their provenance.
 - [ ] Review web/print balance on actual devices and PDF output.
-- [ ] Human art-direction sign-off before treating #79 as Done.
+- [ ] Post-release Human Review on the deployed GitHub Pages site after the implementation is merged, with follow-up issues for feedback.
 
-**Do not merge #80 or #81 based solely on this Markdown draft.** Their acceptance requires real visual evidence and regression tests; #82 remains a separate future content-capability investigation.
+**This document is a draft implementation direction, not visual acceptance evidence.** #80/#81 require agent-reviewed browser/print specimens and automated regression tests before merge. Once the live GitHub Pages build is verified, Human Review happens there; additional feedback becomes a follow-up issue. #82 remains separate Backlog.
