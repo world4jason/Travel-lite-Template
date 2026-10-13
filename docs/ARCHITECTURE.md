@@ -144,9 +144,28 @@ This is the most important architectural invariant:
 
 ```text
 trip.json    = shared truth
-IndexedDB    = device-local mutable state
-localStorage = fallback only
+IndexedDB    = device-local mutable state, scoped to this site's base URL
+localStorage = fallback only, also scoped to this site's base URL
 ```
+
+Browser storage is origin-based, not GitHub Pages repository-path-based. Two sites on
+`world4jason.github.io` can access the same origin's IndexedDB/localStorage.
+`site-scope.js` derives a canonical deployment base URL from its own script URL.
+`storage.js` uses a separate IndexedDB database per deployed site; its
+localStorage fallback, the freshness timestamp in `bootstrap.js`, and the
+Storyboard motion preference use that same site scope. `trip.id` is still
+used within a site for per-trip local choices, but is **not** the storage
+isolation boundary. Browser origin isolation is not a security boundary
+between mutually untrusted sites on the same hostname; this prevents
+accidental cross-site state collisions.
+
+Existing pre-scoping data (`travel-lite` IndexedDB and old unscoped
+localStorage keys) lacks trustworthy site provenance and is **never
+implicitly migrated**. Upgrading a deployed legacy site can therefore require
+re-entering device-only checks/notes/preferences once; existing legacy stores
+are not deleted by this migration. When offline, an unavailable site-scoped
+snapshot should show an error rather than another trip's data. A fresh online
+visit creates a trusted site-scoped snapshot for later offline use.
 
 Because GitHub Pages has no shared synchronization backend:
 

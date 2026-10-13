@@ -103,8 +103,8 @@ For this repository the site is [world4jason.github.io/Travel-lite-Template](htt
 
 ```text
 trip.json     → shared, published read-only itinerary
-IndexedDB     → your device's checks, preferences, quick note, and cached trip
-localStorage  → local fallback
+IndexedDB     → this trip site's device-local checks, preferences, notes and cached trip
+localStorage  → site-scoped local fallback and small preferences
 ```
 
 A group's shared TBD decision stays unresolved until the published data says otherwise. A personal preference or checked packing item does **not** sync with other travelers.

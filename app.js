@@ -809,15 +809,8 @@ async function hydrateLocalState() {
   state.personalNote = (await TravelLiteStorage.get(tripKey("personalNote"))) || "";
   state.theme = (await TravelLiteStorage.get(tripKey("theme"))) || state.data.ui.theme || "system";
 
-  try {
-    const legacyKey = `travel-lite:${state.data.trip.id}:checks`;
-    const legacyRaw = localStorage.getItem(legacyKey);
-    if (legacyRaw && Object.keys(state.checks).length === 0) {
-      state.checks = JSON.parse(legacyRaw) || {};
-      await TravelLiteStorage.set(tripKey("checks"), state.checks);
-      localStorage.removeItem(legacyKey);
-    }
-  } catch {}
+  // Pre-site-scoping keys have no reliable site identity. Never auto-import
+  // them: another trip hosted on the same origin may have written them.
   applyTheme();
 }
 

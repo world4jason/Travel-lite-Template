@@ -11,7 +11,7 @@
   window.TravelLiteStorybookMotion = Object.freeze({
     init(tripId) {
       if (typeof tripId !== "string" || !tripId.trim()) return;
-      key = `travel-lite:${tripId}:storybook-motion`;
+      key = TravelLiteSiteStorage.localKey(`${tripId}:storybook-motion`);
       let saved = null;
       try { saved = storage()?.getItem(key) || null; } catch {}
       selected = options.has(saved) ? saved : "system";
