@@ -134,3 +134,7 @@ This is an **offline review artifact**. Do not register a `vintage-watercolor` r
 - [ ] Post-release Human Review on the deployed GitHub Pages site after the implementation is merged, with follow-up issues for feedback.
 
 **This document is a draft implementation direction, not visual acceptance evidence.** #80/#81 require agent-reviewed browser/print specimens and automated regression tests before merge. Once the live GitHub Pages build is verified, Human Review happens there; additional feedback becomes a follow-up issue. #82 remains separate Backlog.
+
+## Implementation progress — A5 scoped variant (PR draft)
+
+The downstream A5 implementation keeps the same `normalizedTrip()` / `dayMarkup()` and opt-in `a5-vintage` print CSS rather than creating a separate renderer. The original Classic A5 and A4 formats remain the defaults. Vintage ornaments are CSS-only abstract plant/wash shapes; all trip facts remain selectable DOM text. **Pending:** browser-generated PDFs and human visual comparison (NOT RUN); a source reference is not reproduced or copied.
