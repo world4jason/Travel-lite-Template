@@ -83,6 +83,9 @@ Do not accept arbitrary style names, URL-driven custom CSS, or styles inferred f
 
 ## `ui`
 
+The website `vintage-watercolor` selection remains a branch-only Draft until its Style Pack browser/print parity and offline QA gates are completed. Do not insert this id into published trips until the corresponding reviewed implementation reaches `main`.
+
+
 ```json
 {
   "defaultView": "now",

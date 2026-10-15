@@ -202,7 +202,7 @@ Appearance must support `system`, `light`, and `dark`.
 
 ## Optional visual style
 
-The original `editorial` style remains the default; only reviewed `ui.visualStyle` IDs in the hardcoded 14-pack `VISUAL_PACKS` whitelist are audited **site-level opt-ins**. Preserve the current Editorial design and its Auto/Light/Dark behavior. None of the reviewed Style Pack overlays may leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
+The original `editorial` style remains the default; only reviewed `ui.visualStyle` IDs in the hardcoded 15-pack `VISUAL_PACKS` whitelist are audited **site-level opt-ins**. Preserve the current Editorial design and its Auto/Light/Dark behavior. None of the reviewed Style Pack overlays may leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
 
 All thirteen opt-in Style Packs use light surfaces. Storybook/Candy/Crayon Journal honor OS `prefers-reduced-motion` and the local More → Motion setting; Risograph remains static. Review [style-packs/README.md](./style-packs/README.md), test all fourteen packs and preview overrides, and keep inaccessible color combinations out of text/focus states.
 

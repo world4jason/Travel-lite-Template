@@ -134,3 +134,7 @@ This is an **offline review artifact**. Do not register a `vintage-watercolor` r
 - [ ] Post-release Human Review on the deployed GitHub Pages site after the implementation is merged, with follow-up issues for feedback.
 
 **This document is a draft implementation direction, not visual acceptance evidence.** #80/#81 require agent-reviewed browser/print specimens and automated regression tests before merge. Once the live GitHub Pages build is verified, Human Review happens there; additional feedback becomes a follow-up issue. #82 remains separate Backlog.
+
+## Implementation progress — optional website pack (Draft)
+
+The website #81 Draft includes a whitelisted `vintage-watercolor` **branch-only** ID, scoped CSS, original local `hero.svg` / `marker.svg`, a prototype manifest and tests. Desktop-only decorative artwork is intentionally omitted on mobile for faster operational scanning. The pack preserves all existing `trip.json` content and does not interpret artwork as place/map evidence. **Status remains NOT RUN for real screenshots/contrast and independent visual review, so do not merge or label the pack reviewed.**

@@ -20,13 +20,13 @@ const shared = ["app.js", "trip-view.js", "theme-shell.js", "storybook-decor.js"
  "risograph-theme.css", "paper-collage-theme.css", "naive-city-theme.css",
  "taiwan-poster-theme.css", "field-stamp-theme.css",
  "quiet-linocut-theme.css", "doodle-memory-grid-theme.css", "crayon-journal-theme.css",
- "painterly-editorial-theme.css", "geometric-print-theme.css", "quiet-acrylic-theme.css"];
+ "painterly-editorial-theme.css", "geometric-print-theme.css", "quiet-acrylic-theme.css", "vintage-watercolor-theme.css"];
 const digest = file => createHash("sha256").update(readFileSync(file)).digest("hex");
 for (const name of shared)
   assert.equal(digest(join(template,name)),digest(join(target,name)),
     name+" shared implementation drifted");
 const styles = ["storybook","candy","paper-collage","naive-city","risograph","taiwan-poster","field-stamp",
-  "quiet-linocut","doodle-memory-grid","crayon-journal","painterly-editorial","geometric-print","quiet-acrylic"];
+  "quiet-linocut","doodle-memory-grid","crayon-journal","painterly-editorial","geometric-print","quiet-acrylic","vintage-watercolor"];
 const compareProps = () => {
   const css = getComputedStyle(document.documentElement);
   const hero = document.querySelector(".trip-overview-hero");
@@ -120,7 +120,7 @@ try {
   assert.deepEqual(observations[0],observations[1]);
   console.log("PARITY_STYLE_PASS",style,observations[0].theme);
  }
- console.log("STYLE_PARITY_COMPLETE fifteen appearances, shared CSS hashes and live browser styles");
+ console.log("STYLE_PARITY_COMPLETE sixteen appearances, shared CSS hashes and live browser styles");
 } finally {
  await browser?.close();
  for(const child of servers)child.kill("SIGTERM");

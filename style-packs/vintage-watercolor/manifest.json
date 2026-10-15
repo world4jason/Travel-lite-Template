@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "id": "vintage-watercolor",
+  "displayName": "Vintage Watercolor",
+  "sourceBriefId": "vintage-watercolor",
+  "sourceBriefPath": "../../docs/VINTAGE_WATERCOLOR_STYLE_BRIEF.md",
+  "stage": "implementation-prototype",
+  "implementationTier": "new-style-pack",
+  "base": "storybook",
+  "visualStyle": "vintage-watercolor",
+  "photoProvided": false,
+  "sourceColorMeasurements": false,
+  "lightOnly": true,
+  "motion": "none",
+  "css": [
+    "../../storybook-theme.css",
+    "../../vintage-watercolor-theme.css"
+  ],
+  "assetDirectory": "../../assets/vintage-watercolor",
+  "assets": [
+    "hero.svg",
+    "marker.svg"
+  ],
+  "browserPreviews": [],
+  "palette": {
+    "paper": "#FAF4E6",
+    "ink": "#392F26",
+    "muted": "#615448",
+    "antiqueGreen": "#445C43",
+    "oldGold": "#AA8250",
+    "washBlue": "#BAD2D5"
+  },
+  "materialRules": [
+    "archival cream paper and thin botanical double rules",
+    "original generic translucent watercolor landscape",
+    "high-contrast serif chapter display and fast-reading sans utility",
+    "minimal decoration on Now and Map"
+  ],
+  "sourceVsOutputBoundary": "Reference booklet is art-direction only, no source images/text/maps/locations or destination facts copied. Decorative SVGs are original, generic and contain no text. All itinerary facts remain unmodified DOM content.",
+  "acceptanceTests": [
+    "tests/vintage-pack.test.mjs",
+    "tests/vintage-watercolor.spec.mjs",
+    "tests/mobile-layout.spec.mjs"
+  ],
+  "visualReview": "NOT RUN — independent screenshots, long CJK, offline and comparison review must pass before merging"
+}
