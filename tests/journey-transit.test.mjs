@@ -13,7 +13,7 @@ const fmt = (epoch, zone) => {
 };
 function fixture() {
   const context = {
-    state: { data: { ui: { locale: "en" } } }, root: { querySelector() { return null; } },
+    state: { data: { ui: { locale: "en" } } }, URL, root: { querySelector() { return null; } },
     getNowContext() { return { phase: "before" }; }, renderNow() {},
     escapeHtml(value) { return String(value); },
     window: { TravelLiteTime: {
@@ -47,6 +47,7 @@ test("TBD, normal start, bad basis, missing sources or buffer never imply leave-
   const core = fixture();
   assert.equal(core.calculate(transfer, from, { start: "14:00" }, day), null);
   assert.equal(core.calculate({ ...transfer, sourceLinks: [] }, from, next, day), null);
+  assert.equal(core.calculate({ ...transfer, sourceLinks: [{ label: "Bad", url: "https://%zz" }] }, from, next, day), null);
   assert.equal(core.calculate({ ...transfer, checkedAt: "" }, from, next, day), null);
   assert.equal(core.calculate({ ...transfer, estimate: { ...transfer.estimate, bufferMinutes: undefined } }, from, next, day), null);
   assert.equal(core.calculate({ ...transfer, estimate: { ...transfer.estimate, basis: "rough" } }, from, next, day), null);

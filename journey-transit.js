@@ -39,8 +39,10 @@
     if (!["source-fixed", "researched"].includes(estimate.basis)) return null;
     if (!validMinutes(estimate.bufferMinutes)) return null; // explicit zero is valid
     if (typeof transfer.checkedAt !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(transfer.checkedAt)) return null;
-    if (!Array.isArray(transfer.sourceLinks) || !transfer.sourceLinks.some(
-      (link) => typeof link?.url === "string" && /^https?:\/\/[^/]/i.test(link.url.trim()))) return null;
+    if (!Array.isArray(transfer.sourceLinks) || !transfer.sourceLinks.some((link) => {
+      if (typeof link?.url !== "string" || !/^https?:\/\/[^/]/i.test(link.url.trim())) return false;
+      try { return ["https:", "http:"].includes(new URL(link.url).protocol); } catch { return false; }
+    })) return null;
     const deadline = parsedDeadline(next.arrivalDeadline, day, next);
     if (!deadline) return null;
     const time = window.TravelLiteTime;
