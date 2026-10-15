@@ -102,7 +102,7 @@
     if (typeof itemActions !== "function") return "";
     const template = document.createElement("template");
     template.innerHTML = itemActions(item);
-    return [...template.content.querySelectorAll(".decision-card, .info-card")]
+    return [...template.content.querySelectorAll(".decision-card, .info-card, .trip-alternatives")]
       .map((node) => node.outerHTML)
       .join("");
   }
@@ -118,6 +118,7 @@
         <strong>${escapeHtml(transfer.label || "Transfer")}</strong>
         ${meta ? `<span>${escapeHtml(meta)}</span>` : ""}
         ${transfer.summary ? `<p>${escapeHtml(transfer.summary)}</p>` : ""}
+        ${window.TravelLitePlanB?.(transfer.planB) || ""}
       </div>
       ${url ? `<a class="trip-transfer-link" href="${escapeAttr(url)}" target="_blank" rel="noreferrer" aria-label="Open transfer details">↗</a>` : ""}
     </div>`;
@@ -179,6 +180,7 @@
         <div class="trip-overview-stats"><span><strong>${days.length}</strong> days</span><span><strong>${stopCount}</strong> planned stops</span>${openDecisions.length ? `<span><strong>${openDecisions.length}</strong> open choice${openDecisions.length === 1 ? "" : "s"}</span>` : ""}</div>
       </section>
       <section class="trip-overview-days" aria-label="Daily overview">${days.map(overviewDayCard).join("")}</section>
+      ${window.TravelLitePlanB?.(state.data.pocketPicks, localized("口袋清單", "Pocket picks")) || ""}
       ${highlights.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">Flexible</p><h2>Highlights & activities</h2></div><span>${highlights.length}</span></div><div class="trip-highlight-grid">${highlights.map(highlightCard).join("")}</div></section>` : ""}
       ${openDecisions.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">TBD</p><h2>Open decisions</h2></div><span>${openDecisions.length}</span></div><div class="trip-open-decisions">${openDecisions.map(({ day, item }) => `<button type="button" class="trip-open-decision composition-narrative" data-trip-day="${escapeAttr(day.date)}"><span>${prettyDate(day.date, { weekday: "short" })}</span><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.decision?.prompt || "Decide on the day")}</p><small>View day →</small></button>`).join("")}</div></section>` : ""}
     </div>`;
@@ -260,6 +262,7 @@
       ${tripTabs()}
       ${summary}
       ${routeSummaryCard(day)}
+      ${window.TravelLitePlanB?.(day.planB) || ""}
       ${timelineView}
     </div>`;
     attachOverviewHandlers();

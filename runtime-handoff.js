@@ -129,8 +129,46 @@
     </div>`;
   }
 
+  // Explicit published alternatives are references, never shared TBDs or decisions.
+  function planBHtml(rawOptions, heading = "Plan B") {
+    const options = (Array.isArray(rawOptions) ? rawOptions : [])
+      .filter((option) => option && typeof (option.title || option.label) === "string" &&
+        (option.title || option.label).trim());
+    if (!options.length) return "";
+    const zh = /^zh/i.test(state.data?.ui?.locale || "");
+    const refUrl = (raw) => typeof raw === "string" && /^https?:\/\/[^/]/i.test(raw.trim()) ? safeUrl(raw) : "";
+    const entries = options.map((option) => {
+      const name = option.title || option.label;
+      const meta = [option.category, option.mode].filter((x) => typeof x === "string" && x.trim());
+      const url = refUrl(option.url);
+      const links = (Array.isArray(option.sourceLinks) ? option.sourceLinks : []).flatMap((link) => {
+        const href = refUrl(link?.url);
+        return href && typeof link.label === "string" && link.label.trim()
+          ? ['<a class="inline-link" href="' + escapeAttr(href) + '" target="_blank" rel="noopener noreferrer">' +
+            escapeHtml(link.label) + ' ↗</a>'] : [];
+      }).join("");
+      const checked = typeof option.checkedAt === "string" &&
+        /^\d{4}-\d{2}-\d{2}$/.test(option.checkedAt) ? option.checkedAt : "";
+      return '<li class="trip-alternative">' +
+        '<strong>' + escapeHtml(name) + '</strong>' +
+        (meta.length ? '<small>' + escapeHtml(meta.join(" · ")) + '</small>' : "") +
+        (typeof option.note === "string" && option.note ? '<p>' + escapeHtml(option.note) + '</p>' : "") +
+        (checked ? '<small>' + (zh ? "資料核對" : "Researched") + ' · ' + escapeHtml(checked) + '</small>' : "") +
+        (url ? '<a class="inline-link" href="' + escapeAttr(url) + '" target="_blank" rel="noopener noreferrer">' +
+          (zh ? "開啟資料" : "Open reference") + ' ↗</a>' : "") +
+        (links ? '<div class="trip-alternative-sources">' + links + '</div>' : "") +
+        '</li>';
+    });
+    const count = zh ? options.length + " 個選項" :
+      options.length + (options.length === 1 ? " option" : " options");
+    return '<details class="trip-alternatives"><summary><span>' + escapeHtml(heading) +
+      '</span><small>' + escapeHtml(count) + '</small></summary>' +
+      '<ul class="trip-alternatives-list">' + entries.join("") + '</ul></details>';
+  }
+  window.TravelLitePlanB = planBHtml;
+
   itemActions = function handoffFirstItemActions(item) {
-    return `${baseItemActions(item)}${externalLinksHtml(item)}${googleSearchLinksHtml(item)}${decisionHtml(item, true)}${infoCardHtml(item)}`;
+    return `${baseItemActions(item)}${externalLinksHtml(item)}${googleSearchLinksHtml(item)}${decisionHtml(item, true)}${infoCardHtml(item)}${planBHtml(item?.planB)}`;
   };
 
   async function ensureDecisionState() {
@@ -221,7 +259,7 @@
       || selectedDay?.items?.find((item) => Number.isFinite(Number(item.lat)) && Number.isFinite(Number(item.lng)))
       || selectedDay?.items?.[0];
 
-    const extras = `${externalLinksHtml(selected)}${googleSearchLinksHtml(selected)}${infoCardHtml(selected)}`;
+    const extras = `${externalLinksHtml(selected)}${googleSearchLinksHtml(selected)}${infoCardHtml(selected)}${planBHtml(selected?.planB)}`;
     const card = root.querySelector(".selected-place-card");
     if (card && extras) card.insertAdjacentHTML("beforeend", extras);
   };

@@ -246,6 +246,21 @@ Only valid `HH:MM` starts participate in previous / scheduled-now / next calcula
 
 Do not invent a time solely to make the item fit the timeline.
 
+### Optional static Plan B and Pocket Picks (Issue #90)
+
+Only include alternatives when the source itinerary explicitly contains them, or the traveller asks for Plan B research. Keep the primary schedule unchanged and never automatically select a backup.
+
+- Item alternatives: item.planB (array).
+- Transfer alternatives: item.transferAfter.planB (array), below its main route connector.
+- Day-wide alternatives: day.planB (array), collapsed above the timeline.
+- Unattached curated options: top-level pocketPicks (array), collapsed in Trip overview. Do not silently convert highlights into options.
+- Each alternative has a non-empty title (or label), and may include note, category (display-only), mode, url, sourceLinks [{label,url}], checkedAt in YYYY-MM-DD. Only complete HTTP(S) URLs are linkable.
+- Preserve the source order. The UI is closed by default, and is absent when no named options exist. Options must not have triggers, whenToUse, recommendation scores, selected state, or local storage.
+- A researched or checked date means a static reference, not verified current operating/booking availability. External providers are authoritative for live details.
+
+Example: a day may have planB: [{title: 'Museum', category: 'place'}]; a transfer may have planB: [{title: 'Replacement shuttle', category: 'transport'}]; a trip may have pocketPicks: [{title: 'Local market'}]. These are sample labels only and must not be inserted into real trips without explicit source evidence.
+
+Do not map Plan B into decision.options. Unresolved shared decisions and device-only personal preferences have different semantics.
 ### Transfer connector: `transferAfter`
 
 Use `transferAfter` only for stable, pre-researched transition context between this stop and the next one.
