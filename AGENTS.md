@@ -249,6 +249,9 @@ Keep runtime network dependencies small:
 
 Core itinerary/reference use must survive provider failure.
 
+## Source and publication integrity
+
+Source links and checked dates are distinct from live availability or human acceptance. If a traveller explicitly asks to skip real-trip validation, do not pretend the Human Gate passed: set trip.publication.humanGate to waived or not-run and retain draft/unconfirmed transport and booking warnings. Reviewed/final/passed require explicit human authority. Publish only public-safe information; never include private tokens or passports in trip.json. See docs/TRIP_SCHEMA.md.
 ## Privacy
 
 This is designed for static/public hosting. Do not put secrets, credentials, passport data, private tokens, or sensitive booking credentials in repository files.

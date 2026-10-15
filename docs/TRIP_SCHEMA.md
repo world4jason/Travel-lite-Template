@@ -81,6 +81,17 @@ Rules:
 
 Do not accept arbitrary style names, URL-driven custom CSS, or styles inferred from a destination or `trip.type`.
 
+### Publication state and research provenance (Issue #92)
+
+Source existence, research date and publication/human acceptance are three separate concepts. No browser feature infers any of them from updatedAt, successful automated tests or a source URL.
+
+Optional trip.publication: {state: 'draft' | 'reviewed' | 'final', humanGate: 'passed' | 'not-run' | 'waived'}. Only set reviewed / final / passed on explicit authoritative human action. If the owner waived real-import review, use humanGate: 'waived', not passed. The UI then shows the NOT RUN/waived warning. Draft and unreviewed content warns that bookings, tickets, timetables and opening remain unconfirmed.
+
+On individual transferAfter (and future Plan B alternatives), optional sourceLinks: [{label,url}] and checkedAt: YYYY-MM-DD describe a historical research snapshot. Neither confirms live provider status. The global trip.updatedAt is a publication timestamp, never a substitute for segment checkedAt.
+
+More displays a collapsed Research Notes index only when source links exist, derived from transfers, Plan B, Essentials, infoCard and optional top-level researchNotes. Each researchNotes entry may specify category, title, checkedAt and sourceLinks; keep only brief contextual text rather than copied articles. No sources means no empty index.
+
+Published GitHub Pages trip.json is public. Never insert passports, personal secrets, booking tokens or sensitive contact details. Always hand off real-time operations to official providers; an offline snapshot cannot verify live conditions.
 ## `ui`
 
 ```json

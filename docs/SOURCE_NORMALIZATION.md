@@ -4,6 +4,9 @@ This document is for LLM/coding agents converting planning results, spreadsheets
 
 The goal is **source-faithful compression**, not replanning. Preserve useful structure that already exists in the source and avoid replacing it with generic summaries.
 
+## Provenance and publication truth
+
+Record sourceLinks and checkedAt on each researched transfer or alternative when actually verified at publish time. Source link means a reference exists, checkedAt means research happened on that date, and trip.publication means an explicit owner publication/human acceptance state. Never equate trip.updatedAt or passing automated tests with transport research or human acceptance. For unreviewed/waived real-trip imports, preserve NOT RUN and draft warnings. Public trip.json must not contain passport data, personal secrets or booking tokens.
 ## Core rule
 
 Prefer explicit source information over model inference.
