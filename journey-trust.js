@@ -48,6 +48,7 @@
   }
   function sourceRows() {
     const rows = [];
+    const asList = (raw) => Array.isArray(raw) ? raw : [];
     function append(category, title, links, checkedAt) {
       (Array.isArray(links) ? links : []).forEach((link) => {
         const url = safeHttp(link?.url);
@@ -56,27 +57,27 @@
       });
     }
     const trip = state.data || {};
-    (trip.days || []).forEach((day) => {
-      (day.items || []).forEach((item, index) => {
+    asList(trip.days).forEach((day) => {
+      asList(day.items).forEach((item, index) => {
         const next = day.items?.[index + 1];
         if (item.transferAfter) {
           append("Transit", [item.title, next?.title].filter(Boolean).join(" → "),
             item.transferAfter.sourceLinks, item.transferAfter.checkedAt);
-          (item.transferAfter.planB || []).forEach((option) =>
+          asList(item.transferAfter.planB).forEach((option) =>
             append("Plan B", option.title || option.label || item.title, option.sourceLinks, option.checkedAt));
         }
-        (item.planB || []).forEach((option) =>
+        asList(item.planB).forEach((option) =>
           append("Plan B", option.title || option.label || item.title, option.sourceLinks, option.checkedAt));
         append("Place context", item.title, item.infoCard?.sourceLinks, item.infoCard?.checkedAt);
       });
-      (day.planB || []).forEach((option) =>
+      asList(day.planB).forEach((option) =>
         append("Plan B", option.title || option.label || day.title, option.sourceLinks, option.checkedAt));
     });
-    (trip.pocketPicks || []).forEach((option) =>
+    asList(trip.pocketPicks).forEach((option) =>
       append("Plan B", option.title || option.label || "Pocket picks", option.sourceLinks, option.checkedAt));
-    (trip.essentials || []).forEach((entry) =>
+    asList(trip.essentials).forEach((entry) =>
       append("Travel Essentials", entry.title, entry.sourceLinks, entry.checkedAt));
-    (trip.researchNotes || []).forEach((note) =>
+    asList(trip.researchNotes).forEach((note) =>
       append(note.category || "Other", note.title, note.sourceLinks, note.checkedAt));
     return rows;
   }
