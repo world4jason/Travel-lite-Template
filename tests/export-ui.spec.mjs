@@ -72,6 +72,22 @@ test("downloaded ICS includes timed events, stable UID, VALARM and skips TBD", a
   await expect(page.locator("#travel-export-status")).toContainText("skipped");
 });
 
+test("ICS import warning is visible in English and Traditional Chinese", async ({ page }) => {
+  const warning = page.locator("#travel-export-ics-warning");
+  await expect(warning).toBeVisible();
+  await expect(warning).toContainText("has not been manually verified");
+
+  const zhTrip = structuredClone(trip);
+  zhTrip.ui.locale = "zh-TW";
+  await page.unroute("**/trip.json");
+  await page.route("**/trip.json", (route) => route.fulfill({
+    status: 200, contentType: "application/json", body: JSON.stringify(zhTrip)
+  }));
+  await page.reload();
+  await expect(warning).toBeVisible();
+  await expect(warning).toContainText("尚未經 Apple、Google 或 Outlook 行事曆的實際匯入人工驗收");
+});
+
 test("mobile export controls are reachable without horizontal overflow", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   for (const button of await page.locator("[data-travel-export]").all()) {
