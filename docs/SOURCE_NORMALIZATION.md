@@ -21,6 +21,9 @@ Do not invent:
 - timezone conversions
 - resolved decisions
 
+## Travel Essentials source rules
+
+Store recurring, already researched travel guidance (airport connections, city transit tickets, intercity boarding, reusable trip-wide reminders) in top-level essentials only when present in the source or explicitly requested. Keep each title/description compact, preserve original official sourceLinks and historical checkedAt date. Use dayDate only for genuinely day-scoped guidance. Specific segment duration remains in transferAfter and Plan B alternatives stay separate. Omit unknown facts instead of inventing them.
 ## `day.routeSummary` extraction priority
 
 When generating `day.routeSummary`, use this order:

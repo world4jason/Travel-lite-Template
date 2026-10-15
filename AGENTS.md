@@ -148,6 +148,9 @@ The Trip view is **information first, actions second**.
 
 Use optional `highlights`, `routeSummary`, and `transferAfter` only when they improve scanability. Do not fill them with invented detail just because the schema supports them.
 
+## Optional Travel Essentials
+
+When an itinerary includes reusable transport/trip preparation instructions, preserve them as opt-in, read-only top-level essentials. Keep segment timing in transferAfter, alternatives in Plan B, and day-specific reminders in day.reminders. Only publish source-backed instructions and their real source/check dates, with no live-service claims or invented transport facts. Empty essentials do not appear in More.
 ## Map invariant
 
 Map is a read-only spatial reference for **already planned stops**.
