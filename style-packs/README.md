@@ -144,3 +144,7 @@ Eight different photo/poster prompts were first [deduplicated and stripped of ph
 | Quiet Acrylic — 極簡細線壓克力 | [Mobile](./previews/quiet-acrylic-mobile.png) | [Desktop](./previews/quiet-acrylic-desktop.png) | [Day](./previews/quiet-acrylic-day-mobile.png) |
 
 **Next-step gate:** only style descriptors matter when ingesting a photo-to-poster prompt: do not accept exact source photo content, 3:4/50-50 layout, fake caption or fixed date/brand as website requirements. See [the repeatable E2E workflow](../style-generator/NEXT_PROMPT_E2E.md).
+
+### Vintage Watercolor draft QA contract
+
+Run `node --test tests/vintage-pack.test.mjs`, then run the existing browser suite plus `tests/vintage-watercolor.spec.mjs` against the same Tokyo fixture. Required screenshot evidence: 390×844 Overview/Day and 1100×900 Overview/Day, plus visual inspection at 320×568 and 844×390, all views, no/long `infoCard`, mixed long labels, offline/keyboard/contrast. The **Draft** branch has **no approved screenshot evidence**. A new style changes only the template; historical one-off trip repos must not be auto-synced. `scripts/verify-style-parity.mjs` compares only previously shared looks; the new pack is tested separately.
