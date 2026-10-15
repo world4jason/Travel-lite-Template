@@ -8,7 +8,7 @@ function fixture(options, locale = "zh-TW", heading) {
   const escape = (value) => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#39;");
   const context = {
-    state: { data: { ui: { locale } } }, window: {}, root: { addEventListener() {} },
+    state: { data: { ui: { locale } } }, window: { location: { href: "https://example.test/trip/" } }, root: { addEventListener() {} },
     URL, renderMap() {}, renderNow() {}, renderTrip() {}, itemActions() {},
     escapeHtml: escape, escapeAttr: escape
   };
