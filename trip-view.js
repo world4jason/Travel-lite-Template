@@ -107,17 +107,19 @@
       .join("");
   }
 
-  function transferHtml(item) {
+  function transferHtml(item, next, day) {
     const transfer = item?.transferAfter;
     if (!transfer) return "";
     const url = safeUrl(transfer.url);
-    const meta = [transfer.mode, transfer.duration].filter(Boolean).join(" · ");
+    const structured = window.TravelLiteTransit?.durationText(transfer.estimate) || "";
+    const meta = [transfer.mode, structured || transfer.duration].filter(Boolean).join(" · ");
     return `<div class="trip-transfer">
       <span class="trip-transfer-arrow" aria-hidden="true">↓</span>
       <div class="trip-transfer-copy">
         <strong>${escapeHtml(transfer.label || "Transfer")}</strong>
         ${meta ? `<span>${escapeHtml(meta)}</span>` : ""}
         ${transfer.summary ? `<p>${escapeHtml(transfer.summary)}</p>` : ""}
+        ${window.TravelLiteTransit?.timingHtml(transfer, item, next, day) || ""}
         ${window.TravelLitePlanB?.(transfer.planB) || ""}
       </div>
       ${url ? `<a class="trip-transfer-link" href="${escapeAttr(url)}" target="_blank" rel="noreferrer" aria-label="Open transfer details">↗</a>` : ""}
@@ -232,7 +234,7 @@
         return `<li class="trip-stop-wrap">
           <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}">
             ${timeLabel(item)}${details}
-          </article>${index < day.items.length - 1 ? transferHtml(item) : ""}
+          </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}
         </li>`;
       }
       return `<div class="trip-stop-wrap">
@@ -240,7 +242,7 @@
           <div class="timeline-time">${escapeHtml(item.start || "TBD")}</div>
           <div class="timeline-rail"><div class="timeline-dot"></div></div>
           ${details}
-        </article>${index < day.items.length - 1 ? transferHtml(item) : ""}
+        </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}
       </div>`;
     }).join("");
 

@@ -1,0 +1,8 @@
+.trip-transit-time { margin-top: 8px; padding: 8px 0 2px; border-top: 1px solid var(--line); }
+.trip-transit-time strong, .trip-transit-time small { display: block; }
+.trip-transit-time strong { font-size: .84rem; color: var(--text); }
+.trip-transit-time small { margin-top: 4px; font-size: .76rem; color: var(--muted); line-height: 1.5; }
+.trip-transit-time p { margin: 6px 0 0; color: var(--muted); font-size: .8rem; }
+.trip-transit-now { margin-top: 12px; }
+.trip-transit-now strong { font-size: .9rem; }
+.trip-transit-now p:not(.eyebrow) { margin: 6px 0 0; font-size: .81rem; color: var(--muted); }

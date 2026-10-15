@@ -146,6 +146,9 @@ Guidelines:
 
 A dense transit day may have a concise route summary while keeping platform numbers, transfer warnings, and live-timing reminders in the detailed items.
 
+## Evidence-bound timing
+
+Keep transferAfter.duration as descriptive source text unless the original source or legitimate provider research gives defensible numeric door-to-door minutes. Only set estimate.minMinutes/maxMinutes (or minutes), basis, explicit bufferMinutes, sourceLinks and checkedAt when actually documented; never auto-add arbitrary waiting or walking minutes. A next item arrivalDeadline must be a specifically confirmed arrival requirement with ISO offset (not an ordinary scheduled start). No trustworthy source, offset-qualified deadline or buffer means no computed leave-by. External routing remains authoritative for live travel.
 ## Validation examples
 
 Real-trip fixture expectations:
