@@ -194,4 +194,6 @@ Core runtime integrations: **MapLibre + OpenFreeMap** for planned-stop maps, **O
 
 Travel Lite is available under **[AGPL-3.0-or-later](./LICENSE)**. Reuse — **including commercial use** — is allowed when the applicable terms are followed. Preserve copyright/attribution and license notices (including [TREK-related notices](./NOTICE.md)); for covered modified/combined works and qualifying network interactions, comply with the relevant **Corresponding Source** obligations. Merely interacting with unrelated software does not automatically impose AGPL on that software. The requirements depend on the actual work and how it is shared or used.
 
+**Upstream caveat:** Original Travel Lite contributions may be declared `AGPL-3.0-or-later`, but this does not establish an **or-later** grant for every TREK-derived component. The exact-file license-provenance audit remains open; see [license audit](./docs/LICENSE_AUDIT.md) and [NOTICE.md](./NOTICE.md). Do not represent this review as completed.
+
 See [GNU AGPLv3 §§4–5, 13](https://www.gnu.org/licenses/agpl-3.0.html) and the [GNU license FAQ](https://www.gnu.org/licenses/gpl-faq.en.html) for the authoritative terms. The Agent prompt above describes **one standalone trip-generation workflow**, not extra legal restrictions on AGPL recipients.

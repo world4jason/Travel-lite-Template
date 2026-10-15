@@ -32,6 +32,8 @@ When acting as a coding agent:
 
 **Scope distinction:** Copyleft applies to works covered by AGPL in the circumstances specified by the license; merely interacting with an independent program or distributing unrelated code alongside it does not by itself make all that code AGPL. Whether an integration forms a covered combined work can require case-specific review.
 
+**Version provenance caveat:** The declared `AGPL-3.0-or-later` may not be extended to third-party TREK-derived code absent an explicit grant. Review [docs/LICENSE_AUDIT.md](./docs/LICENSE_AUDIT.md) before making broad statements about relicensing/compatibility. The full, unmodified AGPLv3 legal text lives in `LICENSE`; any file-specific original notices must be preserved.
+
 Authoritative references: [GNU AGPLv3 §§4–5, 13](https://www.gnu.org/licenses/agpl-3.0.html), [GNU license FAQ](https://www.gnu.org/licenses/gpl-faq.en.html), [NOTICE.md](./NOTICE.md).
 
 Before making non-trivial changes, read:
