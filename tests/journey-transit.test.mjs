@@ -55,7 +55,9 @@ test("negative scheduled slack produces only a soft warning; overnight uses date
   const core = fixture();
   assert.equal(core.calculate(transfer, { ...from, end: "13:25" }, next, day).tight, true);
   assert.equal(core.calculate(transfer, from,
-    { arrivalDeadline: "2026-10-04T00:10:00+09:00" }, day).label, "2026-10-03 23:20");
+    { arrivalDeadline: "2026-10-04T00:10:00+09:00" }, day).label, "23:20");
+  assert.equal(core.calculate(transfer, from,
+    { arrivalDeadline: "2026-10-03T00:10:00+09:00" }, day).label, "2026-10-02 23:20");
 });
 test("DST gap or mismatched destination offset is rejected, never guessed", () => {
   const core = fixture();
