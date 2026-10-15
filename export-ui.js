@@ -99,6 +99,7 @@
         </select>
       </label>
       <p class="helper-text">${label("Calendar import does not automatically sync future changes. Device calendar controls alarms.", "日曆匯入後不會自動同步更新；實際通知由手機日曆控制。")}</p>
+      <p id="travel-export-ics-warning" class="helper-text" role="note">${label("Compatibility notice: importing .ics into Apple, Google or Outlook Calendar has not been manually verified. Check dates, times, time zones and reminders in your calendar before relying on imported events.", "相容性提醒：尚未經 Apple、Google 或 Outlook 行事曆的實際匯入人工驗收。匯入後請核對日期、時間、時區及提醒，再依賴匯入的活動安排旅行。")}</p>
       <p id="travel-export-status" role="status" aria-live="polite" class="travel-export-status"></p>`;
     nextTo.before(section);
     section.addEventListener("click", (event) => {
