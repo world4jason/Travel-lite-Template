@@ -145,6 +145,8 @@ Open **More → Export / 匯出** to take a snapshot of the *published, read-onl
 
 **Important limits:** PDF and imported calendar files are **snapshots**. Re-importing an ICS may duplicate events; importing does not keep future edits in sync. Reminder delivery depends on the receiving calendar. A5 is sequential reading order, **not** duplex booklet imposition. Mobile browsers may need permission to open a new tab for print preview.
 
+**ICS compatibility notice / 行事曆相容性提醒:** Automated RFC 5545, parser, timezone/DST and download checks were recorded for the MVP, but **real imports into Apple Calendar, Google Calendar or Outlook have NOT been manually verified**. The owner explicitly **waived this Human Gate for the MVP release; result: NOT RUN (accepted risk), not PASS** ([#73](https://github.com/world4jason/Travel-lite-Template/issues/73)). **After importing, check the event dates, local times, time zones and reminders in your calendar before relying on them.** 中文：實際匯入 Apple／Google／Outlook 行事曆尚未經人工驗收，請先核對日期、時間、時區及提醒。這不代表日曆功能已通過真實 App 相容性測試。
+
 Exports use the same published `trip.json` as the website. A4/A5 print **published itinerary text (including `item.note`) and selected confirmed-booking summary fields as supplied**, without automatic secret/token scrubbing. **Remove private credentials, tokens, and other sensitive material before publishing `trip.json`**; both the public site and printed copies can expose it. Device-local personal notes and checklist completion are not included. No map-image provider or online fonts are needed to print text.
 
 Implementation: `export-core.js` (print/ICS functions), `export-ui.js` (More actions), `export.css` (screen launcher). Run:
