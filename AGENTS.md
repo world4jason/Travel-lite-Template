@@ -148,6 +148,9 @@ The Trip view is **information first, actions second**.
 
 Use optional `highlights`, `routeSummary`, and `transferAfter` only when they improve scanability. Do not fill them with invented detail just because the schema supports them.
 
+## Optional static Plan B
+
+Plan B is an opt-in read-only reference list, not a recommendation or decision engine. Publish only explicit source alternatives or traveller-requested research in item.planB, transferAfter.planB, day.planB, or top-level pocketPicks. Preserve source order and supporting links/dates; never infer weather/traffic triggers, suggest the best option, persist a choice, or modify primary itinerary. Do not reuse decision.options for backups. See docs/TRIP_SCHEMA.md.
 ## Map invariant
 
 Map is a read-only spatial reference for **already planned stops**.

@@ -21,6 +21,9 @@ Do not invent:
 - timezone conversions
 - resolved decisions
 
+## Optional Plan B is never a decision system
+
+Only preserve source-provided alternatives or research explicitly requested by the traveller. Put alternatives at item.planB, item.transferAfter.planB, day.planB, or top-level pocketPicks, as appropriate. Preserve original order and source links; checkedAt is a historical research date, never a live guarantee. Do not infer conditions, rank or trigger options, auto-generate missing backups, or create local selection state. With no alternatives, omit the field.
 ## `day.routeSummary` extraction priority
 
 When generating `day.routeSummary`, use this order:
