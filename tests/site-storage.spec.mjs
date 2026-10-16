@@ -312,7 +312,7 @@ test('a real Service Worker preserves this site\'s data through an offline reloa
       note: state.personalNote,
       checks: state.checks,
       scopeCaches: (await caches.keys()).filter((key) =>
-        key.startsWith('travel-lite:') && key.includes('shell-v33-site-storage-scope')),
+        key.startsWith('travel-lite:' + new URL('./', location.href).pathname.replace(/[^a-z0-9]/gi, '-') + ':shell-v')),
     }));
     expect(after.siteId).toBe(initial.siteId);
     expect(after.database).toBe(initial.database);

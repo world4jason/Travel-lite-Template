@@ -39,16 +39,20 @@ for(const viewport of [
     await page.keyboard.press("Escape");
   });
 }
-test("New pack never runs decorative motion and is available offline after install",async({page,context})=>{
-  await page.emulateMedia({reducedMotion:"reduce"});
-  await page.goto(preview);
-  await expect(page.locator("html")).toHaveAttribute("data-visual-style","vintage-watercolor");
-  await page.evaluate(async()=>{ if(navigator.serviceWorker) await navigator.serviceWorker.ready; });
-  await page.reload();
-  await context.setOffline(true);
-  try{
+test("New pack never runs decorative motion and is available offline after install",async({browser,baseURL})=>{
+  const context=await browser.newContext({baseURL,serviceWorkers:"allow",reducedMotion:"reduce"});
+  try {
+    const page=await context.newPage();
+    await page.goto(preview);
+    await expect(page.locator("html")).toHaveAttribute("data-visual-style","vintage-watercolor");
+    await page.waitForFunction(()=>Boolean(navigator.serviceWorker?.controller),null,{timeout:15000});
+    await page.reload();
+    await context.setOffline(true);
     await page.reload();
     await expect(page.locator("html")).toHaveAttribute("data-visual-style","vintage-watercolor");
     await expect(page.locator(".trip-overview-hero h2")).toBeVisible();
-  }finally{await context.setOffline(false);}
+  } finally {
+    await context.setOffline(false);
+    await context.close();
+  }
 });

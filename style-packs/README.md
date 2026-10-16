@@ -2,7 +2,7 @@
 
 Travel Lite's **functional template** remains shared: Now / Trip / Map / Check / More, deep links, itinerary/timezone facts, notes, tickets, maps, and offline behavior. A Style Pack changes only visual representation and permitted illustration assets.
 
-> **Vintage Watercolor prototype (Issue #81):** [art direction](../docs/VINTAGE_WATERCOLOR_STYLE_BRIEF.md) now has a **Draft implementation**, original local SVG assets and a provisional whitelisted ID. It is NOT a reviewed/deployed style until the browser preview, screenshot, contrast, offline and independent Agent QA gates pass. Reference booklet contributes visual language only, never its itinerary content. A5 print is separately #80.
+> **Vintage Watercolor local Agent-QA-reviewed (Issue #81):** [art direction](../docs/VINTAGE_WATERCOLOR_STYLE_BRIEF.md) has a locally tested Style Pack, original SVG assets, screenshots and a bounded whitelisted ID. Browser screenshot, layout, contrast and offline QA pass; **post-deployment Human visual review remains pending**. Reference booklet contributes visual language only, never its itinerary content. A5 print is separately #80.
 
 ## Built-in styles
 
@@ -22,7 +22,7 @@ Travel Lite's **functional template** remains shared: Now / Trip / Map / Check /
 | `painterly-editorial` | Reviewed · second prompt batch | Painterly Editorial — 柔彩筆觸 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=painterly-editorial#trip/overview) |
 | `geometric-print` | Reviewed · second prompt batch | Geometric Print — 硬邊幾何 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=geometric-print#trip/overview) |
 | `quiet-acrylic` | Reviewed · second prompt batch | Quiet Acrylic — 極簡細線壓克力 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=quiet-acrylic#trip/overview) |
-| `vintage-watercolor` | **Draft / not deployed** | Archival paper, botanical flourishes and generic ink-wash landscape. No new travel facts | Preview requires this Draft branch; not available on published main |
+| `vintage-watercolor` | Local QA passed · Human post-deployment review pending | Archival paper, botanical flourishes and generic ink-wash landscape. No new travel facts | After deployment: [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=vintage-watercolor#trip/overview) |
 
 Set the published default for a generated trip by adding `"visualStyle": "candy"` or `"risograph"` inside `trip.json → ui`. Visitors can switch among fifteen built-in Style Packs from **More → Appearance / 外觀**, saving a **per-trip device-only** preference without modifying `trip.json`. Use **Follow trip default** to remove that preference. A whitelisted `?previewStyle=...` URL overrides the device choice for that link's visit, without saving it. Precedence: valid URL preview > saved per-trip device choice > publisher's `ui.visualStyle` > Editorial. Unknown pack IDs never execute custom CSS, HTML or scripts.
 
@@ -147,4 +147,8 @@ Eight different photo/poster prompts were first [deduplicated and stripped of ph
 
 ### Vintage Watercolor draft QA contract
 
-Run `node --test tests/vintage-pack.test.mjs`, then run the existing browser suite plus `tests/vintage-watercolor.spec.mjs` against the same Tokyo fixture. Required screenshot evidence: 390×844 Overview/Day and 1100×900 Overview/Day, plus visual inspection at 320×568 and 844×390, all views, no/long `infoCard`, mixed long labels, offline/keyboard/contrast. The **Draft** branch has **no approved screenshot evidence**. A new style changes only the template; historical one-off trip repos must not be auto-synced. `scripts/verify-style-parity.mjs` compares only previously shared looks; the new pack is tested separately.
+Run `node --test tests/vintage-pack.test.mjs`, then run the existing browser suite plus `tests/vintage-watercolor.spec.mjs` against the same Tokyo fixture. Required screenshot evidence: 390×844 Overview/Day and 1100×900 Overview/Day, plus visual inspection at 320×568 and 844×390, all views, no/long `infoCard`, mixed long labels, offline/keyboard/contrast. Reviewed screenshot evidence is bundled below. Human review remains scheduled for after GitHub Pages deployment. A new style changes only the template; historical one-off trip repos must not be auto-synced. `scripts/verify-style-parity.mjs` compares only previously shared looks; the new pack is tested separately.
+
+### Vintage Watercolor visual evidence (same Tokyo trip, no invented travel facts)
+
+[390px Overview](./previews/vintage-watercolor-overview-mobile.png) · [390px Day](./previews/vintage-watercolor-day-mobile.png) · [1100px Overview](./previews/vintage-watercolor-overview-desktop.png) · [1100px Day](./previews/vintage-watercolor-day-desktop.png) · [A5 cover](./previews/vintage-watercolor-a5-cover.png) · [A5 dense page](./previews/vintage-watercolor-a5-dense.png).

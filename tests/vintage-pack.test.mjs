@@ -17,12 +17,14 @@ function ratio(a,b) {
 test("prototype manifest has real, bundled assets and honest visual review status",()=>{
   assert.equal(manifest.id,"vintage-watercolor");
   assert.equal(manifest.visualStyle,"vintage-watercolor");
-  assert.equal(manifest.stage,"implementation-prototype");
-  assert.match(manifest.visualReview,/NOT RUN/);
+  assert.equal(manifest.stage,"implemented-reviewed");
+  assert.match(manifest.visualReview,/Human review remains pending/);
   for(const asset of manifest.assets)
     assert.ok(existsSync(resolve(root,manifest.assetDirectory.replace("../../",""),asset)), asset);
   assert.ok(manifest.css.every(path=>existsSync(resolve(root,"style-packs/vintage-watercolor",path))));
-  assert.equal(manifest.browserPreviews.length,0,"do not invent review screenshots");
+  assert.ok(manifest.browserPreviews.length>=4,"browser review screenshots required");
+  for(const preview of [...manifest.browserPreviews,...manifest.printPreviews])
+    assert.ok(existsSync(resolve(root,"style-packs/vintage-watercolor",preview)),preview);
 });
 test("HTML uses bounded whitelisted pack, local SVG and offline cache; no remote style source",()=>{
   const app=read("app.js"),index=read("index.html"),sw=read("sw.js"),css=read("vintage-watercolor-theme.css");
