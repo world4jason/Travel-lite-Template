@@ -123,6 +123,15 @@ The base template only needs small runtime services:
 
 `mapStyleLight` / `mapStyleDark` are optional overrides. The Google Maps embed key is optional; normal Google Maps handoff links do not require it.
 
+## Travel Essentials (Issue #91)
+
+An optional, read-only, collapsed reference section under More; it does not add a sixth bottom tab. Include only instructions already present in a trustworthy itinerary or explicitly researched before publication.
+
+Top-level essentials is an array of objects with title (required), body or summary (plain text), category (e.g. Airport transfer / Local transit / Intercity / Tickets), optional dayDate (YYYY-MM-DD), optional checkedAt (YYYY-MM-DD) and sourceLinks [{label, url}]. HTTP(S) sources must be complete URLs; malformed or executable URLs are ignored. Entries that have no usable content are omitted.
+
+Airport arrival, reusable transit ticket instructions and intercity boarding guidance belong here. A-to-B transition times belong in transferAfter and explicit alternatives in planB. Do not store the same conflicting fact in all three. No dynamic provider checks, live timetable claims, private booking secrets, auto-generated filler or runtime research.
+
+With no essentials array the section does not render. All published instructions remain available offline, while external source links require a network connection. Checked dates identify historical research, not live verification.
 ## Trip overview highlights: `highlights`
 
 Use `highlights` for flexible activities, seasonal events, backup ideas, or notable options that matter to the trip but are not fixed timeline stops.

@@ -481,6 +481,45 @@ function detailsSection(title, count, body, open = false) {
   return `<details class="panel more-section" ${open ? "open" : ""}><summary><span>${escapeHtml(title)}</span><span class="summary-count">${count}</span></summary><div class="more-body">${body}</div></details>`;
 }
 
+function travelEssentialsSection(rawEntries, label, zh = false) {
+  const safeHttp = (raw) => {
+    if (typeof raw !== "string" || !/^https?:\/\/[^/]/i.test(raw.trim())) return "";
+    try { return new URL(raw).href; } catch { return ""; }
+  };
+  const entries = (Array.isArray(rawEntries) ? rawEntries : []).filter((entry) =>
+    entry && typeof entry.title === "string" && entry.title.trim() &&
+    (typeof (entry.body || entry.summary) === "string" ||
+      (Array.isArray(entry.sourceLinks) && entry.sourceLinks.length)));
+  if (!entries.length) return "";
+  let hasLinks = false;
+  const html = entries.map((entry) => {
+    const sourceLinks = (Array.isArray(entry.sourceLinks) ? entry.sourceLinks : []).flatMap((source) => {
+      const url = safeHttp(source?.url);
+      if (!url || typeof source.label !== "string" || !source.label.trim()) return [];
+      hasLinks = true;
+      return ['<a class="inline-link" href="' + escapeAttr(url) +
+        '" target="_blank" rel="noopener noreferrer">' + escapeHtml(source.label) + ' ↗</a>'];
+    }).join("");
+    const category = typeof entry.category === "string" ? entry.category : "";
+    const day = typeof entry.dayDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(entry.dayDate)
+      ? entry.dayDate : "";
+    const researched = typeof entry.checkedAt === "string" && /^\d{4}-\d{2}-\d{2}$/.test(entry.checkedAt)
+      ? entry.checkedAt : "";
+    const meta = [category, day].filter(Boolean).join(" · ");
+    return '<article class="text-card travel-essential">' +
+      (meta ? '<p class="eyebrow">' + escapeHtml(meta) + '</p>' : "") +
+      '<h3>' + escapeHtml(entry.title) + '</h3>' +
+      (entry.body || entry.summary ? '<p>' + escapeHtml(entry.body || entry.summary) + '</p>' : "") +
+      (researched ? '<small>' + (zh ? "資料核對" : "Researched") + ' · ' + escapeHtml(researched) + '</small>' : "") +
+      (sourceLinks ? '<div class="action-row">' + sourceLinks + '</div>' : "") +
+      '</article>';
+  }).join("");
+  return detailsSection(label, entries.length, html +
+    (hasLinks ? '<p class="helper-text">' +
+      (zh ? "外部連結需連線；請以業者最新資訊為準。" : "External links need Internet; confirm live details with the provider.") +
+      '</p>' : ""));
+}
+
 // Native modal dialog provides browser-managed focus trapping and Escape.
 // At narrow widths it is a bottom sheet; on desktop a right-side drawer.
 // The underlying app remains untouched and inert while the chooser is open.
@@ -687,6 +726,7 @@ function renderMore() {
   root.innerHTML = `<div class="view-stack">
     ${styleChooser}
     <section class="panel local-note-card"><div class="check-title-row"><h2>Personal note</h2><span>this device</span></div><textarea id="personal-note" rows="4" placeholder="Gate change, room number, quick memo…">${escapeHtml(state.personalNote)}</textarea><p class="helper-text">Saved locally in IndexedDB; falls back to localStorage if needed.</p></section>
+    ${travelEssentialsSection(state.data.essentials, labelMore("Travel Essentials", "行前與交通指南"), moreZh)}
     ${detailsSection(labelMore("Reservations", "預約與票券"), state.data.reservations.length, reservations, true)}
     ${detailsSection(labelMore("Costs", "費用"), state.data.costs.entries.length, costs)}
     ${detailsSection(labelMore("Trip notes", "旅程備註"), state.data.notes.length, notes)}

@@ -151,6 +151,10 @@ Use optional `highlights`, `routeSummary`, and `transferAfter` only when they im
 ## Optional static Plan B
 
 Plan B is an opt-in read-only reference list, not a recommendation or decision engine. Publish only explicit source alternatives or traveller-requested research in item.planB, transferAfter.planB, day.planB, or top-level pocketPicks. Preserve source order and supporting links/dates; never infer weather/traffic triggers, suggest the best option, persist a choice, or modify primary itinerary. Do not reuse decision.options for backups. See docs/TRIP_SCHEMA.md.
+
+## Optional Travel Essentials
+
+When an itinerary includes reusable transport/trip preparation instructions, preserve them as opt-in, read-only top-level essentials. Keep segment timing in transferAfter, alternatives in Plan B, and day-specific reminders in day.reminders. Only publish source-backed instructions and their real source/check dates, with no live-service claims or invented transport facts. Empty essentials do not appear in More.
 ## Map invariant
 
 Map is a read-only spatial reference for **already planned stops**.

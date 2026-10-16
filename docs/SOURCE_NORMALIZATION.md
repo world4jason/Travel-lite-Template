@@ -24,6 +24,10 @@ Do not invent:
 ## Optional Plan B is never a decision system
 
 Only preserve source-provided alternatives or research explicitly requested by the traveller. Put alternatives at item.planB, item.transferAfter.planB, day.planB, or top-level pocketPicks, as appropriate. Preserve original order and source links; checkedAt is a historical research date, never a live guarantee. Do not infer conditions, rank or trigger options, auto-generate missing backups, or create local selection state. With no alternatives, omit the field.
+
+## Travel Essentials source rules
+
+Store recurring, already researched travel guidance (airport connections, city transit tickets, intercity boarding, reusable trip-wide reminders) in top-level essentials only when present in the source or explicitly requested. Keep each title/description compact, preserve original official sourceLinks and historical checkedAt date. Use dayDate only for genuinely day-scoped guidance. Specific segment duration remains in transferAfter and Plan B alternatives stay separate. Omit unknown facts instead of inventing them.
 ## `day.routeSummary` extraction priority
 
 When generating `day.routeSummary`, use this order:
