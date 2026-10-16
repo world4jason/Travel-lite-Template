@@ -3,7 +3,7 @@
 // shell/runtime, and activating one cannot delete the other's cache.
 const CACHE_PREFIX = "travel-lite:" + new URL(self.registration.scope).pathname
   .replace(/[^a-z0-9]/gi, "-") + ":";
-const CACHE = CACHE_PREFIX + "shell-v36-journey-confidence-release";
+const CACHE = CACHE_PREFIX + "shell-v37-vintage-frame-grammar";
 const RUNTIME_CACHE = CACHE_PREFIX + "runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -108,6 +108,11 @@ const CORE = [
   "./assets/quiet-acrylic/marker.svg",
   "./assets/vintage-watercolor/hero.svg",
   "./assets/vintage-watercolor/marker.svg",
+  "./assets/vintage-watercolor/frame-corner-bl.svg",
+  "./assets/vintage-watercolor/frame-corner-br.svg",
+  "./assets/vintage-watercolor/frame-corner-tl.svg",
+  "./assets/vintage-watercolor/frame-corner-tr.svg",
+  "./assets/vintage-watercolor/divider-ornament.svg",
 
   "./manifest.webmanifest",
   "./icon.svg"

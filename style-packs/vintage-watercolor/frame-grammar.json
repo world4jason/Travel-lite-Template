@@ -1,0 +1,88 @@
+{
+  "role": "structural-and-decorative",
+  "frameLayers": [
+    {
+      "level": "outer",
+      "lineStyle": "single",
+      "weight": "thin",
+      "cornerShape": "scrollwork",
+      "colorRole": "old-gold",
+      "inset": "small",
+      "notes": "identity and chapter perimeter"
+    },
+    {
+      "level": "inner",
+      "lineStyle": "single",
+      "weight": "hairline",
+      "cornerShape": "botanical",
+      "colorRole": "muted-antique-gold",
+      "inset": "medium",
+      "notes": "subtle inset rule, never a heavy shadow"
+    },
+    {
+      "level": "section",
+      "lineStyle": "dotted",
+      "weight": "hairline",
+      "cornerShape": "none",
+      "colorRole": "old-gold",
+      "inset": "none",
+      "notes": "symmetric flourish separates narrative content"
+    },
+    {
+      "level": "utility",
+      "lineStyle": "single",
+      "weight": "thin",
+      "cornerShape": "rounded",
+      "colorRole": "deep-green",
+      "inset": "none",
+      "notes": "functional boundaries without ornamental clutter"
+    }
+  ],
+  "cornerMotifs": [
+    "Four original mirrored botanical scrollwork corners; retained small on mobile"
+  ],
+  "dividerMotifs": [
+    "A symmetric leaf-and-ink center flourish for narrative section breaks"
+  ],
+  "labelFrames": [
+    "Muted-green ink on light paper, thin framed ribbon-like eyebrow labels"
+  ],
+  "placements": [
+    {
+      "surface": "identity",
+      "treatment": "outer + inset rule + four corners; illustration remains subordinate",
+      "density": "ornate"
+    },
+    {
+      "surface": "chapter",
+      "treatment": "outer + inset rule + corners and center flourish",
+      "density": "ornate"
+    },
+    {
+      "surface": "reading",
+      "treatment": "fine bordered cards, occasional one-corner accent",
+      "density": "moderate"
+    },
+    {
+      "surface": "operational",
+      "treatment": "simple accessible boundary and selection outline, no flowers on controls",
+      "density": "sparse"
+    },
+    {
+      "surface": "print",
+      "treatment": "same original corner art inline in print CSS, preserving all text",
+      "density": "moderate"
+    }
+  ],
+  "responsive": {
+    "mobile": "Retain compact corners and double rule, preserve generous text inset; remove oversized vignettes only.",
+    "desktop": "Four-corner frames for identity/chapter, center flourish at section boundary.",
+    "print": "Vector corner motif + inset border + divider, still readable when print backgrounds are disabled."
+  },
+  "evidence": [
+    "Private booklet P1: ornamental perimeter and botanical corners",
+    "P5, P10, P31, P75: index and chapter curl motifs",
+    "P37, P49, P125: content-panel frames",
+    "P39, P76: centered section flourishes"
+  ]
+}

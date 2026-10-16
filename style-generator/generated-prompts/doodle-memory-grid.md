@@ -40,6 +40,10 @@
 - 柔和局部彩鉛色塊
 - 紙面留白
 
+### Frame & Ornament Grammar（框線／裝飾語法）
+
+- 舊版 Style Brief 未抽取 Frame Grammar；必須補審，不能把缺少欄位視為沒有框線。
+
 ### 插畫／材質特徵
 
 - 3×3 九個小記憶單元

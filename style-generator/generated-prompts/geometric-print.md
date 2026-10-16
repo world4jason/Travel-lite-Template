@@ -39,6 +39,10 @@
 - 明暗色面而非描邊建模
 - 極少量顆粒
 
+### Frame & Ornament Grammar（框線／裝飾語法）
+
+- 舊版 Style Brief 未抽取 Frame Grammar；必須補審，不能把缺少欄位視為沒有框線。
+
 ### 插畫／材質特徵
 
 - 三角形與矩形切面

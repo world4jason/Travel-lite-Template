@@ -245,3 +245,164 @@
     animation:none !important; transition:none !important;
   }
 }
+
+/* Frame Grammar v2 — original botanical corner scrolls, layered rules and central
+   flourish. Decorative assets are CSS-only; no trip facts or accessible text change. */
+:root[data-visual-style="vintage-watercolor"] {
+  --frame-outer: #A78B68;
+  --frame-inner: #DCCCAD;
+  --frame-ink: #445C43;
+  --frame-corner-size: 40px;
+  --frame-divider-size: 170px;
+}
+:root[data-visual-style="vintage-watercolor"] :is(
+  .trip-header,.trip-overview-hero,.trip-day-view > .day-summary
+) {
+  background-image:
+    url("./assets/vintage-watercolor/frame-corner-tl.svg"),
+    url("./assets/vintage-watercolor/frame-corner-tr.svg"),
+    url("./assets/vintage-watercolor/frame-corner-bl.svg"),
+    url("./assets/vintage-watercolor/frame-corner-br.svg"),
+    linear-gradient(115deg,#FFFCF5,#F7EFDF);
+  background-repeat:no-repeat;
+  background-position:left 5px top 5px,right 5px top 5px,
+    left 5px bottom 5px,right 5px bottom 5px,center;
+  background-size:var(--frame-corner-size) var(--frame-corner-size),
+    var(--frame-corner-size) var(--frame-corner-size),
+    var(--frame-corner-size) var(--frame-corner-size),
+    var(--frame-corner-size) var(--frame-corner-size),cover;
+  border:1px solid var(--frame-outer);
+  border-radius:5px;
+}
+:root[data-visual-style="vintage-watercolor"] .trip-day-view > .day-summary {
+  border-top:3px double var(--frame-outer);
+}
+:root[data-visual-style="vintage-watercolor"] .trip-day-view > .day-summary::before {
+  content:"";
+  position:absolute;
+  inset:7px;
+  border:1px solid var(--frame-inner);
+  border-radius:2px;
+  pointer-events:none;
+}
+:root[data-visual-style="vintage-watercolor"] :is(
+  .trip-overview-hero > .eyebrow,
+  .trip-day-view > .day-summary > .eyebrow
+) {
+  display:inline-block;
+  width:fit-content;
+  max-width:100%;
+  padding:3px 13px;
+  border-block:1px solid #A78B68;
+  color:#445C43;
+  background:#EAE8D7;
+  border-radius:1px;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+:root[data-visual-style="vintage-watercolor"] .trip-overview-section {
+  border-top:1px solid var(--frame-inner);
+  padding-top:20px;
+  background-image:url("./assets/vintage-watercolor/divider-ornament.svg");
+  background-position:center top -8px;
+  background-size:var(--frame-divider-size) 26px;
+  background-repeat:no-repeat;
+}
+:root[data-visual-style="vintage-watercolor"] .trip-route-heading {
+  padding-bottom:17px;
+  background:url("./assets/vintage-watercolor/divider-ornament.svg") left bottom / 150px 22px no-repeat;
+}
+:root[data-visual-style="vintage-watercolor"] .trip-overview-day {
+  border:1px solid #C9BCA6;
+  border-left:3px double #445C43;
+  border-radius:4px;
+  background-image:url("./assets/vintage-watercolor/divider-ornament.svg");
+  background-position:center bottom 2px;
+  background-size:125px 18px;
+  background-repeat:no-repeat;
+  padding-bottom:22px;
+}
+:root[data-visual-style="vintage-watercolor"] :is(.trip-highlight-card,.trip-open-decision) {
+  border:1px solid #BEAB8D;
+  border-radius:3px;
+  background-image:url("./assets/vintage-watercolor/frame-corner-tr.svg");
+  background-position:right 4px top 4px;
+  background-size:28px 28px;
+  background-repeat:no-repeat;
+  padding:17px 31px 17px 17px;
+}
+:root[data-visual-style="vintage-watercolor"] .trip-v2-timeline .trip-v2-item {
+  border:1px solid #B8A88B;
+  border-top:2px solid #AA8250;
+  border-radius:3px;
+}
+:root[data-visual-style="vintage-watercolor"] .info-card[open] {
+  padding:0 9px 10px;
+  border:1px solid #C8B79B;
+  border-top:2px solid #AA8250;
+  border-radius:3px;
+  background:#FFFCF5;
+}
+:root[data-visual-style="vintage-watercolor"] .info-card:focus-within,
+:root[data-visual-style="vintage-watercolor"] .trip-overview-day:focus-visible {
+  outline:3px solid var(--frame-ink);
+  outline-offset:3px;
+}
+@media (max-width:600px) {
+  :root[data-visual-style="vintage-watercolor"] {
+    --frame-corner-size:24px;
+    --frame-divider-size:130px;
+  }
+  :root[data-visual-style="vintage-watercolor"] :is(.trip-header,.trip-overview-hero) {
+    padding:24px 25px;
+  }
+  :root[data-visual-style="vintage-watercolor"] .trip-day-view > .day-summary {
+    padding:22px 25px;
+  }
+  :root[data-visual-style="vintage-watercolor"] .trip-overview-day {
+    padding:15px 16px 20px;
+  }
+}
+/* In high-contrast modes decorative frame images are expendable; maintain
+   clear component boundaries, focus ring and textual labels without artwork. */
+@media (forced-colors:active) {
+  :root[data-visual-style="vintage-watercolor"] :is(
+    .trip-header,.trip-overview-hero,.trip-day-view > .day-summary,
+    .trip-overview-day,.trip-highlight-card,.trip-open-decision
+  ) {
+    background-image:none;
+    border:1px solid CanvasText;
+  }
+}
+
+/* Frame Grammar v2 padding safety: reserve the inked corner footprints,
+   rather than drawing florals across real trip labels or action controls. */
+:root[data-visual-style="vintage-watercolor"] .trip-header {
+  --frame-corner-size:30px;
+  padding-left:44px;
+}
+:root[data-visual-style="vintage-watercolor"] .trip-overview-hero {
+  padding-left:53px;
+}
+:root[data-visual-style="vintage-watercolor"] .trip-day-view > .day-summary {
+  padding-left:55px;
+}
+:root[data-visual-style="vintage-watercolor"] .trip-route-summary {
+  padding:14px 18px 18px;
+  border:1px solid #B3A38B;
+  border-top:2px double #AA8250;
+  border-radius:4px;
+  background:#FFFCF5;
+}
+@media (max-width:600px) {
+  :root[data-visual-style="vintage-watercolor"] .trip-header {
+    --frame-corner-size:21px;
+    padding:24px 30px;
+  }
+  :root[data-visual-style="vintage-watercolor"] .trip-overview-hero {
+    padding:24px 31px;
+  }
+  :root[data-visual-style="vintage-watercolor"] .trip-day-view > .day-summary {
+    padding:24px 31px;
+  }
+}
