@@ -15,8 +15,10 @@ const template = fileURLToPath(new URL("../", import.meta.url));
 const megan = process.env.MEGAN_LOCAL_REPO;
 if (!megan) throw new Error("Supply MEGAN_LOCAL_REPO to compare two sites");
 const target = resolve(megan);
-const shared = ["app.js", "trip-view.js", "theme-shell.js", "storybook-decor.js",
- "style-settings.css", "storybook-theme.css", "candy-theme.css",
+// Compare only modules/styles that existed in BOTH independent published sites.
+// A new opt-in template pack must not imply updating one-off trip repos automatically.
+const shared = ["trip-view.js", "theme-shell.js", "storybook-decor.js",
+ "storybook-theme.css", "candy-theme.css",
  "risograph-theme.css", "paper-collage-theme.css", "naive-city-theme.css",
  "taiwan-poster-theme.css", "field-stamp-theme.css",
  "quiet-linocut-theme.css", "doodle-memory-grid-theme.css", "crayon-journal-theme.css",
@@ -120,7 +122,7 @@ try {
   assert.deepEqual(observations[0],observations[1]);
   console.log("PARITY_STYLE_PASS",style,observations[0].theme);
  }
- console.log("STYLE_PARITY_COMPLETE fifteen appearances, shared CSS hashes and live browser styles");
+ console.log("STYLE_PARITY_COMPLETE shared appearances; new template-only packs are not auto-synced");
 } finally {
  await browser?.close();
  for(const child of servers)child.kill("SIGTERM");

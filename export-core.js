@@ -100,7 +100,7 @@
     </section>`;
   }
 
-  function printStyles(booklet) {
+  function printStyles(booklet, vintage = false) {
     const size = booklet ? "A5" : "A4";
     const margin = booklet ? "11mm" : "15mm";
     return `
@@ -161,12 +161,48 @@
         ` : ""}
       }
       @media screen and (max-width: 600px) { .paper { margin: 0; padding: 16px; box-shadow: none; } .print-bar { position: static; } }
+      ${vintage ? `
+        /* Original generic paper, botanical flourishes and ribbon grammar; selectable HTML text remains intact. */
+        .booklet-vintage { color: #392F26; background: #FFFCF5; font-family: system-ui, -apple-system, 'PingFang TC', 'Noto Sans CJK TC', sans-serif; }
+        .booklet-vintage h1, .booklet-vintage h2 { font-family: ui-serif, Georgia, 'Songti TC', serif; }
+        .booklet-vintage h1 { color: #392F26; letter-spacing: -.02em; font-weight: 680; }
+        .booklet-vintage .eyebrow { color: #445C43; letter-spacing: .065em; }
+        .booklet-vintage .booklet-cover { position: relative; isolation: isolate; text-align: center; padding: 12mm 5mm; border: 1px solid #AA8250; outline: 2px solid #E8DBC3; outline-offset: 4px; }
+        .booklet-vintage .booklet-cover::before, .booklet-vintage .booklet-cover::after { content: ''; position: absolute; width: 27mm; height: 27mm; opacity: .55; pointer-events: none; background: radial-gradient(ellipse at 35% 38%, #BCC9AF 0 12%, transparent 15%), radial-gradient(ellipse at 70% 28%, #BAD2D5 0 15%, transparent 19%), radial-gradient(ellipse at 55% 68%, #D7C4A3 0 13%, transparent 16%), linear-gradient(140deg, transparent 49%, #445C43 49.5% 50.5%, transparent 51%); }
+        .booklet-vintage .booklet-cover::before { inset: 0 auto auto 0; }
+        .booklet-vintage .booklet-cover::after { inset: auto 0 0 auto; transform: rotate(180deg); }
+        .booklet-vintage .cover h1 { position: relative; z-index: 1; font-size: 25pt; line-height: 1.22; }
+        .booklet-vintage .range { color: #445C43; font-size: 10pt; }
+        .booklet-vintage .booklet-overview { border-top: 1px solid #AA8250; padding-top: 7mm; }
+        .booklet-vintage .overview h2 { color: #392F26; padding-bottom: 4mm; border-bottom: 1px double #AA8250; }
+        .booklet-vintage .overview-list { border-left: 2px solid #BCC9AF; padding-left: 6mm; }
+        .booklet-vintage .overview-list li { padding: 7px 0; }
+        .booklet-vintage .booklet-day .day-heading { margin-top: 0; padding: 7mm 0 4mm; border-top: 0; border-bottom: 1px solid #AA8250; position: relative; }
+        .booklet-vintage .booklet-day .day-heading::before { content: ''; display: block; width: 31mm; height: 3px; margin-bottom: 4mm; border-top: 1px solid #445C43; border-bottom: 1px solid #AA8250; }
+        .booklet-vintage .day-date { display: inline-block; color: #445C43; font-size: 8.5pt; padding: 4px 12px 4px 0; border-bottom: 2px solid #BCC9AF; letter-spacing: .035em; }
+        .booklet-vintage .booklet-day .day-heading h2 { margin-top: 4mm; font-size: 16pt; font-weight: 650; }
+        .booklet-vintage .itinerary-item { grid-template-columns: 27mm minmax(0, 1fr); border-bottom: 1px dotted #B6A78F; padding: 9px 0; }
+        .booklet-vintage .item-when { color: #445C43; font-weight: 750; }
+        .booklet-vintage .item-copy strong { color: #392F26; }
+        .booklet-vintage .location, .booklet-vintage .item-note, .booklet-vintage .route { color: #615448; }
+        .booklet-vintage .day-reminders { background: transparent; border-left: 3px solid #445C43; border-top: 1px solid #BCC9AF; }
+        .booklet-vintage .disclaimer { border-top: 1px solid #AA8250; }
+        .booklet-vintage .booklet-cover, .booklet-vintage .booklet-overview, .booklet-vintage .day-heading { break-inside: avoid; }
+        @media print {
+          .booklet-vintage { background: white !important; }
+          .booklet-vintage .booklet-cover::before, .booklet-vintage .booklet-cover::after { opacity: .35; }
+          .booklet-vintage .day-reminders { background: white !important; }
+          .booklet-vintage .booklet-day { break-inside: auto; }
+        }
+        @media (prefers-reduced-motion: reduce) { .booklet-vintage * { transition: none; animation: none; } }
+      ` : ''}
     `;
   }
 
   function printHtml(data, format = "a4", lang = "en") {
     const model = normalizedTrip(data);
-    const booklet = format === "a5";
+    const vintage = format === "a5-vintage";
+    const booklet = format === "a5" || vintage;
     const chinese = lang === "zh";
     const cover = `<section class="cover ${booklet ? "booklet-cover" : ""}">
       <p class="eyebrow">${booklet ? (chinese ? "旅行小手冊" : "Travel booklet") : (chinese ? "完整行程" : "Travel itinerary")}</p>
@@ -186,10 +222,10 @@
     </section>` : "";
     return `<!doctype html><html lang="${chinese ? "zh-TW" : "en"}">
       <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-      <title>${html(model.title)} — ${booklet ? "A5" : "A4"}</title><style>${printStyles(booklet)}</style></head>
+      <title>${html(model.title)} — ${booklet ? "A5" : "A4"}</title><style>${printStyles(booklet, vintage)}</style></head>
       <body><div class="print-bar"><span>${chinese ? "列印預覽 · 行程快照" : "Print preview · itinerary snapshot"} · ${booklet ? "A5" : "A4"}</span>
       <button type="button" id="print-now">${chinese ? "列印／另存 PDF" : "Print / Save PDF"}</button></div>
-      <main class="paper ${booklet ? "booklet" : "full-itinerary"}">${cover}${overview}
+      <main class="paper ${booklet ? "booklet" : "full-itinerary"}${vintage ? " booklet-vintage" : ""}">${cover}${overview}
         ${model.days.map((day) => dayMarkup(day, chinese ? "zh" : "en", booklet)).join("")}
         ${confirmed}
         <p class="disclaimer">${chinese ? "根據已發佈的行程產生的靜態快照；交通與即時營運資訊請以官方資訊為準。" :

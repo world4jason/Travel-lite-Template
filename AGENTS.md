@@ -94,6 +94,9 @@ Prefer specialist handoff links over rebuilding mature tools.
 - floating items stay visible under Flexible today / Trip
 - additional future items may be shown after the three-item reference window
 
+## Trustworthy transport time calculations
+
+Never turn free-text transferAfter.duration or normal item.start into computed travel/arrival deadlines. Use the structured evidence-bound estimate only with researched/source-fixed basis, sourceLinks, checkedAt, explicit bufferMinutes and destination arrivalDeadline with a real offset. Door-to-door numeric minutes must already include documented walking/waiting/transfers; never add imaginary constants. Degrade to static text and specialist handoff if any evidence or safe timezone conversion is missing. Reference leave-by is a planning hint, not a live ETA, GPS fix or route planner.
 ## Timezone semantics
 
 Multi-country trips may override the default trip timezone without adding planner UI.
@@ -148,6 +151,13 @@ The Trip view is **information first, actions second**.
 
 Use optional `highlights`, `routeSummary`, and `transferAfter` only when they improve scanability. Do not fill them with invented detail just because the schema supports them.
 
+## Optional static Plan B
+
+Plan B is an opt-in read-only reference list, not a recommendation or decision engine. Publish only explicit source alternatives or traveller-requested research in item.planB, transferAfter.planB, day.planB, or top-level pocketPicks. Preserve source order and supporting links/dates; never infer weather/traffic triggers, suggest the best option, persist a choice, or modify primary itinerary. Do not reuse decision.options for backups. See docs/TRIP_SCHEMA.md.
+
+## Optional Travel Essentials
+
+When an itinerary includes reusable transport/trip preparation instructions, preserve them as opt-in, read-only top-level essentials. Keep segment timing in transferAfter, alternatives in Plan B, and day-specific reminders in day.reminders. Only publish source-backed instructions and their real source/check dates, with no live-service claims or invented transport facts. Empty essentials do not appear in More.
 ## Map invariant
 
 Map is a read-only spatial reference for **already planned stops**.
@@ -202,7 +212,7 @@ Appearance must support `system`, `light`, and `dark`.
 
 ## Optional visual style
 
-The original `editorial` style remains the default; only reviewed `ui.visualStyle` IDs in the hardcoded 14-pack `VISUAL_PACKS` whitelist are audited **site-level opt-ins**. Preserve the current Editorial design and its Auto/Light/Dark behavior. None of the reviewed Style Pack overlays may leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
+The original `editorial` style remains the default; only reviewed `ui.visualStyle` IDs in the hardcoded 15-pack `VISUAL_PACKS` whitelist are audited **site-level opt-ins**. Preserve the current Editorial design and its Auto/Light/Dark behavior. None of the reviewed Style Pack overlays may leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
 
 All thirteen opt-in Style Packs use light surfaces. Storybook/Candy/Crayon Journal honor OS `prefers-reduced-motion` and the local More → Motion setting; Risograph remains static. Review [style-packs/README.md](./style-packs/README.md), test all fourteen packs and preview overrides, and keep inaccessible color combinations out of text/focus states.
 
@@ -249,6 +259,9 @@ Keep runtime network dependencies small:
 
 Core itinerary/reference use must survive provider failure.
 
+## Source and publication integrity
+
+Source links and checked dates are distinct from live availability or human acceptance. If a traveller explicitly asks to skip real-trip validation, do not pretend the Human Gate passed: set trip.publication.humanGate to waived or not-run and retain draft/unconfirmed transport and booking warnings. Reviewed/final/passed require explicit human authority. Publish only public-safe information; never include private tokens or passports in trip.json. See docs/TRIP_SCHEMA.md.
 ## Privacy
 
 This is designed for static/public hosting. Do not put secrets, credentials, passport data, private tokens, or sensitive booking credentials in repository files.

@@ -29,17 +29,17 @@ const open=async(page)=>{
   await expect(sheet(page)).toHaveJSProperty("open",true);
 };
 
-test("More is compact by default; all fifteen styles are hidden until requested",async({page})=>{
+test("More is compact by default; all sixteen styles are hidden until requested",async({page})=>{
   await page.goto("/#more");
   await expect(trigger(page)).toBeVisible();
   await expect(sheet(page)).toHaveJSProperty("open",false);
-  await expect(page.locator(".style-option")).toHaveCount(15);
+  await expect(page.locator(".style-option")).toHaveCount(16);
   await expect(trigger(page)).toContainText("Editorial Light");
   const h=await page.locator(".style-settings").evaluate(el=>el.getBoundingClientRect().height);
   expect(h).toBeLessThanOrEqual(160);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
   await open(page);
-  await expect(sheet(page).locator(".style-option:visible")).toHaveCount(15);
+  await expect(sheet(page).locator(".style-option:visible")).toHaveCount(16);
 });
 
 test("phone bottom sheet fits viewport, scrolls options but pins header/footer",async({page})=>{
@@ -201,7 +201,7 @@ test.describe("responsive picker works after offline reload",()=>{
     await page.reload({waitUntil:"domcontentloaded"});
     await expect(trigger(page)).toContainText("Quiet Linocut");
     await open(page);
-    await expect(sheet(page).locator(".style-option:visible")).toHaveCount(15);
+    await expect(sheet(page).locator(".style-option:visible")).toHaveCount(16);
     await sheet(page).locator("[data-style-picker-close]").last().click();
     await expect(sheet(page)).toHaveJSProperty("open",false);
   });

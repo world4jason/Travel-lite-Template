@@ -42,16 +42,16 @@ for(const [id,color] of Object.entries(styleMap)){
     getComputedStyle(el,"::after").backgroundImage);
   expect(marker).toContain("assets/"+id+"/marker.svg");
   await page.locator(".bottom-nav [data-view='more']").click();
-  await expect(page.locator(".style-option")).toHaveCount(15);
+  await expect(page.locator(".style-option")).toHaveCount(16);
   await expect(page.locator('[data-style-choice="'+id+'"]')).toHaveAttribute("aria-pressed","true");
  });
 }
-test("fifteen styles available without extra duplicate Riso entries",async({page})=>{
+test("sixteen styles available without extra duplicate Riso entries",async({page})=>{
  await page.goto("/#more");
  await page.locator("[data-style-picker-open]").waitFor();
  const ids=await page.locator("[data-style-choice]").evaluateAll(nodes=>nodes.map(x=>x.dataset.styleChoice));
- expect(ids.length).toBe(15);
- expect(new Set(ids).size).toBe(15);
+ expect(ids.length).toBe(16);
+ expect(new Set(ids).size).toBe(16);
  expect(ids).toEqual(expect.arrayContaining(all));
  expect(ids.filter(x=>x==="risograph")).toHaveLength(1);
  expect(ids).not.toContain("riso-editorial");
@@ -126,6 +126,6 @@ test.describe("second prompt pack offline cache",()=>{
    await context.setOffline(true);
    await page.reload({waitUntil:"domcontentloaded"});
    await expect(page.locator("html")).toHaveAttribute("data-visual-style","quiet-acrylic");
-   await expect(page.locator(".style-option")).toHaveCount(15);
+   await expect(page.locator(".style-option")).toHaveCount(16);
  });
 });

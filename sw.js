@@ -3,7 +3,7 @@
 // shell/runtime, and activating one cannot delete the other's cache.
 const CACHE_PREFIX = "travel-lite:" + new URL(self.registration.scope).pathname
   .replace(/[^a-z0-9]/gi, "-") + ":";
-const CACHE = CACHE_PREFIX + "shell-v34-ics-import-notice";
+const CACHE = CACHE_PREFIX + "shell-v36-journey-confidence-release";
 const RUNTIME_CACHE = CACHE_PREFIX + "runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -20,6 +20,8 @@ const CORE = [
   "./today-brief.css",
   "./style-settings.css",
   "./export.css",
+  "./journey-trust.css",
+  "./journey-transit.css",
   "./storybook-theme.css",
   "./candy-theme.css",
   "./risograph-theme.css",
@@ -33,6 +35,7 @@ const CORE = [
   "./painterly-editorial-theme.css",
   "./geometric-print-theme.css",
   "./quiet-acrylic-theme.css",
+  "./vintage-watercolor-theme.css",
   "./site-scope.js",
   "./bootstrap.js",
   "./storage.js",
@@ -48,6 +51,8 @@ const CORE = [
   "./timezone.js",
   "./long-trip-nav.js",
   "./today-brief.js",
+  "./journey-trust.js",
+  "./journey-transit.js",
   "./storybook-motion.js",
   "./storybook-decor.js",
   "./export-core.js",
@@ -101,6 +106,8 @@ const CORE = [
   "./assets/geometric-print/marker.svg",
   "./assets/quiet-acrylic/hero.svg",
   "./assets/quiet-acrylic/marker.svg",
+  "./assets/vintage-watercolor/hero.svg",
+  "./assets/vintage-watercolor/marker.svg",
 
   "./manifest.webmanifest",
   "./icon.svg"

@@ -1,0 +1,14 @@
+/* Publication and research references are secondary, non-blocking, read-only information. */
+.trip-trust-notice { min-width: 0; max-width: var(--content-reading); padding: 12px 14px; margin: 14px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); color: var(--text); }
+.trip-trust-notice strong { display: block; font-size: .84rem; }
+.trip-trust-notice p { margin: 5px 0 0; color: var(--muted); font-size: .8rem; line-height: 1.5; }
+.trip-research-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin-top: 7px; font-size: .78rem; color: var(--muted); }
+.trip-research-meta .inline-link { font-size: .78rem; }
+.trip-research-group { min-width: 0; padding-block: 12px; border-bottom: 1px solid var(--line); }
+.trip-research-group h3 { margin: 0 0 10px; font-size: .95rem; }
+.trip-research-group ul { margin: 0; padding: 0; list-style: none; }
+.trip-research-group li { padding: 6px 0; overflow-wrap: anywhere; }
+.trip-research-group strong, .trip-research-group small { display: block; }
+.trip-research-group small { color: var(--muted); font-size: .77rem; }
+.trip-research-group .inline-link { display: inline-block; margin: 4px 0; font-size: .81rem; }
+.trip-research-notes summary:focus-visible { outline: var(--focus-ring); outline-offset: 3px; }

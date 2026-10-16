@@ -81,7 +81,21 @@ Rules:
 
 Do not accept arbitrary style names, URL-driven custom CSS, or styles inferred from a destination or `trip.type`.
 
+### Publication state and research provenance (Issue #92)
+
+Source existence, research date and publication/human acceptance are three separate concepts. No browser feature infers any of them from updatedAt, successful automated tests or a source URL.
+
+Optional trip.publication: {state: 'draft' | 'reviewed' | 'final', humanGate: 'passed' | 'not-run' | 'waived'}. Only set reviewed / final / passed on explicit authoritative human action. If the owner waived real-import review, use humanGate: 'waived', not passed. The UI then shows the NOT RUN/waived warning. Draft and unreviewed content warns that bookings, tickets, timetables and opening remain unconfirmed.
+
+On individual transferAfter (and future Plan B alternatives), optional sourceLinks: [{label,url}] and checkedAt: YYYY-MM-DD describe a historical research snapshot. Neither confirms live provider status. The global trip.updatedAt is a publication timestamp, never a substitute for segment checkedAt.
+
+More displays a collapsed Research Notes index only when source links exist, derived from transfers, Plan B, Essentials, infoCard and optional top-level researchNotes. Each researchNotes entry may specify category, title, checkedAt and sourceLinks; keep only brief contextual text rather than copied articles. No sources means no empty index.
+
+Published GitHub Pages trip.json is public. Never insert passports, personal secrets, booking tokens or sensitive contact details. Always hand off real-time operations to official providers; an offline snapshot cannot verify live conditions.
 ## `ui`
+
+Website `vintage-watercolor` is a reviewed, bounded, optional built-in Style Pack after its implementation reaches `main`. All published trip data semantics stay unchanged, and the post-deployment Human visual review remains separate.
+
 
 ```json
 {
@@ -123,6 +137,15 @@ The base template only needs small runtime services:
 
 `mapStyleLight` / `mapStyleDark` are optional overrides. The Google Maps embed key is optional; normal Google Maps handoff links do not require it.
 
+## Travel Essentials (Issue #91)
+
+An optional, read-only, collapsed reference section under More; it does not add a sixth bottom tab. Include only instructions already present in a trustworthy itinerary or explicitly researched before publication.
+
+Top-level essentials is an array of objects with title (required), body or summary (plain text), category (e.g. Airport transfer / Local transit / Intercity / Tickets), optional dayDate (YYYY-MM-DD), optional checkedAt (YYYY-MM-DD) and sourceLinks [{label, url}]. HTTP(S) sources must be complete URLs; malformed or executable URLs are ignored. Entries that have no usable content are omitted.
+
+Airport arrival, reusable transit ticket instructions and intercity boarding guidance belong here. A-to-B transition times belong in transferAfter and explicit alternatives in planB. Do not store the same conflicting fact in all three. No dynamic provider checks, live timetable claims, private booking secrets, auto-generated filler or runtime research.
+
+With no essentials array the section does not render. All published instructions remain available offline, while external source links require a network connection. Checked dates identify historical research, not live verification.
 ## Trip overview highlights: `highlights`
 
 Use `highlights` for flexible activities, seasonal events, backup ideas, or notable options that matter to the trip but are not fixed timeline stops.
@@ -246,6 +269,21 @@ Only valid `HH:MM` starts participate in previous / scheduled-now / next calcula
 
 Do not invent a time solely to make the item fit the timeline.
 
+### Optional static Plan B and Pocket Picks (Issue #90)
+
+Only include alternatives when the source itinerary explicitly contains them, or the traveller asks for Plan B research. Keep the primary schedule unchanged and never automatically select a backup.
+
+- Item alternatives: item.planB (array).
+- Transfer alternatives: item.transferAfter.planB (array), below its main route connector.
+- Day-wide alternatives: day.planB (array), collapsed above the timeline.
+- Unattached curated options: top-level pocketPicks (array), collapsed in Trip overview. Do not silently convert highlights into options.
+- Each alternative has a non-empty title (or label), and may include note, category (display-only), mode, url, sourceLinks [{label,url}], checkedAt in YYYY-MM-DD. Only complete HTTP(S) URLs are linkable.
+- Preserve the source order. The UI is closed by default, and is absent when no named options exist. Options must not have triggers, whenToUse, recommendation scores, selected state, or local storage.
+- A researched or checked date means a static reference, not verified current operating/booking availability. External providers are authoritative for live details.
+
+Example: a day may have planB: [{title: 'Museum', category: 'place'}]; a transfer may have planB: [{title: 'Replacement shuttle', category: 'transport'}]; a trip may have pocketPicks: [{title: 'Local market'}]. These are sample labels only and must not be inserted into real trips without explicit source evidence.
+
+Do not map Plan B into decision.options. Unresolved shared decisions and device-only personal preferences have different semantics.
 ### Transfer connector: `transferAfter`
 
 Use `transferAfter` only for stable, pre-researched transition context between this stop and the next one.
@@ -264,6 +302,17 @@ Use `transferAfter` only for stable, pre-researched transition context between t
 
 All fields are optional. Do not invent duration or live timetable data. If the exact transit plan is not known, omit it and let the user open their normal transit/map app.
 
+### Evidence-bound transit estimate and reference leave-by (Issue #89)
+
+Retain the legacy transferAfter fields mode, duration, summary and url. New structured estimates are optional; never parse a free-text duration into minutes.
+
+Transfer sample: transferAfter.estimate = {minMinutes: 25, maxMinutes: 35, bufferMinutes: 15, basis: 'researched'}; transferAfter.sourceLinks = [{label: 'Operator', url: 'https://example.org/route'}]; transferAfter.checkedAt = '2026-09-01'. The next planned item can explicitly provide arrivalDeadline = '2026-10-03T14:00:00+09:00'. These are illustrative only.
+
+- estimate.minMinutes and maxMinutes are non-negative integer door-to-door minutes (including source-backed walking, waiting and transfers), or estimate.minutes for exact durations. min <= max. Do not add implied wait/transfer overhead. Show the conservative range when provided, even if the timing cannot safely be calculated.
+- Computing reference leave-by requires all of: a source-fixed/researched basis, valid explicit checkedAt, at least one valid source link, valid conservative maxMinutes, explicit bufferMinutes (including zero if intentionally set), and an explicit offset-qualified arrivalDeadline on the next item. A normal item.start is NOT an arrival deadline.
+- The absolute-instant calculation is arrivalDeadline - maxMinutes - bufferMinutes, displayed in the departing item's effective IANA timezone. The deadline offset must match the destination item's timezone; invalid DST and ambiguous unsupported inputs are omitted. Overnight times are rendered with a date prefix.
+- If an explicit scheduled preceding end exceeds the reference departure, show a gentle conflict/check notice. Do not claim an actual delay or auto-adjust the itinerary.
+- Without complete evidence, do not render a reference leave-by, a fabricated 00:00, or a live traffic claim. Keep official handoff links and the last published static facts accessible offline.
 ## Action budget
 
 Trip rows are information-first. The default item surface should expose at most:

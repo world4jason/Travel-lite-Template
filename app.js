@@ -41,6 +41,7 @@ const VISUAL_PACKS = Object.freeze({
   "painterly-editorial": { css: ["storybook-style", "painterly-editorial-style"], lightOnly: true, timeline: true, motion: false },
   "geometric-print": { css: ["storybook-style", "geometric-print-style"], lightOnly: true, timeline: true, motion: false },
   "quiet-acrylic": { css: ["storybook-style", "quiet-acrylic-style"], lightOnly: true, timeline: true, motion: false },
+  "vintage-watercolor": { css: ["storybook-style", "vintage-watercolor-style"], lightOnly: true, timeline: true, motion: false },
 });
 const VISUAL_STYLES = new Set(Object.keys(VISUAL_PACKS));
 const isStorybook = () => state.visualStyle === "storybook";
@@ -55,7 +56,8 @@ const packThemeColor = () => ({ storybook: "#FFFCF6", candy: "#FFF9EF",
   "crayon-journal": "#FAF2E6",
   "painterly-editorial": "#F4F7F1",
   "geometric-print": "#F5F0E5",
-  "quiet-acrylic": "#FCFAF3" })[state.visualStyle] || "#f5f6f2";
+  "quiet-acrylic": "#FCFAF3",
+  "vintage-watercolor": "#FAF4E6" })[state.visualStyle] || "#f5f6f2";
 
 function activateVisualStyle() {
   let requested = "";
@@ -72,7 +74,7 @@ function activateVisualStyle() {
   const pack = VISUAL_PACKS[state.visualStyle];
   for (const id of ["storybook-style", "candy-style", "risograph-style",
     "paper-collage-style", "naive-city-style", "taiwan-poster-style", "field-stamp-style",
-    "quiet-linocut-style", "doodle-memory-grid-style", "crayon-journal-style", "painterly-editorial-style", "geometric-print-style", "quiet-acrylic-style"]) {
+    "quiet-linocut-style", "doodle-memory-grid-style", "crayon-journal-style", "painterly-editorial-style", "geometric-print-style", "quiet-acrylic-style", "vintage-watercolor-style"]) {
     const sheet = document.getElementById(id);
     if (sheet) sheet.disabled = !pack.css.includes(id);
   }
@@ -481,6 +483,45 @@ function detailsSection(title, count, body, open = false) {
   return `<details class="panel more-section" ${open ? "open" : ""}><summary><span>${escapeHtml(title)}</span><span class="summary-count">${count}</span></summary><div class="more-body">${body}</div></details>`;
 }
 
+function travelEssentialsSection(rawEntries, label, zh = false) {
+  const safeHttp = (raw) => {
+    if (typeof raw !== "string" || !/^https?:\/\/[^/]/i.test(raw.trim())) return "";
+    try { return new URL(raw).href; } catch { return ""; }
+  };
+  const entries = (Array.isArray(rawEntries) ? rawEntries : []).filter((entry) =>
+    entry && typeof entry.title === "string" && entry.title.trim() &&
+    (typeof (entry.body || entry.summary) === "string" ||
+      (Array.isArray(entry.sourceLinks) && entry.sourceLinks.length)));
+  if (!entries.length) return "";
+  let hasLinks = false;
+  const html = entries.map((entry) => {
+    const sourceLinks = (Array.isArray(entry.sourceLinks) ? entry.sourceLinks : []).flatMap((source) => {
+      const url = safeHttp(source?.url);
+      if (!url || typeof source.label !== "string" || !source.label.trim()) return [];
+      hasLinks = true;
+      return ['<a class="inline-link" href="' + escapeAttr(url) +
+        '" target="_blank" rel="noopener noreferrer">' + escapeHtml(source.label) + ' ↗</a>'];
+    }).join("");
+    const category = typeof entry.category === "string" ? entry.category : "";
+    const day = typeof entry.dayDate === "string" && /^\d{4}-\d{2}-\d{2}$/.test(entry.dayDate)
+      ? entry.dayDate : "";
+    const researched = typeof entry.checkedAt === "string" && /^\d{4}-\d{2}-\d{2}$/.test(entry.checkedAt)
+      ? entry.checkedAt : "";
+    const meta = [category, day].filter(Boolean).join(" · ");
+    return '<article class="text-card travel-essential">' +
+      (meta ? '<p class="eyebrow">' + escapeHtml(meta) + '</p>' : "") +
+      '<h3>' + escapeHtml(entry.title) + '</h3>' +
+      (entry.body || entry.summary ? '<p>' + escapeHtml(entry.body || entry.summary) + '</p>' : "") +
+      (researched ? '<small>' + (zh ? "資料核對" : "Researched") + ' · ' + escapeHtml(researched) + '</small>' : "") +
+      (sourceLinks ? '<div class="action-row">' + sourceLinks + '</div>' : "") +
+      '</article>';
+  }).join("");
+  return detailsSection(label, entries.length, html +
+    (hasLinks ? '<p class="helper-text">' +
+      (zh ? "外部連結需連線；請以業者最新資訊為準。" : "External links need Internet; confirm live details with the provider.") +
+      '</p>' : ""));
+}
+
 // Native modal dialog provides browser-managed focus trapping and Escape.
 // At narrow widths it is a bottom sheet; on desktop a right-side drawer.
 // The underlying app remains untouched and inert while the chooser is open.
@@ -574,11 +615,12 @@ function renderMore() {
     "painterly-editorial": "Painterly Editorial",
     "geometric-print": "Geometric Print",
     "quiet-acrylic": "Quiet Acrylic",
+    "vintage-watercolor": "Vintage Watercolor",
   };
   const choices = [
     "editorial-light", "editorial-dark", "storybook", "candy", "paper-collage",
     "naive-city", "risograph", "taiwan-poster", "field-stamp",
-    "quiet-linocut", "doodle-memory-grid", "crayon-journal", "painterly-editorial", "geometric-print", "quiet-acrylic",
+    "quiet-linocut", "doodle-memory-grid", "crayon-journal", "painterly-editorial", "geometric-print", "quiet-acrylic", "vintage-watercolor",
   ];
   const isZh = /^zh/i.test(state.data.ui.locale || "");
   const descriptions = {
@@ -597,6 +639,7 @@ function renderMore() {
     "painterly-editorial": isZh ? "水粉筆觸 · 柔彩" : "Gouache · airy editorial",
     "geometric-print": isZh ? "硬邊幾何 · 色版" : "Hard-edge · flat polygons",
     "quiet-acrylic": isZh ? "留白小主體 · 細線" : "Sparse · acrylic cover",
+    "vintage-watercolor": isZh ? "復古水彩 · 古典旅行手冊" : "Archival · watercolor guide",
   };
   const defaultStyle = VISUAL_STYLES.has(state.data.ui.visualStyle)
     ? state.data.ui.visualStyle : "editorial";
@@ -646,8 +689,8 @@ function renderMore() {
       <p class="eyebrow">Appearance / 外觀</p>
       <h2 id="style-picker-title">${isZh ? "切換網站風格" : "Choose a visual style"}</h2>
       <p id="style-picker-description" class="helper-text">
-        ${isZh ? "共 15 種外觀，只更改本裝置。選擇後可立即預覽。" :
-          "15 looks. Changes apply only on this device."}
+        ${isZh ? "共 16 種外觀，只更改本裝置。選擇後可立即預覽。" :
+          "16 looks. Changes apply only on this device."}
       </p>
     </div>
     <button type="button" class="style-picker-close" data-style-picker-close
@@ -656,7 +699,7 @@ function renderMore() {
   <div class="style-picker-scroll" role="region"
     aria-label="${isZh ? "所有風格選項" : "All visual style choices"}">
     <div class="style-options" role="group"
-      aria-label="${isZh ? "十五種可選網站外觀" : "Fifteen available appearances"}">
+      aria-label="${isZh ? "十六種可選網站外觀" : "Sixteen available appearances"}">
       ${optionMarkup}
     </div>
   </div>
@@ -687,6 +730,7 @@ function renderMore() {
   root.innerHTML = `<div class="view-stack">
     ${styleChooser}
     <section class="panel local-note-card"><div class="check-title-row"><h2>Personal note</h2><span>this device</span></div><textarea id="personal-note" rows="4" placeholder="Gate change, room number, quick memo…">${escapeHtml(state.personalNote)}</textarea><p class="helper-text">Saved locally in IndexedDB; falls back to localStorage if needed.</p></section>
+    ${travelEssentialsSection(state.data.essentials, labelMore("Travel Essentials", "行前與交通指南"), moreZh)}
     ${detailsSection(labelMore("Reservations", "預約與票券"), state.data.reservations.length, reservations, true)}
     ${detailsSection(labelMore("Costs", "費用"), state.data.costs.entries.length, costs)}
     ${detailsSection(labelMore("Trip notes", "旅程備註"), state.data.notes.length, notes)}

@@ -189,3 +189,21 @@ test("Chinese print cover distinguishes A4 itinerary from A5 booklet", () => {
   assert.match(a5, /<p class="eyebrow">旅行小手冊<\/p>/);
   assert.doesNotMatch(a5, /<p class="eyebrow">完整行程<\/p>/);
 });
+
+test("opt-in Vintage Watercolor A5 uses original printable text and leaves A4 / Classic unchanged", () => {
+  const data = fixture([{ id: "alpha", title: "Mixed 中文 & English", start: "12:30", location: "東京車站", note: "Long itinerary text" }]);
+  const classic = core.printHtml(data, "a5", "zh");
+  const vintage = core.printHtml(data, "a5-vintage", "zh");
+  const a4 = core.printHtml(data, "a4", "zh");
+  assert.match(vintage, /size: A5 portrait/);
+  assert.match(vintage, /booklet-vintage/);
+  assert.match(vintage, /botanical flourishes/);
+  assert.match(vintage, /Mixed 中文 &amp; English/);
+  assert.match(vintage, /東京車站/);
+  assert.match(classic, /size: A5 portrait/);
+  assert.doesNotMatch(classic, /booklet-vintage|botanical flourishes/);
+  assert.match(a4, /size: A4 portrait/);
+  assert.doesNotMatch(a4, /booklet-vintage|botanical flourishes/);
+  assert.equal((vintage.match(/<li class="itinerary-item">/g) || []).length, (classic.match(/<li class="itinerary-item">/g) || []).length);
+  assert.ok(vintage.indexOf("Mixed 中文") > vintage.indexOf("booklet-overview"));
+});

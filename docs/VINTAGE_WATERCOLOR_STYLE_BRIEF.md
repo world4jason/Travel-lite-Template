@@ -134,3 +134,12 @@ This is an **offline review artifact**. Do not register a `vintage-watercolor` r
 - [ ] Post-release Human Review on the deployed GitHub Pages site after the implementation is merged, with follow-up issues for feedback.
 
 **This document is a draft implementation direction, not visual acceptance evidence.** #80/#81 require agent-reviewed browser/print specimens and automated regression tests before merge. Once the live GitHub Pages build is verified, Human Review happens there; additional feedback becomes a follow-up issue. #82 remains separate Backlog.
+
+## Implementation progress — A5 scoped variant (PR draft)
+
+The downstream A5 implementation keeps the same `normalizedTrip()` / `dayMarkup()` and opt-in `a5-vintage` print CSS rather than creating a separate renderer. The original Classic A5 and A4 formats remain the defaults. Vintage ornaments are CSS-only abstract plant/wash shapes; all trip facts remain selectable DOM text. **Browser PDF test PASS:** actual A5 Tokyo sample (5 pages) and 6-day dense sample (32 pages; 132/132 printed stops confirmed by text extraction). Agent inspected preview screenshots; Human review on deployed Pages remains pending. The private reference booklet's contents are not reproduced.
+
+
+## Implementation progress — optional website pack (Draft)
+
+The website #81 Draft includes a whitelisted `vintage-watercolor` **branch-only** ID, scoped CSS, original local `hero.svg` / `marker.svg`, a prototype manifest and tests. Desktop-only decorative artwork is intentionally omitted on mobile for faster operational scanning. The pack preserves all existing `trip.json` content and does not interpret artwork as place/map evidence. **Local Agent visual review has now examined mobile/desktop and print screenshots, text contrast, long itineraries and offline behavior; Human review on deployed Pages is pending.**>>>>>>> origin/feat/issue-81-vintage-watercolor-web

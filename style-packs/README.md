@@ -2,7 +2,7 @@
 
 Travel Lite's **functional template** remains shared: Now / Trip / Map / Check / More, deep links, itinerary/timezone facts, notes, tickets, maps, and offline behavior. A Style Pack changes only visual representation and permitted illustration assets.
 
-> **Proposed / not yet a selectable Style Pack:** [Vintage Watercolor Travel Guide Art Direction](../docs/VINTAGE_WATERCOLOR_STYLE_BRIEF.md) (Issue #79). The reference booklet contributes *visual language only*, never its itinerary content. Website implementation is #81; A5 print adaptation is #80. No new `ui.visualStyle` value exists until those deliverables are reviewed.
+> **Vintage Watercolor local Agent-QA-reviewed (Issue #81):** [art direction](../docs/VINTAGE_WATERCOLOR_STYLE_BRIEF.md) has a locally tested Style Pack, original SVG assets, screenshots and a bounded whitelisted ID. Browser screenshot, layout, contrast and offline QA pass; **post-deployment Human visual review remains pending**. Reference booklet contributes visual language only, never its itinerary content. A5 print is separately #80.
 
 ## Built-in styles
 
@@ -22,12 +22,13 @@ Travel Lite's **functional template** remains shared: Now / Trip / Map / Check /
 | `painterly-editorial` | Reviewed · second prompt batch | Painterly Editorial — 柔彩筆觸 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=painterly-editorial#trip/overview) |
 | `geometric-print` | Reviewed · second prompt batch | Geometric Print — 硬邊幾何 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=geometric-print#trip/overview) |
 | `quiet-acrylic` | Reviewed · second prompt batch | Quiet Acrylic — 極簡細線壓克力 | [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=quiet-acrylic#trip/overview) |
+| `vintage-watercolor` | Local QA passed · Human post-deployment review pending | Archival paper, botanical flourishes and generic ink-wash landscape. No new travel facts | After deployment: [Preview](https://world4jason.github.io/Travel-lite-Template/?previewStyle=vintage-watercolor#trip/overview) |
 
-Set the published default for a generated trip by adding `"visualStyle": "candy"` or `"risograph"` inside `trip.json → ui`. Visitors can switch among fourteen built-in Style Packs from **More → Appearance / 外觀**, saving a **per-trip device-only** preference without modifying `trip.json`. Use **Follow trip default** to remove that preference. A whitelisted `?previewStyle=...` URL overrides the device choice for that link's visit, without saving it. Precedence: valid URL preview > saved per-trip device choice > publisher's `ui.visualStyle` > Editorial. Unknown pack IDs never execute custom CSS, HTML or scripts.
+Set the published default for a generated trip by adding `"visualStyle": "candy"` or `"risograph"` inside `trip.json → ui`. Visitors can switch among fifteen built-in Style Packs from **More → Appearance / 外觀**, saving a **per-trip device-only** preference without modifying `trip.json`. Use **Follow trip default** to remove that preference. A whitelisted `?previewStyle=...` URL overrides the device choice for that link's visit, without saving it. Precedence: valid URL preview > saved per-trip device choice > publisher's `ui.visualStyle` > Editorial. Unknown pack IDs never execute custom CSS, HTML or scripts.
 
 ### Switch in More / Appearance
 
-Open **More → Appearance / 外觀**. The page now shows only the **current visual style**, with one "Change" trigger. It opens a native HTML `<dialog>` containing **15 choices** (Editorial Light/Dark plus thirteen distinct Style Packs). At 767px and below it renders as a **bottom sheet**, scrolling the options while keeping header/footer reachable; selecting auto-closes to reveal the new page appearance. On tablets/desktops (≥768px), it renders a **right-side drawer**, remaining open for consecutive live comparisons. Both modes support Escape, close button, backdrop click, keyboard focus containment/return and OS reduced-motion. Styles persist per trip on this device. **Follow trip default** clears the local choice. [See the mobile bottom-sheet screenshot](./previews/style-picker-mobile-sheet.png). Styles from a `?previewStyle=...` link are temporary and override the saved device choice only for that visit. Choosing or resetting inside More clears the URL-only override without losing the current page.
+Open **More → Appearance / 外觀**. The page now shows only the **current visual style**, with one "Change" trigger. It opens a native HTML `<dialog>` containing **16 choices** (Editorial Light/Dark plus thirteen distinct Style Packs). At 767px and below it renders as a **bottom sheet**, scrolling the options while keeping header/footer reachable; selecting auto-closes to reveal the new page appearance. On tablets/desktops (≥768px), it renders a **right-side drawer**, remaining open for consecutive live comparisons. Both modes support Escape, close button, backdrop click, keyboard focus containment/return and OS reduced-motion. Styles persist per trip on this device. **Follow trip default** clears the local choice. [See the mobile bottom-sheet screenshot](./previews/style-picker-mobile-sheet.png). Styles from a `?previewStyle=...` link are temporary and override the saved device choice only for that visit. Choosing or resetting inside More clears the URL-only override without losing the current page.
 
 ### Responsive Style Picker screenshots
 
@@ -143,3 +144,11 @@ Eight different photo/poster prompts were first [deduplicated and stripped of ph
 | Quiet Acrylic — 極簡細線壓克力 | [Mobile](./previews/quiet-acrylic-mobile.png) | [Desktop](./previews/quiet-acrylic-desktop.png) | [Day](./previews/quiet-acrylic-day-mobile.png) |
 
 **Next-step gate:** only style descriptors matter when ingesting a photo-to-poster prompt: do not accept exact source photo content, 3:4/50-50 layout, fake caption or fixed date/brand as website requirements. See [the repeatable E2E workflow](../style-generator/NEXT_PROMPT_E2E.md).
+
+### Vintage Watercolor draft QA contract
+
+Run `node --test tests/vintage-pack.test.mjs`, then run the existing browser suite plus `tests/vintage-watercolor.spec.mjs` against the same Tokyo fixture. Required screenshot evidence: 390×844 Overview/Day and 1100×900 Overview/Day, plus visual inspection at 320×568 and 844×390, all views, no/long `infoCard`, mixed long labels, offline/keyboard/contrast. Reviewed screenshot evidence is bundled below. Human review remains scheduled for after GitHub Pages deployment. A new style changes only the template; historical one-off trip repos must not be auto-synced. `scripts/verify-style-parity.mjs` compares only previously shared looks; the new pack is tested separately.
+
+### Vintage Watercolor visual evidence (same Tokyo trip, no invented travel facts)
+
+[390px Overview](./previews/vintage-watercolor-overview-mobile.png) · [390px Day](./previews/vintage-watercolor-day-mobile.png) · [1100px Overview](./previews/vintage-watercolor-overview-desktop.png) · [1100px Day](./previews/vintage-watercolor-day-desktop.png) · [A5 cover](./previews/vintage-watercolor-a5-cover.png) · [A5 dense page](./previews/vintage-watercolor-a5-dense.png).

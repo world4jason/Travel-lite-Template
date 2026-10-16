@@ -4,6 +4,9 @@ This document is for LLM/coding agents converting planning results, spreadsheets
 
 The goal is **source-faithful compression**, not replanning. Preserve useful structure that already exists in the source and avoid replacing it with generic summaries.
 
+## Provenance and publication truth
+
+Record sourceLinks and checkedAt on each researched transfer or alternative when actually verified at publish time. Source link means a reference exists, checkedAt means research happened on that date, and trip.publication means an explicit owner publication/human acceptance state. Never equate trip.updatedAt or passing automated tests with transport research or human acceptance. For unreviewed/waived real-trip imports, preserve NOT RUN and draft warnings. Public trip.json must not contain passport data, personal secrets or booking tokens.
 ## Core rule
 
 Prefer explicit source information over model inference.
@@ -21,6 +24,13 @@ Do not invent:
 - timezone conversions
 - resolved decisions
 
+## Optional Plan B is never a decision system
+
+Only preserve source-provided alternatives or research explicitly requested by the traveller. Put alternatives at item.planB, item.transferAfter.planB, day.planB, or top-level pocketPicks, as appropriate. Preserve original order and source links; checkedAt is a historical research date, never a live guarantee. Do not infer conditions, rank or trigger options, auto-generate missing backups, or create local selection state. With no alternatives, omit the field.
+
+## Travel Essentials source rules
+
+Store recurring, already researched travel guidance (airport connections, city transit tickets, intercity boarding, reusable trip-wide reminders) in top-level essentials only when present in the source or explicitly requested. Keep each title/description compact, preserve original official sourceLinks and historical checkedAt date. Use dayDate only for genuinely day-scoped guidance. Specific segment duration remains in transferAfter and Plan B alternatives stay separate. Omit unknown facts instead of inventing them.
 ## `day.routeSummary` extraction priority
 
 When generating `day.routeSummary`, use this order:
@@ -143,6 +153,9 @@ Guidelines:
 
 A dense transit day may have a concise route summary while keeping platform numbers, transfer warnings, and live-timing reminders in the detailed items.
 
+## Evidence-bound timing
+
+Keep transferAfter.duration as descriptive source text unless the original source or legitimate provider research gives defensible numeric door-to-door minutes. Only set estimate.minMinutes/maxMinutes (or minutes), basis, explicit bufferMinutes, sourceLinks and checkedAt when actually documented; never auto-add arbitrary waiting or walking minutes. A next item arrivalDeadline must be a specifically confirmed arrival requirement with ISO offset (not an ordinary scheduled start). No trustworthy source, offset-qualified deadline or buffer means no computed leave-by. External routing remains authoritative for live travel.
 ## Validation examples
 
 Real-trip fixture expectations:

@@ -102,22 +102,25 @@
     if (typeof itemActions !== "function") return "";
     const template = document.createElement("template");
     template.innerHTML = itemActions(item);
-    return [...template.content.querySelectorAll(".decision-card, .info-card")]
+    return [...template.content.querySelectorAll(".decision-card, .info-card, .trip-alternatives")]
       .map((node) => node.outerHTML)
       .join("");
   }
 
-  function transferHtml(item) {
+  function transferHtml(item, next, day) {
     const transfer = item?.transferAfter;
     if (!transfer) return "";
     const url = safeUrl(transfer.url);
-    const meta = [transfer.mode, transfer.duration].filter(Boolean).join(" · ");
+    const structured = window.TravelLiteTransit?.durationText(transfer.estimate) || "";
+    const meta = [transfer.mode, structured || transfer.duration].filter(Boolean).join(" · ");
     return `<div class="trip-transfer">
       <span class="trip-transfer-arrow" aria-hidden="true">↓</span>
       <div class="trip-transfer-copy">
         <strong>${escapeHtml(transfer.label || "Transfer")}</strong>
         ${meta ? `<span>${escapeHtml(meta)}</span>` : ""}
         ${transfer.summary ? `<p>${escapeHtml(transfer.summary)}</p>` : ""}
+        ${window.TravelLiteTransit?.timingHtml(transfer, item, next, day) || ""}
+        ${window.TravelLitePlanB?.(transfer.planB) || ""}
       </div>
       ${url ? `<a class="trip-transfer-link" href="${escapeAttr(url)}" target="_blank" rel="noreferrer" aria-label="Open transfer details">↗</a>` : ""}
     </div>`;
@@ -179,6 +182,7 @@
         <div class="trip-overview-stats"><span><strong>${days.length}</strong> days</span><span><strong>${stopCount}</strong> planned stops</span>${openDecisions.length ? `<span><strong>${openDecisions.length}</strong> open choice${openDecisions.length === 1 ? "" : "s"}</span>` : ""}</div>
       </section>
       <section class="trip-overview-days" aria-label="Daily overview">${days.map(overviewDayCard).join("")}</section>
+      ${window.TravelLitePlanB?.(state.data.pocketPicks, localized("口袋清單", "Pocket picks")) || ""}
       ${highlights.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">Flexible</p><h2>Highlights & activities</h2></div><span>${highlights.length}</span></div><div class="trip-highlight-grid">${highlights.map(highlightCard).join("")}</div></section>` : ""}
       ${openDecisions.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">TBD</p><h2>Open decisions</h2></div><span>${openDecisions.length}</span></div><div class="trip-open-decisions">${openDecisions.map(({ day, item }) => `<button type="button" class="trip-open-decision composition-narrative" data-trip-day="${escapeAttr(day.date)}"><span>${prettyDate(day.date, { weekday: "short" })}</span><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.decision?.prompt || "Decide on the day")}</p><small>View day →</small></button>`).join("")}</div></section>` : ""}
     </div>`;
@@ -230,7 +234,7 @@
         return `<li class="trip-stop-wrap">
           <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}">
             ${timeLabel(item)}${details}
-          </article>${index < day.items.length - 1 ? transferHtml(item) : ""}
+          </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}
         </li>`;
       }
       return `<div class="trip-stop-wrap">
@@ -238,7 +242,7 @@
           <div class="timeline-time">${escapeHtml(item.start || "TBD")}</div>
           <div class="timeline-rail"><div class="timeline-dot"></div></div>
           ${details}
-        </article>${index < day.items.length - 1 ? transferHtml(item) : ""}
+        </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}
       </div>`;
     }).join("");
 
@@ -260,6 +264,7 @@
       ${tripTabs()}
       ${summary}
       ${routeSummaryCard(day)}
+      ${window.TravelLitePlanB?.(day.planB) || ""}
       ${timelineView}
     </div>`;
     attachOverviewHandlers();

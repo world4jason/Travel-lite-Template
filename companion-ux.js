@@ -144,7 +144,7 @@
     if (!item || typeof itemActions !== "function") return "";
     const template = document.createElement("template");
     template.innerHTML = itemActions(item);
-    return [...template.content.querySelectorAll(".decision-card, .info-card")].map((node) => node.outerHTML).join("");
+    return [...template.content.querySelectorAll(".decision-card, .info-card, .trip-alternatives")].map((node) => node.outerHTML).join("");
   }
 
   function relativeDay(item, nowDate) {

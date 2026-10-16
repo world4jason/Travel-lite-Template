@@ -48,7 +48,7 @@ test("Settings / More lists fifteen selectable appearances and a visible follow-
   await expect(page.locator("[data-style-picker-open]")).toBeVisible();
   await expect(page.locator("#style-picker-dialog")).not.toBeVisible();
   await openPicker(page);
-  await expect(page.locator(".style-option")).toHaveCount(15);
+  await expect(page.locator(".style-option")).toHaveCount(16);
   await expect(page.locator('[data-style-choice="editorial-light"]')).toHaveAttribute("aria-pressed","true");
   await expect(page.locator("[data-style-reset]")).toContainText("Follow trip default");
   await expect(page.locator("[data-style-reset]")).toHaveAttribute("aria-pressed","true");
@@ -207,7 +207,7 @@ test.describe("device-local chooser offline", () => {
     await context.setOffline(true);
     await page.reload({waitUntil:"domcontentloaded"});
     await active(page,"risograph");
-    await expect(page.locator(".style-option")).toHaveCount(15);
+    await expect(page.locator(".style-option")).toHaveCount(16);
     await choose(page,"candy");
     await active(page,"candy");
   });
