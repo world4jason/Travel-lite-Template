@@ -94,6 +94,9 @@ Prefer specialist handoff links over rebuilding mature tools.
 - floating items stay visible under Flexible today / Trip
 - additional future items may be shown after the three-item reference window
 
+## Trustworthy transport time calculations
+
+Never turn free-text transferAfter.duration or normal item.start into computed travel/arrival deadlines. Use the structured evidence-bound estimate only with researched/source-fixed basis, sourceLinks, checkedAt, explicit bufferMinutes and destination arrivalDeadline with a real offset. Door-to-door numeric minutes must already include documented walking/waiting/transfers; never add imaginary constants. Degrade to static text and specialist handoff if any evidence or safe timezone conversion is missing. Reference leave-by is a planning hint, not a live ETA, GPS fix or route planner.
 ## Timezone semantics
 
 Multi-country trips may override the default trip timezone without adding planner UI.

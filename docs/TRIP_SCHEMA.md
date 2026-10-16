@@ -299,6 +299,17 @@ Use `transferAfter` only for stable, pre-researched transition context between t
 
 All fields are optional. Do not invent duration or live timetable data. If the exact transit plan is not known, omit it and let the user open their normal transit/map app.
 
+### Evidence-bound transit estimate and reference leave-by (Issue #89)
+
+Retain the legacy transferAfter fields mode, duration, summary and url. New structured estimates are optional; never parse a free-text duration into minutes.
+
+Transfer sample: transferAfter.estimate = {minMinutes: 25, maxMinutes: 35, bufferMinutes: 15, basis: 'researched'}; transferAfter.sourceLinks = [{label: 'Operator', url: 'https://example.org/route'}]; transferAfter.checkedAt = '2026-09-01'. The next planned item can explicitly provide arrivalDeadline = '2026-10-03T14:00:00+09:00'. These are illustrative only.
+
+- estimate.minMinutes and maxMinutes are non-negative integer door-to-door minutes (including source-backed walking, waiting and transfers), or estimate.minutes for exact durations. min <= max. Do not add implied wait/transfer overhead. Show the conservative range when provided, even if the timing cannot safely be calculated.
+- Computing reference leave-by requires all of: a source-fixed/researched basis, valid explicit checkedAt, at least one valid source link, valid conservative maxMinutes, explicit bufferMinutes (including zero if intentionally set), and an explicit offset-qualified arrivalDeadline on the next item. A normal item.start is NOT an arrival deadline.
+- The absolute-instant calculation is arrivalDeadline - maxMinutes - bufferMinutes, displayed in the departing item's effective IANA timezone. The deadline offset must match the destination item's timezone; invalid DST and ambiguous unsupported inputs are omitted. Overnight times are rendered with a date prefix.
+- If an explicit scheduled preceding end exceeds the reference departure, show a gentle conflict/check notice. Do not claim an actual delay or auto-adjust the itinerary.
+- Without complete evidence, do not render a reference leave-by, a fabricated 00:00, or a live traffic claim. Keep official handoff links and the last published static facts accessible offline.
 ## Action budget
 
 Trip rows are information-first. The default item surface should expose at most:
