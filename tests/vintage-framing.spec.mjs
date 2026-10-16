@@ -42,7 +42,10 @@ for (const width of [320,390,844,1100]) {
     expect(info.titleSafe).toBe(true);
     if ([390,1100].includes(width)) {
       mkdirSync(resolve(root,"test-results"),{recursive:true});
-      await page.screenshot({path:resolve(root,"test-results/vintage-framed-overview-"+width+".png"),fullPage:true});
+      await page.screenshot({path:resolve(root,"test-results/vintage-framed-overview-"+width+".png"),fullPage:true,
+        // A full-page image flattens fixed elements into the middle of the long page.
+        // Hide only during mobile documentation capture; viewport QA tests the actual nav.
+        style:width===390?"#bottom-nav { visibility:hidden !important; }":undefined});
     }
     await page.locator(".trip-overview-day").first().click();
     await expect(page.locator(".trip-day-view .day-summary")).toBeVisible();
@@ -58,7 +61,8 @@ for (const width of [320,390,844,1100]) {
     expect(chapter.inset).toBe("solid");
     expect(chapter.overflow).toBe(false);
     if ([390,1100].includes(width))
-      await page.screenshot({path:resolve(root,"test-results/vintage-framed-day-"+width+".png"),fullPage:true});
+      await page.screenshot({path:resolve(root,"test-results/vintage-framed-day-"+width+".png"),fullPage:true,
+        style:width===390?"#bottom-nav { visibility:hidden !important; }":undefined});
   });
 }
 test("four corners and divider are local fetchable assets, not remote image dependencies",async({page})=>{

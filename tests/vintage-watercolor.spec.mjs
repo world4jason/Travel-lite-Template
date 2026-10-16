@@ -9,13 +9,16 @@ test("Vintage Watercolor stays opt-in, preserving real overview text and optiona
   await expect(page.locator("html")).toHaveAttribute("data-visual-style","vintage-watercolor");
   await expect(page.locator(".trip-overview-hero h2")).toBeVisible();
   const existing = await page.locator(".trip-overview-day h3").allTextContents();
-  await page.screenshot({path:resolve(root,"test-results/vintage-390-overview.png"),fullPage:true});
+  await page.screenshot({path:resolve(root,"test-results/vintage-390-overview.png"),fullPage:true,
+    // Fixed navigation is shown in a separate viewport screenshot.
+    style:"#bottom-nav { visibility:hidden !important; }"});
   await page.goto("/?previewStyle=storybook#trip/overview");
   expect(await page.locator(".trip-overview-day h3").allTextContents()).toEqual(existing);
   await page.goto(preview);
   await page.locator(".trip-overview-day").first().click();
   await expect(page.locator(".trip-v2-item").first()).toBeVisible();
-  await page.screenshot({path:resolve(root,"test-results/vintage-390-day.png"),fullPage:true});
+  await page.screenshot({path:resolve(root,"test-results/vintage-390-day.png"),fullPage:true,
+    style:"#bottom-nav { visibility:hidden !important; }"});
 });
 for(const viewport of [
   {width:320,height:568},{width:844,height:390},{width:1100,height:900}
