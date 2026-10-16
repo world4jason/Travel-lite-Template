@@ -19,7 +19,12 @@
   "assetDirectory": "../../assets/vintage-watercolor",
   "assets": [
     "hero.svg",
-    "marker.svg"
+    "marker.svg",
+    "frame-corner-bl.svg",
+    "frame-corner-br.svg",
+    "frame-corner-tl.svg",
+    "frame-corner-tr.svg",
+    "divider-ornament.svg"
   ],
   "browserPreviews": [
     "../previews/vintage-watercolor-overview-mobile.png",
@@ -47,9 +52,25 @@
     "tests/vintage-watercolor.spec.mjs",
     "tests/mobile-layout.spec.mjs"
   ],
-  "visualReview": "Agent-reviewed with local Chromium screenshots/PDF screenshots and 5-pass QA (2026-10-16); Human review remains pending until GitHub Pages deployment.",
+  "visualReview": "Frame Grammar v2 passed 2026-10-17 Agent visual/functional QA (67 Node + 144 Chromium); Human review remains pending after GitHub Pages deployment.",
   "printPreviews": [
     "../previews/vintage-watercolor-a5-cover.png",
+    "../previews/vintage-watercolor-a5-day.png",
     "../previews/vintage-watercolor-a5-dense.png"
-  ]
+  ],
+  "frameGrammar": {
+    "outer": "thin antique-gold archival rectangular rule",
+    "inner": "inset warm-gold inner rule on identity and chapter frames",
+    "corners": "original botanical four-corner scrollwork for identity/chapter only",
+    "divider": "central symmetric leaf-and-ink flourish at narrative section breaks",
+    "labels": "thin framed muted-green category cartouche",
+    "density": {
+      "identity": "ornate",
+      "chapter": "ornate",
+      "reading": "moderate",
+      "operational": "sparse",
+      "print": "moderate"
+    }
+  },
+  "frameGrammarSpecPath": "frame-grammar.json"
 }

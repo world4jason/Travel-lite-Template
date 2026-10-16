@@ -32,6 +32,12 @@ function check(value, rule, where, errors) {
     return check(value, schema.$defs[key], where, errors);
   }
 
+  if (rule.if) {
+    const conditionErrors = [];
+    check(value, rule.if, where, conditionErrors);
+    if (!conditionErrors.length && rule.then) check(value, rule.then, where, errors);
+  }
+
   if (rule.type) {
     const types = Array.isArray(rule.type) ? rule.type : [rule.type];
     if (!types.some(type => typeMatches(value, type))) {
@@ -87,6 +93,12 @@ export function validateStyleBrief(value) {
   if (errors.length) return { valid: false, errors };
 
   // A few semantic invariants cannot be expressed by this schema's simple fields.
+  // Schema if/then enforces Frame Grammar for v1.1 and preserves v1.0 briefs.
+  const frame = value.visual.frameAndOrnament;
+  if (frame && ["none", "unknown"].includes(frame.role) &&
+      (frame.frameLayers.length || frame.cornerMotifs.length || frame.dividerMotifs.length || frame.labelFrames.length)) {
+    errors.push("$.visual.frameAndOrnament: role none/unknown cannot invent decorative border components");
+  }
   const colors = value.visual.palette;
   if (colors.mode === "fixed" && colors.maxColors !== colors.swatches.length) {
     errors.push("$.visual.palette: fixed palette count must equal the swatch count");

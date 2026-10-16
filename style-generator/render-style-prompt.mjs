@@ -78,6 +78,24 @@ export function renderStylePrompt(brief) {
     "",
     list(v.palette.usage),
     "",
+    "### Frame & Ornament Grammar（框線／裝飾語法）",
+    "",
+    ...(v.frameAndOrnament ? [
+      "- 用途：" + v.frameAndOrnament.role,
+      "- 框線層級：" + (v.frameAndOrnament.frameLayers.length ?
+        v.frameAndOrnament.frameLayers.map(f => f.level + ": " + f.lineStyle +
+          "/" + f.weight + "/" + f.cornerShape + " inset=" + f.inset +
+          " role=" + (f.colorRole || "unknown") + "；" + f.notes).join("；") : "未指定框線"),
+      "- 四角：" + (v.frameAndOrnament.cornerMotifs.join("、") || "無"),
+      "- 章節分隔：" + (v.frameAndOrnament.dividerMotifs.join("、") || "無"),
+      "- 標籤框：" + (v.frameAndOrnament.labelFrames.join("、") || "無"),
+      "- Surface 映射：" + v.frameAndOrnament.placements.map(p =>
+        p.surface + " → " + p.treatment + " / " + p.density).join("；"),
+      "- 響應式：" + ["mobile","desktop","print"].map(k =>
+        k + "：" + v.frameAndOrnament.responsive[k]).join("；"),
+      "- 來源證據：" + (v.frameAndOrnament.evidence.join("；") || "來源未提供（禁止推測）"),
+    ] : ["- 舊版 Style Brief 未抽取 Frame Grammar；必須補審，不能把缺少欄位視為沒有框線。"]),
+    "",
     "### 插畫／材質特徵",
     "",
     list(v.geometry.motifs),

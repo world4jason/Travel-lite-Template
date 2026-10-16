@@ -20,13 +20,20 @@
 
 1. **Mood / Era**：氣氛、年代、參考的美術語彙。
 2. **Palette**：固定色、從照片取色、自適應，色數上限，色彩用途。
-3. **Geometry**：圓角／幾何／手刻／抖動線、裝飾圖形、粗細和邊緣。
-4. **Material**：水粉、剪紙、Risograph、網印、手刻橡皮章的「材料質感」而非擬真濾鏡。
-5. **Typography**：字體氣質、字級對比與資訊階層；不帶入來源特定標語。
-6. **Composition**：視覺焦點、密度、留白、紙層或景深結構。
-7. **Must / Avoid**：需要保留的特色和不要發生的風格錯誤。
+3. **Geometry**：圓角／幾何／手刻／抖動線、圖形主體輪廓（不是頁面框線）。
+4. **Frame & Ornament Grammar（必填）**：從來源分開識別外框、內框、四角、上下中央飾章、分隔線、緞帶／標籤框；記錄線條粗細、色彩角色、留白 inset、框線層次，及 identity/chapter/reading/operational/print 的使用密度。若已確認來源明確不使用框線，寫 role: none；若只缺乏可檢視的框線證據，寫 role: unknown 並將缺口列入 audit.unknowns。不能為了填表虛構裝飾。
+5. **Material**：水粉、剪紙、Risograph、網印、手刻橡皮章的「材料質感」而非擬真濾鏡。
+6. **Typography**：字體氣質、字級對比與資訊階層；不帶入來源特定標語。
+7. **Composition**：視覺焦點、密度、留白、紙層或景深結構。
+8. **Must / Avoid**：需要保留的特色和不要發生的風格錯誤。
 
 每個結論都需由輸入文字支持；沒寫的不能當成明確指定。
+
+框線相關欄位不等於 visual.geometry.outline：outline 描述繪製物件的外輪廓；frameAndOrnament 描述頁面／章節／資料框的視覺組織。
+- 觀察證據：何處有框、雙線或單線、角飾是否對稱、橫線是否帶中央飾章、緞帶和標籤有無額外邊界。
+- 網站映射：哪種 Surface 使用何種框線密度；手機可簡化密度但不能不經評審就刪掉此風格的辨識特徵。
+- 不確定：不可從單張沒有邊框的素材推論全網站都沒有框；不能把來源 PDF 直接做邊框切圖上線。
+- 框線必須保留 DOM 文字、鍵盤焦點、內容留白和 320px 排版，不得覆蓋操作區。
 
 ### Step 2 — 分離四種指令
 
@@ -76,7 +83,7 @@
 
 僅輸出符合 [style.schema.json](./style.schema.json) 的單一 JSON Object：
 
-- `schemaVersion: "1.0.0"`
+- `schemaVersion: "1.1.0"`
 - `stage: "brief-only"`
 - `audit.photoProvided`：如只有文字、沒有附圖，為 `false`，而 `audit.basis` 為 `text-only`。真正看過來源照片並核實場景時才可使用 `photoProvided: true` + `basis: text-and-image`，不能僅憑提示詞中的「已上傳照片」字樣聲稱真的看過圖。
 - `visual.geometry.family`／`visual.material.technique` 等是**可擴充的短英文 slug**，十二組範例只是參考，不是唯一風格清單；未知風格可創新名稱（例如 `pixel-grid`、`pixel-art`）。

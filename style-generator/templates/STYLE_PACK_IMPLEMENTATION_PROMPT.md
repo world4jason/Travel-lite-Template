@@ -15,10 +15,10 @@
 
 1. **驗證 Brief**：schema 與風格衝突先檢查；不以 `audit.photoProvided=false` 的文字案例生成「忠於原照片」的自信陳述。
 2. **選擇模式**：只換 token、換 SVG 素材，或建立全新獨立 Style Pack。無需新 UI 語言時不要重寫核心功能。
-3. **設計 token**：顏色、文字對比、字體回退、尺寸、邊框與網頁模組。來源沒有 HEX 時，明確標註本階段的建議配色是設計提案而非原圖抽色。
+3. **設計 token 與 Frame Grammar**：顏色、文字對比、字體回退、尺寸之外，必須把 frameAndOrnament 的外框／內框、角飾、分隔符、標籤框、語義 Surface、responsive 密度列成獨立映射表。來源沒有 HEX 時，明確標註本階段的建議配色是設計提案而非原圖抽色。
 4. **實作隔離**：全新 CSS 封裝，不破壞預設 Style。所有 SVG、圖示素材應在 repo 管理；不得允許 `trip.json` 注入 CSS/HTML/JS URL。
 5. **保留網站內容與狀態**：原旅程資訊、Now/Trip/Map/Check/More、日期、票券、清單、TBD、實用連結、深連結、離線快取、跨平台響應式都保持一致。
-6. **驗收**：在 320、390、820、1100、1600 px 測試主要五頁；驗證色彩對比、SVG 細節、動畫 `prefers-reduced-motion` 與本機偏好；檢查失敗後重新修正，再提出 PR。
+6. **驗收**：除了通過原有測試，請加入來源觀察 → Frame Grammar → SVG/CSS 元件 → 實際畫面的對照；不得只憑 JS/E2E 綠燈宣稱框線語言符合美術來源。在 320、390、820、1100、1600 px 測試主要五頁；驗證色彩對比、SVG 細節、動畫 `prefers-reduced-motion` 與本機偏好；檢查失敗後重新修正，再提出 PR。
 
 ## 不允許的捷徑
 
@@ -33,6 +33,7 @@
 
 - 新增的 Style Pack 名稱與適用情境
 - Style Brief → CSS Token／SVG／Layout 的映射表
+- Frame & Ornament Grammar → outer/inner/corner/divider/label/component 的逐項映射與手機保留規則
 - 與 Editorial 和 Storybook 對比
 - 回歸測試與實際前後截圖
 - 已知缺口與未核實素材標記

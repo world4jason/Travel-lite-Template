@@ -18,7 +18,10 @@
   ],
   "properties": {
     "schemaVersion": {
-      "const": "1.0.0"
+      "enum": [
+        "1.0.0",
+        "1.1.0"
+      ]
     },
     "id": {
       "type": "string",
@@ -284,6 +287,190 @@
               }
             }
           }
+        },
+        "frameAndOrnament": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "role",
+            "frameLayers",
+            "cornerMotifs",
+            "dividerMotifs",
+            "labelFrames",
+            "placements",
+            "responsive",
+            "evidence"
+          ],
+          "properties": {
+            "role": {
+              "enum": [
+                "unknown",
+                "none",
+                "structural",
+                "decorative",
+                "structural-and-decorative"
+              ]
+            },
+            "frameLayers": {
+              "type": "array",
+              "maxItems": 8,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "level",
+                  "lineStyle",
+                  "weight",
+                  "cornerShape",
+                  "colorRole",
+                  "inset",
+                  "notes"
+                ],
+                "properties": {
+                  "level": {
+                    "enum": [
+                      "outer",
+                      "inner",
+                      "section",
+                      "utility"
+                    ]
+                  },
+                  "lineStyle": {
+                    "enum": [
+                      "none",
+                      "single",
+                      "double",
+                      "dotted",
+                      "dashed",
+                      "irregular",
+                      "paper-edge",
+                      "printed"
+                    ]
+                  },
+                  "weight": {
+                    "enum": [
+                      "none",
+                      "hairline",
+                      "thin",
+                      "medium",
+                      "bold",
+                      "variable"
+                    ]
+                  },
+                  "cornerShape": {
+                    "enum": [
+                      "none",
+                      "square",
+                      "rounded",
+                      "clipped",
+                      "wobbly",
+                      "scrollwork",
+                      "botanical",
+                      "geometric"
+                    ]
+                  },
+                  "colorRole": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "inset": {
+                    "enum": [
+                      "none",
+                      "small",
+                      "medium",
+                      "large",
+                      "fluid"
+                    ]
+                  },
+                  "notes": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "cornerMotifs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "dividerMotifs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "labelFrames": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "placements": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "surface",
+                  "treatment",
+                  "density"
+                ],
+                "properties": {
+                  "surface": {
+                    "enum": [
+                      "identity",
+                      "chapter",
+                      "reading",
+                      "operational",
+                      "print"
+                    ]
+                  },
+                  "treatment": {
+                    "type": "string",
+                    "minLength": 3
+                  },
+                  "density": {
+                    "enum": [
+                      "none",
+                      "sparse",
+                      "moderate",
+                      "ornate"
+                    ]
+                  }
+                }
+              }
+            },
+            "responsive": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "mobile",
+                "desktop",
+                "print"
+              ],
+              "properties": {
+                "mobile": {
+                  "type": "string"
+                },
+                "desktop": {
+                  "type": "string"
+                },
+                "print": {
+                  "type": "string"
+                }
+              }
+            },
+            "evidence": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
         }
       }
     },
@@ -522,6 +709,25 @@
             "default"
           ]
         }
+      }
+    }
+  },
+  "if": {
+    "properties": {
+      "schemaVersion": {
+        "const": "1.1.0"
+      }
+    },
+    "required": [
+      "schemaVersion"
+    ]
+  },
+  "then": {
+    "properties": {
+      "visual": {
+        "required": [
+          "frameAndOrnament"
+        ]
       }
     }
   }

@@ -2,7 +2,11 @@
 
 > **Status: extraction prototype / brief-only.** 這一層已實際整理兩批不同用途的自然語言風格提示詞、總計十二份去重後的 Style Brief，並可用 Node.js 零額外套件驗證結果；**不是已自動生成六套可直接部署的 CSS**。
 
-Travel Lite 已有 **Functional Template**（行程、地圖、清單、Now 等）及 14 套可用、已驗收的 Style Pack。兩批文字提示詞的 12 份 Style Brief 是規格來源，而不是直接注入程式的 CSS。
+Travel Lite 已有 **Functional Template**（行程、地圖、清單、Now 等）及 14 套既有風格加上 Vintage Watercolor Style Pack。兩批文字提示詞的 12 份 Style Brief 是規格來源，而不是直接注入程式的 CSS。
+
+## Frame & Ornament Grammar（新抽取必填）
+
+新 Style Brief 使用 schemaVersion 1.1.0，必須獨立描述框線、四角、內外層次、章節飾章、標籤框，以及 mobile/desktop/print 的保留規則。既有 1.0.0 的十二份案例保持相容；缺少框線欄位代表尚未抽取，不等於設計上不需要框線。詳見 [Style Pack 框線稽核](../docs/STYLE_FRAME_GRAMMAR_AUDIT.md)。
 
 本實驗補的是中間一層：
 

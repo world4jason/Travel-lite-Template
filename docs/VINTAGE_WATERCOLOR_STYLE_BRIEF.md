@@ -1,8 +1,8 @@
-# Vintage Watercolor Travel Guide — Art Direction (draft v0.1)
+# Vintage Watercolor Travel Guide — Art Direction & Frame Grammar v2
 
 **Issue:** [#79](https://github.com/world4jason/Travel-lite-Template/issues/79) · **Downstream:** [#80 A5 print](https://github.com/world4jason/Travel-lite-Template/issues/80), [#81 website Style Pack](https://github.com/world4jason/Travel-lite-Template/issues/81)
 
-**Status:** **Draft for human art-direction review**, not a shipped or registered `ui.visualStyle`. This document establishes the shared visual language before either implementation ticket starts.
+**Status:** Published Style Pack; Frame Grammar v2 passed local Agent QA (67 Node / 144 browser, before/after screenshots and print PDF), pending post-deployment Human Visual Review.
 
 ## Product intent and evidence boundary
 
@@ -26,7 +26,7 @@ The desired impression is **a gently aged, illustrated personal travel journal**
 | 19, 32, 139 | icon-based transport sequencing and light dotted rules | actual route geometry, transit stops or itineraries |
 | 37, 49, 125 | dominant watercolor sketch paired with readable factual fields | encyclopedic content or museum facts |
 | 99, 104 | illustrative vignettes near compact information blocks | restaurant/menu content, food names or prices |
-| 151, 224 | sparse editorial recap / illustrated closing composition | guidebook narrative or historical details |
+| 151 | framed editorial closing composition | guidebook narrative or historical details |
 
 Reference pages above are **private review anchors**, not downloadable assets. The page styles vary across the original booklet; the goal is to distill a *coherent* reusable design, not imitate every page.
 
@@ -43,6 +43,21 @@ Reference pages above are **private review anchors**, not downloadable assets. T
 | Detail density | decorative at chapter boundaries, sparse in operational sections |
 | Motion | static by default; no decorative animation required |
 | Content | ONLY existing source-faithful `trip.json` fields; no generated copy added by Style Pack |
+
+### Frame & Ornament Grammar — primary visual identity
+
+User feedback makes the FRAME the main visual signature, not merely the palette. The typed local design contract is style-packs/vintage-watercolor/frame-grammar.json.
+
+| Role | Source reference observation | New original interpretation |
+| --- | --- | --- |
+| Identity | P1: four symmetrical corner flourishes and gold perimeter | New self-authored SVG corners and gold outer rule |
+| Inset | P1/P10/P31/P75: narrow inset inner line | CSS inset rule with no duplicated text |
+| Divider | P37/P39/P49: thin, decorated section separation | New symmetric leaf-and-ink center divider SVG |
+| Reading frame | P37/P49/P125: framed facts with separate labels | Understated single corner ornament and fine card edge |
+| Print | P5/P10/P75: full-page frame even when content changes | A5 vector motif embedded in print CSS plus readable print-border fallback |
+| Operations | Now/Map require immediate legibility | Simple structural borders and clear keyboard focus |
+
+Visual acceptance demands visible four-corner geometry, nested rules and an ornamental section node on key identity/chapter surfaces. A plain 1px rectangle is not a substitute. Phone sizes reduce detail, not remove the defining frame. Real text, touch targets, keyboard operation and offline support always take priority.
 
 ### Proposed palette (new design tokens, **not** extracted HEX from the PDF)
 
@@ -115,7 +130,7 @@ Rule: satisfy WCAG AA **4.5:1 for ordinary text**, **3:1 for large text and non-
 
 ## Implementation and QA gates
 
-This is an **offline review artifact**. Do not register a `vintage-watercolor` runtime ID until #81 provides independently tested CSS/assets/manifest and a reviewed preview.
+The Vintage Watercolor runtime ID has already shipped. Frame Grammar v2 is a focused enhancement; its new artwork and layout must pass Agent visual checks before merge and Human review after deployment.
 
 1. **Fixed source of truth:** use the existing non-Vienna Tokyo demo `trip.json` for the first visual comparison. Capture *the same trip facts* in old and proposed styles; do not change titles, locations or add stories.
 2. **Visual specimen required before sign-off:** phone 390×844 and desktop 1100×900 overview and one day; a long CJK/Latin stress layout at 320×568; A5 cover/overview + one dense overflowing day. These captures may be screenshots of a local prototype using only original assets.
@@ -133,13 +148,13 @@ This is an **offline review artifact**. Do not register a `vintage-watercolor` r
 - [ ] Review web/print balance on actual devices and PDF output.
 - [ ] Post-release Human Review on the deployed GitHub Pages site after the implementation is merged, with follow-up issues for feedback.
 
-**This document is a draft implementation direction, not visual acceptance evidence.** #80/#81 require agent-reviewed browser/print specimens and automated regression tests before merge. Once the live GitHub Pages build is verified, Human Review happens there; additional feedback becomes a follow-up issue. #82 remains separate Backlog.
+**Frame Grammar v2 browser and A5 visual evidence is now bundled in style-packs/previews, with detailed Agent QA at docs/QA_FRAME_2026-10-17.md; final Human Visual Review still occurs on the deployed website.** #80/#81 require agent-reviewed browser/print specimens and automated regression tests before merge. Once the live GitHub Pages build is verified, Human Review happens there; additional feedback becomes a follow-up issue. #82 remains separate Backlog.
 
-## Implementation progress — A5 scoped variant (PR draft)
+## Implementation history — A5 variant
 
 The downstream A5 implementation keeps the same `normalizedTrip()` / `dayMarkup()` and opt-in `a5-vintage` print CSS rather than creating a separate renderer. The original Classic A5 and A4 formats remain the defaults. Vintage ornaments are CSS-only abstract plant/wash shapes; all trip facts remain selectable DOM text. **Browser PDF test PASS:** actual A5 Tokyo sample (5 pages) and 6-day dense sample (32 pages; 132/132 printed stops confirmed by text extraction). Agent inspected preview screenshots; Human review on deployed Pages remains pending. The private reference booklet's contents are not reproduced.
 
 
-## Implementation progress — optional website pack (Draft)
+## Implementation history — website pack
 
-The website #81 Draft includes a whitelisted `vintage-watercolor` **branch-only** ID, scoped CSS, original local `hero.svg` / `marker.svg`, a prototype manifest and tests. Desktop-only decorative artwork is intentionally omitted on mobile for faster operational scanning. The pack preserves all existing `trip.json` content and does not interpret artwork as place/map evidence. **Local Agent visual review has now examined mobile/desktop and print screenshots, text contrast, long itineraries and offline behavior; Human review on deployed Pages is pending.**>>>>>>> origin/feat/issue-81-vintage-watercolor-web
+The previously merged #81 includes a whitelisted `vintage-watercolor` ID, scoped CSS, original local `hero.svg` / `marker.svg`, a prototype manifest and tests. Desktop-only decorative artwork is intentionally omitted on mobile for faster operational scanning. The pack preserves all existing `trip.json` content and does not interpret artwork as place/map evidence. **Earlier Agent visual review covered prior mobile/desktop and print screenshots; new Frame Grammar v2 requires its own QA and subsequent Human review.**

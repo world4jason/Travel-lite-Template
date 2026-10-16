@@ -4,6 +4,10 @@ Travel Lite's **functional template** remains shared: Now / Trip / Map / Check /
 
 > **Vintage Watercolor local Agent-QA-reviewed (Issue #81):** [art direction](../docs/VINTAGE_WATERCOLOR_STYLE_BRIEF.md) has a locally tested Style Pack, original SVG assets, screenshots and a bounded whitelisted ID. Browser screenshot, layout, contrast and offline QA pass; **post-deployment Human visual review remains pending**. Reference booklet contributes visual language only, never its itinerary content. A5 print is separately #80.
 
+## Frame & Ornament Grammar
+
+Vintage Watercolor 新增原創四角植物卷草 SVG、內外雙層細框與章節裝飾分隔，並有印刷版對應。完整的 [十五種 Style Pack 框線適配稽核](../docs/STYLE_FRAME_GRAMMAR_AUDIT.md) 說明哪些適合剪紙層邊、印章斷線、貼紙描邊，以及哪些應維持極簡，不會把花框套用到所有風格。
+
 ## Built-in styles
 
 | `ui.visualStyle` | Status | Layout and materials | Live preview (same Tokyo sample) |
@@ -151,4 +155,4 @@ Run `node --test tests/vintage-pack.test.mjs`, then run the existing browser sui
 
 ### Vintage Watercolor visual evidence (same Tokyo trip, no invented travel facts)
 
-[390px Overview](./previews/vintage-watercolor-overview-mobile.png) · [390px Day](./previews/vintage-watercolor-day-mobile.png) · [1100px Overview](./previews/vintage-watercolor-overview-desktop.png) · [1100px Day](./previews/vintage-watercolor-day-desktop.png) · [A5 cover](./previews/vintage-watercolor-a5-cover.png) · [A5 dense page](./previews/vintage-watercolor-a5-dense.png).
+[Before framing, 390px](./previews/vintage-watercolor-before-frame-mobile.png) · [**After framing, 390px**](./previews/vintage-watercolor-overview-mobile.png) · [Framed 390px Day](./previews/vintage-watercolor-day-mobile.png) · [Framed 1100px Overview](./previews/vintage-watercolor-overview-desktop.png) · [Framed 1100px Day](./previews/vintage-watercolor-day-desktop.png) · [**A5 framed cover**](./previews/vintage-watercolor-a5-cover.png) · [A5 framed day](./previews/vintage-watercolor-a5-day.png) · [A5 framed dense-page](./previews/vintage-watercolor-a5-dense.png).
