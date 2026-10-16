@@ -555,3 +555,7 @@ dialog.style-picker-dialog::backdrop {
 :root[data-motion="reduce"] dialog.style-picker-dialog[open] {
   animation: none !important;
 }
+
+/* Bounded thumbnail, using an original locally bundled botanical SVG. */
+.style-preview--vintage-watercolor { background:#FAF4E6 url("./assets/vintage-watercolor/marker.svg") center/auto 94% no-repeat; border:1px solid #A78B68; border-radius:4px; }
+.style-preview--vintage-watercolor > span { opacity:0; }

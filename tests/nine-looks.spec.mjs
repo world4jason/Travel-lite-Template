@@ -41,14 +41,14 @@ for(const [pack,spec] of Object.entries(packs)){
     await page.locator(".trip-overview-day").first().click();
     await expect(page.locator("ol.trip-v2-timeline > li")).toHaveCount(4);
     await page.locator(".bottom-nav [data-view='more']").click();
-    await expect(page.locator(".style-option")).toHaveCount(15);
+    await expect(page.locator(".style-option")).toHaveCount(16);
     await expect(page.locator('[data-style-choice="'+pack+'"]')).toHaveAttribute("aria-pressed","true");
   });
 }
 
 test("fifteen choices include two Editorial color modes and seven independent packs",async({page})=>{
  await page.goto("/#more");
- await expect(page.locator(".style-option")).toHaveCount(15);
+ await expect(page.locator(".style-option")).toHaveCount(16);
  for(const id of all)await expect(page.locator('[data-style-choice="'+id+'"]')).toHaveCount(1);
  await page.locator("[data-style-picker-open]").click();
  await page.locator('[data-style-choice="editorial-dark"]').click();
@@ -134,6 +134,6 @@ test.describe("style assets available offline",()=>{
    await context.setOffline(true);
    await page.reload({waitUntil:"domcontentloaded"});
    await expect(page.locator("html")).toHaveAttribute("data-visual-style","taiwan-poster");
-   await expect(page.locator(".style-option")).toHaveCount(15);
+   await expect(page.locator(".style-option")).toHaveCount(16);
  });
 });

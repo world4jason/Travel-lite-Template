@@ -94,6 +94,9 @@ More displays a collapsed Research Notes index only when source links exist, der
 Published GitHub Pages trip.json is public. Never insert passports, personal secrets, booking tokens or sensitive contact details. Always hand off real-time operations to official providers; an offline snapshot cannot verify live conditions.
 ## `ui`
 
+The website `vintage-watercolor` selection remains a branch-only Draft until its Style Pack browser/print parity and offline QA gates are completed. Do not insert this id into published trips until the corresponding reviewed implementation reaches `main`.
+
+
 ```json
 {
   "defaultView": "now",

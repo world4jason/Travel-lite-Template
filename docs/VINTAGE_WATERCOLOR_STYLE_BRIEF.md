@@ -138,3 +138,8 @@ This is an **offline review artifact**. Do not register a `vintage-watercolor` r
 ## Implementation progress — A5 scoped variant (PR draft)
 
 The downstream A5 implementation keeps the same `normalizedTrip()` / `dayMarkup()` and opt-in `a5-vintage` print CSS rather than creating a separate renderer. The original Classic A5 and A4 formats remain the defaults. Vintage ornaments are CSS-only abstract plant/wash shapes; all trip facts remain selectable DOM text. **Pending:** browser-generated PDFs and human visual comparison (NOT RUN); a source reference is not reproduced or copied.
+
+
+## Implementation progress — optional website pack (Draft)
+
+The website #81 Draft includes a whitelisted `vintage-watercolor` **branch-only** ID, scoped CSS, original local `hero.svg` / `marker.svg`, a prototype manifest and tests. Desktop-only decorative artwork is intentionally omitted on mobile for faster operational scanning. The pack preserves all existing `trip.json` content and does not interpret artwork as place/map evidence. **Status remains NOT RUN for real screenshots/contrast and independent visual review, so do not merge or label the pack reviewed.**>>>>>>> origin/feat/issue-81-vintage-watercolor-web
