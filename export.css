@@ -23,3 +23,7 @@
 }
 .travel-export-status { margin: 0; font-size: .92rem; overflow-wrap: anywhere; }
 .travel-export-status:empty { display: none; }
+
+.travel-export-a5-style { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: .88rem; }
+.travel-export-a5-style select { padding: 8px 10px; border: 1px solid var(--line); color: var(--text); background: var(--surface-2); border-radius: 8px; font: inherit; }
+.travel-export-a5-style select:focus-visible { outline: var(--focus-ring); outline-offset: 3px; }

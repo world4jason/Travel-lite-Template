@@ -28,7 +28,9 @@
     try {
       child.opener = null;
       child.document.open();
-      child.document.write(core.printHtml(state.data, format, isZh() ? "zh" : "en"));
+      const style = document.querySelector("#travel-export-a5-style")?.value;
+      const printFormat = format === "a5" && style === "vintage" ? "a5-vintage" : format;
+      child.document.write(core.printHtml(state.data, printFormat, isZh() ? "zh" : "en"));
       child.document.close();
       child.document.getElementById("print-now")?.addEventListener("click", () => child.print());
       child.focus();
@@ -91,6 +93,7 @@
         <button type="button" data-travel-export="a5">${label("A5 booklet · Print / PDF", "A5 旅行小手冊 · 列印 / PDF")}</button>
         <button type="button" data-travel-export="ics">${label("Calendar · Download .ics", "行事曆 · 下載 .ics")}</button>
       </div>
+      <label class="travel-export-a5-style" for="travel-export-a5-style"><span>${label("A5 booklet appearance", "A5 小手冊風格")}</span><select id="travel-export-a5-style"><option value="classic">${label("Classic", "經典")}</option><option value="vintage">${label("Vintage Watercolor", "復古水彩")}</option></select></label>
       <label class="travel-export-alarm" for="travel-export-alarm">
         <span>${label("Calendar event reminders", "日曆活動提醒")}</span>
         <select id="travel-export-alarm">
