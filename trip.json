@@ -17,7 +17,7 @@
     "defaultView": "now",
     "theme": "system",
     "locale": "en",
-    "bottomNav": ["now", "trip", "map", "check", "more"]
+    "bottomNav": ["now", "trip", "map", "places", "more"]
   },
   "providers": {
     "mapStyle": "https://tiles.openfreemap.org/styles/liberty",

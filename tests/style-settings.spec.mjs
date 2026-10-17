@@ -91,7 +91,8 @@ test("selection persists across reload but does not change existing deep link or
   await active(page,"candy");
   await expect.poll(() => page.evaluate(() =>
     TravelLiteStorage.get("sample-tokyo-2026:visualStyle"))).toBe("candy");
-  await page.locator(".bottom-nav [data-view='check']").click();
+  await page.locator(".bottom-nav [data-view='more']").click();
+  await page.locator("[data-preparation] summary").click();
   await page.locator("label:has(input[data-check-key])").first().click();
   await expect(page.locator("input[data-check-key]").first()).toBeChecked();
   // Storage completion is async. Navigation before it settles must not render
@@ -102,7 +103,8 @@ test("selection persists across reload but does not change existing deep link or
   await page.reload({waitUntil:"domcontentloaded"});
   await active(page,"candy");
   await expect(page.locator(".trip-day-view")).toBeVisible();
-  await page.locator(".bottom-nav [data-view='check']").click();
+  await page.locator(".bottom-nav [data-view='more']").click();
+  await page.locator("[data-preparation] summary").click();
   await expect(page.locator("input[data-check-key]").first()).toBeChecked();
 });
 

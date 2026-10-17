@@ -1,0 +1,77 @@
+/* Read-only Places directory, responsive detail and linked admission information.
+   Uses shared style tokens so existing Art Direction packs remain functional.
+   SPDX-License-Identifier: AGPL-3.0-or-later */
+.places-view { min-width:0; padding-bottom:24px; }
+.places-heading,.places-detail-heading {
+  position:relative; padding:clamp(18px,4vw,30px);
+  background:linear-gradient(120deg,var(--surface),var(--surface-2));
+  border:var(--border-subtle); border-radius:var(--radius-lg);
+}
+.places-heading { display:grid; gap:9px; }
+.places-heading h2,.places-detail-heading h2 {
+  margin:0; font-family:var(--font-display,inherit);
+  font-size:clamp(1.65rem,4vw,2.25rem); line-height:1.17; overflow-wrap:anywhere;
+}
+.places-heading p,.places-detail-heading p { color:var(--muted); margin:0; line-height:1.5; }
+.places-count { width:fit-content; padding:5px 10px; background:var(--accent-soft); color:var(--text); border-radius:999px; font-size:.76rem; font-weight:750; }
+.places-filters { display:flex; flex-wrap:nowrap; overflow-x:auto; gap:7px; padding:4px 1px; scrollbar-width:thin; }
+.places-filter { flex:0 0 auto; min-height:44px; padding:8px 15px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--text); font-weight:650; cursor:pointer; }
+.places-filter.active { background:var(--accent-soft); border-color:var(--accent); }
+.places-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,265px),1fr)); gap:12px; }
+.places-card { display:flex; text-align:left; flex-direction:column; gap:10px; min-width:0; width:100%; padding:19px; color:var(--text); cursor:pointer; border-radius:var(--radius-md); background:var(--surface); }
+.places-card:hover,.places-card:focus-visible { border-color:var(--accent); }
+.places-card-meta { color:var(--muted); font-size:.74rem; }
+.places-card-title { font-family:var(--font-display,inherit); font-size:1.2rem; font-weight:750; line-height:1.3; overflow-wrap:anywhere; }
+.places-card-excerpt { color:var(--muted); font-size:.86rem; line-height:1.5; overflow-wrap:anywhere; flex:1; }
+.places-card-foot { border-top:var(--border-subtle); padding-top:11px; display:flex; flex-wrap:wrap; align-items:center; gap:8px; color:var(--muted); font-size:.74rem; }
+.places-card-foot > span:first-child { min-width:0; overflow-wrap:anywhere; flex:1; }
+.places-entry-chip { background:var(--accent-soft); color:var(--text); border-radius:999px; font-weight:650; padding:5px 8px; }
+.places-card-arrow { color:var(--accent); font-weight:800; margin-left:auto; }
+.places-back { border:0; background:transparent; color:var(--text); cursor:pointer; text-align:left; padding:10px 0; width:fit-content; min-height:44px; font-weight:750; }
+.places-detail-view { max-width:var(--content-reading,800px); }
+.places-detail-view :is(.places-entry,.places-about,.places-notes,.places-empty-context,.places-actions) { padding:clamp(16px,3vw,24px); }
+.places-detail-view h3 { font-family:var(--font-display,inherit); font-size:1.17rem; margin:4px 0 12px; overflow-wrap:anywhere; }
+.places-detail-view p { overflow-wrap:anywhere; line-height:1.55; }
+.places-detail-view ul { padding-left:20px; line-height:1.6; }
+.places-detail-view li { margin:6px 0; overflow-wrap:anywhere; }
+.places-detail-heading { display:grid; gap:10px; }
+.places-section-top { display:flex; gap:12px; align-items:center; }
+.places-section-top > span { font-size:1.65rem; color:var(--accent); }
+.places-booking-row { display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; border-top:var(--border-subtle); padding:12px 0; align-items:start; }
+.places-booking-row > div { min-width:0; flex:1; }
+.places-booking-row p { font-size:.82rem; color:var(--muted); margin:5px 0 0; }
+.places-status { font-size:.73rem; padding:3px 7px; border-radius:5px; background:var(--surface-2); color:var(--text); }
+.places-source-link { color:var(--accent); display:inline-flex; gap:5px; align-items:center; min-height:35px; overflow-wrap:anywhere; font-weight:650; font-size:.83rem; }
+.places-links { display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; padding-top:10px; }
+.places-links strong { font-size:.78rem; width:100%; }
+.places-photo { display:block; width:100%; max-height:300px; object-fit:cover; border-radius:var(--radius-md); margin:12px 0; }
+.places-disclaimer { margin:12px 0 0; font-size:.75rem; color:var(--muted); }
+.places-actions { display:flex; flex-wrap:wrap; gap:10px; }
+.places-actions .button-link { min-height:44px; display:inline-flex; align-items:center; }
+.trip-place-detail { min-height:34px; border:0; border-bottom:1px dotted var(--accent); background:transparent; color:var(--accent); cursor:pointer; padding:4px 3px; font-size:.73rem; font-weight:750; white-space:nowrap; }
+.preparation-section > summary { gap:10px; }
+.device-only-tag { display:inline-block; font-weight:450; font-size:.71rem; color:var(--muted); margin-left:5px; }
+.preparation-body { padding:0 12px 16px; display:grid; gap:10px; }
+.preparation-body > .check-group { border:var(--border-subtle); border-radius:var(--radius-sm); padding:14px; box-shadow:none; }
+.transport-day-context { padding:0; border:var(--border-subtle); margin:6px 0 14px; }
+.transport-day-context > summary { cursor:pointer; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; padding:13px 15px; min-height:48px; font-weight:700; }
+.transport-day-context > summary .transport-summary-meta { font-size:.75rem; color:var(--muted); font-weight:400; }
+.transport-leg-list { list-style:none; margin:0; padding:0 15px 15px; }
+.transport-leg-list li { border-top:var(--border-subtle); padding:12px 0; display:grid; gap:5px; }
+.transport-leg-list strong { color:var(--text); font-size:.89rem; }
+.transport-leg-list p { color:var(--muted); margin:0; font-size:.79rem; line-height:1.5; overflow-wrap:anywhere; }
+.transport-leg-list small { color:var(--muted); font-size:.75rem; }
+.transport-leg-list a { color:var(--accent); overflow-wrap:anywhere; font-size:.8rem; }
+.places-view :is(button,a):focus-visible,.transport-day-context summary:focus-visible { outline:var(--focus-ring); outline-offset:3px; }
+@media (max-width:600px) {
+ .places-heading,.places-detail-heading { padding:18px; }
+ .places-grid { grid-template-columns:minmax(0,1fr); }
+ .places-card { padding:16px; }
+ .places-actions { flex-direction:column; }
+ .places-actions .button-link { width:100%; justify-content:center; }
+ .places-booking-row { flex-direction:column; }
+ .preparation-body { padding:0 8px 10px; }
+}
+
+.places-date-picker { display:grid; gap:7px; color:var(--muted); font-size:.78rem; font-weight:650; width:min(100%,360px); }
+.places-date-picker select { min-width:0; max-width:100%; min-height:44px; width:100%; color:var(--text); background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md); padding:9px 12px; font:inherit; }

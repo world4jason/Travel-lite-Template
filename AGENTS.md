@@ -138,6 +138,18 @@ When generating `day.routeSummary`, use this source priority:
 
 See [`docs/SOURCE_NORMALIZATION.md`](./docs/SOURCE_NORMALIZATION.md).
 
+## Five-tab IA and admission data
+
+The canonical tab navigation is Now/Trip/Transport/Places/More.
+Transport uses the MapLibre map with old #map links and no invented
+service or routes. Places lists researched planned destinations and
+existing optional infoCard data, not generic unknown meals or tourism
+recommendations. Use explicit itemId/itemIds to link reservation/files
+to Places, never title guessing. Private tickets/QRs are not appropriate
+for public GitHub Pages. The checklist lives in More and retains the
+existing device-only keys and legacy #check route. Full transit and
+deep multi-section Guide are separate #104/#105 and #82 backlog.
+
 ## Trip information hierarchy
 
 The Trip view is **information first, actions second**.

@@ -206,3 +206,12 @@ Before writing `routeSummary`, ask:
 6. Did I accidentally invent a transfer, duration, or place?
 
 If uncertain, omit `routeSummary`; the UI can derive a simple display from item titles. A missing summary is safer than a fabricated one.
+
+## Places and explicit admission references
+
+Do not turn an unresolved generic meal or hotel transfer into a confirmed
+attraction. Existing item.infoCard can provide source-backed context. Link
+a reservation or an intentionally public ticket reference to a stable item
+ID only when the source confirms that association, never by similar names.
+No runtime guide invention, new place discovery, QR token storage, timetable
+guessing or implicit booking confirmation. See docs/NAV_PLACES_MVP.md.

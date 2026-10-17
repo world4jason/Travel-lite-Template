@@ -9,7 +9,7 @@ export default defineConfig({
     "style-settings.spec.mjs", "nine-looks.spec.mjs", "second-prompt-batch.spec.mjs",
     "responsive-style-picker.spec.mjs", "export-ui.spec.mjs", "site-storage.spec.mjs",
     "journey-confidence.spec.mjs", "vintage-a5.spec.mjs", "vintage-watercolor.spec.mjs", "vintage-framing.spec.mjs",
-    "bottom-nav-fixed.spec.mjs"],
+    "bottom-nav-fixed.spec.mjs", "places-transport.spec.mjs"],
   fullyParallel: false,
   workers: 1,
   retries: 0,

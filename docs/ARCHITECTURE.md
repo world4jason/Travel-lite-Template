@@ -42,6 +42,16 @@ Do **not** turn the base template into:
 - a collaboration/account backend
 - cross-device synchronization
 
+## Five-tab information architecture
+
+Now/Trip/Transport/Places/More are stable tasks. Transport is the
+existing MapLibre/spatial view (internal ID map), not live trip routing.
+Places is a read-only index and detail for existing itinerary items,
+not another itinerary database or search engine. More holds the local
+preparation checklist and non-core tools; the legacy #check route remains.
+All screens project one published trip dataset, without duplicate bookings
+or transit data. Optional admission references use explicit item IDs.
+
 ## Trip information hierarchy
 
 The Trip view is intentionally **information first, actions second**.

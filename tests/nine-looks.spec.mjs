@@ -81,7 +81,7 @@ test("four new packs fit five functional views at 320/390/820/1600px",async({pag
         ["now","#view-root :is(.view-stack,.empty-state)"],
         ["trip","#view-root .trip-v2"],
         ["map","#view-root .runtime-map-panel"],
-        ["check","#view-root .check-group"],
+        ["places","#view-root .places-view"],
         ["more","#view-root .style-settings"]]){
        await page.locator('.bottom-nav [data-view="'+view+'"]').click();
        await expect(page.locator(selector).first()).toBeVisible();

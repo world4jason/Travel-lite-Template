@@ -183,7 +183,7 @@ test("storybook's five companion views keep the original data/actions and fit mo
     await page.setViewportSize({ width, height: width <= 320 ? 568 : 900 });
     for (const [view, selector] of [
       ["now", "#view-root :is(.view-stack, .empty-state)"], ["trip", "#view-root .trip-v2"],
-      ["map", "#view-root .runtime-map-panel"], ["check", "#view-root .check-group"],
+      ["map", "#view-root .runtime-map-panel"], ["places", "#view-root .places-view"],
       ["more", "#view-root .settings-card"],
     ]) {
       await page.locator(".bottom-nav [data-view='" + view + "']").click();

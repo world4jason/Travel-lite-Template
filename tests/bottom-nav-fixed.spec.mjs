@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { mkdirSync } from "node:fs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const labels = ["Now", "Trip", "Map", "Check", "More"];
+const labels = ["Now", "Trip", "Transport", "Places", "More"];
 
 async function inspectNav(page) {
   return page.evaluate(() => {
@@ -94,7 +94,7 @@ test("desktop intentionally uses a header-adjacent navigation row", async ({ pag
 test("all five destinations retain a fixed mobile tab bar after navigation", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/?previewStyle=vintage-watercolor#trip/overview");
-  for (const view of ["now","trip","map","check","more"]) {
+  for (const view of ["now","trip","map","places","more"]) {
     await page.locator('#bottom-nav [data-view="' + view + '"]').click();
     await expect(page.locator('#bottom-nav [data-view="' + view + '"]')).toHaveClass(/active/);
     const info = await inspectNav(page);

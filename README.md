@@ -56,15 +56,31 @@ Existing itinerary / PDF / spreadsheet / discussion
 
 A travel companion can be generated for a different destination by changing **trip data and optional assets**, without rebuilding the application.
 
+## Five-tab navigation MVP
+
+The bottom destinations are Now / Trip / Transport / Places / More.
+Transport reuses the MapLibre view (old #map deep links still work) and
+surfaces published transfer notes, not live route predictions. Places
+lists only planned venues/activities and existing source-backed context.
+A Place can show an entry/booking reference only when explicitly linked
+by a stable item ID. Longer Guides remain separate backlog #82.
+
+Checklists moved to More -> Preparation & checklists, retaining the same
+device-local progress; old #check links still work. Never commit private
+QR tickets, full order references or signed confidential documents to the
+public trip site. See [MVP data/navigation contract](./docs/NAV_PLACES_MVP.md) for migration boundaries.
+
+**Real browser previews:** [Places mobile](./style-packs/previews/ia-places-mobile.png) · [Place details](./style-packs/previews/ia-place-detail-mobile.png) · [Explicit linked booking (synthetic test data)](./style-packs/previews/ia-place-entry-synthetic-mobile.png) · [Transport mobile](./style-packs/previews/ia-transport-mobile.png) · [More checklists](./style-packs/previews/ia-more-checklists-mobile.png) · [Places desktop](./style-packs/previews/ia-places-desktop.png).
+
 ## What works today
 
 | View | On the trip, it helps you… |
 | --- | --- |
 | **Now** | See the previous / scheduled-now / next items, today's reminders, weather, and flexible/TBD activities |
 | **Trip** | Scan all days, follow the planned stop order, read transfers, highlights, and open decisions |
-| **Map** | See the planned stops and open a selected place in Google Maps for navigation |
-| **Check** | Tick off a personal packing list and tasks **on this device** |
-| **More** | Find reservations, references, and a personal note; export the trip as A4/A5 printable pages or an `.ics` calendar |
+| **Transport** | View the planned spatial map and saved transfer context; specialist services handle live routes and schedules |
+| **Places** | Browse published attractions and optional place guides, linked entry and reservation references |
+| **More** | Preparation & checklists (device-only), bookings, files, personal notes, exports and appearance |
 
 Also included:
 

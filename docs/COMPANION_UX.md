@@ -119,6 +119,16 @@ Recommended composition:
 
 Do not repeat the entire day timeline in the rail.
 
+## Five destinations and legacy links
+
+The mobile tabs are Now, Trip, Transport, Places and More.
+Transport retains old #map links and shows only published transfer
+references. Places is a source-backed planned location index plus detail,
+not nearby discovery. More includes Preparation & checklists (device-only).
+Existing #check bookmarks still work and stored checklist state persists.
+At long trip lengths, prefer a native date selector over offscreen
+unreachable date chips.
+
 ## Map: read-only spatial reference
 
 The map exists to answer “where are today’s planned stops relative to each other?”
