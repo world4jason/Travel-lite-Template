@@ -138,7 +138,7 @@ test("Candy and Risograph preserve all five views, 320–1600px responsive layou
         ["now","#view-root :is(.view-stack,.empty-state)"],
         ["trip","#view-root .trip-v2"],
         ["map","#view-root .runtime-map-panel"],
-        ["check","#view-root .check-group"],
+        ["places","#view-root .places-view"],
         ["more","#view-root .settings-card"]]){
         await page.locator(".bottom-nav [data-view='"+view+"']").click();
         await expect(page.locator(selector).first(),pack+" "+view+" "+width).toBeVisible();

@@ -107,7 +107,7 @@ Website `vintage-watercolor` is a reviewed, bounded, optional built-in Style Pac
     "navNow": "現在",
     "navTrip": "行程"
   },
-  "bottomNav": ["now", "trip", "map", "check", "more"]
+  "bottomNav": ["now", "trip", "map", "places", "more"]
 }
 ```
 
@@ -439,3 +439,29 @@ Useful read-only structures include `reservations`, `notes`, `files`, `contacts`
 ## Privacy and public hosting
 
 GitHub Pages and a public repository are not a place for secrets. Do not commit passport numbers, passwords/tokens/API secrets, sensitive identifiers, or private booking credentials. Prefer links to authoritative/private systems rather than copying sensitive data into `trip.json`.
+
+
+## Places navigation and admission references (MVP)
+
+Primary destinations are Now, Trip, Transport, Places and More.
+The Transport tab uses the internal map ID for compatibility with legacy
+#map/day/DATE/stop/ID links. Old #check links still open a checklist;
+the main interactive checklist now resides in More. Legacy bottomNav
+values migrate in-memory and never delete personal checklist state.
+
+Places reuses published days[].items and optional item.infoCard only,
+with a unique stable item ID per scheduled place. Trip can link directly
+to #places/item/ITEM_ID. Unconfirmed meals without a researched venue,
+transport segments and accommodation are excluded from Places.
+
+An existing reservations[] or files[] object may optionally specify
+itemId (string) or itemIds (array of strings) referencing an item.id.
+This explicit relationship allows a Place to display entry documents and
+booking status without fuzzy matching titles. An unlinked booking remains
+in More and does not imply anything about entry requirements or availability.
+No guide content or ticket status is synthesized at runtime.
+
+A public GitHub Pages site is not private storage: never publish full
+booking codes, personalized QR tickets, passports or signed private URLs.
+Only safe, intentionally public HTTP(S) external links are shown.
+See docs/NAV_PLACES_MVP.md for the usage/QA contract.

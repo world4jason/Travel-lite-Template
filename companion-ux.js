@@ -2,7 +2,7 @@
 (() => {
   const dictionaries = {
     en: {
-      navNow: "Now", navTrip: "Trip", navMap: "Map", navCheck: "Check", navMore: "More",
+      navNow: "Now", navTrip: "Trip", navMap: "Transport", navPlaces: "Places", navCheck: "Check", navMore: "More",
       overview: "Overview", trip: "Trip", previous: "Previous", scheduledNow: "Scheduled now", next: "Next",
       laterToday: "Later today", flexibleToday: "Flexible today", remember: "Remember", notDecided: "Not decided yet",
       myPreference: "My preference", deviceOnly: "this device only", online: "Online", offlineCopy: "Offline copy",
@@ -12,7 +12,7 @@
       deviceStatus: "Device status", today: "Today", tomorrow: "Tomorrow", tbd: "TBD"
     },
     "zh-TW": {
-      navNow: "現在", navTrip: "行程", navMap: "地圖", navCheck: "清單", navMore: "更多",
+      navNow: "現在", navTrip: "行程", navMap: "交通", navPlaces: "景點", navCheck: "清單", navMore: "更多",
       overview: "總覽", trip: "行程", previous: "前一個", scheduledNow: "目前排定", next: "下一個",
       laterToday: "稍後", flexibleToday: "今天彈性安排", remember: "記得", notDecided: "尚未定案",
       myPreference: "我的偏好", deviceOnly: "僅此裝置", online: "線上", offlineCopy: "離線副本",
@@ -27,6 +27,8 @@
     now: '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
     trip: '<path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
     map: '<path d="m3 6 5-2 8 3 5-2v13l-5 2-8-3-5 2z"/><path d="M8 4v13M16 7v13"/>',
+    transport: '<rect x="5" y="2" width="14" height="17" rx="3"/><path d="M5 11h14M8 6h8M8 19l-2 3m10-3 2 3"/><circle cx="9" cy="15" r="1"/><circle cx="15" cy="15" r="1"/>',
+    places: '<path d="M12 22s7-7 7-13a7 7 0 1 0-14 0c0 6 7 13 7 13Z"/><circle cx="12" cy="9" r="2.5"/>',
     check: '<path d="M5 12 10 17 20 7"/>',
     more: '<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
     pin: '<path d="M12 21s6-5.4 6-12a6 6 0 1 0-12 0c0 6.6 6 12 6 12Z"/><circle cx="12" cy="9" r="2"/>',
@@ -223,7 +225,8 @@
     document.documentElement.lang = currentLocale();
     VIEW_META.now.label = t("navNow"); VIEW_META.now.icon = svgIcon("now", "nav-svg");
     VIEW_META.trip.label = t("navTrip"); VIEW_META.trip.icon = svgIcon("trip", "nav-svg");
-    VIEW_META.map.label = t("navMap"); VIEW_META.map.icon = svgIcon("map", "nav-svg");
+    VIEW_META.map.label = t("navMap"); VIEW_META.map.icon = svgIcon("transport", "nav-svg");
+    VIEW_META.places.label = t("navPlaces"); VIEW_META.places.icon = svgIcon("places", "nav-svg");
     VIEW_META.check.label = t("navCheck"); VIEW_META.check.icon = svgIcon("check", "nav-svg");
     VIEW_META.more.label = t("navMore"); VIEW_META.more.icon = svgIcon("more", "nav-svg");
   }
@@ -321,6 +324,8 @@
     if (state.view === "trip") {
       const mode = currentTripMode();
       hash = mode === "overview" ? "#trip/overview" : `#trip/day/${encodeURIComponent(mode || state.selectedDate || "")}`;
+    } else if (state.view === "places") {
+      hash = state.selectedPlaceId ? "#places/item/" + encodeURIComponent(state.selectedPlaceId) : "#places";
     } else if (state.view === "map") hash = `#map/day/${encodeURIComponent(state.selectedDate || "")}${state.selectedMapItemId ? `/stop/${encodeURIComponent(state.selectedMapItemId)}` : ""}`;
     if (window.location.hash !== hash) history.replaceState(null, "", `${window.location.pathname}${window.location.search}${hash}`);
   }
@@ -339,10 +344,16 @@
         const button = parts[1] === "overview" ? root.querySelector("[data-trip-mode='overview']") : [...root.querySelectorAll("[data-trip-day]")].find((node) => node.dataset.tripDay === parts[2]);
         button?.click();
       });
-    } else if (parts[0] === "map") {
+    } else if (parts[0] === "map" || parts[0] === "transport") {
       state.view = "map";
       if (parts[1] === "day" && state.data.days.some((day) => day.date === parts[2])) state.selectedDate = parts[2];
       if (parts[3] === "stop") state.selectedMapItemId = parts[4] || null;
+      render();
+    } else if (parts[0] === "places") {
+      state.view = "places";
+      const id = parts[1] === "item" ? parts[2] : null;
+      state.selectedPlaceId = id && state.data.days.some((day) =>
+        day.items.some((item) => item.id === id)) ? id : null;
       render();
     } else if (VIEW_META[parts[0]]) { state.view = parts[0]; render(); }
     window.setTimeout(() => { applyingHash = false; }, 0);

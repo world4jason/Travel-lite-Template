@@ -226,7 +226,7 @@ function makeStressTrip({ untimedToday = false } = {}) {
       defaultView: "now",
       theme: "system",
       locale: "en",
-      bottomNav: ["now", "trip", "map", "check", "more"],
+      bottomNav: ["now", "trip", "map", "places", "more"],
     },
     providers: {
       mapStyle: "https://tiles.openfreemap.org/styles/liberty",
@@ -444,7 +444,7 @@ for (const viewport of FULL_MATRIX) {
   test(`page shell reflows at ${viewport.width}x${viewport.height}`, async ({ page }) => {
     await boot(page, viewport);
 
-    for (const view of ["now", "trip", "map", "check", "more"]) {
+    for (const view of ["now", "trip", "map", "places", "more"]) {
       await openView(page, view);
       await assertNoDocumentOverflow(page);
       await assertControlsReachable(page);
@@ -480,7 +480,7 @@ for (const theme of ["light", "dark"]) {
       await page.locator(`[data-theme="${theme}"]`).click();
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
 
-      for (const view of ["now", "trip", "map", "check", "more"]) {
+      for (const view of ["now", "trip", "map", "places", "more"]) {
         await openView(page, view);
         await assertNoDocumentOverflow(page);
         await assertControlsReachable(page);
@@ -741,7 +741,7 @@ test("enlarged text keeps core read-only views inside a 320px shell", async ({ p
   await boot(page, { width: 320, height: 568 });
   await page.addStyleTag({ content: "html { font-size: 200% !important; }" });
 
-  for (const view of ["now", "trip", "check", "more"]) {
+  for (const view of ["now", "trip", "places", "more"]) {
     await openView(page, view);
     await assertNoDocumentOverflow(page);
     await assertControlsReachable(page);

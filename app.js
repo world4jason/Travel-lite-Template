@@ -3,6 +3,7 @@ const state = {
   view: "now",
   selectedDate: null,
   selectedMapItemId: null,
+  selectedPlaceId: null,
   checks: {},
   todos: {},
   personalNote: "",
@@ -15,8 +16,9 @@ const state = {
 const VIEW_META = {
   now: { label: "Now", icon: "●" },
   trip: { label: "Trip", icon: "≡" },
-  map: { label: "Map", icon: "⌖" },
-  check: { label: "Check", icon: "✓" },
+  map: { label: "Transport", icon: "≋" }, // internal ID/legacy #map links remain stable
+  check: { label: "Check", icon: "✓" }, // legacy #check route
+  places: { label: "Places", icon: "⌖" },
   more: { label: "More", icon: "•••" },
 };
 
@@ -142,6 +144,15 @@ const escapeHtml = (value = "") => String(value)
   .replaceAll("'", "&#039;");
 
 const escapeAttr = escapeHtml;
+function safePublishedUrl(raw) {
+  if (typeof raw !== "string" || !raw.trim()) return "";
+  try {
+    const url = new URL(raw.trim(), window.location.href);
+    return ["http:", "https:"].includes(url.protocol) && !url.username && !url.password
+      ? url.href : "";
+  } catch { return ""; }
+}
+
 const tripKey = (suffix) => `${state.data.trip.id}:${suffix}`;
 
 function zonedNow(timeZone) {
@@ -240,7 +251,9 @@ function normalizeData(raw) {
   data.links ||= [];
   data.ui ||= {};
   data.ui.visualStyle = VISUAL_STYLES.has(data.ui.visualStyle) ? data.ui.visualStyle : "editorial";
-  data.ui.bottomNav ||= ["now", "trip", "map", "check", "more"];
+  // Canonical five destinations; older source bottomNav arrays are migrated in-memory.
+  // Historic #check/#map links and device-local checks remain usable.
+  data.ui.bottomNav = ["now", "trip", "map", "places", "more"];
   data.days.forEach((day, dayIndex) => {
     day.id ||= `day-${dayIndex + 1}`;
     day.items ||= [];
@@ -312,13 +325,17 @@ function mapPreview(item, compact = false) {
 
 function renderNav() {
   const views = state.data.ui.bottomNav.filter((view) => VIEW_META[view]);
+  const activeView = state.view === "check" ? "more" : state.view;
   bottomNav.style.setProperty("--nav-count", views.length);
   bottomNav.innerHTML = views.map((view) => `
-    <button class="nav-item ${state.view === view ? "active" : ""}" data-view="${view}" type="button" aria-current="${state.view === view ? "page" : "false"}">
+    <button class="nav-item ${activeView === view ? "active" : ""}" data-view="${view}" type="button" aria-current="${activeView === view ? "page" : "false"}">
       <span class="nav-icon">${VIEW_META[view].icon}</span><span>${VIEW_META[view].label}</span>
     </button>`).join("");
   bottomNav.querySelectorAll("[data-view]").forEach((button) => {
-    button.addEventListener("click", () => setView(button.dataset.view));
+    button.addEventListener("click", () => {
+      if (button.dataset.view === "places") state.selectedPlaceId = null;
+      setView(button.dataset.view);
+    });
   });
 }
 
@@ -447,29 +464,65 @@ function renderMap() {
 
 function checkKey(groupId, itemId) { return `${groupId}:${itemId}`; }
 
-function renderCheck() {
-  const todos = state.data.todos.length ? `<section class="panel check-group"><div class="check-title-row"><h2>To-dos</h2><span>${state.data.todos.filter((todo) => state.todos[todo.id]).length}/${state.data.todos.length}</span></div>${state.data.todos.map((todo) => {
-    const checked = Boolean(state.todos[todo.id]);
-    return `<label class="check-item"><input type="checkbox" data-todo-key="${escapeAttr(todo.id)}" ${checked ? "checked" : ""}/><span class="checkbox-ui">✓</span><span class="check-label"><strong>${escapeHtml(todo.label || todo.title)}</strong>${todo.dueDate || todo.priority ? `<small>${escapeHtml([todo.dueDate ? `Due ${prettyDate(todo.dueDate)}` : "", todo.priority].filter(Boolean).join(" · "))}</small>` : ""}</span></label>`;
-  }).join("")}</section>` : "";
-  const groups = state.data.checklists.map((group) => {
-    const done = group.items.filter((item) => state.checks[checkKey(group.id, item.id)]).length;
-    return `<section class="panel check-group"><div class="check-title-row"><h2>${escapeHtml(group.title)}</h2><span>${done}/${group.items.length}</span></div>${group.items.map((item) => {
-      const key = checkKey(group.id, item.id); const checked = Boolean(state.checks[key]);
-      return `<label class="check-item"><input type="checkbox" data-check-key="${escapeAttr(key)}" ${checked ? "checked" : ""}/><span class="checkbox-ui">✓</span><span class="check-label">${escapeHtml(item.label)}</span></label>`;
-    }).join("")}</section>`;
-  }).join("");
-  root.innerHTML = `<div class="view-stack">${todos}${groups || `<section class="panel empty-state"><p>No checklists yet.</p></section>`}</div>`;
+function checkProgress() {
+  const todos = state.data.todos || [];
+  const groups = state.data.checklists || [];
+  const total = todos.length + groups.reduce((sum, group) => sum + (group.items?.length || 0), 0);
+  const done = todos.filter((item) => state.todos[item.id]).length +
+    groups.reduce((sum, group) => sum + (group.items || []).filter((item) =>
+      state.checks[checkKey(group.id, item.id)]).length, 0);
+  return { done, total };
+}
+
+function checklistsMarkup() {
+  const todos = state.data.todos.length
+    ? `<section class="panel check-group"><div class="check-title-row"><h2>To-dos</h2><span data-check-count="todos"></span></div>${state.data.todos.map((item) =>
+      `<label class="check-item"><input type="checkbox" data-todo-key="${escapeAttr(item.id)}" ${state.todos[item.id] ? "checked" : ""}/><span class="checkbox-ui">✓</span><span class="check-label"><strong>${escapeHtml(item.label || item.title)}</strong></span></label>`).join("")}</section>` : "";
+  const groups = state.data.checklists.map((group) =>
+    `<section class="panel check-group"><div class="check-title-row"><h2>${escapeHtml(group.title)}</h2><span data-check-count="${escapeAttr(group.id)}"></span></div>${(group.items || []).map((item) => {
+      const key = checkKey(group.id, item.id);
+      return `<label class="check-item"><input type="checkbox" data-check-key="${escapeAttr(key)}" ${state.checks[key] ? "checked" : ""}/><span class="checkbox-ui">✓</span><span class="check-label">${escapeHtml(item.label)}</span></label>`;
+    }).join("")}</section>`).join("");
+  return todos + groups || '<section class="panel empty-state"><p>No checklists yet.</p></section>';
+}
+
+function updateCheckCounters() {
+  const progress = checkProgress();
+  root.querySelectorAll("[data-check-progress]").forEach((node) => {
+    node.textContent = progress.done + "/" + progress.total;
+  });
+  for (const group of state.data.checklists) {
+    const done = (group.items || []).filter((item) => state.checks[checkKey(group.id, item.id)]).length;
+    root.querySelectorAll("[data-check-count]").forEach((node) => {
+      if (node.dataset.checkCount === group.id) node.textContent = done + "/" + (group.items || []).length;
+    });
+  }
+  const todoCount = state.data.todos.filter((item) => state.todos[item.id]).length;
+  root.querySelectorAll("[data-check-count='todos']").forEach((node) => {
+    node.textContent = todoCount + "/" + state.data.todos.length;
+  });
+}
+
+function attachCheckHandlers() {
   root.querySelectorAll("[data-check-key]").forEach((input) => input.addEventListener("change", async () => {
     state.checks[input.dataset.checkKey] = input.checked;
+    updateCheckCounters();
     await TravelLiteStorage.set(tripKey("checks"), state.checks);
-    if (state.view === "check") renderCheck();
   }));
   root.querySelectorAll("[data-todo-key]").forEach((input) => input.addEventListener("change", async () => {
     state.todos[input.dataset.todoKey] = input.checked;
+    updateCheckCounters();
     await TravelLiteStorage.set(tripKey("todos"), state.todos);
-    if (state.view === "check") renderCheck();
   }));
+  updateCheckCounters();
+}
+
+function renderCheck() {
+  // Legacy #check bookmarks remain functional; the visible primary entry moved to More.
+  const isZh = /^zh/i.test(state.data.ui.locale || "");
+  root.innerHTML = `<div class="view-stack"><button class="button-link" type="button" data-open-more>← ${isZh ? "更多" : "More"}</button><p class="eyebrow">${isZh ? "準備與清單 · 僅此裝置" : "Preparation & checklists · This device only"}</p>${checklistsMarkup()}</div>`;
+  attachCheckHandlers();
+  root.querySelector("[data-open-more]")?.addEventListener("click", () => setView("more"));
 }
 
 function money(value, currency) {
@@ -595,14 +648,25 @@ function ensureStylePickerDialog(markup, selectedChoice, origin) {
 function renderMore() {
   const moreZh = /^zh/i.test(state.data.ui.locale || "");
   const labelMore = (english, chinese) => moreZh ? chinese : english;
-  const reservations = state.data.reservations.map((item) => `<article class="info-row"><div><span class="type-pill">${escapeHtml(item.type || "booking")}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml([item.date ? prettyDate(item.date) : "", item.time || "", item.location || ""].filter(Boolean).join(" · "))}</p>${item.status ? `<small>${escapeHtml(item.status)}</small>` : ""}</div>${item.url ? `<a class="inline-link" href="${escapeAttr(item.url)}" target="_blank" rel="noreferrer">Open ↗</a>` : ""}</article>`).join("");
+  const progress = checkProgress();
+  const preparation = `<details class="panel more-section preparation-section" data-preparation><summary><span>${escapeHtml(labelMore("Preparation & checklists", "準備與清單"))} <small class="device-only-tag">${escapeHtml(labelMore("this device", "僅此裝置"))}</small></span><span class="summary-count" data-check-progress>${progress.done}/${progress.total}</span></summary><div class="preparation-body">${checklistsMarkup()}</div></details>`;
+  const reservations = state.data.reservations.map((item) => `<article class="info-row"><div><span class="type-pill">${escapeHtml(item.type || "booking")}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml([item.date ? prettyDate(item.date) : "", item.time || "", item.location || ""].filter(Boolean).join(" · "))}</p>${item.status ? `<small>${escapeHtml(item.status)}</small>` : ""}</div>${safePublishedUrl(item.url) ? `<a class="inline-link" href="${escapeAttr(safePublishedUrl(item.url))}" target="_blank" rel="noopener noreferrer">Open ↗</a>` : ""}</article>`).join("");
   const total = state.data.costs.entries.reduce((sum, item) => sum + Number(item.amount || 0), 0);
   const costs = `<div class="cost-total"><span>Total</span><strong>${money(total, state.data.costs.currency)}</strong></div>${state.data.costs.entries.map((item) => `<article class="info-row compact-row"><div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.category || "")}${item.date ? ` · ${prettyDate(item.date)}` : ""}</p></div><strong>${money(item.amount, item.currency || state.data.costs.currency)}</strong></article>`).join("")}`;
   const notes = state.data.notes.map((note) => `<article class="text-card"><h3>${escapeHtml(note.title)}</h3><p>${escapeHtml(note.body)}</p></article>`).join("");
-  const files = state.data.files.map((file) => `<a class="file-row" href="${escapeAttr(file.url)}" target="_blank" rel="noreferrer"><span><strong>${escapeHtml(file.title)}</strong><small>${escapeHtml(file.type || "file")}</small></span><span>↗</span></a>`).join("");
+  const files = state.data.files.map((file) => {
+    const label = `<span><strong>${escapeHtml(file.title)}</strong><small>${escapeHtml(file.type || "file")}</small></span>`;
+    const url = safePublishedUrl(file.url);
+    return url ? `<a class="file-row" href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer">${label}<span>↗</span></a>`
+      : `<div class="file-row">${label}</div>`;
+  }).join("");
   const contacts = state.data.contacts.map((contact) => `<article class="info-row compact-row"><div><h3>${escapeHtml(contact.name)}</h3><p>${escapeHtml(contact.role || "")}</p></div>${contact.phone ? `<a class="inline-link" href="tel:${escapeAttr(contact.phone)}">${escapeHtml(contact.phone)}</a>` : ""}</article>`).join("");
   const journal = state.data.journal.map((entry) => `<article class="text-card"><p class="eyebrow">${escapeHtml(entry.date ? prettyDate(entry.date, { weekday: "short" }) : entry.mood || "Journal")}</p><h3>${escapeHtml(entry.title)}</h3><p>${escapeHtml(entry.body)}</p></article>`).join("");
-  const links = state.data.links.map((link) => `<a class="file-row" href="${escapeAttr(link.url)}" target="_blank" rel="noreferrer"><span><strong>${escapeHtml(link.label)}</strong></span><span>↗</span></a>`).join("");
+  const links = state.data.links.map((link) => {
+    const url = safePublishedUrl(link.url);
+    return url ? `<a class="file-row" href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer"><span><strong>${escapeHtml(link.label)}</strong></span><span>↗</span></a>`
+      : `<div class="file-row"><span><strong>${escapeHtml(link.label)}</strong></span></div>`;
+  }).join("");
   const names = {
     "editorial-light": "Editorial Light", "editorial-dark": "Editorial Dark",
     storybook: "Storybook", candy: "Candy Geometry",
@@ -728,7 +792,7 @@ function renderMore() {
       </section>`
     : `<section class="panel settings-card"><div><p class="eyebrow">Appearance</p><h2>Theme</h2></div><div class="theme-switcher">${["system", "dark", "light"].map((theme) => `<button type="button" data-theme="${theme}" class="theme-button ${state.theme === theme ? "active" : ""}">${theme}</button>`).join("")}</div><div class="storage-status"><span>Local storage</span><strong id="storage-mode">${escapeHtml(TravelLiteStorage.getMode())}</strong></div></section>`;
   root.innerHTML = `<div class="view-stack">
-    ${styleChooser}
+    ${preparation}
     <section class="panel local-note-card"><div class="check-title-row"><h2>Personal note</h2><span>this device</span></div><textarea id="personal-note" rows="4" placeholder="Gate change, room number, quick memo…">${escapeHtml(state.personalNote)}</textarea><p class="helper-text">Saved locally in IndexedDB; falls back to localStorage if needed.</p></section>
     ${travelEssentialsSection(state.data.essentials, labelMore("Travel Essentials", "行前與交通指南"), moreZh)}
     ${detailsSection(labelMore("Reservations", "預約與票券"), state.data.reservations.length, reservations, true)}
@@ -738,6 +802,7 @@ function renderMore() {
     ${detailsSection(labelMore("Contacts", "聯絡資訊"), state.data.contacts.length, contacts)}
     ${detailsSection(labelMore("Journal", "旅程日記"), state.data.journal.length, journal)}
     ${detailsSection(labelMore("Links", "實用連結"), state.data.links.length, links)}
+    ${styleChooser}
     ${appearance}
   </div>`;
   const dialog = ensureStylePickerDialog(dialogMarkup, selectedChoice, origin);
@@ -749,6 +814,7 @@ function renderMore() {
     selected?.focus({ preventScroll: true });
     selected?.scrollIntoView({ block: "nearest", inline: "nearest" });
   });
+  attachCheckHandlers();
   const textarea = root.querySelector("#personal-note");
   let noteTimer;
   textarea?.addEventListener("input", () => {
@@ -779,6 +845,7 @@ function render() {
   renderNav();
   if (state.view === "trip") renderTrip();
   else if (state.view === "map") renderMap();
+  else if (state.view === "places") window.TravelLitePlaces?.render();
   else if (state.view === "check") renderCheck();
   else if (state.view === "more") renderMore();
   else renderNow();
@@ -846,7 +913,8 @@ async function hydrateLocalState() {
   const storedDate = await TravelLiteStorage.get(tripKey("ui:selectedDate"));
   const allowedViews = state.data.ui.bottomNav.filter((view) => VIEW_META[view]);
   const defaultView = allowedViews.includes(state.data.ui.defaultView) ? state.data.ui.defaultView : (allowedViews[0] || "now");
-  state.view = allowedViews.includes(storedView) ? storedView : defaultView;
+  const migratedView = storedView === "check" ? "more" : storedView;
+  state.view = allowedViews.includes(migratedView) ? migratedView : defaultView;
   state.selectedDate = state.data.days.some((day) => day.date === storedDate) ? storedDate : (state.data.days.some((day) => day.date === today) ? today : state.data.trip.startDate);
   state.checks = (await TravelLiteStorage.get(tripKey("checks"))) || {};
   state.todos = (await TravelLiteStorage.get(tripKey("todos"))) || {};
