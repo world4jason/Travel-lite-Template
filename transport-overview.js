@@ -13,6 +13,12 @@
       const transfer = item.transferAfter;
       const next = day.items[index+1];
       if (!transfer || !next) return [];
+      // `transferAfter` can also mean non-transport context (a break or note).
+      // Only source-described mobility deserves a row in the Transport surface.
+      const hasTravelEvidence = Boolean(transfer.mode || transfer.duration ||
+        transfer.estimate || transfer.url ||
+        (Array.isArray(transfer.sourceLinks) && transfer.sourceLinks.length));
+      if (!hasTravelEvidence) return [];
       const duration = window.TravelLiteTransit?.durationText(transfer.estimate) || transfer.duration || "";
       const meta = [transfer.mode || "", duration].filter(Boolean).join(" · ");
       const primary = safeHttp(transfer.url);
