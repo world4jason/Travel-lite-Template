@@ -234,3 +234,15 @@ test("public relative file links work; More and Places refuse executable schemes
   await expect(page.locator(".file-row").filter({hasText:"Unsafe file"})).toHaveCount(1);
   await expect(page.locator(".file-row").filter({hasText:"Unsafe file"}).locator("a")).toHaveCount(0);
 });
+
+test("duplicate published item IDs fail closed for admission links and show source ambiguity", async ({page}) => {
+  const trip=fixture();
+  trip.days[0].items[2].id="duplicate-visit";
+  trip.days[1].items[0].id="duplicate-visit";
+  trip.reservations.push({id:"shared-ambiguous",itemId:"duplicate-visit",title:"Wrongly attributed admission",status:"confirmed",url:"https://example.org/booked"});
+  await page.route("**/trip.json",route=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify(trip)}));
+  await page.goto("/#places/item/duplicate-visit");
+  await expect(page.locator(".places-identity-warning")).toBeVisible();
+  await expect(page.locator(".places-entry")).toHaveCount(0);
+  await expect(page.locator(".places-detail-heading h2")).toContainText("Shibuya");
+});

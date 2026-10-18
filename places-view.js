@@ -29,7 +29,14 @@
     return state.data.days.flatMap((day) =>
       (day.items || []).filter(isPlace).map((item) => ({ item, day })));
   }
+  function isUniquePlaceId(id) {
+    // Published item IDs can accidentally collide across days. Do not associate
+    // a ticket or booking with the wrong visit when source identity is ambiguous.
+    return state.data.days.reduce((count,day) => count +
+      (day.items || []).filter((item) => item.id === id).length, 0) === 1;
+  }
   function linked(records, id) {
+    if (!isUniquePlaceId(id)) return [];
     return (Array.isArray(records) ? records : []).filter((entry) =>
       entry && (entry.itemId === id || (Array.isArray(entry.itemIds) && entry.itemIds.includes(id))));
   }
@@ -115,7 +122,9 @@
     const extras = linksHtml(item.externalLinks);
     const hasAbout = Boolean(info.title || info.summary || facts.length || photo);
     const hasBooking = content.reservations.length || content.files.length;
+    const ambiguousId = !isUniquePlaceId(item.id);
     root.innerHTML = `<div class="places-view places-detail-view view-stack">
+      ${ambiguousId ? `<section class="panel places-identity-warning" role="alert">${label("景點 ID 重複：無法安全對應票券或唯一深連結，請修正行程來源。", "Duplicate place ID: booking association and unique deep links are unavailable until the source is corrected.")}</section>` : ""}
       <button type="button" class="places-back" data-places-back>← ${label("全部景點", "All places")}</button>
       <header class="places-detail-heading">
         <p class="eyebrow">${escapeHtml(smallDay(entry))}</p><h2>${escapeHtml(item.title)}</h2>

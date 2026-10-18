@@ -75,3 +75,5 @@
 
 .places-date-picker { display:grid; gap:7px; color:var(--muted); font-size:.78rem; font-weight:650; width:min(100%,360px); }
 .places-date-picker select { min-width:0; max-width:100%; min-height:44px; width:100%; color:var(--text); background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-md); padding:9px 12px; font:inherit; }
+
+.places-identity-warning { padding:14px 18px; border:2px solid var(--accent); border-radius:var(--radius-md); background:var(--surface-2); color:var(--text); font-size:.85rem; line-height:1.5; }
