@@ -72,6 +72,9 @@ test("legacy #map deep link still opens Transport and static published transfer 
   await page.locator(".transport-day-context summary").click();
   await expect(page.locator(".transport-leg-list")).toContainText("Train");
   await expect(page.locator(".transport-leg-list")).not.toContainText("Last bus");
+  // A rest/continue note is not a transport journey, even if stored as transferAfter.
+  await expect(page.locator(".transport-leg-list")).not.toContainText("Reset at the hotel");
+  await expect(page.locator(".transport-day-context summary")).toContainText("2");
 });
 
 test("only explicit itemId references link booking & files; invalid URLs are never output",async({page})=>{
