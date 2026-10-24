@@ -153,9 +153,16 @@
 :root[data-visual-style="paper-collage"] .check-item {
   border:1px solid #D2C5B3;border-radius:4px;background:#FFF9EE;
 }
-:root[data-visual-style="paper-collage"] .more-section > summary,
-:root[data-visual-style="paper-collage"] .cost-total {
+:root[data-visual-style="paper-collage"] .more-section > summary {
   background:#DDE9DF;border:1px solid #C1D1C4;border-radius:5px;
+}
+/* Costs is a separate summary surface; never inherit the header's border
+   without matching horizontal content inset. */
+:root[data-visual-style="paper-collage"] {
+  --ui-cost-summary-frame: 1px solid #C1D1C4;
+  --ui-cost-summary-padding: 12px 16px;
+  --ui-cost-summary-radius: 5px;
+  --ui-cost-summary-fill: #DDE9DF;
 }
 :root[data-visual-style="paper-collage"] .style-option {border-radius:5px;}
 :root[data-visual-style="paper-collage"] .style-option[aria-pressed="true"] {background:#DDE9DF;}
