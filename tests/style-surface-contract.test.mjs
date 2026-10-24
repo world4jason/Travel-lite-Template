@@ -85,3 +85,27 @@ test("no unpaired full frame may be reintroduced on shared reading rows by a pac
     }
   }
 });
+
+
+test("no NEW cross-role panel/map border groups beyond the existing legacy budget", () => {
+  // All 14 packs currently contain one broad perimeter group inherited from
+  // early theme creation. This is recorded migration debt, not proof that all
+  // styles fail visually. New groups are forbidden; phase #116 removes them
+  // gradually only after per-pack screenshots and functional Map QA.
+  const names = [
+    "storybook", "candy", "risograph", "paper-collage", "naive-city",
+    "taiwan-poster", "field-stamp", "quiet-linocut", "doodle-memory-grid",
+    "crayon-journal", "painterly-editorial", "geometric-print",
+    "quiet-acrylic", "vintage-watercolor",
+  ];
+  for (const id of names) {
+    const css = read(id + "-theme.css");
+    const broadGroups = [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].filter(match => {
+      const selector = match[1].replace(/\/\*[\s\S]*?\*\//g, "").trim();
+      return selector.includes(".panel") && selector.includes(".runtime-map-panel")
+        && /(^|;)\s*border\s*:/.test(match[2]);
+    });
+    assert.ok(broadGroups.length <= 1,
+      id + " added another mixed .panel + .runtime-map-panel frame rule; split by surface role instead");
+  }
+});
