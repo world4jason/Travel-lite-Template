@@ -3,6 +3,8 @@
    SPDX-License-Identifier: AGPL-3.0-or-later */
 import { test, expect } from "@playwright/test";
 import { sideBorderViolations } from "./style-surface-guards.mjs";
+import { readFileSync } from "node:fs";
+const sourceTrip = JSON.parse(readFileSync(new URL("../trip.json", import.meta.url), "utf8"));
 
 const looks = [
   { id: "editorial", name: "editorial-light", color: "light" },
@@ -56,6 +58,13 @@ for (const look of looks) {
   test("surface contract: " + look.name + " has no bordered zero-inset content", async ({ page }) => {
     await page.emulateMedia({ colorScheme: look.color });
     const preview = "/?previewStyle=" + look.id;
+    const trip = structuredClone(sourceTrip);
+    trip.costs.entries = [
+      { id: "qa-cost", title: "Metro ticket", amount: 30000, category: "transit" },
+    ];
+    await page.route("**/trip.json", route => route.fulfill({
+      status: 200, contentType: "application/json", body: JSON.stringify(trip),
+    }));
 
     await page.goto(preview + "#more");
     await expect(page.locator("html")).toHaveAttribute("data-visual-style", look.id);
@@ -67,8 +76,16 @@ for (const look of looks) {
     const row = await geometry(page, '[data-surface-role="reading-row"].info-row');
     checkFrame("More / reading row / " + look.name, row, 12);
 
-    // Synthetic Costs fixture is tested separately: the default published
-    // Tokyo trip has zero costs and hides this section entirely.
+    // Costs is hidden in the default Tokyo fixture; it MUST be included here
+    // with real rendered fixture data, otherwise framed summaries go unaudited.
+    const costs = page.locator('[data-surface-role="section"]').filter({
+      has: page.locator("summary").filter({ hasText: "Costs" }),
+    }).first();
+    await expect(costs).toBeVisible();
+    await costs.locator("summary").first().click();
+    const total = await geometry(page, '[data-surface-role="cost-summary"]');
+    checkFrame("More / Costs total / " + look.name, total, 12);
+    await expect(costs).toContainText("Metro ticket");
 
 
     await page.goto(preview + "#trip/day/2026-10-03");
