@@ -59,3 +59,57 @@ test("New pack never runs decorative motion and is available offline after insta
     await context.close();
   }
 });
+
+test("Vintage More and checklist headers use one filled silhouette at every width",async({page})=>{
+  for(const width of [320,390,1100]){
+    await page.setViewportSize({width,height:width<600?844:900});
+    await page.goto("/?previewStyle=vintage-watercolor#more");
+    await expect(page.locator(".preparation-section > summary")).toBeVisible();
+    const frames=await page.locator("details.more-section").evaluateAll(sections=>sections.map(section=>{
+      const frame=getComputedStyle(section);
+      const header=getComputedStyle(section.querySelector(":scope > summary"));
+      const count=getComputedStyle(section.querySelector(":scope > summary .summary-count"));
+      return {
+        frameRadius:frame.borderTopLeftRadius,
+        frameBorder:frame.borderTopWidth,
+        frameFill:frame.backgroundColor,
+        headerRadius:header.borderTopLeftRadius,
+        headerBorder:header.borderTopWidth,
+        headerFill:header.backgroundColor,
+        countBorder:count.borderTopWidth,
+      };
+    }));
+    expect(frames.length).toBeGreaterThan(0);
+    for(const frame of frames){
+      expect(frame.frameRadius).toBe("6px");
+      expect(frame.frameBorder).toBe("0px");
+      expect(frame.frameFill).toBe("rgb(233, 219, 191)");
+      expect(frame.headerRadius).toBe("0px");
+      expect(frame.headerBorder).toBe("0px");
+      expect(frame.headerFill).toBe("rgba(0, 0, 0, 0)");
+      expect(frame.countBorder).toBe("0px");
+    }
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+
+    const preparation=page.locator(".preparation-section");
+    await preparation.locator("summary").click();
+    await expect(preparation).toHaveAttribute("open","");
+    const expanded=await preparation.evaluate(section=>({
+      headerBottom:getComputedStyle(section.querySelector(":scope > summary")).borderBottomWidth,
+      headerRadius:getComputedStyle(section.querySelector(":scope > summary")).borderTopLeftRadius,
+      bodyFill:getComputedStyle(section.querySelector(".preparation-body")).backgroundColor,
+    }));
+    expect(expanded.headerBottom).toBe("1px"); // internal divider, not a second outer frame
+    expect(expanded.headerRadius).toBe("0px");
+    expect(expanded.bodyFill).toBe("rgb(255, 252, 245)");
+  }
+
+  // The override is scoped to Vintage, not the Storybook base pack.
+  await page.goto("/?previewStyle=storybook#more");
+  const storybook=await page.locator(".preparation-section").evaluate(section=>({
+    outerBorder:getComputedStyle(section).borderTopWidth,
+    innerRadius:getComputedStyle(section.querySelector("summary")).borderTopLeftRadius,
+  }));
+  expect(storybook.outerBorder).toBe("3px");
+  expect(storybook.innerRadius).toBe("22px");
+});
