@@ -35,6 +35,10 @@
   --ui-reading-row-padding: 13px;
   --ui-reading-row-radius: 16px;
   --ui-reading-row-fill: #fff;
+  --ui-cost-summary-frame: 2px solid var(--ink);
+  --ui-cost-summary-padding: 13px;
+  --ui-cost-summary-radius: 16px;
+  --ui-cost-summary-fill: var(--yamabuki);
   --radius-sm: 12px;
   --radius-md: 19px;
   --radius-lg: 28px;
