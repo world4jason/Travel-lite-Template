@@ -147,6 +147,7 @@ The publisher chooses the **shared default** in `trip.json`. Travellers can swit
 - `storybook-motion.js` stores a **per-trip, device-local** motion preference; browser/OS `prefers-reduced-motion` remains authoritative.
 - All thirteen non-Editorial packs use light surfaces. Storybook/Candy/Paper/Naive/Crayon Journal have reduced-motion-aware light animation, while Risograph/Taiwan Poster/Field Stamp are static. Editorial retains device theme changes and the light/dark map behavior. Candy extends Storybook with five-fill artwork and accessible ink exceptions; Risograph uses its own print layout. Paper, Naive, Taiwan Poster and Stamp have distinct materials and source-grounded graphic constraints.
 - No style or local choice may change routes/timing, booking truth, privacy, checklist state, hash links or provider/handoff boundaries. Rapidly finishing a checklist save after navigation must not rerender the old checklist over the new view.
+- **Surface role geometry (Issue #113):** semantic `data-surface-role` annotations are stable across packs. The late-loaded `surface-contract.css` owns reading-row frame/divider/inset/radius/fill via paired `--ui-reading-row-*` tokens; the pack still chooses its distinct aesthetic. A map workspace is **not** a generic `.panel` card. See [STYLE_SURFACE_CONTRACT.md](./STYLE_SURFACE_CONTRACT.md) for role ownership, visual invariants and staged migration. The role annotations do not add any style-specific JS behavior.
 
 ## Shared truth vs local state
 
