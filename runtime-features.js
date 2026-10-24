@@ -257,7 +257,7 @@
         <div class="map-stage">
           <div id="runtime-map" class="interactive-map" aria-label="Interactive trip map"><div class="map-library-state map-library-loading" role="status"><span class="map-state-mark" aria-hidden="true">⌖</span><div><p class="eyebrow">Spatial reference</p><strong>Loading planned stops…</strong><p>Trip details remain available while the map loads.</p></div></div></div>
         </div>
-        ${selected ? `<div class="selected-place-card map-selected-summary" aria-label="Selected stop"><div><p class="eyebrow">Selected stop · ${escapeHtml(selected.start || "TBD")}</p><h3>${escapeHtml(selected.title || selected.location || "Place")}</h3><p>${escapeHtml(selected.location || "")}</p></div>${googleUrl ? `<a class="button-link map-secondary-handoff" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Navigation ↗</a>` : ""}</div>` : ""}
+        ${selected ? `<div class="selected-place-card map-selected-summary" data-surface-role="selected-stop" aria-label="Selected stop"><div><p class="eyebrow">Selected stop · ${escapeHtml(selected.start || "TBD")}</p><h3>${escapeHtml(selected.title || selected.location || "Place")}</h3><p>${escapeHtml(selected.location || "")}</p></div>${googleUrl ? `<a class="button-link map-secondary-handoff" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Navigation ↗</a>` : ""}</div>` : ""}
       </section>`;
 
     root.querySelectorAll("[data-runtime-map-date]").forEach((button) => button.addEventListener("click", () => {
