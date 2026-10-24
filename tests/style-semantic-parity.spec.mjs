@@ -45,12 +45,12 @@ for (const look of looks) {
       const card = rendered.nth(index);
       await expect(card.locator(".timeline-time")).toBeVisible();
       const clock = card.locator(".timeline-time").first();
-      if (/^\\d{2}:\\d{2}$/.test(item.start || "")) {
+      if (/^\d{2}:\d{2}$/.test(item.start || "")) {
         await expect(clock).toContainText(item.start);
         if (illustrated) await expect(card.locator("time.timeline-time")).toHaveCount(1);
       } else {
         await expect(clock).toContainText("TBD");
-        await expect(card).not.toHaveClass(/\\bcurrent\\b/);
+        await expect(card).not.toHaveClass(/\bcurrent\b/);
         if (illustrated) await expect(clock).toHaveClass(/timeline-time--floating/);
       }
       await expect(card.locator(".trip-item-top h3")).toHaveText(item.title);
