@@ -2,6 +2,7 @@
    Runs during the normal Chromium suite, not only the optional 240-state audit.
    SPDX-License-Identifier: AGPL-3.0-or-later */
 import { test, expect } from "@playwright/test";
+import { sideBorderViolations } from "./style-surface-guards.mjs";
 
 const looks = [
   { id: "editorial", name: "editorial-light", color: "light" },
@@ -36,18 +37,19 @@ async function geometry(page, selector) {
       inset: [px(css.paddingRight), px(css.paddingLeft)],
       radius: css.borderRadius,
       background: css.backgroundColor,
+      outlineWidth: px(css.outlineWidth),
+      outlineStyle: css.outlineStyle,
+      outlineOffset: px(css.outlineOffset),
       text: el.textContent.trim().slice(0, 100),
     };
   });
 }
 
 function checkFrame(role, info, requiredInset) {
-  const isFramed = info.border.every((n, i) =>
-    n > 0 && !["none", "hidden"].includes(info.borderStyles[i]));
-  if (isFramed) {
-    expect(info.inset[0], role + " right text-to-frame inset").toBeGreaterThanOrEqual(requiredInset);
-    expect(info.inset[1], role + " left text-to-frame inset").toBeGreaterThanOrEqual(requiredInset);
-  }
+  // A left/right rule without a top/bottom rule still encloses text.
+  // Check each side individually; `every(four borders)` was a false PASS.
+  expect(sideBorderViolations(info, requiredInset),
+    role + " has visible side rules or inset outlines without enough padding").toEqual([]);
 }
 
 for (const look of looks) {
@@ -64,6 +66,10 @@ for (const look of looks) {
     await expect(section).toBeVisible();
     const row = await geometry(page, '[data-surface-role="reading-row"].info-row');
     checkFrame("More / reading row / " + look.name, row, 12);
+
+    // Synthetic Costs fixture is tested separately: the default published
+    // Tokyo trip has zero costs and hides this section entirely.
+
 
     await page.goto(preview + "#trip/day/2026-10-03");
     await expect(page.locator('[data-surface-role="route-endpoints"]')).toBeVisible();
@@ -92,7 +98,34 @@ for (const look of looks) {
 }
 
 
-test("switching Storybook → Risograph → Storybook → Editorial clears stale row geometry", async ({ page }) => {
+test("negative control: side-only borders and inward outlines must fail geometry gate", async ({ page }) => {
+  await page.goto("/?previewStyle=risograph#more");
+  await expect(page.locator('[data-surface-role="reading-row"].info-row').first()).toBeVisible();
+  await page.addStyleTag({ content: `
+    :root[data-visual-style="risograph"] [data-surface-role="reading-row"].info-row {
+      border-top: 0 !important;
+      border-bottom: 0 !important;
+      border-inline: 2px solid red !important;
+      padding-inline: 0 !important;
+    }
+  ` });
+  const info = await geometry(page, '[data-surface-role="reading-row"].info-row');
+  expect(info.border[0]).toBe(0);
+  expect(info.border[2]).toBe(0);
+  expect(sideBorderViolations(info, 12)).toEqual(["right", "left"]);
+
+  await page.addStyleTag({ content: `
+    :root[data-visual-style="risograph"] [data-surface-role="reading-row"].info-row {
+      border-inline: 0 !important;
+      outline: 2px solid red !important;
+      outline-offset: -3px !important;
+    }
+  ` });
+  const outlined = await geometry(page, '[data-surface-role="reading-row"].info-row');
+  expect(sideBorderViolations(outlined, 12)).toEqual(["right", "left"]);
+});
+
+test("actual More Appearance picker clears inherited frames, theme and stale tokens", async ({ page }) => {
   await page.goto("/?previewStyle=storybook#more");
   const row = page.locator('[data-surface-role="reading-row"].info-row').first();
   await expect(row).toBeVisible();
@@ -104,24 +137,32 @@ test("switching Storybook → Risograph → Storybook → Editorial clears stale
       title: node.querySelector("h3")?.textContent,
     };
   });
-  await expect.poll(async () => (await sample()).border).toBe(2);
-  expect((await sample()).inset).toBeGreaterThanOrEqual(12);
   const sourceTitle = (await sample()).title;
+  expect((await sample()).border).toBe(2);
 
-  // Use the app's real validated style selection path, not a manual CSS toggle.
-  await page.evaluate(async () => chooseLocalStyle("risograph"));
-  await expect(page.locator("html")).toHaveAttribute("data-visual-style", "risograph");
-  await expect.poll(async () => (await sample()).border).toBe(0);
-  expect((await sample()).inset).toBe(0);
-
-  await page.evaluate(async () => chooseLocalStyle("storybook"));
-  await expect(page.locator("html")).toHaveAttribute("data-visual-style", "storybook");
-  await expect.poll(async () => (await sample()).border).toBe(2);
-  expect((await sample()).inset).toBeGreaterThanOrEqual(12);
-
-  await page.evaluate(async () => chooseLocalStyle("editorial-light"));
-  await expect(page.locator("html")).toHaveAttribute("data-visual-style", "editorial");
-  await expect.poll(async () => (await sample()).border).toBe(0);
-  expect((await sample()).inset).toBe(0);
-  expect((await sample()).title).toBe(sourceTitle);
+  // Mobile picker actually closes/reopens and restores focus; do not bypass
+  // the UI by invoking chooseLocalStyle() directly from page.evaluate().
+  const steps = [
+    { choice: "risograph", style: "risograph", border: 0, inset: 0 },
+    { choice: "vintage-watercolor", style: "vintage-watercolor", border: 2, inset: 13 },
+    { choice: "editorial-dark", style: "editorial", border: 0, inset: 0, theme: "dark" },
+    { choice: "editorial-light", style: "editorial", border: 0, inset: 0, theme: "light" },
+    { choice: "storybook", style: "storybook", border: 2, inset: 13 },
+  ];
+  for (const step of steps) {
+    await page.locator("[data-style-picker-open]").click();
+    const dialog = page.locator("#style-picker-dialog");
+    await expect(dialog).toBeVisible();
+    await dialog.locator('[data-style-choice="' + step.choice + '"]').click();
+    await expect(dialog).toHaveJSProperty("open", false);
+    await expect(page.locator("html")).toHaveAttribute("data-visual-style", step.style);
+    if (step.theme) await expect(page.locator("html")).toHaveAttribute("data-theme", step.theme);
+    await expect.poll(() => page.evaluate(() =>
+      document.activeElement?.hasAttribute("data-style-picker-open"))).toBe(true);
+    await expect.poll(async () => (await sample()).border).toBe(step.border);
+    expect((await sample()).inset).toBeGreaterThanOrEqual(step.inset);
+    if (step.inset === 0) expect((await sample()).inset).toBe(0);
+    expect((await sample()).title).toBe(sourceTitle);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+  }
 });
