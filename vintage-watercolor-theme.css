@@ -219,6 +219,41 @@
   border:1px solid #D6C6A9; border-radius:6px;
   background:#FFFCF5;
 }
+
+/* Functional More/Checklist sections use ONE filled paper silhouette.
+   Storybook supplies a 22px rounded, separately painted summary, while
+   Vintage gives the parent a 6px radius: that creates mismatched corners.
+   Make the parent the sole painted shape and the summary transparent.
+   Ornamental perimeter frames belong to identity/chapter surfaces only. */
+:root[data-visual-style="vintage-watercolor"] .more-section {
+  border:0;
+  border-radius:6px;
+  background:var(--yamabuki);
+  overflow:hidden;
+}
+:root[data-visual-style="vintage-watercolor"] .more-section > summary {
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#392F26;
+}
+:root[data-visual-style="vintage-watercolor"] .more-section[open] > summary {
+  border:0;
+  border-bottom:1px solid #D6C6A9;
+  border-radius:0;
+}
+:root[data-visual-style="vintage-watercolor"] .more-section > :is(.more-body,.preparation-body) {
+  background:#FFFCF5;
+}
+:root[data-visual-style="vintage-watercolor"] .more-section > summary .summary-count {
+  border:0;
+  background:#FFFCF5;
+  color:#392F26;
+}
+:root[data-visual-style="vintage-watercolor"] .more-section > summary:focus-visible {
+  outline:3px solid #445C43 !important;
+  outline-offset:-3px;
+}
 :root[data-visual-style="vintage-watercolor"] :is(a,button,summary,input,textarea,select,[tabindex]):focus-visible {
   outline:3px solid #445C43 !important; outline-offset:3px;
 }
