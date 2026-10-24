@@ -210,7 +210,49 @@
 :root[data-visual-style="vintage-watercolor"] .map-stage {
   border:1px solid #B3A38B; border-radius:6px; background:#F7EFDF;
 }
-:root[data-visual-style="vintage-watercolor"] .runtime-map-panel { padding:0; }
+/* Transport is a functional full-bleed map surface, not a chapter frame.
+   The high-specificity chapter/panel rule above also matches runtime-map-panel;
+   match its specificity so no zero-inset outline survives the final cascade. */
+:root[data-visual-style="vintage-watercolor"] .runtime-map-panel.map-panel {
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+}
+:root[data-visual-style="vintage-watercolor"] .runtime-map-panel .map-heading {
+  margin:0 0 16px;
+  padding:0 0 16px;
+  border-bottom:1px solid #D6C6A9;
+}
+:root[data-visual-style="vintage-watercolor"] .runtime-map-panel .transport-day-context {
+  margin:0 0 16px;
+  border:1px solid #C7B99C;
+  border-radius:6px;
+  background:#FFFCF5;
+}
+:root[data-visual-style="vintage-watercolor"] .runtime-map-panel .transport-day-context > summary {
+  padding:14px 16px;
+}
+:root[data-visual-style="vintage-watercolor"] .runtime-map-panel .place-chips {
+  margin:0 0 14px;
+  padding:3px 2px 12px;
+  border-bottom:1px solid #E4D5B8;
+}
+/* Compact Map intentionally bleeds to the shell edges (including tablets
+   and short landscape screens). Its reading controls must not: keep 16px
+   outer insets while leaving map pan/zoom full-bleed. */
+@media (max-width:899px), (max-height:600px) {
+  :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .map-heading {
+    margin:0 16px 16px;
+  }
+  :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .transport-day-context {
+    margin:0 16px 16px;
+  }
+  :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .place-chips {
+    margin:0 16px 14px;
+    padding:3px 0 12px;
+  }
+}
 :root[data-visual-style="vintage-watercolor"] .map-marker.active {
   outline:2px solid #445C43; outline-offset:2px;
 }

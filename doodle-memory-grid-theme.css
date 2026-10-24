@@ -202,10 +202,17 @@
  background:#FFFAF1;border:2px dashed #514D51;
  border-radius:17px 24px 15px 22px;
 }
-:root[data-visual-style="doodle-memory-grid"] .more-section > summary,
-:root[data-visual-style="doodle-memory-grid"] .cost-total {
+:root[data-visual-style="doodle-memory-grid"] .more-section > summary {
  background:#F2E7D8;border:1px solid #514D51;
  border-radius:17px 24px 15px 22px;
+}
+/* Costs is a separate summary surface; never inherit the header's border
+   without matching horizontal content inset. */
+:root[data-visual-style="doodle-memory-grid"] {
+  --ui-cost-summary-frame: 1px solid #514D51;
+  --ui-cost-summary-padding: 12px 16px;
+  --ui-cost-summary-radius: 17px 24px 15px 22px;
+  --ui-cost-summary-fill: #F2E7D8;
 }
 :root[data-visual-style="doodle-memory-grid"] .style-option {
  background:#FFFAF1;color:#514D51;

@@ -1,0 +1,43 @@
+/* Surface role contract — structural ownership for opt-in Style Packs.
+   This stylesheet loads AFTER the reviewed Style Packs so a package cannot
+   accidentally create a complete reading-row border while leaving padding
+   from an unrelated base stylesheet at zero.
+
+   Static data-surface-role attributes describe WHAT a DOM element does;
+   appearance selection stays CSS-only. Styles set the paired role tokens,
+   not new conditional render paths. Additional roles are audited in Chromium.
+   SPDX-License-Identifier: AGPL-3.0-or-later */
+
+:root [data-surface-role="reading-row"] {
+  min-width: 0;
+  box-sizing: border-box;
+  padding: var(--ui-reading-row-padding, 13px 0);
+  border: var(--ui-reading-row-frame, 0);
+  border-top: var(--ui-reading-row-divider, 1px solid var(--line));
+  border-radius: var(--ui-reading-row-radius, 0);
+  background: var(--ui-reading-row-fill, transparent);
+}
+
+/* Costs total is a standalone summary, not a subordinate reading row.
+   Its complete frame, inset, radius and fill must be decided together. */
+:root [data-surface-role="cost-summary"] {
+  min-width: 0;
+  box-sizing: border-box;
+  padding: var(--ui-cost-summary-padding, 9px 0 14px);
+  border: var(--ui-cost-summary-frame, 0);
+  border-radius: var(--ui-cost-summary-radius, 0);
+  background: var(--ui-cost-summary-fill, transparent);
+}
+
+:root [data-surface-role="cost-summary"] > :is(span,strong) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* A link, amount, or long translated title must not force a reading row
+   wider than its containing section. This applies whether it is framed or
+   has only a light divider; rows remain semantic DOM, not a rendered image. */
+:root [data-surface-role="reading-row"] > :first-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}

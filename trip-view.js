@@ -133,8 +133,8 @@
     const last = stops[stops.length - 1];
     return `<section class="trip-route-summary composition-operational">
       <div class="trip-route-heading"><div><p class="eyebrow">Day route</p><h3>${escapeHtml(day.routeLabel || "At a glance")}</h3></div><span>${stops.length} stop${stops.length === 1 ? "" : "s"}</span></div>
-      <div class="trip-route-endpoints"><div><small>Start</small><strong>${escapeHtml(first)}</strong></div><span aria-hidden="true">→</span><div class="end"><small>End</small><strong>${escapeHtml(last)}</strong></div></div>
-      ${stops.length > 2 ? `<div class="trip-route-steps">${stops.map((stop, index) => `<span><b>${index + 1}</b>${escapeHtml(stop)}</span>`).join("")}</div>` : ""}
+      <div class="trip-route-endpoints" data-surface-role="route-endpoints"><div><small>Start</small><strong>${escapeHtml(first)}</strong></div><span aria-hidden="true">→</span><div class="end"><small>End</small><strong>${escapeHtml(last)}</strong></div></div>
+      ${stops.length > 2 ? `<div class="trip-route-steps">${stops.map((stop, index) => `<span data-surface-role="route-step"><b>${index + 1}</b>${escapeHtml(stop)}</span>`).join("")}</div>` : ""}
     </section>`;
   }
 
