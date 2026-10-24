@@ -1,0 +1,83 @@
+/* Static build-free guard for shared Style Pack role geometry.
+   Browser-computed surface rules are checked by style-surface-role.spec.mjs.
+   SPDX-License-Identifier: AGPL-3.0-or-later */
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import { test } from "node:test";
+
+const read = path => readFileSync(new URL("../" + path, import.meta.url), "utf8");
+
+test("semantic surface roles are stable markup in shared renderers, never pack-specific branches", () => {
+  const app = read("app.js");
+  const trip = read("trip-view.js");
+  const map = read("runtime-features.js");
+  const transport = read("transport-overview.js");
+  for (const tag of ['class="info-row"', 'class="info-row compact-row"',
+    'class="text-card"', 'class="text-card travel-essential"',
+    'class="file-row"']) {
+    const expression = tag.replaceAll('"', '\\"');
+    // App source contains HTML strings, not actual mounted DOM.
+    assert.ok(app.includes(tag + ' data-surface-role="reading-row"'),
+      "Missing role on " + expression);
+  }
+  assert.match(app, /class="panel more-section" data-surface-role="section"/);
+  assert.match(app, /class="panel more-section preparation-section" data-surface-role="section"/);
+  assert.match(trip, /class="trip-route-endpoints" data-surface-role="route-endpoints"/);
+  assert.match(trip, /<span data-surface-role="route-step"><b>/);
+  assert.match(map, /class="map-panel runtime-map-panel composition-narrative" data-surface-role="map-workspace"/);
+  assert.match(transport, /details\.dataset\.surfaceRole="transport-context"/);
+});
+
+test("one shared last-loaded CSS file owns coupled reading row geometry", () => {
+  const index = read("index.html");
+  const contract = read("surface-contract.css");
+  const styleIndex = index.indexOf('id="vintage-watercolor-style"');
+  const contractIndex = index.indexOf('href="./surface-contract.css"');
+  assert.ok(styleIndex >= 0 && contractIndex > styleIndex,
+    "Surface contract MUST load after the last Style Pack overlay");
+  for (const property of [
+    "--ui-reading-row-frame", "--ui-reading-row-divider", "--ui-reading-row-padding",
+    "--ui-reading-row-radius", "--ui-reading-row-fill",
+  ]) assert.ok(contract.includes("var(" + property), property + " not controlled by role contract");
+  assert.match(contract, /:root \[data-surface-role="reading-row"\]/);
+  const storybook = read("storybook-theme.css");
+  const riso = read("risograph-theme.css");
+  assert.match(storybook, /--ui-reading-row-frame:\s*2px solid/);
+  assert.match(storybook, /--ui-reading-row-padding:\s*13px;/);
+  assert.match(riso, /--ui-reading-row-frame:\s*0;/);
+  assert.match(riso, /--ui-reading-row-divider:\s*1px solid/);
+  assert.match(riso, /--ui-reading-row-padding:\s*13px 0;/);
+});
+
+test("offline assets and contract smoke suites are registered", () => {
+  const sw = read("sw.js");
+  const config = read("playwright.config.mjs");
+  assert.match(sw, /"\.\/surface-contract\.css"/);
+  assert.match(config, /"style-surface-role\.spec\.mjs"/);
+  assert.match(config, /"style-surface-padding\.spec\.mjs"/);
+  assert.match(config, /"style-surface-matrix\.spec\.mjs"/);
+});
+
+test("no unpaired full frame may be reintroduced on shared reading rows by a pack", () => {
+  const names = [
+    "storybook", "candy", "risograph", "paper-collage", "naive-city",
+    "taiwan-poster", "field-stamp", "quiet-linocut", "doodle-memory-grid",
+    "crayon-journal", "painterly-editorial", "geometric-print",
+    "quiet-acrylic", "vintage-watercolor",
+  ];
+  for (const id of names) {
+    const css = read(id + "-theme.css");
+    // This intentionally small lint guard catches the exact root-cause pattern:
+    // a direct border added to a More row, without compensating inline padding.
+    // The Storybook legacy fallback has both; the new role contract governs
+    // production rows. Other layout roles are checked using computed styles.
+    for (const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+      const selector = match[1].replace(/\/\*[\s\S]*?\*\//g, "").trim();
+      const declarations = match[2];
+      if (!/\.info-row|\.file-row|\.text-card/.test(selector)) continue;
+      if (!/(^|;)\s*border\s*:/.test(declarations)) continue;
+      assert.match(declarations, /(^|;)\s*padding(?:-inline)?\s*:/,
+        id + " applies a full frame to a reading row with no matching padding");
+    }
+  }
+});
