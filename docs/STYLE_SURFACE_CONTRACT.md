@@ -74,6 +74,7 @@ Example for a ruled editorial pack:
 
 - `node --test tests/style-surface-contract.test.mjs` checks the role annotations, final stylesheet load order, SW offline inclusion, tokens and newly introduced **full reading-row borders without padding**.
 - `npx playwright test tests/style-surface-role.spec.mjs --project=chromium` checks all **16 appearances** on actual rendered More/Trip/Transport DOM at 390px. It rejects framed zero-inset rows/endpoints/route chips/map workspaces. This runs inside the default Playwright suite.
+- `npx playwright test tests/style-semantic-parity.spec.mjs --project=chromium` checks source itinerary/route stop order, booking facts and published transfers across all 15 built-in Style IDs. This is critical because the existing Editorial and illustrated Trip timelines have **different markup branches in `trip-view.js`**, even though visual styling should never change published facts. The additional Editorial Light/Dark choice is covered by the separate 16-appearance geometry check.
 - `npx playwright test tests/style-surface-padding.spec.mjs --project=chromium` checks three specific #113 regressions at 320/390/1100, long mixed text and real before/after capture mode.
 - `TRAVEL_LITE_FULL_STYLE_QA=1 npx playwright test tests/style-surface-matrix.spec.mjs --project=chromium` is the separately gated 240-state smoke matrix. **Smoke metrics do not replace screenshot/Human QA**.
 
