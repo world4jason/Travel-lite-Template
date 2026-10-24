@@ -18,6 +18,7 @@ Renderers label their **existing** semantic DOM elements with `data-surface-role
 | --- | --- | --- |
 | `map-workspace` | Transport's `.runtime-map-panel` | Pan/zoom and map stage remain operable. No complete outer border unless the heading and controls have real inset. Open utility chrome is valid and preferred for Vintage/Risograph. |
 | `transport-context` | Published transfers `details` | Functional disclosure: summary, expanded content and keyboard focus must remain reachable. A perimeter requires its own summary inset; never glue it to a parent frame. |
+| `selected-stop` | Selected map stop summary | A standalone selected-place reading surface, not a More row. If framed, reserve ≥12px inline inset; preserve external navigation actions. |
 | `section` | More `.more-section` and Preparation | This layer owns grouping, header, painted corners and clipping. Its content must not blindly acquire a second frame. |
 | `reading-row` | Reservations, notes, costs, files, contacts, essentials | Either **open row + one divider** or **standalone framed row with matching padding**. The border/padding/radius/background are ONE role decision, not four independent overrides. |
 | `route-endpoints` | Trip START / END | Preserve actual start/end names, arrow and order. If framed, keep at least 8px inline reading room, increasing where feasible. |
