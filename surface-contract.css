@@ -18,6 +18,22 @@
   background: var(--ui-reading-row-fill, transparent);
 }
 
+/* Costs total is a standalone summary, not a subordinate reading row.
+   Its complete frame, inset, radius and fill must be decided together. */
+:root [data-surface-role="cost-summary"] {
+  min-width: 0;
+  box-sizing: border-box;
+  padding: var(--ui-cost-summary-padding, 9px 0 14px);
+  border: var(--ui-cost-summary-frame, 0);
+  border-radius: var(--ui-cost-summary-radius, 0);
+  background: var(--ui-cost-summary-fill, transparent);
+}
+
+:root [data-surface-role="cost-summary"] > :is(span,strong) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 /* A link, amount, or long translated title must not force a reading row
    wider than its containing section. This applies whether it is framed or
    has only a light divider; rows remain semantic DOM, not a rendered image. */
