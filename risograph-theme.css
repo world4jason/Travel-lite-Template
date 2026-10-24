@@ -607,6 +607,14 @@
   background: transparent;
   padding: 11px 0;
 }
+/* The map is an interactive workspace, not an ink card. Map stage controls
+   retain the visible 2px print frame; the workspace has no zero-inset box. */
+:root[data-visual-style="risograph"] .runtime-map-panel[data-surface-role="map-workspace"] {
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+}
 :root[data-visual-style="risograph"] :is(.map-stage, .map-frame) { border-radius: 0; border: 2px solid var(--riso-ink); }
 :root[data-visual-style="risograph"] .map-library-state { color: var(--riso-ink); background: var(--riso-paper); }
 :root[data-visual-style="risograph"] .map-marker {
