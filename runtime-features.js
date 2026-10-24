@@ -251,7 +251,7 @@
     const googleUrl = selected ? googleMapsOpenUrl(selected) : "";
 
     root.innerHTML = `<div class="day-tabs map-day-tabs" aria-label="Map days">${dayTabs}</div>
-      <section class="map-panel runtime-map-panel composition-narrative" aria-label="Trip spatial reference">
+      <section class="map-panel runtime-map-panel composition-narrative" data-surface-role="map-workspace" aria-label="Trip spatial reference">
         <div class="map-heading"><div><p class="eyebrow">Spatial reference</p><h2>${escapeHtml(selectedDay?.title || "Trip map")}</h2><p class="map-heading-copy">Planned stops only · select a stop for context</p></div>${googleUrl ? `<a class="button-link map-primary-handoff" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Open in Maps ↗</a>` : ""}</div>
         ${placeChips ? `<div class="place-chips" aria-label="Planned stops">${placeChips}</div>` : ""}
         <div class="map-stage">
