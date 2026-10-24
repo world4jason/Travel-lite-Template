@@ -14,7 +14,7 @@
 
 ## Structural recurrence prevention (not yet browser-verified)
 
-- `data-surface-role`: `map-workspace`, `transport-context`, `section`, `reading-row`, `route-endpoints`, `route-step`. Roles remain fixed regardless of the selected pack.
+- `data-surface-role`: `map-workspace`, `transport-context`, `selected-stop`, `section`, `reading-row`, `route-endpoints`, `route-step`. Roles remain fixed regardless of the selected pack.
 - `surface-contract.css` is loaded after every pack; reading-row borders, matching padding, radii, fills and separators share atomic CSS tokens. Risograph and Storybook provide distinct values without changing DOM.
 - `tests/style-surface-contract.test.mjs`: static role/asset/token guard — **NOT RUN**.
 - `tests/style-surface-role.spec.mjs`: default Chromium 16-appearance live geometry guard — **NOT RUN**.
