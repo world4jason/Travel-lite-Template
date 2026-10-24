@@ -381,18 +381,29 @@
 :root[data-visual-style="risograph"] .trip-route-heading h3 {
   font: 700 1.24rem var(--font-display);
 }
+/* Day Route is an editorial itinerary, not three nested boxes.
+   Keep START/END as open typography and the sequence as numbered print steps. */
 :root[data-visual-style="risograph"] .trip-route-endpoints {
   background: transparent;
-  border: 1px solid var(--riso-ink);
+  border: 0;
   border-radius: 0;
+  padding: 12px 0 14px;
+  gap: 12px;
 }
 :root[data-visual-style="risograph"] .trip-route-steps span {
   background: transparent;
-  border: 1px solid var(--riso-ink);
-  border-radius: 1px;
+  border: 0;
+  border-radius: 0;
+  padding: 4px 8px 4px 0;
+  min-height: 36px;
+  gap: 8px;
   font: .7rem var(--font-utility);
 }
 :root[data-visual-style="risograph"] .trip-route-steps b {
+  flex: 0 0 auto;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0 3px;
   border: 0;
   border-radius: 0;
   color: var(--riso-paper);
@@ -547,10 +558,30 @@
   padding: 14px 10px;
 }
 :root[data-visual-style="risograph"] .more-section[open] > summary { border-radius: 0; border-bottom: 1px solid var(--riso-ink); }
-:root[data-visual-style="risograph"] :is(.info-row,.file-row,.text-card,.selected-place-card) {
-  border: 1px solid var(--riso-ink);
-  background: var(--riso-paper);
-  border-radius: 1px;
+/* More sections own the perimeter; rows need ink separators, not
+   another rectangle with zero horizontal text inset. */
+:root[data-visual-style="risograph"] :is(.info-row,.file-row,.text-card) {
+  border:0;
+  border-top:1px solid var(--riso-ink);
+  border-radius:0;
+  background:transparent;
+}
+:root[data-visual-style="risograph"] .more-section .more-body > :is(.info-row,.file-row,.text-card):first-child {
+  border-top:0;
+}
+:root[data-visual-style="risograph"] .more-section .info-row .type-pill {
+  padding:3px 9px;
+}
+:root[data-visual-style="risograph"] .more-section .info-row .type-pill + h3 {
+  margin-top:10px;
+}
+/* A standalone map selection can retain its own ruled card when the
+   content is inset; do not conflate it with a nested More reading row. */
+:root[data-visual-style="risograph"] .selected-place-card {
+  border:1px solid var(--riso-ink);
+  border-radius:1px;
+  background:var(--riso-paper);
+  padding:14px 16px;
 }
 :root[data-visual-style="risograph"] .cost-total { background: transparent; border-radius: 0; border: 2px solid var(--riso-ink); }
 :root[data-visual-style="risograph"] .shell-overview-link.active,
