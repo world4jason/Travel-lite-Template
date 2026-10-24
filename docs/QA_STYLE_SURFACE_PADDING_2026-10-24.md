@@ -10,7 +10,18 @@
 | P0 | Risograph More: `styles.css` gives `.info-row/.file-row/.text-card` horizontal padding zero; `risograph-theme.css` added full outlines. The inner rectangle crowds `Stay`, title and row text. | Remove full borders from reading rows, retain single top-rule dividers, omit duplicate first-row rule; `Stay` receives 9px inset and 10px gap before title. Standalone map selection retains a 16px inset. | NOT RUN |
 | P0 | Risograph Trip: `trip-view.css` removes inline padding/borders on endpoints and route steps; the local pack added ink outlines but no inset. | Remove START/END and step outlines; preserve typographic route and ink number markers, with 8px inter-item gap and 24px number blocks. | NOT RUN |
 
-All changes are in the two opt-in CSS packs plus test infrastructure. No `trip.json`, map coordinates, legacy routes, export functions, or shared five-tab navigation were changed.
+**Structural correction now included:** the shared renderers add constant `data-surface-role` annotations (no new style-dependent behavior), and `surface-contract.css` loaded last owns paired `--ui-reading-row-*` tokens. Storybook-derived styles retain matched framed rows, Risograph uses open editorial rows; interactive Map now uses a separate workspace role. See [STYLE_SURFACE_CONTRACT.md](./STYLE_SURFACE_CONTRACT.md). These additional architectural changes also require full regression; **not proven safe by source inspection alone**. `trip.json`, map coordinates, legacy routes, export functions and the five-tab IA remain unchanged.
+
+## Structural recurrence prevention (not yet browser-verified)
+
+- `data-surface-role`: `map-workspace`, `transport-context`, `section`, `reading-row`, `route-endpoints`, `route-step`. Roles remain fixed regardless of the selected pack.
+- `surface-contract.css` is loaded after every pack; reading-row borders, matching padding, radii, fills and separators share atomic CSS tokens. Risograph and Storybook provide distinct values without changing DOM.
+- `tests/style-surface-contract.test.mjs`: static role/asset/token guard — **NOT RUN**.
+- `tests/style-surface-role.spec.mjs`: default Chromium 16-appearance live geometry guard — **NOT RUN**.
+- `tests/style-surface-padding.spec.mjs`: focused 320/390/1100px browser verification — **NOT RUN**.
+- `tests/style-surface-matrix.spec.mjs`: opt-in 240-state sweep — **NOT RUN**.
+
+This is an incremental contract, not an unsupported claim that every legacy selector has been migrated. Future migration of all Map/Route materials remains subject to screenshots and separate review.
 
 ## Full appearance × tab × viewport matrix
 
