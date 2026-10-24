@@ -4,6 +4,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
+import { findUnpairedSurfaceFrames } from "./style-surface-guards.mjs";
 
 const read = path => readFileSync(new URL("../" + path, import.meta.url), "utf8");
 
@@ -22,6 +23,7 @@ test("semantic surface roles are stable markup in shared renderers, never pack-s
   }
   assert.match(app, /class="panel more-section" data-surface-role="section"/);
   assert.match(app, /class="panel more-section preparation-section" data-surface-role="section"/);
+  assert.match(app, /class="cost-total" data-surface-role="cost-summary"/);
   assert.match(trip, /class="trip-route-endpoints" data-surface-role="route-endpoints"/);
   assert.match(trip, /<span data-surface-role="route-step"><b>/);
   assert.match(map, /class="map-panel runtime-map-panel composition-narrative" data-surface-role="map-workspace"/);
@@ -41,6 +43,11 @@ test("one shared last-loaded CSS file owns coupled reading row geometry", () => 
     "--ui-reading-row-radius", "--ui-reading-row-fill",
   ]) assert.ok(contract.includes("var(" + property), property + " not controlled by role contract");
   assert.match(contract, /:root \[data-surface-role="reading-row"\]/);
+  assert.match(contract, /:root \[data-surface-role="cost-summary"\]/);
+  for (const key of ["--ui-cost-summary-frame", "--ui-cost-summary-padding",
+    "--ui-cost-summary-radius", "--ui-cost-summary-fill"]) {
+    assert.ok(contract.includes("var(" + key), "Cost total must pair " + key);
+  }
   const storybook = read("storybook-theme.css");
   const riso = read("risograph-theme.css");
   assert.match(storybook, /--ui-reading-row-frame:\s*2px solid/);
@@ -48,6 +55,10 @@ test("one shared last-loaded CSS file owns coupled reading row geometry", () => 
   assert.match(riso, /--ui-reading-row-frame:\s*0;/);
   assert.match(riso, /--ui-reading-row-divider:\s*1px solid/);
   assert.match(riso, /--ui-reading-row-padding:\s*13px 0;/);
+  assert.match(storybook, /--ui-cost-summary-frame:\s*2px solid/);
+  assert.match(storybook, /--ui-cost-summary-padding:\s*13px;/);
+  assert.match(riso, /--ui-cost-summary-frame:\s*2px solid/);
+  assert.match(riso, /--ui-cost-summary-padding:\s*12px 16px;/);
 });
 
 test("offline assets and contract smoke suites are registered", () => {
@@ -59,7 +70,7 @@ test("offline assets and contract smoke suites are registered", () => {
   assert.match(config, /"style-surface-matrix\.spec\.mjs"/);
 });
 
-test("no unpaired full frame may be reintroduced on shared reading rows by a pack", () => {
+test("no theme may add an unpaired frame to reading rows OR cost summaries", () => {
   const names = [
     "storybook", "candy", "risograph", "paper-collage", "naive-city",
     "taiwan-poster", "field-stamp", "quiet-linocut", "doodle-memory-grid",
@@ -67,25 +78,11 @@ test("no unpaired full frame may be reintroduced on shared reading rows by a pac
     "quiet-acrylic", "vintage-watercolor",
   ];
   for (const id of names) {
-    const css = read(id + "-theme.css");
-    // This intentionally small lint guard catches the exact root-cause pattern:
-    // a direct border added to a More row, without compensating inline padding.
-    // The Storybook legacy fallback has both; the new role contract governs
-    // production rows. Other layout roles are checked using computed styles.
-    for (const match of css.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
-      const selector = match[1].replace(/\/\*[\s\S]*?\*\//g, "").trim();
-      const declarations = match[2];
-      if (!/\.info-row|\.file-row|\.text-card/.test(selector)) continue;
-      const frame = declarations.match(/(?:^|;)\s*border\s*:\s*([^;]+)/)?.[1]?.trim();
-      if (!frame || /^(?:0(?:px)?|none|initial|unset)$/i.test(frame)) continue;
-      // Only a real complete perimeter creates the collision. "border: 0"
-      // and border-top-only reading dividers are intentionally borderless.
-      assert.match(declarations, /(?:^|;)\s*(?:padding|padding-inline)\s*:/,
-        id + " adds a complete reading-row frame without horizontal inset");
-    }
+    const problems = findUnpairedSurfaceFrames(read(id + "-theme.css"));
+    assert.deepEqual(problems, [],
+      id + " adds framed reading/cost rows without corresponding inline insets");
   }
 });
-
 
 test("no NEW cross-role panel/map border groups beyond the existing legacy budget", () => {
   // All 14 packs currently contain one broad perimeter group inherited from
