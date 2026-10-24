@@ -84,7 +84,7 @@ With only connected GitHub and an offline remote Mac, these commands are **not e
 
 **Phase A / PR #115:** annotate semantic roles, move More reading-row geometry into atomic CSS tokens, repair the confirmed Vintage/Risograph collisions, add static and browser gates. In addition, Risograph Map's frame now belongs to the *map stage*, not a zero-inset workspace.
 
-**Phase B / separate scoped PR only after screenshot evidence:** migrate additional `map-workspace` and `route-endpoints/route-step` style-specific geometry into paired role tokens where cross-pack review proves it safe. Keep intentionally different ink, cardstock, stickers and archival frames. Do not erase pack identities with one universal border rule.
+**Phase B / [Issue #116](https://github.com/world4jason/Travel-lite-Template/issues/116), separate scoped PR only after screenshot evidence:** converge the two Trip DOM branches into one accessible hierarchy and migrate additional `map-workspace` and `route-endpoints/route-step` geometry into paired role tokens where cross-pack review proves it safe. Keep intentionally different ink, cardstock, stickers and archival frames. Do not erase pack identities with one universal border rule.
 
 **Phase C / future packs:** use this role API in the template/manifest review checklist, add screenshots for the newly introduced role at 320/390/1100 and add a targeted regression if a design needs an exception. Accept exceptions only with an explicit named role and observed computed values.
 
