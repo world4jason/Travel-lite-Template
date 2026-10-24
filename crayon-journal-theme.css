@@ -202,10 +202,17 @@
  background:#FFF9ED;border:2px solid #53565D;
  border-radius:23px 13px 26px 17px;
 }
-:root[data-visual-style="crayon-journal"] .more-section > summary,
-:root[data-visual-style="crayon-journal"] .cost-total {
+:root[data-visual-style="crayon-journal"] .more-section > summary {
  background:#F1DFCA;border:1px solid #53565D;
  border-radius:23px 13px 26px 17px;
+}
+/* Costs is a separate summary surface; never inherit the header's border
+   without matching horizontal content inset. */
+:root[data-visual-style="crayon-journal"] {
+  --ui-cost-summary-frame: 1px solid #53565D;
+  --ui-cost-summary-padding: 12px 16px;
+  --ui-cost-summary-radius: 23px 13px 26px 17px;
+  --ui-cost-summary-fill: #F1DFCA;
 }
 :root[data-visual-style="crayon-journal"] .style-option {
  background:#FFF9ED;color:#53565D;
