@@ -88,3 +88,38 @@ for (const look of looks) {
     expect(overflow, look.name + " whole-document horizontal overflow").toBeLessThanOrEqual(1);
   });
 }
+
+
+test("switching Storybook → Risograph → Storybook → Editorial clears stale row geometry", async ({ page }) => {
+  await page.goto("/?previewStyle=storybook#more");
+  const row = page.locator('[data-surface-role="reading-row"].info-row').first();
+  await expect(row).toBeVisible();
+  const sample = async () => row.evaluate(node => {
+    const style = getComputedStyle(node);
+    return {
+      border: Number.parseFloat(style.borderLeftWidth),
+      inset: Number.parseFloat(style.paddingLeft),
+      title: node.querySelector("h3")?.textContent,
+    };
+  });
+  await expect.poll(async () => (await sample()).border).toBe(2);
+  expect((await sample()).inset).toBeGreaterThanOrEqual(12);
+  const sourceTitle = (await sample()).title;
+
+  // Use the app's real validated style selection path, not a manual CSS toggle.
+  await page.evaluate(async () => chooseLocalStyle("risograph"));
+  await expect(page.locator("html")).toHaveAttribute("data-visual-style", "risograph");
+  await expect.poll(async () => (await sample()).border).toBe(0);
+  expect((await sample()).inset).toBe(0);
+
+  await page.evaluate(async () => chooseLocalStyle("storybook"));
+  await expect(page.locator("html")).toHaveAttribute("data-visual-style", "storybook");
+  await expect.poll(async () => (await sample()).border).toBe(2);
+  expect((await sample()).inset).toBeGreaterThanOrEqual(12);
+
+  await page.evaluate(async () => chooseLocalStyle("editorial-light"));
+  await expect(page.locator("html")).toHaveAttribute("data-visual-style", "editorial");
+  await expect.poll(async () => (await sample()).border).toBe(0);
+  expect((await sample()).inset).toBe(0);
+  expect((await sample()).title).toBe(sourceTitle);
+});
