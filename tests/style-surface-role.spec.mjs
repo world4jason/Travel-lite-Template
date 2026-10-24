@@ -76,6 +76,8 @@ for (const look of looks) {
     await expect(page.locator('[data-surface-role="map-workspace"]')).toBeVisible();
     const map = await geometry(page, '[data-surface-role="map-workspace"]');
     checkFrame("Transport / map workspace / " + look.name, map, 12);
+    const selectedStop = await geometry(page, '[data-surface-role="selected-stop"]');
+    checkFrame("Transport / selected stop / " + look.name, selectedStop, 12);
     await expect(page.locator('[data-surface-role="transport-context"] > summary')).toContainText("Published transfers");
 
     if (look.id === "vintage-watercolor" || look.id === "risograph") {
