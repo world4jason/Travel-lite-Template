@@ -18,6 +18,7 @@
 - `surface-contract.css` is loaded after every pack; reading-row borders, matching padding, radii, fills and separators share atomic CSS tokens. Risograph and Storybook provide distinct values without changing DOM.
 - `tests/style-surface-contract.test.mjs`: static role/asset/token guard — **NOT RUN**.
 - `tests/style-surface-role.spec.mjs`: default Chromium 16-appearance live geometry guard — **NOT RUN**.
+- `tests/style-semantic-parity.spec.mjs`: default Chromium cross-pack source facts and route/booking/transport parity — **NOT RUN**.
 - `tests/style-surface-padding.spec.mjs`: focused 320/390/1100px browser verification — **NOT RUN**.
 - `tests/style-surface-matrix.spec.mjs`: opt-in 240-state sweep — **NOT RUN**.
 
