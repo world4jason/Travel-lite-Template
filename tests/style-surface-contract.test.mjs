@@ -25,6 +25,7 @@ test("semantic surface roles are stable markup in shared renderers, never pack-s
   assert.match(trip, /class="trip-route-endpoints" data-surface-role="route-endpoints"/);
   assert.match(trip, /<span data-surface-role="route-step"><b>/);
   assert.match(map, /class="map-panel runtime-map-panel composition-narrative" data-surface-role="map-workspace"/);
+  assert.match(map, /class="selected-place-card map-selected-summary" data-surface-role="selected-stop"/);
   assert.match(transport, /details\.dataset\.surfaceRole="transport-context"/);
 });
 
