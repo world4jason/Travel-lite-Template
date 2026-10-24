@@ -75,9 +75,12 @@ test("no unpaired full frame may be reintroduced on shared reading rows by a pac
       const selector = match[1].replace(/\/\*[\s\S]*?\*\//g, "").trim();
       const declarations = match[2];
       if (!/\.info-row|\.file-row|\.text-card/.test(selector)) continue;
-      if (!/(^|;)\s*border\s*:/.test(declarations)) continue;
-      assert.match(declarations, /(^|;)\s*padding(?:-inline)?\s*:/,
-        id + " applies a full frame to a reading row with no matching padding");
+      const frame = declarations.match(/(?:^|;)\s*border\s*:\s*([^;]+)/)?.[1]?.trim();
+      if (!frame || /^(?:0(?:px)?|none|initial|unset)$/i.test(frame)) continue;
+      // Only a real complete perimeter creates the collision. "border: 0"
+      // and border-top-only reading dividers are intentionally borderless.
+      assert.match(declarations, /(?:^|;)\s*(?:padding|padding-inline)\s*:/,
+        id + " adds a complete reading-row frame without horizontal inset");
     }
   }
 });
