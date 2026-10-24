@@ -23,12 +23,49 @@ test.beforeEach(async ({ page }) => {
 for (const look of looks) {
   test("appearance must not change itinerary facts or stop order: " + look, async ({ page }) => {
     const url = "/?previewStyle=" + look;
+    // Distinct current JS templates are documented debt (#116). Guard facts,
+    // actions and TBD semantics without pretending their DOM is identical.
+    const trip = structuredClone(source);
+    trip.days[0].items[2].start = "TBD";
+    trip.days[0].items[2].end = "TBD";
+    await page.route("**/trip.json", route => route.fulfill({
+      status: 200, contentType: "application/json", body: JSON.stringify(trip),
+    }));
     await page.goto(url + "#trip/day/" + day.date);
     await expect(page.locator("html")).toHaveAttribute("data-visual-style", look);
     expect(await page.locator(".trip-v2-item .item-heading > h3").allTextContents())
       .toEqual(day.items.map(item => item.title));
     await expect(page.locator(".trip-v2-item")).toHaveCount(day.items.length);
     for (const item of await page.locator(".trip-v2-item").all()) await expect(item).toBeVisible();
+    // Source-fact parity under illustrated <time> and Editorial/Riso <div>
+    // branches. They intentionally differ in DOM semantics until #116.
+    const illustrated = !["editorial", "risograph"].includes(look);
+    const rendered = page.locator(".trip-v2-item");
+    for (const [index, item] of trip.days[0].items.entries()) {
+      const card = rendered.nth(index);
+      await expect(card.locator(".timeline-time")).toBeVisible();
+      const clock = card.locator(".timeline-time").first();
+      if (/^\\d{2}:\\d{2}$/.test(item.start || "")) {
+        await expect(clock).toContainText(item.start);
+        if (illustrated) await expect(card.locator("time.timeline-time")).toHaveCount(1);
+      } else {
+        await expect(clock).toContainText("TBD");
+        await expect(card).not.toHaveClass(/\\bcurrent\\b/);
+        if (illustrated) await expect(clock).toHaveClass(/timeline-time--floating/);
+      }
+      await expect(card.locator(".trip-item-top h3")).toHaveText(item.title);
+    }
+    // The action contract must be data-driven, independent of appearance.
+    await expect(rendered.first().locator("a.trip-icon-action")).toHaveCount(1);
+    await expect(rendered.first().locator("details.trip-action-menu > summary")).toBeVisible();
+    await rendered.first().locator("details.trip-action-menu > summary").focus();
+    await page.keyboard.press("Enter");
+    await expect(rendered.first().locator("details.trip-action-menu")).toHaveAttribute("open", "");
+    await expect(rendered.first().locator(".trip-action-menu-body a").first()).toHaveAttribute("href", /tokyo-haneda/);
+    await expect(rendered.nth(2).locator('[data-open-place="d1-shibuya"]')).toHaveCount(1);
+    await expect(page.locator(".trip-stop-wrap")).toHaveCount(day.items.length);
+    await expect(page.locator(".trip-transfer")).toHaveCount(3);
+
 
     const endpoints = await page.locator('[data-surface-role="route-endpoints"] strong').allTextContents();
     expect(endpoints).toEqual([day.routeSummary[0], day.routeSummary.at(-1)]);
