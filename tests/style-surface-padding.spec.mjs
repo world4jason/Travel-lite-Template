@@ -133,6 +133,58 @@ for (const size of sizes) {
     await reservations.screenshot({ path: testInfo.outputPath("risograph-reservations-after.png") });
   });
 
+  for (const look of ["risograph", "storybook"]) {
+    test(look + " Costs total frame/text inset at " + size.width, async ({ page }, testInfo) => {
+      const trip = structuredClone(sample);
+      // The published fixture has zero cost entries: create visible Costs UI
+      // so the regression cannot escape QA as an unrendered state.
+      trip.costs.entries = [
+        { id: "qa-cost", title: "車票 Metro ticket", category: "transit", amount: 35000 },
+        { id: "qa-cost2", title: "ExtraExtraLong費用描述ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+          category: "test", amount: 600 },
+      ];
+      await page.route("**/trip.json", route => route.fulfill({
+        status: 200, contentType: "application/json", body: JSON.stringify(trip),
+      }));
+      await page.setViewportSize(size);
+      await page.goto("/?previewStyle=" + look + "#more");
+      const section = await openedMoreSection(page, "Costs");
+      const summary = section.locator('.cost-total');
+      await expect(summary).toBeVisible();
+      await expect(summary).toContainText("Total");
+      await expect(section).toContainText("Metro ticket");
+      await expect(section.locator('[data-surface-role="cost-summary"]')).toHaveCount(baseline ? 0 : 1);
+      if (baseline) {
+        await section.screenshot({ path: testInfo.outputPath(look + "-costs-before.png") });
+        return;
+      }
+      const geometry = await summary.evaluate(node => {
+        const style = getComputedStyle(node);
+        const b = node.getBoundingClientRect();
+        const total = node.querySelector("span").getBoundingClientRect();
+        const value = node.querySelector("strong").getBoundingClientRect();
+        const px = v => Number.parseFloat(v) || 0;
+        return {
+          leftBorder: px(style.borderLeftWidth),
+          rightBorder: px(style.borderRightWidth),
+          leftInset: px(style.paddingLeft),
+          rightInset: px(style.paddingRight),
+          leftTextGap: total.left - b.left,
+          rightTextGap: b.right - value.right,
+        };
+      });
+      expect(geometry.leftBorder).toBeGreaterThanOrEqual(2);
+      expect(geometry.rightBorder).toBeGreaterThanOrEqual(2);
+      const threshold = look === "risograph" ? 16 : 12;
+      expect(geometry.leftInset).toBeGreaterThanOrEqual(threshold);
+      expect(geometry.rightInset).toBeGreaterThanOrEqual(threshold);
+      expect(geometry.leftTextGap).toBeGreaterThanOrEqual(threshold);
+      expect(geometry.rightTextGap).toBeGreaterThanOrEqual(threshold);
+      await noDocumentOverflow(page);
+      await section.screenshot({ path: testInfo.outputPath(look + "-costs-after.png") });
+    });
+  }
+
   test("Risograph Trip START/END and numbered route are borderless at " + size.width, async ({ page }, testInfo) => {
     await page.setViewportSize(size);
     await page.goto("/?previewStyle=risograph#trip/day/2026-10-03");
