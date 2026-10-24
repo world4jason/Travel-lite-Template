@@ -21,6 +21,7 @@ Renderers label their **existing** semantic DOM elements with `data-surface-role
 | `selected-stop` | Selected map stop summary | A standalone selected-place reading surface, not a More row. If framed, reserve ≥12px inline inset; preserve external navigation actions. |
 | `section` | More `.more-section` and Preparation | This layer owns grouping, header, painted corners and clipping. Its content must not blindly acquire a second frame. |
 | `reading-row` | Reservations, notes, costs, files, contacts, essentials | Either **open row + one divider** or **standalone framed row with matching padding**. The border/padding/radius/background are ONE role decision, not four independent overrides. |
+| `cost-summary` | More → Costs Total, separate from ordinary cost entry rows | Complete frame, inset, radius, fill and long amount wrapping are one geometry contract. A visible left/right border needs ≥12–16px inline gap. |
 | `route-endpoints` | Trip START / END | Preserve actual start/end names, arrow and order. If framed, keep at least 8px inline reading room, increasing where feasible. |
 | `route-step` | Trip numbered route item | Preserve order and ink number. If a chip is framed, it needs at least 8px inline inset. Long names cannot become inaccessible. |
 
@@ -61,6 +62,16 @@ Example for a ruled editorial pack:
 ```
 
 **Never add a direct `.info-row, .file-row, .text-card { border:... }` without also accounting for inset.** Style Packs should set role tokens rather than override the final role selector. The existing Storybook unannotated-row fallback is retained for older call sites; the annotated app renderers use the contract. Storybook-derived packs inherit a matched 2px/13px framed row unless a particular pack intentionally overrides the role tokens. Risograph chooses the open reading row; its `Stay` tag has separate microtypographic inset.
+
+## Costs summary migration (reviewer P1 follow-up)
+
+`cost-summary` uses four *paired* tokens in `surface-contract.css`: `--ui-cost-summary-frame`, `--ui-cost-summary-padding`, `--ui-cost-summary-radius`, `--ui-cost-summary-fill`. The published Tokyo fixture currently has no Costs entries; tests **must create a populated fixture**, otherwise this entire surface goes unrendered and may pass falsely.
+
+The first repair found **eight more packs** with `.more-section > summary, .cost-total` sharing a full frame and color but without explicit matching inline padding: Paper Collage, Taiwan Poster, Quiet Linocut, Doodle Memory Grid, Crayon Journal, Painterly Editorial, Geometric Print and Quiet Acrylic. They now keep their original border/radius/background through these role tokens with 16px inline padding. Storybook-derived styling and Risograph have their own matching tokens; Editorial stays unframed.
+
+A new static guard detects `border`, `border-left/right`, `border-inline*`, `border-width` and inward `outline` declarations on reading/cost rows lacking horizontal inset. **This lint is conservative and cannot substitute for real computed CSS specificity.** A separate runtime guard now checks each side independently rather than requiring a four-sided frame, with negative cases for side-only frame injection.
+
+**Known differences pending #116:** illustrated Trip uses `<ol>/<li>/<time>` and localized flexible `Time TBD`, while Editorial/Risograph use `<section>/<div>` and raw `TBD`. Current scoped tests verify factual/time/action parity without rewriting the renderer. Any actual behavior drift found by those tests requires a focused fix; unifying markup remains #116.
 
 ## Ownership and invariants
 
