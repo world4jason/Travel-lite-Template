@@ -2,6 +2,15 @@
 
 **Owner acceptance: OPEN.** Scope: two confirmed Risograph surfaces, Vintage Transport, and cross-pack visual QA. This report is intentionally an **incomplete verification record**, not a claim of browser PASS. Branch: `fix/113-vintage-riso-surface-spacing`. The targeted fixes are proposed in code, but have **not yet been validated on the full application in Chromium**.
 
+## Developer response to independent reviewer — 2026-10-25 (after reviewed `e83b387`)
+
+- **P1-A FIXED IN CODE, BROWSER NOT RUN:** the shared `sideBorderViolations` guard checks each horizontal side independently, including border-inline/side-only frames and inward-painted outlines. A *real injected CSS negative control* has been added to `tests/style-surface-role.spec.mjs` (Chromium NOT RUN). The same pure helper has a Node regression file `tests/style-surface-guards.test.mjs`.
+- **P1-B FIXED IN CODE, BROWSER NOT RUN:** `findUnpairedSurfaceFrames` includes shorthand, side/inline borders, inward outlines, and checks actual horizontal padding values (e.g. `13px 0` is unsafe). The shared contract now owns both `reading-row` and `cost-summary` atomically. The original default Tokyo fixture hides Costs because it has no entries, so the browser specs inject real Costs rows.
+- **Additional cross-pack defect found by static inspection:** eight packs grouped `.more-section > summary` with `.cost-total`, assigning a complete Cost border but retaining `padding:9px 0 14px` or inheriting unrelated padding. Paper Collage, Taiwan Poster, Quiet Linocut, Doodle Memory Grid, Crayon Journal, Painterly Editorial, Geometric Print and Quiet Acrylic now provide distinct `--ui-cost-summary-*` tokens, preserving their existing ink/fill/radius while pairing the border with 16px inline content inset. Storybook-derived and Risograph costs are also explicitly tokenized.
+- **P2-D/E TESTS ENHANCED:** semantic parity now exercises source clocks vs illustrated `Time TBD`/Editorial `TBD`, actions, keyboard menu access and transfer order. Real More → Appearance picker stress now covers Storybook → Risograph → Vintage → Editorial Dark/Light → Storybook and Cost token reset. The dual DOM refactor remains #116.
+- **Executed (limited):** 4/4 pure-helper negative guard cases passed in a V8 isolated JavaScript run using the same GitHub-committed helper source; static source lint scanned all 14 pack files with **0 unpaired reading-row/Costs declarations reported**; updated JS/test code syntax-parsed in V8. **None of this is a Node repository test or a computed-style browser PASS.**
+- **Still NOT RUN:** `node --test`, the repo's Playwright suite, 240 browser states, screenshot evidence, keyboard focus in a real browser, MapLibre/online/offline, PDF/ICS and Human Review. **Merge remains blocked** until execution evidence and independent re-review are attached.
+
 ## Geometry and cascade findings (source inspection, not computed-style measurements)
 
 | Priority | Real issue / confirmed source | Narrow repair | Browser verification |
