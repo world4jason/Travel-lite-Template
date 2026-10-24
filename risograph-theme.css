@@ -588,7 +588,7 @@
   background:var(--riso-paper);
   padding:14px 16px;
 }
-:root[data-visual-style="risograph"] .cost-total { background: transparent; border-radius: 0; border: 2px solid var(--riso-ink); }
+/* Cost summary frame + inset belong to --ui-cost-summary-* in surface-contract.css. */
 :root[data-visual-style="risograph"] .shell-overview-link.active,
 :root[data-visual-style="risograph"] .shell-day.active {
   color: var(--riso-paper);
