@@ -238,6 +238,20 @@
   padding:3px 2px 12px;
   border-bottom:1px solid #E4D5B8;
 }
+/* The mobile map intentionally bleeds to the viewport edges. Its reading
+   controls must not: keep 16px outer insets while leaving the map full-bleed. */
+@media (max-width:600px) {
+  :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .map-heading {
+    margin:0 16px 16px;
+  }
+  :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .transport-day-context {
+    margin:0 16px 16px;
+  }
+  :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .place-chips {
+    margin:0 16px 14px;
+    padding:3px 0 12px;
+  }
+}
 :root[data-visual-style="vintage-watercolor"] .map-marker.active {
   outline:2px solid #445C43; outline-offset:2px;
 }
