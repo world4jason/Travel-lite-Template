@@ -33,6 +33,10 @@
   --ui-reading-row-padding: 13px 0;
   --ui-reading-row-radius: 0;
   --ui-reading-row-fill: transparent;
+  --ui-cost-summary-frame: 2px solid var(--riso-ink);
+  --ui-cost-summary-padding: 12px 16px;
+  --ui-cost-summary-radius: 0;
+  --ui-cost-summary-fill: transparent;
 }
 :root[data-visual-style="risograph"] body {
   background: var(--riso-paper) !important;
