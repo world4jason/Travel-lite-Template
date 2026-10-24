@@ -143,6 +143,11 @@ test("negative control: side-only borders and inward outlines must fail geometry
 });
 
 test("actual More Appearance picker clears inherited frames, theme and stale tokens", async ({ page }) => {
+  const trip = structuredClone(sourceTrip);
+  trip.costs.entries = [{ id: "qa-switch-cost", title: "Metro fare", amount: 500 }];
+  await page.route("**/trip.json", route => route.fulfill({
+    status: 200, contentType: "application/json", body: JSON.stringify(trip),
+  }));
   await page.goto("/?previewStyle=storybook#more");
   const row = page.locator('[data-surface-role="reading-row"].info-row').first();
   await expect(row).toBeVisible();
@@ -180,6 +185,16 @@ test("actual More Appearance picker clears inherited frames, theme and stale tok
     expect((await sample()).inset).toBeGreaterThanOrEqual(step.inset);
     if (step.inset === 0) expect((await sample()).inset).toBe(0);
     expect((await sample()).title).toBe(sourceTitle);
+    const costs = page.locator('[data-surface-role="section"]').filter({
+      has: page.locator("summary").filter({ hasText: "Costs" }),
+    }).first();
+    await expect(costs).toBeVisible();
+    await costs.locator("summary").first().click();
+    const costGeometry = await geometry(page, '[data-surface-role="cost-summary"]');
+    checkFrame("Appearance switch / Costs / " + step.choice, costGeometry, 12);
+    // A new pack must not inherit the *previous* pack's frame token.
+    const expectedCostBorder = step.style === "editorial" ? 0 : 2;
+    expect(costGeometry.border[3]).toBe(expectedCostBorder);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
   }
 });
