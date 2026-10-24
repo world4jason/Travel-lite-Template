@@ -74,8 +74,9 @@ TRAVEL_LITE_FULL_STYLE_QA=1 \
 
 # Existing suites, before merge:
 npm run test:mobile
-npm run test:unit
+node --test tests/*.test.mjs
 npm run test:packs
+npm run test:styles
 npm run test:style-parity
 ```
 
