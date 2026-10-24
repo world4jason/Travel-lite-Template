@@ -92,7 +92,10 @@ test("Vintage More and checklist headers use one filled silhouette at every widt
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 
     const preparation=page.locator(".preparation-section");
-    await preparation.locator("summary").click();
+    const header=preparation.locator(":scope > summary");
+    await header.focus();
+    await expect(header).toBeFocused();
+    await page.keyboard.press("Enter");
     await expect(preparation).toHaveAttribute("open","");
     const expanded=await preparation.evaluate(section=>({
       headerBottom:getComputedStyle(section.querySelector(":scope > summary")).borderBottomWidth,
