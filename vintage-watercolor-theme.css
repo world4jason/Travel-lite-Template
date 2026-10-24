@@ -238,9 +238,10 @@
   padding:3px 2px 12px;
   border-bottom:1px solid #E4D5B8;
 }
-/* The mobile map intentionally bleeds to the viewport edges. Its reading
-   controls must not: keep 16px outer insets while leaving the map full-bleed. */
-@media (max-width:600px) {
+/* Compact Map intentionally bleeds to the shell edges (including tablets
+   and short landscape screens). Its reading controls must not: keep 16px
+   outer insets while leaving map pan/zoom full-bleed. */
+@media (max-width:899px), (max-height:600px) {
   :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .map-heading {
     margin:0 16px 16px;
   }
