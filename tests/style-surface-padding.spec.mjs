@@ -4,6 +4,7 @@
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
+const baseline = process.env.TRAVEL_LITE_QA_BASELINE === "1";
 const sample = JSON.parse(readFileSync(new URL("../trip.json", import.meta.url), "utf8"));
 const sizes = [
   { width: 320, height: 568 },
@@ -46,6 +47,10 @@ for (const size of sizes) {
     await expect(panel).toBeVisible();
     await expect(panel.locator(".map-heading h2")).toContainText("Asakusa");
     await expect(panel.locator(".transport-day-context > summary")).toContainText("Published transfers");
+    if (baseline) {
+      await panel.screenshot({ path: testInfo.outputPath("vintage-transport-before.png") });
+      return;
+    }
     const geometry = await panel.evaluate(node => {
       const heading = node.querySelector(".map-heading");
       const transfer = node.querySelector(".transport-day-context");
@@ -92,6 +97,10 @@ for (const size of sizes) {
     const reservations = await openedMoreSection(page, "Reservations");
     const row = reservations.locator(".info-row").first();
     await expect(row).toContainText("Shibuya hotel");
+    if (baseline) {
+      await reservations.screenshot({ path: testInfo.outputPath("risograph-reservations-before.png") });
+      return;
+    }
     const geometry = await row.evaluate(node => {
       const label = node.querySelector(".type-pill");
       const heading = node.querySelector("h3");
@@ -133,6 +142,10 @@ for (const size of sizes) {
     await expect(route.locator(".trip-route-endpoints")).toContainText("Start");
     await expect(route.locator(".trip-route-endpoints")).toContainText("End");
     expect(await route.locator(".trip-route-steps > span").count()).toBeGreaterThanOrEqual(3);
+    if (baseline) {
+      await route.screenshot({ path: testInfo.outputPath("risograph-day-route-before.png") });
+      return;
+    }
     const geometry = await route.evaluate(node => {
       const endpoints = node.querySelector(".trip-route-endpoints");
       const step = node.querySelector(".trip-route-steps > span");
@@ -157,6 +170,7 @@ for (const size of sizes) {
 }
 
 test("long mixed-language route endpoints and two-digit steps remain readable at 320px", async ({ page }) => {
+  test.skip(baseline, "baseline run captures screenshots; geometry assertions target the repair");
   const trip = structuredClone(sample);
   trip.days[0].routeSummary = [
     "羽田空港 Haneda InternationalAirportABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
