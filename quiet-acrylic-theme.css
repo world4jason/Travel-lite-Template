@@ -202,10 +202,17 @@
  background:#FFFCF7;border:1px solid #CED6D0;
  border-radius:2px;
 }
-:root[data-visual-style="quiet-acrylic"] .more-section > summary,
-:root[data-visual-style="quiet-acrylic"] .cost-total {
+:root[data-visual-style="quiet-acrylic"] .more-section > summary {
  background:#F2F1E8;border:1px solid #52615D;
  border-radius:2px;
+}
+/* Costs is a separate summary surface; never inherit the header's border
+   without matching horizontal content inset. */
+:root[data-visual-style="quiet-acrylic"] {
+  --ui-cost-summary-frame: 1px solid #52615D;
+  --ui-cost-summary-padding: 12px 16px;
+  --ui-cost-summary-radius: 2px;
+  --ui-cost-summary-fill: #F2F1E8;
 }
 :root[data-visual-style="quiet-acrylic"] .style-option {
  background:#FFFCF7;color:#52615D;

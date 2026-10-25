@@ -18,7 +18,9 @@
   content:"";position:fixed;inset:0;z-index:1;pointer-events:none;
   background:url("./assets/risograph/grain.svg") center/225px repeat;opacity:.18;
 }
-:root[data-visual-style="taiwan-poster"] :is(.app-shell,.trip-header,#view-root,.bottom-nav,
+/* Background grain needs a stacking context, not control of navigation
+   positioning; shared shell decides fixed mobile vs desktop in-flow tabs. */
+:root[data-visual-style="taiwan-poster"] :is(.app-shell,.trip-header,#view-root,
   .shell-context,.trip-overview-hero) {position:relative;z-index:2;}
 :root[data-visual-style="taiwan-poster"] * {
   box-shadow:none!important;text-shadow:none!important;
@@ -213,9 +215,16 @@
 :root[data-visual-style="taiwan-poster"] .check-item {
   background:#FAECCE;border:1px solid #143C56;border-radius:0;
 }
-:root[data-visual-style="taiwan-poster"] .more-section > summary,
-:root[data-visual-style="taiwan-poster"] .cost-total {
+:root[data-visual-style="taiwan-poster"] .more-section > summary {
   border:1px solid #143C56;border-radius:0;background:#E3AF50;
+}
+/* Costs is a separate summary surface; never inherit the header's border
+   without matching horizontal content inset. */
+:root[data-visual-style="taiwan-poster"] {
+  --ui-cost-summary-frame: 1px solid #143C56;
+  --ui-cost-summary-padding: 12px 16px;
+  --ui-cost-summary-radius: 0;
+  --ui-cost-summary-fill: #E3AF50;
 }
 :root[data-visual-style="taiwan-poster"] .style-option {
   border:1px solid #143C56;border-radius:0;background:#FAECCE;color:#143C56;

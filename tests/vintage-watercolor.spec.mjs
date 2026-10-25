@@ -93,6 +93,14 @@ test("Vintage More and checklist headers use one filled silhouette at every widt
 
     const preparation=page.locator(".preparation-section");
     const header=preparation.locator(":scope > summary");
+    // Navigating to the identical URL after changing viewport can preserve
+    // disclosure state. Normalize the initial state through keyboard input,
+    // then verify opening rather than accidentally closing an open details.
+    if (await preparation.getAttribute("open") !== null) {
+      await header.focus();
+      await page.keyboard.press("Enter");
+      await expect(preparation).not.toHaveAttribute("open","");
+    }
     await header.focus();
     await expect(header).toBeFocused();
     await page.keyboard.press("Enter");

@@ -26,6 +26,17 @@
   --radius-sm: 2px;
   --radius-md: 4px;
   --radius-lg: 6px;
+  /* Open reading rows use section rules rather than nested card frames.
+     The geometry is consumed by the shared surface-contract.css. */
+  --ui-reading-row-frame: 0;
+  --ui-reading-row-divider: 1px solid var(--riso-ink);
+  --ui-reading-row-padding: 13px 0;
+  --ui-reading-row-radius: 0;
+  --ui-reading-row-fill: transparent;
+  --ui-cost-summary-frame: 2px solid var(--riso-ink);
+  --ui-cost-summary-padding: 12px 16px;
+  --ui-cost-summary-radius: 0;
+  --ui-cost-summary-fill: transparent;
 }
 :root[data-visual-style="risograph"] body {
   background: var(--riso-paper) !important;
@@ -42,7 +53,9 @@
   background: url("./assets/risograph/grain.svg") left top / 256px repeat;
   opacity: .64;
 }
-:root[data-visual-style="risograph"] :is(.app-shell, .trip-header, #view-root, .bottom-nav,
+/* The nav is functional shell chrome: keep its shared fixed-mobile and
+   in-flow desktop positioning. Never include .bottom-nav in artwork layering. */
+:root[data-visual-style="risograph"] :is(.app-shell, .trip-header, #view-root,
  .shell-context, .trip-overview-hero, .trip-overview-section) { position: relative; z-index: 2; }
 :root[data-visual-style="risograph"] * { box-shadow: none !important; text-shadow: none !important; }
 :root[data-visual-style="risograph"] h1,
@@ -381,18 +394,29 @@
 :root[data-visual-style="risograph"] .trip-route-heading h3 {
   font: 700 1.24rem var(--font-display);
 }
+/* Day Route is an editorial itinerary, not three nested boxes.
+   Keep START/END as open typography and the sequence as numbered print steps. */
 :root[data-visual-style="risograph"] .trip-route-endpoints {
   background: transparent;
-  border: 1px solid var(--riso-ink);
+  border: 0;
   border-radius: 0;
+  padding: 12px 0 14px;
+  gap: 12px;
 }
 :root[data-visual-style="risograph"] .trip-route-steps span {
   background: transparent;
-  border: 1px solid var(--riso-ink);
-  border-radius: 1px;
+  border: 0;
+  border-radius: 0;
+  padding: 4px 8px 4px 0;
+  min-height: 36px;
+  gap: 8px;
   font: .7rem var(--font-utility);
 }
 :root[data-visual-style="risograph"] .trip-route-steps b {
+  flex: 0 0 auto;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 0 3px;
   border: 0;
   border-radius: 0;
   color: var(--riso-paper);
@@ -547,12 +571,26 @@
   padding: 14px 10px;
 }
 :root[data-visual-style="risograph"] .more-section[open] > summary { border-radius: 0; border-bottom: 1px solid var(--riso-ink); }
-:root[data-visual-style="risograph"] :is(.info-row,.file-row,.text-card,.selected-place-card) {
-  border: 1px solid var(--riso-ink);
-  background: var(--riso-paper);
-  border-radius: 1px;
+/* Reading-row border, spacing, and fill are set atomically in the
+   role tokens above, rather than added independently via late selectors. */
+:root[data-visual-style="risograph"] .more-section .more-body > :is(.info-row,.file-row,.text-card):first-child {
+  border-top:0;
 }
-:root[data-visual-style="risograph"] .cost-total { background: transparent; border-radius: 0; border: 2px solid var(--riso-ink); }
+:root[data-visual-style="risograph"] .more-section .info-row .type-pill {
+  padding:3px 9px;
+}
+:root[data-visual-style="risograph"] .more-section .info-row .type-pill + h3 {
+  margin-top:10px;
+}
+/* A standalone map selection can retain its own ruled card when the
+   content is inset; do not conflate it with a nested More reading row. */
+:root[data-visual-style="risograph"] .selected-place-card {
+  border:1px solid var(--riso-ink);
+  border-radius:1px;
+  background:var(--riso-paper);
+  padding:14px 16px;
+}
+/* Cost summary frame + inset belong to --ui-cost-summary-* in surface-contract.css. */
 :root[data-visual-style="risograph"] .shell-overview-link.active,
 :root[data-visual-style="risograph"] .shell-day.active {
   color: var(--riso-paper);
@@ -574,6 +612,14 @@
   border-top: 3px double var(--riso-ink);
   background: transparent;
   padding: 11px 0;
+}
+/* The map is an interactive workspace, not an ink card. Map stage controls
+   retain the visible 2px print frame; the workspace has no zero-inset box. */
+:root[data-visual-style="risograph"] .runtime-map-panel[data-surface-role="map-workspace"] {
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
 }
 :root[data-visual-style="risograph"] :is(.map-stage, .map-frame) { border-radius: 0; border: 2px solid var(--riso-ink); }
 :root[data-visual-style="risograph"] .map-library-state { color: var(--riso-ink); background: var(--riso-paper); }

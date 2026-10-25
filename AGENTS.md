@@ -44,6 +44,9 @@ Before making non-trivial changes, read:
 4. [`docs/SOURCE_NORMALIZATION.md`](./docs/SOURCE_NORMALIZATION.md)
 5. [`docs/TIMEZONE.md`](./docs/TIMEZONE.md)
 6. [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md)
+7. [`docs/STYLE_SURFACE_CONTRACT.md`](./docs/STYLE_SURFACE_CONTRACT.md) — required for Style Pack / border / padding / role changes.
+
+**Mandatory surface rule for coding agents:** Do not treat `.panel`, `.runtime-map-panel`, `.more-section` and `.info-row` as interchangeable decorative rectangles. Existing `data-surface-role` values are stable DOM responsibilities independent of `visualStyle`. For reading rows, change frame AND inset using the atomic `--ui-reading-row-*` tokens, not a late border-only CSS selector. Review actual computed padding after the final cascade; run the static contract check and all-appearance Chromium regression. Screenshots/Human Review cannot be marked PASS from a CSS source inspection alone. For any mobile nav or shell-gap change, run `tests/style-text-zoom.spec.mjs` at 200% root text (320 and 390px across 16 appearances), verify all five original tabs remain readable and ≥44px targets, and test last-card clearance + text returning to 100%. Respect measured ResizeObserver space reservation; never clamp reader text. Bump the Service Worker cache version when shipping modified app.js/CSS for offline users.
 
 ## Core invariant
 

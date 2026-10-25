@@ -25,6 +25,23 @@ const VIEW_META = {
 const root = document.querySelector("#view-root");
 const bottomNav = document.querySelector("#bottom-nav");
 
+// The responsive shell owns space for the actual bottom navigation size.
+// Text-only zoom and translations can wrap its five labels into multiple
+// rows; a fixed 110px footer gap would hide the last itinerary item.
+// ResizeObserver is layout-only: never changes routes, trip facts or tabs.
+const appShell = document.querySelector(".app-shell");
+if (typeof ResizeObserver === "function" && bottomNav && appShell) {
+  let previousNavHeight = -1;
+  const navSizeObserver = new ResizeObserver(() => {
+    const height = Math.ceil(bottomNav.getBoundingClientRect().height);
+    if (height > 0 && height !== previousNavHeight) {
+      previousNavHeight = height;
+      appShell.style.setProperty("--mobile-nav-block-size", height + "px");
+    }
+  });
+  navSizeObserver.observe(bottomNav);
+}
+
 // The trip publishes a shared default. Each viewer can override it with a
 // whitelisted device-only style preference. A URL preview takes precedence for
 // the current link only; none of these operations edits shared trip data.
@@ -533,7 +550,7 @@ function money(value, currency) {
 
 function detailsSection(title, count, body, open = false) {
   if (!count) return "";
-  return `<details class="panel more-section" ${open ? "open" : ""}><summary><span>${escapeHtml(title)}</span><span class="summary-count">${count}</span></summary><div class="more-body">${body}</div></details>`;
+  return `<details class="panel more-section" data-surface-role="section" ${open ? "open" : ""}><summary><span>${escapeHtml(title)}</span><span class="summary-count">${count}</span></summary><div class="more-body">${body}</div></details>`;
 }
 
 function travelEssentialsSection(rawEntries, label, zh = false) {
@@ -561,7 +578,7 @@ function travelEssentialsSection(rawEntries, label, zh = false) {
     const researched = typeof entry.checkedAt === "string" && /^\d{4}-\d{2}-\d{2}$/.test(entry.checkedAt)
       ? entry.checkedAt : "";
     const meta = [category, day].filter(Boolean).join(" · ");
-    return '<article class="text-card travel-essential">' +
+    return '<article class="text-card travel-essential" data-surface-role="reading-row">' +
       (meta ? '<p class="eyebrow">' + escapeHtml(meta) + '</p>' : "") +
       '<h3>' + escapeHtml(entry.title) + '</h3>' +
       (entry.body || entry.summary ? '<p>' + escapeHtml(entry.body || entry.summary) + '</p>' : "") +
@@ -649,23 +666,23 @@ function renderMore() {
   const moreZh = /^zh/i.test(state.data.ui.locale || "");
   const labelMore = (english, chinese) => moreZh ? chinese : english;
   const progress = checkProgress();
-  const preparation = `<details class="panel more-section preparation-section" data-preparation><summary><span>${escapeHtml(labelMore("Preparation & checklists", "準備與清單"))} <small class="device-only-tag">${escapeHtml(labelMore("this device", "僅此裝置"))}</small></span><span class="summary-count" data-check-progress>${progress.done}/${progress.total}</span></summary><div class="preparation-body">${checklistsMarkup()}</div></details>`;
-  const reservations = state.data.reservations.map((item) => `<article class="info-row"><div><span class="type-pill">${escapeHtml(item.type || "booking")}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml([item.date ? prettyDate(item.date) : "", item.time || "", item.location || ""].filter(Boolean).join(" · "))}</p>${item.status ? `<small>${escapeHtml(item.status)}</small>` : ""}</div>${safePublishedUrl(item.url) ? `<a class="inline-link" href="${escapeAttr(safePublishedUrl(item.url))}" target="_blank" rel="noopener noreferrer">Open ↗</a>` : ""}</article>`).join("");
+  const preparation = `<details class="panel more-section preparation-section" data-surface-role="section" data-preparation><summary><span>${escapeHtml(labelMore("Preparation & checklists", "準備與清單"))} <small class="device-only-tag">${escapeHtml(labelMore("this device", "僅此裝置"))}</small></span><span class="summary-count" data-check-progress>${progress.done}/${progress.total}</span></summary><div class="preparation-body">${checklistsMarkup()}</div></details>`;
+  const reservations = state.data.reservations.map((item) => `<article class="info-row" data-surface-role="reading-row"><div><span class="type-pill">${escapeHtml(item.type || "booking")}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml([item.date ? prettyDate(item.date) : "", item.time || "", item.location || ""].filter(Boolean).join(" · "))}</p>${item.status ? `<small>${escapeHtml(item.status)}</small>` : ""}</div>${safePublishedUrl(item.url) ? `<a class="inline-link" href="${escapeAttr(safePublishedUrl(item.url))}" target="_blank" rel="noopener noreferrer">Open ↗</a>` : ""}</article>`).join("");
   const total = state.data.costs.entries.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-  const costs = `<div class="cost-total"><span>Total</span><strong>${money(total, state.data.costs.currency)}</strong></div>${state.data.costs.entries.map((item) => `<article class="info-row compact-row"><div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.category || "")}${item.date ? ` · ${prettyDate(item.date)}` : ""}</p></div><strong>${money(item.amount, item.currency || state.data.costs.currency)}</strong></article>`).join("")}`;
-  const notes = state.data.notes.map((note) => `<article class="text-card"><h3>${escapeHtml(note.title)}</h3><p>${escapeHtml(note.body)}</p></article>`).join("");
+  const costs = `<div class="cost-total" data-surface-role="cost-summary"><span>Total</span><strong>${money(total, state.data.costs.currency)}</strong></div>${state.data.costs.entries.map((item) => `<article class="info-row compact-row" data-surface-role="reading-row"><div><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.category || "")}${item.date ? ` · ${prettyDate(item.date)}` : ""}</p></div><strong>${money(item.amount, item.currency || state.data.costs.currency)}</strong></article>`).join("")}`;
+  const notes = state.data.notes.map((note) => `<article class="text-card" data-surface-role="reading-row"><h3>${escapeHtml(note.title)}</h3><p>${escapeHtml(note.body)}</p></article>`).join("");
   const files = state.data.files.map((file) => {
     const label = `<span><strong>${escapeHtml(file.title)}</strong><small>${escapeHtml(file.type || "file")}</small></span>`;
     const url = safePublishedUrl(file.url);
-    return url ? `<a class="file-row" href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer">${label}<span>↗</span></a>`
-      : `<div class="file-row">${label}</div>`;
+    return url ? `<a class="file-row" data-surface-role="reading-row" href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer">${label}<span>↗</span></a>`
+      : `<div class="file-row" data-surface-role="reading-row">${label}</div>`;
   }).join("");
-  const contacts = state.data.contacts.map((contact) => `<article class="info-row compact-row"><div><h3>${escapeHtml(contact.name)}</h3><p>${escapeHtml(contact.role || "")}</p></div>${contact.phone ? `<a class="inline-link" href="tel:${escapeAttr(contact.phone)}">${escapeHtml(contact.phone)}</a>` : ""}</article>`).join("");
-  const journal = state.data.journal.map((entry) => `<article class="text-card"><p class="eyebrow">${escapeHtml(entry.date ? prettyDate(entry.date, { weekday: "short" }) : entry.mood || "Journal")}</p><h3>${escapeHtml(entry.title)}</h3><p>${escapeHtml(entry.body)}</p></article>`).join("");
+  const contacts = state.data.contacts.map((contact) => `<article class="info-row compact-row" data-surface-role="reading-row"><div><h3>${escapeHtml(contact.name)}</h3><p>${escapeHtml(contact.role || "")}</p></div>${contact.phone ? `<a class="inline-link" href="tel:${escapeAttr(contact.phone)}">${escapeHtml(contact.phone)}</a>` : ""}</article>`).join("");
+  const journal = state.data.journal.map((entry) => `<article class="text-card" data-surface-role="reading-row"><p class="eyebrow">${escapeHtml(entry.date ? prettyDate(entry.date, { weekday: "short" }) : entry.mood || "Journal")}</p><h3>${escapeHtml(entry.title)}</h3><p>${escapeHtml(entry.body)}</p></article>`).join("");
   const links = state.data.links.map((link) => {
     const url = safePublishedUrl(link.url);
-    return url ? `<a class="file-row" href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer"><span><strong>${escapeHtml(link.label)}</strong></span><span>↗</span></a>`
-      : `<div class="file-row"><span><strong>${escapeHtml(link.label)}</strong></span></div>`;
+    return url ? `<a class="file-row" data-surface-role="reading-row" href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer"><span><strong>${escapeHtml(link.label)}</strong></span><span>↗</span></a>`
+      : `<div class="file-row" data-surface-role="reading-row"><span><strong>${escapeHtml(link.label)}</strong></span></div>`;
   }).join("");
   const names = {
     "editorial-light": "Editorial Light", "editorial-dark": "Editorial Dark",

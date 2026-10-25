@@ -16,6 +16,15 @@ Do not rely on opening `index.html` directly with `file://`; the app fetches `tr
 
 ## Validation
 
+For any Style Pack border/spacing change, also read [STYLE_SURFACE_CONTRACT.md](./STYLE_SURFACE_CONTRACT.md) and run the structural smoke:
+
+```bash
+node --test tests/style-surface-contract.test.mjs
+npx playwright test tests/style-surface-role.spec.mjs tests/style-semantic-parity.spec.mjs tests/style-surface-padding.spec.mjs --project=chromium
+```
+
+The 16-appearance role gate is part of the normal Playwright project; `TRAVEL_LITE_FULL_STYLE_QA=1` explicitly enables the larger 240-state full-surface sweep. A CSS declaration or unexecuted smoke test is not a browser result. For any frame on a reading row, commit a matching text inset or use an open divider-only row.
+
 At minimum, before merging template changes:
 
 ```bash

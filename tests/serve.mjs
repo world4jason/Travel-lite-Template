@@ -3,7 +3,11 @@ import { readFile, stat } from "node:fs/promises";
 import { extname, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
+/* Optional baseline comparison: run the PR's Playwright harness against a
+   separate checkout of main. Defaults to this repository for normal QA. */
+const root = process.env.TRAVEL_LITE_TEST_SITE_ROOT
+  ? resolve(process.env.TRAVEL_LITE_TEST_SITE_ROOT)
+  : resolve(fileURLToPath(new URL("..", import.meta.url)));
 const host = "127.0.0.1";
 const port = Number(process.env.TRAVEL_LITE_TEST_PORT) || 4317;
 const mime = {

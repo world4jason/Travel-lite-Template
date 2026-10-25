@@ -1,6 +1,8 @@
 # Travel Lite — reviewed Style Packs
 
-Travel Lite's **functional template** remains shared: Now / Trip / Map / Check / More, deep links, itinerary/timezone facts, notes, tickets, maps, and offline behavior. A Style Pack changes only visual representation and permitted illustration assets.
+Travel Lite's **functional template** remains shared: Now / Trip / Transport / Places / More, deep links, itinerary/timezone facts, notes, tickets, maps, and offline behavior. `#map` and `#check` remain legacy deep links, not primary tabs. A Style Pack changes only visual representation and permitted illustration assets.
+
+**Structural Style Pack contract:** see [Surface Role Contract](../docs/STYLE_SURFACE_CONTRACT.md). In particular, adding a visible border without matching content inset is a regression, not a stylistic choice. New style work must satisfy role geometry and the 16-appearance browser gate before publication.
 
 > **Vintage Watercolor local Agent-QA-reviewed (Issue #81):** [art direction](../docs/VINTAGE_WATERCOLOR_STYLE_BRIEF.md) has a locally tested Style Pack, original SVG assets, screenshots and a bounded whitelisted ID. Browser screenshot, layout, contrast and offline QA pass; **post-deployment Human visual review remains pending**. Reference booklet contributes visual language only, never its itinerary content. A5 print is separately #80.
 

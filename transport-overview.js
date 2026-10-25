@@ -52,6 +52,7 @@
     if (!panel) return;
     const details=document.createElement("details");
     details.className="panel transport-day-context";
+    details.dataset.surfaceRole="transport-context";
     details.setAttribute("aria-label",localized("今日交通摘要","Published transfers"));
     details.innerHTML=`<summary><span>${localized("今日交通","Published transfers")} · ${lines.length}</span>
       <span class="transport-summary-meta">${localized("已發佈參考 · 非即時班次","Saved reference · not live")}</span></summary>
