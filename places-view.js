@@ -32,8 +32,7 @@
   function isUniquePlaceId(id) {
     // Published item IDs can accidentally collide across days. Do not associate
     // a ticket or booking with the wrong visit when source identity is ambiguous.
-    return state.data.days.reduce((count,day) => count +
-      (day.items || []).filter((item) => item.id === id).length, 0) === 1;
+    return state.itemIdentity?.isUnique(id) === true;
   }
   function linked(records, id) {
     if (!isUniquePlaceId(id)) return [];
@@ -61,14 +60,19 @@
     const contents = badges(item);
     const info = item.infoCard || {};
     const excerpt = info.summary || item.note || item.location || label("尚無景點介紹", "Details not provided");
-    return `<button class="places-card panel" data-open-place="${escapeAttr(item.id)}" type="button">
+    const unique = isUniquePlaceId(item.id);
+    const start = unique
+      ? `<button class="places-card panel" data-open-place="${escapeAttr(item.id)}" type="button">`
+      : `<article class="places-card panel places-ambiguous-card" data-ambiguous-place aria-label="${label("景點來源 ID 不明確", "Place source ID is ambiguous")}">`;
+    return `${start}
       <span class="places-card-meta">${escapeHtml(smallDay(entry))}</span>
       <span class="places-card-title">${escapeHtml(item.title)}</span>
       <span class="places-card-excerpt">${escapeHtml(excerpt)}</span>
       <span class="places-card-foot"><span>${escapeHtml(item.location || label("這趟行程的地點", "Planned place"))}</span>
       ${contents.hasEntry ? `<span class="places-entry-chip">${label("入場／預約", "Entry / booking")}</span>` : ""}
-      <span class="places-card-arrow" aria-hidden="true">↗</span></span>
-    </button>`;
+      ${unique ? `<span class="places-card-arrow" aria-hidden="true">↗</span>` : ""}</span>
+      ${unique ? "" : `<span class="places-card-identity-label">${label("來源 ID 重複／無效：請修正發佈資料", "Duplicate/invalid source ID: publishing fix required")}</span>`}
+    ${unique ? "</button>" : "</article>"}`;
   }
   function listView(all) {
     const selected = filterDate === "all" ? all : all.filter((entry) => entry.day.date === filterDate);
@@ -86,6 +90,7 @@
         }).join("")}</select></label>`
       : dates.length > 1 ? `<div class="places-filters" role="group" aria-label="${label("依日期篩選景點", "Filter places by day")}">${tabs}</div>` : "";
     root.innerHTML = `<div class="places-view view-stack">
+      ${itemIdentityWarningHtml()}
       <header class="places-heading">
         <p class="eyebrow">${label("已安排景點與活動", "YOUR PLANNED PLACES")}</p>
         <h2>${label("景點指南", "Places")}</h2>
@@ -158,13 +163,19 @@
   }
   function render() {
     const all=entries();
-    const selected=all.find((entry)=>entry.item.id === state.selectedPlaceId);
-    if (state.selectedPlaceId && !selected) state.selectedPlaceId = null;
+    const ref=state.itemIdentity?.resolveUnique(state.selectedPlaceId);
+    const selected=ref && isPlace(ref.item) ? {item:ref.item,day:ref.day} : null;
+    if (state.selectedPlaceId && !selected) {
+      root.innerHTML = `<div class="places-view places-detail-view view-stack">
+        ${itemIdentityWarningHtml() || `<section class="panel places-identity-warning" role="alert">${label("景點連結沒有唯一對應的來源資料。", "This place link has no unique published source item.")}</section>`}
+        <button type="button" class="places-back" data-places-back>← ${label("返回景點列表", "Back to Places")}</button></div>`;
+      return;
+    }
     if (selected) detailView(selected);
     else listView(all);
   }
   function open(id) {
-    if (!entries().some((entry) => entry.item.id === id)) return;
+    if (typeof id !== "string" || !id) return;
     state.selectedPlaceId = id;
     setView("places");
   }
@@ -176,8 +187,8 @@
     else if (target.hasAttribute("data-places-date")) { filterDate=target.dataset.placesDate; render(); }
     else if (target.hasAttribute("data-places-trip") || target.hasAttribute("data-places-transport")) {
       const id=target.dataset.placesTrip || target.dataset.placesTransport;
-      const entry=entries().find((row)=>row.item.id===id);
-      if (!entry) return;
+      const entry=state.itemIdentity?.resolveUnique(id);
+      if (!entry || !isPlace(entry.item)) return;
       state.selectedDate=entry.day.date;
       if (target.hasAttribute("data-places-transport")) {
         state.selectedMapItemId = id;

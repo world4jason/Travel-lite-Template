@@ -255,9 +255,10 @@
     baseRenderMap();
 
     const selectedDay = state.data.days.find((day) => day.date === state.selectedDate) || state.data.days[0];
-    const selected = selectedDay?.items?.find((item) => item.id === state.selectedMapItemId)
-      || selectedDay?.items?.find((item) => Number.isFinite(Number(item.lat)) && Number.isFinite(Number(item.lng)))
-      || selectedDay?.items?.[0];
+    const selected = state.selectedMapItemId
+      ? selectedDay?.items?.find(item => item.id === state.selectedMapItemId && state.itemIdentity?.isUnique(item.id))
+      : selectedDay?.items?.find(item => state.itemIdentity?.isUnique(item.id) && Number.isFinite(Number(item.lat)) && Number.isFinite(Number(item.lng)))
+        || selectedDay?.items?.find(item => state.itemIdentity?.isUnique(item.id));
 
     const extras = `${externalLinksHtml(selected)}${googleSearchLinksHtml(selected)}${infoCardHtml(selected)}${planBHtml(selected?.planB)}`;
     const card = root.querySelector(".selected-place-card");

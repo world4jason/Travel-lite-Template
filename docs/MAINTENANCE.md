@@ -25,6 +25,12 @@ npx playwright test tests/style-surface-role.spec.mjs tests/style-semantic-parit
 
 The 16-appearance role gate is part of the normal Playwright project; `TRAVEL_LITE_FULL_STYLE_QA=1` explicitly enables the larger 240-state full-surface sweep. A CSS declaration or unexecuted smoke test is not a browser result. For any frame on a reading row, commit a matching text inset or use an open divider-only row.
 
+Before publishing any itinerary, run `npm run test:integrity -- path/to/trip.json`.
+It rejects duplicate/non-string IDs across **all** scheduled day items with stable
+source paths. Do not rename IDs automatically or infer a booking association.
+The CLI never modifies the published source; the runtime also fails closed on
+ambiguous Places, Transport and Trip identity-only links.
+
 At minimum, before merging template changes:
 
 ```bash

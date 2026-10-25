@@ -450,7 +450,22 @@ the main interactive checklist now resides in More. Legacy bottomNav
 values migrate in-memory and never delete personal checklist state.
 
 Places reuses published days[].items and optional item.infoCard only,
-with a unique stable item ID per scheduled place. Trip can link directly
+with a globally unique stable item ID across **every** `days[].items[]` record,
+including transport, accommodation and other non-Places.
+
+**Issue #109 fail-closed policy:** run `npm run test:integrity` (or pass a
+destination trip.json path) before publishing. The deterministic audit lists
+duplicate IDs and every conflicting source path, such as
+`days[0].items[2]` and `days[1].items[0]`, without exposing booking payloads.
+Legacy missing/empty IDs retain the existing generated fallback in memory;
+collisions involving fallback IDs are still blocked. Do not silently rename
+published IDs or deduplicate visits: bookmarks and linked records may use them.
+
+An ambiguous ID-only Places/Trip/Transport link never resolves the first matching
+venue. Places retains the original source cards but disables ambiguous details,
+and displays a publisher warning with escaped source ID/path information.
+`reservations[].itemId` / `itemIds` and `files[].itemId` / `itemIds` associations
+are suppressed for ambiguous IDs; unmodified records remain in More. Trip can link directly
 to #places/item/ITEM_ID. Unconfirmed meals without a researched venue,
 transport segments and accommodation are excluded from Places.
 

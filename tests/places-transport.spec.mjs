@@ -244,5 +244,8 @@ test("duplicate published item IDs fail closed for admission links and show sour
   await page.goto("/#places/item/duplicate-visit");
   await expect(page.locator(".places-identity-warning")).toBeVisible();
   await expect(page.locator(".places-entry")).toHaveCount(0);
-  await expect(page.locator(".places-detail-heading h2")).toContainText("Shibuya");
+  // Duplicate ID-only links must never resolve to the first published visit.
+  await expect(page.locator(".places-detail-heading")).toHaveCount(0);
+  await expect(page.locator(".places-identity-warning")).toContainText("days[0].items[2]");
+  await expect(page.locator(".places-identity-warning")).toContainText("days[1].items[0]");
 });

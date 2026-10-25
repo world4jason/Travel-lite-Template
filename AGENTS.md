@@ -150,7 +150,11 @@ Transport uses the MapLibre map with old #map links and no invented
 service or routes. Places lists researched planned destinations and
 existing optional infoCard data, not generic unknown meals or tourism
 recommendations. Use explicit itemId/itemIds to link reservation/files
-to Places, never title guessing. Private tickets/QRs are not appropriate
+to Places, never title guessing. Before every trip publication run
+`npm run test:integrity -- path/to/trip.json` to verify globally unique IDs
+across all day items. Any duplicate remains a publishing blocker; do not
+silently regenerate IDs or infer ticket destinations. The runtime displays
+source paths and disables ambiguous cross-page links while preserving records. Private tickets/QRs are not appropriate
 for public GitHub Pages. The checklist lives in More and retains the
 existing device-only keys and legacy #check route. Full transit and
 deep multi-section Guide are separate #104/#105 and #82 backlog.
