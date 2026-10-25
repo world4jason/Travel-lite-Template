@@ -146,6 +146,12 @@ See [`docs/SOURCE_NORMALIZATION.md`](./docs/SOURCE_NORMALIZATION.md).
 ## Five-tab IA and admission data
 
 The canonical tab navigation is Now/Trip/Transport/Places/More.
+For Places navigation changes (#111), preserve its browser history contract:
+`#places` All days; `#places/day/DATE` explicit source-backed day filter;
+`#places/item/ID` unique-only detail. Filter choice stays this-device,
+per-trip and does not change Trip's selected day until explicit handoff.
+Native Back/Forward, reload, long-trip select, legacy #map/#check and
+#109 fail-closed ambiguity must pass real Chromium tests. No sixth tab.
 Transport uses the MapLibre map with old #map links and no invented
 service or routes. Places lists researched planned destinations and
 existing optional infoCard data, not generic unknown meals or tourism

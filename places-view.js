@@ -1,6 +1,28 @@
 /* Reusable read-only Places directory and context. No discovery or secrets. SPDX-License-Identifier: AGPL-3.0-or-later */
 (() => {
   let filterDate = "all";
+  const availableDates = () => new Set(entries().map(row => row.day.date));
+  const validFilter = date => date === "all" || availableDates().has(date) ? date : "all";
+  const currentListHash = () => filterDate === "all" ? "#places" : "#places/day/" + encodeURIComponent(filterDate);
+  function pushRoute(hash) {
+    if (location.hash !== hash) history.pushState({travelLite:"places"}, "", location.pathname + location.search + hash);
+  }
+  function applyRouteDate(date, persist = true) {
+    filterDate = validFilter(date);
+    if (persist) TravelLiteStorage.set(tripKey("places:date"), filterDate);
+    return filterDate;
+  }
+  async function hydrateFilter() {
+    filterDate = validFilter(await TravelLiteStorage.get(tripKey("places:date")));
+  }
+  function selectFilter(date) {
+    const next = validFilter(date);
+    if (next === filterDate) return;
+    applyRouteDate(next);
+    state.selectedPlaceId = null;
+    pushRoute(currentListHash());
+    render();
+  }
   const excludedTypes = new Set(["transport", "stay", "flight", "transfer", "lodging", "hotel", "drive", "bus", "train"]);
   const namedTypes = new Set(["place", "attraction", "museum", "landmark", "nature", "activity", "event", "food", "restaurant", "sight"]);
   const zh = () => /^zh/i.test(state.data?.ui?.locale || "");
@@ -177,14 +199,15 @@
   function open(id) {
     if (typeof id !== "string" || !id) return;
     state.selectedPlaceId = id;
+    pushRoute("#places/item/" + encodeURIComponent(id));
     setView("places");
   }
   root.addEventListener("click", (event) => {
     const target = event.target.closest("[data-open-place],[data-places-back],[data-places-date],[data-places-trip],[data-places-transport]");
     if (!target) return;
     if (target.hasAttribute("data-open-place")) open(target.dataset.openPlace);
-    else if (target.hasAttribute("data-places-back")) { state.selectedPlaceId = null; render(); }
-    else if (target.hasAttribute("data-places-date")) { filterDate=target.dataset.placesDate; render(); }
+    else if (target.hasAttribute("data-places-back")) { state.selectedPlaceId = null; pushRoute(currentListHash()); render(); }
+    else if (target.hasAttribute("data-places-date")) { selectFilter(target.dataset.placesDate); }
     else if (target.hasAttribute("data-places-trip") || target.hasAttribute("data-places-transport")) {
       const id=target.dataset.placesTrip || target.dataset.placesTransport;
       const entry=state.itemIdentity?.resolveUnique(id);
@@ -192,8 +215,10 @@
       state.selectedDate=entry.day.date;
       if (target.hasAttribute("data-places-transport")) {
         state.selectedMapItemId = id;
+        pushRoute("#map/day/" + encodeURIComponent(entry.day.date) + "/stop/" + encodeURIComponent(id));
         setView("map");
       } else {
+        pushRoute("#trip/day/" + encodeURIComponent(entry.day.date));
         setView("trip");
         requestAnimationFrame(() => {
           [...root.querySelectorAll("[data-trip-day]")].find((node) =>
@@ -205,8 +230,10 @@
   root.addEventListener("change", (event) => {
     const select = event.target.closest("[data-places-select]");
     if (!select) return;
-    filterDate = select.value;
-    render();
+    selectFilter(select.value);
   });
-  window.TravelLitePlaces = Object.freeze({isPlace,render,open,entries});
+  window.TravelLitePlaces = Object.freeze({
+    isPlace,render,open,entries,hydrateFilter,applyRouteDate,currentListHash,
+    getFilterDate: () => filterDate,
+  });
 })();

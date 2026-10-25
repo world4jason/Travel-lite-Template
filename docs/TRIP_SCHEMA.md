@@ -449,6 +449,19 @@ The Transport tab uses the internal map ID for compatibility with legacy
 the main interactive checklist now resides in More. Legacy bottomNav
 values migrate in-memory and never delete personal checklist state.
 
+Places route policy (#111): `#places` represents All days, `#places/day/YYYY-MM-DD`
+represents a validated published day filter, and `#places/item/ITEM_ID` is
+an ID-only detail route subject to #109 uniqueness validation. The date
+filter is device-only and stored under `<trip.id>:places:date`; it never edits
+published `trip.json` or changes Trip/Transport selectedDate just because
+someone filters Places. Clicking list/date/detail uses browser history entries
+so native Back/Forward replays published source facts; page reload and direct
+date links restore valid selection. Invalid dates fall back to All days.
+Direct detail links override the visible list while retaining the stored
+filter for the in-app Back action. Handoffs to Trip/Transport set their source
+date intentionally. Legacy `#map`, `#transport` and `#check` retain their
+existing meanings. This is a Places UX contract, not a new backend or tab.
+
 Places reuses published days[].items and optional item.infoCard only,
 with a globally unique stable item ID across **every** `days[].items[]` record,
 including transport, accommodation and other non-Places.

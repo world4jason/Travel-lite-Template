@@ -325,19 +325,23 @@
       const mode = currentTripMode();
       hash = mode === "overview" ? "#trip/overview" : `#trip/day/${encodeURIComponent(mode || state.selectedDate || "")}`;
     } else if (state.view === "places") {
-      hash = state.selectedPlaceId ? "#places/item/" + encodeURIComponent(state.selectedPlaceId) : "#places";
+      hash = state.selectedPlaceId ? "#places/item/" + encodeURIComponent(state.selectedPlaceId)
+        : (window.TravelLitePlaces?.currentListHash() || "#places");
     } else if (state.view === "map") hash = `#map/day/${encodeURIComponent(state.selectedDate || "")}${state.selectedMapItemId ? `/stop/${encodeURIComponent(state.selectedMapItemId)}` : ""}`;
     if (window.location.hash !== hash) history.replaceState(null, "", `${window.location.pathname}${window.location.search}${hash}`);
   }
 
   let applyingHash = false;
-  function applyHash() {
+  function applyHash(navigating = false) {
     if (applyingHash || !state?.data) return;
     const parts = window.location.hash.replace(/^#/, "").split("/").filter(Boolean).map(part => {
       try { return decodeURIComponent(part); }
       catch { return part; } // malformed IDs must show a safe warning, not crash the router
     });
-    if (!parts.length) return;
+    if (!parts.length) {
+      if (navigating) { state.view = "now"; state.selectedPlaceId = null; render(); }
+      return;
+    }
     applyingHash = true;
     if (parts[0] === "trip") {
       state.view = "trip";
@@ -358,6 +362,12 @@
       // Preserve unknown/ambiguous ID-only deep links for a readable warning;
       // never resolve the first visit merely because an ID occurs somewhere.
       state.selectedPlaceId = id || null;
+      if (parts[1] === "day") {
+        const selected = window.TravelLitePlaces?.applyRouteDate(parts[2]);
+        // Invalid dates have one stable canonical list URL and no extra
+        // browser History entry.
+        if (selected === "all") history.replaceState(history.state, "", location.pathname + location.search + "#places");
+      } else if (navigating && parts[1] !== "item") window.TravelLitePlaces?.applyRouteDate("all");
       render();
     } else if (VIEW_META[parts[0]]) { state.view = parts[0]; render(); }
     window.setTimeout(() => { applyingHash = false; }, 0);
@@ -485,12 +495,14 @@
   document.querySelector("#shell-left")?.addEventListener("click", () => requestAnimationFrame(() => { syncHash(); scheduleContextRail(); }));
   window.addEventListener("resize", scheduleContextRail, { passive: true });
   window.addEventListener("hashchange", applyHash);
+  window.addEventListener("popstate", applyHash); // pushState-based Places Back/Forward
   window.addEventListener("travel-lite-runtime-status", updateStatusChip);
 
   // Wait for app.js to finish loading trip data and hydrating stored view/date (no timeout: slow or
   // offline loads must still apply the incoming deep link).
   async function onAppReady() {
     state.personalDecisionSelections = (await TravelLiteStorage.get(tripKey("personalDecisions"))) || state.personalDecisionSelections || {};
+    await window.TravelLitePlaces?.hydrateFilter();
     localeSetup(); installHeaderControls(); renderNav();
     initialHashHandled = true;
     if (window.location.hash) applyHash(); else render();
