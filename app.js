@@ -25,6 +25,23 @@ const VIEW_META = {
 const root = document.querySelector("#view-root");
 const bottomNav = document.querySelector("#bottom-nav");
 
+// The responsive shell owns space for the actual bottom navigation size.
+// Text-only zoom and translations can wrap its five labels into multiple
+// rows; a fixed 110px footer gap would hide the last itinerary item.
+// ResizeObserver is layout-only: never changes routes, trip facts or tabs.
+const appShell = document.querySelector(".app-shell");
+if (typeof ResizeObserver === "function" && bottomNav && appShell) {
+  let previousNavHeight = -1;
+  const navSizeObserver = new ResizeObserver(() => {
+    const height = Math.ceil(bottomNav.getBoundingClientRect().height);
+    if (height > 0 && height !== previousNavHeight) {
+      previousNavHeight = height;
+      appShell.style.setProperty("--mobile-nav-block-size", height + "px");
+    }
+  });
+  navSizeObserver.observe(bottomNav);
+}
+
 // The trip publishes a shared default. Each viewer can override it with a
 // whitelisted device-only style preference. A URL preview takes precedence for
 // the current link only; none of these operations edits shared trip data.

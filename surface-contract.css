@@ -44,6 +44,40 @@
   word-break: normal;
 }
 
+/* Functional navigation reflows with text-only zoom: a five-column grid
+   cannot fit 200%-sized "Transport" at 320px. Intrinsic-size flex wrap keeps
+   all five named controls visible and readable, rather than breaking words,
+   shrinking text, changing the tab set, or concealing the last options.
+   Preserve each Style Pack's colors, borders, radii and selected states. */
+@media (max-width: 899px), (max-height: 600px) {
+  :root .app-shell .bottom-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+    /* Gap grows with the reader's text scale, not only with the viewport. */
+    column-gap: clamp(4px, .5rem, 20px);
+    row-gap: 4px;
+  }
+  :root .bottom-nav .nav-item {
+    /* Max-content is the no-wrap basis; 44px protects short tab targets. */
+    flex: 1 0 max-content;
+    min-width: 44px;
+    /* A lone last-row tab stays centered, not an oversized full-width bar. */
+    max-width: 50%;
+  }
+  :root .bottom-nav .nav-item > span:last-child {
+    white-space: nowrap;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+  /* The actual nav height is measured by ResizeObserver in app.js.
+     Account for its bottom offset and keep the last card unobscured. */
+  :root .app-shell {
+    padding-bottom: calc(var(--mobile-nav-block-size, 80px) + max(14px, env(safe-area-inset-bottom)) + 20px);
+  }
+}
+
 /* A link, amount, or long translated title must not force a reading row
    wider than its containing section. This applies whether it is framed or
    has only a light divider; rows remain semantic DOM, not a rendered image. */

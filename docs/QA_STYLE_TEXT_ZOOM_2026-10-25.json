@@ -1,0 +1,2096 @@
+{
+  "tested_at": "2026-10-25",
+  "reviewer": "P1 text-only 200% narrow mobile regression",
+  "environment": "Authorized Mac, Playwright 1.63 Chromium 153, 320/390 x 568",
+  "classification": "Real computed-style reflow / focus / minimum hit-target / final-card clearance checks; not owner postrelease sign-off",
+  "tests": 32,
+  "passed": 32,
+  "failed": 0,
+  "minimumLastCardClearancePx": 33.5625,
+  "maximumNavHeightPx": 148,
+  "minimumNavHeightPx": 77,
+  "minimumTapTargetWidthPx": 44,
+  "minimumTapTargetHeightPx": 54,
+  "checks": [
+    {
+      "appearance": "candy",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 34.28125,
+      "rootFontPx": 32,
+      "navHeight": 148,
+      "navTop": 406,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 182,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 71.109375,
+          "buttonWidth": 71.109375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 64.734375,
+          "buttonWidth": 64.734375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 124.15625,
+          "buttonWidth": 124.15625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 145.5,
+          "buttonWidth": 145.5,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 130.5,
+          "buttonWidth": 130.5,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "candy",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 34.046875,
+      "rootFontPx": 32,
+      "navHeight": 148,
+      "navTop": 406,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 182,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 61.53125,
+          "buttonWidth": 61.53125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 55.15625,
+          "buttonWidth": 55.15625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 114.578125,
+          "buttonWidth": 114.578125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 82.734375,
+          "buttonWidth": 82.734375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 181,
+          "buttonWidth": 181,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 33.71875,
+      "rootFontPx": 32,
+      "navHeight": 146,
+      "navTop": 408,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 180,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 72.4375,
+          "buttonWidth": 72.4375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 64.0625,
+          "buttonWidth": 64.0625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 125.5,
+          "buttonWidth": 125.5,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 146.5,
+          "buttonWidth": 146.5,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 131.5,
+          "buttonWidth": 131.5,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 34.15625,
+      "rootFontPx": 32,
+      "navHeight": 146,
+      "navTop": 408,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 180,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 62.53125,
+          "buttonWidth": 62.53125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 54.15625,
+          "buttonWidth": 54.15625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 115.578125,
+          "buttonWidth": 115.578125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 83.734375,
+          "buttonWidth": 83.734375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 182,
+          "buttonWidth": 182,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 33.71875,
+      "rootFontPx": 32,
+      "navHeight": 146,
+      "navTop": 408,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 180,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 72.4375,
+          "buttonWidth": 72.4375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 64.0625,
+          "buttonWidth": 64.0625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 125.5,
+          "buttonWidth": 125.5,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 146.5,
+          "buttonWidth": 146.5,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 131.5,
+          "buttonWidth": 131.5,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 34.15625,
+      "rootFontPx": 32,
+      "navHeight": 146,
+      "navTop": 408,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 180,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 62.53125,
+          "buttonWidth": 62.53125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 54.15625,
+          "buttonWidth": 54.15625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 115.578125,
+          "buttonWidth": 115.578125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 83.734375,
+          "buttonWidth": 83.734375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 182,
+          "buttonWidth": 182,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 36.75,
+      "rootFontPx": 32,
+      "navHeight": 128,
+      "navTop": 426,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 162,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 42.140625,
+          "availableWidth": 71.78125,
+          "buttonWidth": 71.78125,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 36.578125,
+          "availableWidth": 66.234375,
+          "buttonWidth": 66.234375,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 92.328125,
+          "availableWidth": 121.984375,
+          "buttonWidth": 121.984375,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 62.109375,
+          "availableWidth": 145,
+          "buttonWidth": 145,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 48.09375,
+          "availableWidth": 131,
+          "buttonWidth": 131,
+          "buttonHeight": 54,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 36.96875,
+      "rootFontPx": 32,
+      "navHeight": 128,
+      "navTop": 426,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 162,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 42.140625,
+          "availableWidth": 62.34375,
+          "buttonWidth": 62.34375,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 36.578125,
+          "availableWidth": 56.796875,
+          "buttonWidth": 56.796875,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 92.328125,
+          "availableWidth": 112.53125,
+          "buttonWidth": 112.53125,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 62.109375,
+          "availableWidth": 82.328125,
+          "buttonWidth": 82.328125,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 48.09375,
+          "availableWidth": 181,
+          "buttonWidth": 181,
+          "buttonHeight": 54,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 36.75,
+      "rootFontPx": 32,
+      "navHeight": 128,
+      "navTop": 426,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 162,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 42.140625,
+          "availableWidth": 71.78125,
+          "buttonWidth": 71.78125,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 36.578125,
+          "availableWidth": 66.234375,
+          "buttonWidth": 66.234375,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 92.328125,
+          "availableWidth": 121.984375,
+          "buttonWidth": 121.984375,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 62.109375,
+          "availableWidth": 145,
+          "buttonWidth": 145,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 48.09375,
+          "availableWidth": 131,
+          "buttonWidth": 131,
+          "buttonHeight": 54,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 36.96875,
+      "rootFontPx": 32,
+      "navHeight": 128,
+      "navTop": 426,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 162,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 42.140625,
+          "availableWidth": 62.34375,
+          "buttonWidth": 62.34375,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 36.578125,
+          "availableWidth": 56.796875,
+          "buttonWidth": 56.796875,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 92.328125,
+          "availableWidth": 112.53125,
+          "buttonWidth": 112.53125,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 62.109375,
+          "availableWidth": 82.328125,
+          "buttonWidth": 82.328125,
+          "buttonHeight": 54,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 48.09375,
+          "availableWidth": 181,
+          "buttonWidth": 181,
+          "buttonHeight": 54,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 34.03125,
+      "rootFontPx": 32,
+      "navHeight": 146,
+      "navTop": 408,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 180,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.609375,
+          "availableWidth": 58.640625,
+          "buttonWidth": 58.640625,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.46875,
+          "availableWidth": 71.515625,
+          "buttonWidth": 71.515625,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 115.796875,
+          "availableWidth": 135.84375,
+          "buttonWidth": 135.84375,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 77.203125,
+          "availableWidth": 149,
+          "buttonWidth": 149,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.46875,
+          "availableWidth": 133,
+          "buttonWidth": 133,
+          "buttonHeight": 62,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 33.65625,
+      "rootFontPx": 32,
+      "navHeight": 146,
+      "navTop": 408,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 180,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.609375,
+          "availableWidth": 47.828125,
+          "buttonWidth": 47.828125,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.46875,
+          "availableWidth": 60.703125,
+          "buttonWidth": 60.703125,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 115.796875,
+          "availableWidth": 125.03125,
+          "buttonWidth": 125.03125,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 77.203125,
+          "availableWidth": 86.4375,
+          "buttonWidth": 86.4375,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.46875,
+          "availableWidth": 184,
+          "buttonWidth": 184,
+          "buttonHeight": 62,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 34.1875,
+      "rootFontPx": 32,
+      "navHeight": 142,
+      "navTop": 412,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 176,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.265625,
+          "availableWidth": 72.765625,
+          "buttonWidth": 72.765625,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 39.3125,
+          "availableWidth": 64.828125,
+          "buttonWidth": 64.828125,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.890625,
+          "availableWidth": 126.40625,
+          "buttonWidth": 126.40625,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 67.953125,
+          "availableWidth": 148,
+          "buttonWidth": 148,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.234375,
+          "availableWidth": 132,
+          "buttonWidth": 132,
+          "buttonHeight": 63,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 34.40625,
+      "rootFontPx": 32,
+      "navHeight": 142,
+      "navTop": 412,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 176,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.265625,
+          "availableWidth": 62.40625,
+          "buttonWidth": 62.40625,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 39.3125,
+          "availableWidth": 54.46875,
+          "buttonWidth": 54.46875,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.890625,
+          "availableWidth": 116.03125,
+          "buttonWidth": 116.03125,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 67.953125,
+          "availableWidth": 85.09375,
+          "buttonWidth": 85.09375,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.234375,
+          "availableWidth": 183,
+          "buttonWidth": 183,
+          "buttonHeight": 63,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "naive-city",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 33.5625,
+      "rootFontPx": 32,
+      "navHeight": 148,
+      "navTop": 406,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 182,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 71.109375,
+          "buttonWidth": 71.109375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 64.734375,
+          "buttonWidth": 64.734375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 124.15625,
+          "buttonWidth": 124.15625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 145.5,
+          "buttonWidth": 145.5,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 130.5,
+          "buttonWidth": 130.5,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "naive-city",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 34.375,
+      "rootFontPx": 32,
+      "navHeight": 148,
+      "navTop": 406,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 182,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 61.53125,
+          "buttonWidth": 61.53125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 55.15625,
+          "buttonWidth": 55.15625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 114.578125,
+          "buttonWidth": 114.578125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 82.734375,
+          "buttonWidth": 82.734375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 181,
+          "buttonWidth": 181,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 33.71875,
+      "rootFontPx": 32,
+      "navHeight": 144,
+      "navTop": 410,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 178,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 73.109375,
+          "buttonWidth": 73.109375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 64.734375,
+          "buttonWidth": 64.734375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 126.15625,
+          "buttonWidth": 126.15625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 147.5,
+          "buttonWidth": 147.5,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 132.5,
+          "buttonWidth": 132.5,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 34.15625,
+      "rootFontPx": 32,
+      "navHeight": 144,
+      "navTop": 410,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 178,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 63.03125,
+          "buttonWidth": 63.03125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 54.65625,
+          "buttonWidth": 54.65625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 116.078125,
+          "buttonWidth": 116.078125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 84.234375,
+          "buttonWidth": 84.234375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 183,
+          "buttonWidth": 183,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 34.03125,
+      "rootFontPx": 32,
+      "navHeight": 140,
+      "navTop": 414,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 174,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.265625,
+          "availableWidth": 70.109375,
+          "buttonWidth": 70.109375,
+          "buttonHeight": 61,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 39.3125,
+          "availableWidth": 66.15625,
+          "buttonWidth": 66.15625,
+          "buttonHeight": 61,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.890625,
+          "availableWidth": 123.734375,
+          "buttonWidth": 123.734375,
+          "buttonHeight": 61,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 67.953125,
+          "availableWidth": 146,
+          "buttonWidth": 146,
+          "buttonHeight": 59,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.234375,
+          "availableWidth": 130,
+          "buttonWidth": 130,
+          "buttonHeight": 59,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 33.78125,
+      "rootFontPx": 32,
+      "navHeight": 140,
+      "navTop": 414,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 174,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.265625,
+          "availableWidth": 60.40625,
+          "buttonWidth": 60.40625,
+          "buttonHeight": 61,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 39.3125,
+          "availableWidth": 56.46875,
+          "buttonWidth": 56.46875,
+          "buttonHeight": 61,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.890625,
+          "availableWidth": 114.03125,
+          "buttonWidth": 114.03125,
+          "buttonHeight": 61,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 67.953125,
+          "availableWidth": 83.09375,
+          "buttonWidth": 83.09375,
+          "buttonHeight": 61,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.234375,
+          "availableWidth": 181,
+          "buttonWidth": 181,
+          "buttonHeight": 59,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 34.3125,
+      "rootFontPx": 32,
+      "navHeight": 142,
+      "navTop": 412,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 176,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.265625,
+          "availableWidth": 72.765625,
+          "buttonWidth": 72.765625,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 39.3125,
+          "availableWidth": 64.828125,
+          "buttonWidth": 64.828125,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.890625,
+          "availableWidth": 126.40625,
+          "buttonWidth": 126.40625,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 67.953125,
+          "availableWidth": 148,
+          "buttonWidth": 148,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.234375,
+          "availableWidth": 132,
+          "buttonWidth": 132,
+          "buttonHeight": 63,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 34,
+      "rootFontPx": 32,
+      "navHeight": 142,
+      "navTop": 412,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 176,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.265625,
+          "availableWidth": 62.40625,
+          "buttonWidth": 62.40625,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 39.3125,
+          "availableWidth": 54.46875,
+          "buttonWidth": 54.46875,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.890625,
+          "availableWidth": 116.03125,
+          "buttonWidth": 116.03125,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 67.953125,
+          "availableWidth": 85.09375,
+          "buttonWidth": 85.09375,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.234375,
+          "availableWidth": 183,
+          "buttonWidth": 183,
+          "buttonHeight": 63,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 34.359375,
+      "rootFontPx": 32,
+      "navHeight": 142,
+      "navTop": 412,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 176,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.609375,
+          "availableWidth": 57.984375,
+          "buttonWidth": 57.984375,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.46875,
+          "availableWidth": 68.84375,
+          "buttonWidth": 68.84375,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 115.796875,
+          "availableWidth": 135.171875,
+          "buttonWidth": 135.171875,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 77.203125,
+          "availableWidth": 147,
+          "buttonWidth": 147,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.46875,
+          "availableWidth": 131,
+          "buttonWidth": 131,
+          "buttonHeight": 62,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 34.484375,
+      "rootFontPx": 32,
+      "navHeight": 142,
+      "navTop": 412,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 176,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.609375,
+          "availableWidth": 47.328125,
+          "buttonWidth": 47.328125,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.46875,
+          "availableWidth": 58.203125,
+          "buttonWidth": 58.203125,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 115.796875,
+          "availableWidth": 124.53125,
+          "buttonWidth": 124.53125,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 77.203125,
+          "availableWidth": 85.9375,
+          "buttonWidth": 85.9375,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.46875,
+          "availableWidth": 182,
+          "buttonWidth": 182,
+          "buttonHeight": 62,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "risograph",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 33.953125,
+      "rootFontPx": 32,
+      "navHeight": 137,
+      "navTop": 417,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 171,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 37.453125,
+          "availableWidth": 62.203125,
+          "buttonWidth": 62.203125,
+          "buttonHeight": 59,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 49.9375,
+          "availableWidth": 74.703125,
+          "buttonWidth": 74.703125,
+          "buttonHeight": 59,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 112.34375,
+          "availableWidth": 137.09375,
+          "buttonWidth": 137.09375,
+          "buttonHeight": 59,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 74.90625,
+          "availableWidth": 153,
+          "buttonWidth": 153,
+          "buttonHeight": 59,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 49.9375,
+          "availableWidth": 137,
+          "buttonWidth": 137,
+          "buttonHeight": 59,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "risograph",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 33.640625,
+      "rootFontPx": 32,
+      "navHeight": 137,
+      "navTop": 417,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 171,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 37.453125,
+          "availableWidth": 50.78125,
+          "buttonWidth": 50.78125,
+          "buttonHeight": 59,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 49.9375,
+          "availableWidth": 63.28125,
+          "buttonWidth": 63.28125,
+          "buttonHeight": 59,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 112.34375,
+          "availableWidth": 125.6875,
+          "buttonWidth": 125.6875,
+          "buttonHeight": 59,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 74.90625,
+          "availableWidth": 88.25,
+          "buttonWidth": 88.25,
+          "buttonHeight": 59,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 49.9375,
+          "availableWidth": 188,
+          "buttonWidth": 188,
+          "buttonHeight": 59,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "storybook",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 34.09375,
+      "rootFontPx": 32,
+      "navHeight": 148,
+      "navTop": 406,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 182,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 71.109375,
+          "buttonWidth": 71.109375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 64.734375,
+          "buttonWidth": 64.734375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 124.15625,
+          "buttonWidth": 124.15625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 145.5,
+          "buttonWidth": 145.5,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 130.5,
+          "buttonWidth": 130.5,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "storybook",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 34.046875,
+      "rootFontPx": 32,
+      "navHeight": 148,
+      "navTop": 406,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 182,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 61.53125,
+          "buttonWidth": 61.53125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 55.15625,
+          "buttonWidth": 55.15625,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 114.578125,
+          "buttonWidth": 114.578125,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 82.734375,
+          "buttonWidth": 82.734375,
+          "buttonHeight": 64,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 181,
+          "buttonWidth": 181,
+          "buttonHeight": 64,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 34.359375,
+      "rootFontPx": 32,
+      "navHeight": 144,
+      "navTop": 410,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 178,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 37.125,
+          "availableWidth": 46.46875,
+          "buttonWidth": 46.46875,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 32.25,
+          "availableWidth": 44,
+          "buttonWidth": 44,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 81.09375,
+          "availableWidth": 90.453125,
+          "buttonWidth": 90.453125,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 55.734375,
+          "availableWidth": 65.078125,
+          "buttonWidth": 65.078125,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 42.015625,
+          "availableWidth": 147,
+          "buttonWidth": 147,
+          "buttonHeight": 63,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 33.6875,
+      "rootFontPx": 32,
+      "navHeight": 77,
+      "navTop": 477,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 111,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 37.125,
+          "availableWidth": 47.125,
+          "buttonWidth": 47.125,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 32.25,
+          "availableWidth": 44,
+          "buttonWidth": 44,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 81.09375,
+          "availableWidth": 91.109375,
+          "buttonWidth": 91.109375,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 55.734375,
+          "availableWidth": 65.734375,
+          "buttonWidth": 65.734375,
+          "buttonHeight": 63,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 42.015625,
+          "availableWidth": 52.03125,
+          "buttonWidth": 52.03125,
+          "buttonHeight": 63,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 320,
+      "height": 568,
+      "actualBottomClearancePx": 43.90625,
+      "rootFontPx": 32,
+      "navHeight": 144,
+      "navTop": 410,
+      "navBottom": 554,
+      "navWidth": 308,
+      "documentOverflow": 0,
+      "shellClearance": 178,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 71.109375,
+          "buttonWidth": 71.109375,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 64.734375,
+          "buttonWidth": 64.734375,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 124.15625,
+          "buttonWidth": 124.15625,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 145.5,
+          "buttonWidth": 145.5,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 130.5,
+          "buttonWidth": 130.5,
+          "buttonHeight": 62,
+          "inside": true
+        }
+      ]
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 390,
+      "height": 568,
+      "actualBottomClearancePx": 44.4375,
+      "rootFontPx": 32,
+      "navHeight": 144,
+      "navTop": 410,
+      "navBottom": 554,
+      "navWidth": 378,
+      "documentOverflow": 0,
+      "shellClearance": 178,
+      "labels": [
+        {
+          "text": "Now",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 45.15625,
+          "availableWidth": 61.53125,
+          "buttonWidth": 61.53125,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Trip",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 38.765625,
+          "availableWidth": 55.15625,
+          "buttonWidth": 55.15625,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Transport",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 98.203125,
+          "availableWidth": 114.578125,
+          "buttonWidth": 114.578125,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "Places",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 66.359375,
+          "availableWidth": 82.734375,
+          "buttonWidth": 82.734375,
+          "buttonHeight": 62,
+          "inside": true
+        },
+        {
+          "text": "More",
+          "lines": 1,
+          "whiteSpace": "nowrap",
+          "labelWidth": 51.359375,
+          "availableWidth": 181,
+          "buttonWidth": 181,
+          "buttonHeight": 62,
+          "inside": true
+        }
+      ]
+    }
+  ]
+}

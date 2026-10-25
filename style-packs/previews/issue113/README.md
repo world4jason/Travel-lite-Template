@@ -48,6 +48,10 @@ Each screenshot sheet includes **Now / Trip / Transport / Places / More** in tha
 - [Painterly Editorial](matrix-painterly-editorial-390.png) · [Geometric Print](matrix-geometric-print-390.png)
 - [Quiet Acrylic](matrix-quiet-acrylic-390.png) · [Vintage Watercolor](matrix-vintage-watercolor-390.png)
 
+## 200% text-only zoom — reviewer P1 regression and fix
+
+At 320×568, original Risograph/Storybook/Vintage navigation split labels mid-word and overlapped the final itinerary card; the fixed layout preserves readable five-tab navigation, keyboard access and dynamically clears the bottom content. [Reviewer-before and developer-after screenshots](text-zoom/README.md), including 390px after cases. All 16 appearances were tested at both widths (32/32 Chromium passes). The owner/independent approval remains pending.
+
 ## Independent review points
 
 Compare the rendered text-to-ink gap, not just declaration names. The before specimen confirms boxed text collisions in Risograph and a crowded outer map perimeter in Vintage; the after specimen opens functional rows and route labels, and retains intentional colored/printed identity. The Costs fixture deliberately contains mixed CJK/English plus an unbroken token; after correction currency amounts must remain one line even when item names wrap.
