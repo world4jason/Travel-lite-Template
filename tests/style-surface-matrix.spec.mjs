@@ -4,6 +4,7 @@
    SPDX-License-Identifier: AGPL-3.0-or-later */
 import { test, expect } from "@playwright/test";
 import { writeFileSync } from "node:fs";
+import { serveMapLibreLocally } from "./maplibre-local.mjs";
 
 const appearances = [
   { name: "editorial-light", style: "editorial", scheme: "light" },
@@ -38,7 +39,7 @@ test.describe("style surface matrix: 16 appearances x 5 tabs x 3 sizes (opt-in)"
       await page.route("https://fonts.googleapis.com/**", route =>
         route.fulfill({ status: 200, contentType: "text/css", body: "" }));
       await page.route("https://fonts.gstatic.com/**", route => route.abort());
-      await page.route("https://tiles.openfreemap.org/**", route => route.abort());
+      await serveMapLibreLocally(page);
       const states = [];
       for (const size of sizes) {
         await page.setViewportSize(size);
@@ -71,6 +72,7 @@ test.describe("style surface matrix: 16 appearances x 5 tabs x 3 sizes (opt-in)"
             if (tab.id === "map") {
               await expect(page.locator(".map-stage")).toBeVisible();
               await expect(page.locator(".transport-day-context")).toBeVisible();
+              await expect(page.locator("#runtime-map .maplibregl-ctrl").first()).toBeVisible({timeout:15000});
             }
             if (tab.id === "more") {
               const reservations = page.locator(".more-section")
@@ -84,8 +86,18 @@ test.describe("style surface matrix: 16 appearances x 5 tabs x 3 sizes (opt-in)"
             if (metrics.documentWidth > metrics.viewportWidth + 1) {
               throw new Error("horizontal overflow " + metrics.documentWidth + " > " + metrics.viewportWidth);
             }
+            // One real browser specimen per tab and appearance at 390px is
+            // retained for human inspection; a smoke PASS alone is NOT a
+            // visual sign-off on spacing, contrast, clipping or hierarchy.
+            if (size.width === 390) {
+              await page.screenshot({
+                path: testInfo.outputPath("specimen-" + tab.id + "-390.png"),
+                fullPage: false,
+                animations: "disabled",
+              });
+            }
             state.status = "PASS";
-            state.reason = "Route rendered and no document overflow (automated smoke only)";
+            state.reason = "Rendered tab + required component + no horizontal overflow (smoke only)";
           } catch (error) {
             state.status = "FAIL";
             state.reason = String(error).slice(0, 400);

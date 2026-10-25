@@ -53,7 +53,9 @@
   background: url("./assets/risograph/grain.svg") left top / 256px repeat;
   opacity: .64;
 }
-:root[data-visual-style="risograph"] :is(.app-shell, .trip-header, #view-root, .bottom-nav,
+/* The nav is functional shell chrome: keep its shared fixed-mobile and
+   in-flow desktop positioning. Never include .bottom-nav in artwork layering. */
+:root[data-visual-style="risograph"] :is(.app-shell, .trip-header, #view-root,
  .shell-context, .trip-overview-hero, .trip-overview-section) { position: relative; z-index: 2; }
 :root[data-visual-style="risograph"] * { box-shadow: none !important; text-shadow: none !important; }
 :root[data-visual-style="risograph"] h1,

@@ -267,7 +267,10 @@
    Vintage gives the parent a 6px radius: that creates mismatched corners.
    Make the parent the sole painted shape and the summary transparent.
    Ornamental perimeter frames belong to identity/chapter surfaces only. */
-:root[data-visual-style="vintage-watercolor"] .more-section {
+/* :is() in the earlier grouped panel rule uses the specificity of its
+   MOST complex member (.trip-day-view > .day-summary), even for .panel.
+   Tie that specificity here: the utility section owns its filled radius. */
+:root[data-visual-style="vintage-watercolor"] .more-section.panel {
   border:0;
   border-radius:6px;
   background:var(--yamabuki);

@@ -1,0 +1,1930 @@
+{
+  "tested_at": "2026-10-25",
+  "runner": "Mac Studio, Playwright 1.63 Chromium 153, local MapLibre tile-free style",
+  "classification": "PASS is browser route/component/overflow smoke only; not human visual acceptance",
+  "counts": {
+    "PASS": 240
+  },
+  "states": [
+    {
+      "appearance": "candy",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "candy",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "crayon-journal",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "doodle-memory-grid",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-dark",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "editorial-light",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "field-stamp",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "geometric-print",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "naive-city",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "painterly-editorial",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "paper-collage",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-acrylic",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "quiet-linocut",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "risograph",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "storybook",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "taiwan-poster",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 320,
+      "height": 568,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 320,
+      "height": 568,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 320,
+      "height": 568,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 320,
+      "height": 568,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 320,
+      "height": 568,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 390,
+      "height": 844,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 390,
+      "height": 844,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 390,
+      "height": 844,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 390,
+      "height": 844,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 390,
+      "height": 844,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 1100,
+      "height": 900,
+      "tab": "more",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 1100,
+      "height": 900,
+      "tab": "now",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 1100,
+      "height": 900,
+      "tab": "places",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 1100,
+      "height": 900,
+      "tab": "transport",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    },
+    {
+      "appearance": "vintage-watercolor",
+      "width": 1100,
+      "height": 900,
+      "tab": "trip",
+      "status": "PASS",
+      "reason": "Rendered tab + required component + no horizontal overflow (smoke only)"
+    }
+  ]
+}

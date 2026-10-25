@@ -34,6 +34,16 @@
   overflow-wrap: anywhere;
 }
 
+/* Compact entry totals are values, not paragraph text. A long CJK/
+   unbroken item title may wrap inside its own min-width:0 column, but
+   the amount must never shrink to a vertical stack of currency digits. */
+:root [data-surface-role="reading-row"].compact-row > strong {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
 /* A link, amount, or long translated title must not force a reading row
    wider than its containing section. This applies whether it is framed or
    has only a light divider; rows remain semantic DOM, not a rendered image. */

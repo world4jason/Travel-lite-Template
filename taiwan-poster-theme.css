@@ -18,7 +18,9 @@
   content:"";position:fixed;inset:0;z-index:1;pointer-events:none;
   background:url("./assets/risograph/grain.svg") center/225px repeat;opacity:.18;
 }
-:root[data-visual-style="taiwan-poster"] :is(.app-shell,.trip-header,#view-root,.bottom-nav,
+/* Background grain needs a stacking context, not control of navigation
+   positioning; shared shell decides fixed mobile vs desktop in-flow tabs. */
+:root[data-visual-style="taiwan-poster"] :is(.app-shell,.trip-header,#view-root,
   .shell-context,.trip-overview-hero) {position:relative;z-index:2;}
 :root[data-visual-style="taiwan-poster"] * {
   box-shadow:none!important;text-shadow:none!important;

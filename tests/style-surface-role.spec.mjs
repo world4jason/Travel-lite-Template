@@ -69,6 +69,17 @@ for (const look of looks) {
     await page.goto(preview + "#more");
     await expect(page.locator("html")).toHaveAttribute("data-visual-style", look.id);
     await expect(page.locator("#bottom-nav .nav-item")).toHaveCount(5);
+    // Mobile navigation is a functional, fixed shell control. Decorative
+    // packs must not accidentally set it to position:relative (Risograph
+    // previously did through a broad artwork stacking selector).
+    const navigation = page.locator("#bottom-nav");
+    await expect(navigation).toHaveCSS("position", "fixed");
+    const initialNavTop = await navigation.evaluate(node => node.getBoundingClientRect().top);
+    await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+    await expect.poll(() => navigation.evaluate((node, expectedTop) =>
+      Math.abs(node.getBoundingClientRect().top - expectedTop), initialNavTop))
+      .toBeLessThanOrEqual(1);
+    await page.evaluate(() => window.scrollTo(0, 0));
     const section = page.locator('[data-surface-role="section"]').filter({
       has: page.locator("summary").filter({ hasText: "Reservations" })
     }).first();

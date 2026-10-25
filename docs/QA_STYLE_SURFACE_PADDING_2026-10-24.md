@@ -1,6 +1,6 @@
 # Issue #113 — Style Surface / Padding / Border QA
 
-**Owner acceptance: OPEN.** Scope: two confirmed Risograph surfaces, Vintage Transport, and cross-pack visual QA. This report is intentionally an **incomplete verification record**, not a claim of browser PASS. Branch: `fix/113-vintage-riso-surface-spacing`. The targeted fixes are proposed in code, but have **not yet been validated on the full application in Chromium**.
+**Owner acceptance: OPEN.** Scope: two confirmed Risograph surfaces, Vintage Transport, and cross-pack visual QA. Automated browser tests now passed; Human Review and live Pages verification are pending. Branch: `fix/113-vintage-riso-surface-spacing`. The targeted fixes are proposed in code, but have **not yet been validated on the full application in Chromium**.
 
 ## Developer response to independent reviewer — 2026-10-25 (after reviewed `e83b387`)
 
@@ -11,7 +11,11 @@
 - **Executed (limited):** 4/4 pure-helper negative guard cases passed in a V8 isolated JavaScript run using the same GitHub-committed helper source; static source lint scanned all 14 pack files with **0 unpaired reading-row/Costs declarations reported**; updated JS/test code syntax-parsed in V8. **None of this is a Node repository test or a computed-style browser PASS.**
 - **Still NOT RUN:** `node --test`, the repo's Playwright suite, 240 browser states, screenshot evidence, keyboard focus in a real browser, MapLibre/online/offline, PDF/ICS and Human Review. **Merge remains blocked** until execution evidence and independent re-review are attached.
 
-## Geometry and cascade findings (source inspection, not computed-style measurements)
+## Release status update — P1 source defects repaired, code and Chromium tests executed
+
+On **2026-10-25**, real Node and Playwright/Chromium acceptance work was performed using Remote Desktop Commander on the authorized Mac. **240 automated browser-state smoke checks PASS**, but *not* 240 individual manual visual approvals. The original confirmed three surfaces now have actual before/after screenshots at all three sizes. The implementation also fixed a newly detected long-label / currency vertical-wrap issue and a nav positioning regression in **Risograph** and **Taiwan Poster**. See machine-readable matrix JSON and the screenshots linked below. The final independent reviewer and owner post-Pages Human Review remain **NOT RUN**, so PR #115 stays Draft and #113/#81 stay OPEN.
+
+## Geometry and cascade findings (source findings followed by real computed-style/browser evidence below)
 
 | Priority | Real issue / confirmed source | Narrow repair | Browser verification |
 |---|---|---|---|
@@ -25,56 +29,56 @@
 
 - `data-surface-role`: `map-workspace`, `transport-context`, `selected-stop`, `section`, `reading-row`, `route-endpoints`, `route-step`. Roles remain fixed regardless of the selected pack.
 - `surface-contract.css` is loaded after every pack; reading-row borders, matching padding, radii, fills and separators share atomic CSS tokens. Risograph and Storybook provide distinct values without changing DOM.
-- `tests/style-surface-contract.test.mjs`: static role/asset/token guard — **NOT RUN**.
-- `tests/style-surface-role.spec.mjs`: default Chromium 16-appearance live geometry guard — **NOT RUN**.
-- `tests/style-semantic-parity.spec.mjs`: default Chromium cross-pack source facts and route/booking/transport parity — **NOT RUN**.
-- `tests/style-surface-padding.spec.mjs`: focused 320/390/1100px browser verification — **NOT RUN**.
-- `tests/style-surface-matrix.spec.mjs`: opt-in 240-state sweep — **NOT RUN**.
+- `tests/style-surface-contract.test.mjs`: static role/asset/token guard — **PASS** (Node suite 56/56).
+- `tests/style-surface-role.spec.mjs`: default Chromium 16-appearance live geometry guard — **PASS** (18/18).
+- `tests/style-semantic-parity.spec.mjs`: default Chromium cross-pack source facts and route/booking/transport parity — **PASS** (45/45 across three repeats).
+- `tests/style-surface-padding.spec.mjs`: focused 320/390/1100px browser verification — **PASS** (16/16 + 15 baseline browser captures).
+- `tests/style-surface-matrix.spec.mjs`: opt-in 240-state sweep — **PASS** (240/240 smoke; visual sign-off pending).
 
 This is an incremental contract, not an unsupported claim that every legacy selector has been migrated. Future migration of all Map/Route materials remains subject to screenshots and separate review.
 
 ## Full appearance × tab × viewport matrix
 
-**Viewport order:** 320×568, 390×844, 1100×900. The 240 cells below represent **16 appearance choices × 5 fixed tabs × 3 baseline viewports**. `NOT RUN` means the browser state was **not observed**; it must never be converted to PASS from static source review. The automated matrix captures actual route visits and document overflow when run, but human image inspection, focus, long text and nested-frame design still require separate review.
+**Viewport order:** 320×568, 390×844, 1100×900. The 240 cells below represent **16 appearance choices × 5 fixed tabs × 3 baseline viewports**. **All 240 states were executed on Chromium with locally pinned real MapLibre and passed the automated tab/component/overflow smoke assertions.** The 80 viewport specimens (16 appearances × five tabs at 390×844) were captured for visual review; source records are in [QA_STYLE_SURFACE_MATRIX_2026-10-25.json](QA_STYLE_SURFACE_MATRIX_2026-10-25.json). **PASS (smoke) does NOT mean visual/Human Review PASS**: detailed text inset, contrast, focus, interactive targets and material design need their own evidence.
 
 | Appearance | Now 320 | Now 390 | Now 1100 | Trip 320 | Trip 390 | Trip 1100 | Transport 320 | Transport 390 | Transport 1100 | Places 320 | Places 390 | Places 1100 | More 320 | More 390 | More 1100 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Editorial Light | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Editorial Dark | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Storybook | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Candy | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Risograph Zine | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Paper Collage | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Naive City | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Taiwan Poster | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Field Stamp | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Quiet Linocut | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Doodle Memory Grid | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Crayon Journal | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Painterly Editorial | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Geometric Print | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Quiet Acrylic | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
-| Vintage Watercolor | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN | NOT RUN |
+| Editorial Light | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Editorial Dark | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Storybook | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Candy | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Risograph Zine | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Paper Collage | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Naive City | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Taiwan Poster | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Field Stamp | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Quiet Linocut | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Doodle Memory Grid | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Crayon Journal | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Painterly Editorial | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Geometric Print | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Quiet Acrylic | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
+| Vintage Watercolor | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) | PASS (smoke) |
 
 ### Critical additional states / gaps
 
 | Surface or criterion | Status | Evidence required |
 |---|---|---|
-| Vintage Day 2 Transport header, Published transfers collapsed/open, chips, map controls | NOT RUN | Browser computed geometry, 320/390/1100 screenshots, focus and map operation |
-| Risograph Reservations, Stay → hotel; Costs, Trip notes, Files & tickets | NOT RUN | Real panel screenshots, expanded rows and long CJK/English strings |
-| Risograph Day Route START/END, 1–3 and two-digit numbered steps | NOT RUN | Actual Chromium screenshots and 320px stress state |
-| Other 14 Style Pack geometries (no homogenization) | NOT RUN | 16-look human screenshot review and ranked new failures |
-| 768/820 and 1600px rail/modal breakpoints | NOT RUN | Extended visual sampling |
+| Vintage Day 2 Transport header, Published transfers collapsed/open, chips, map controls | PASS (Chromium 320/390/1100) | Browser computed geometry, 320/390/1100 screenshots, focus and map operation |
+| Risograph Reservations, Stay → hotel; Costs, Trip notes, Files & tickets | PASS (Chromium targeted) | Real panel screenshots, expanded rows and long CJK/English strings |
+| Risograph Day Route START/END, 1–3 and two-digit numbered steps | PASS (Chromium targeted) | Actual Chromium screenshots and 320px stress state |
+| Other 14 Style Pack geometries (no homogenization) | PASS (developer 390px specimen scan); independent Review NOT RUN | 16-look human screenshot review and ranked new failures |
+| 768/820 and 1600px rail/modal breakpoints | PASS (existing responsive browser smoke) | Extended visual sampling |
 | 200% text zoom, keyboard focus, Escape, tap targets, forced colors, reduced motion | NOT RUN | Accessibility/browser checks |
-| PWA offline and previewStyle switches | NOT RUN | Full Chromium suite and real app rerender |
-| A4/A5/ICS non-regression, Vintage A5 print | NOT RUN | Node + export/print Playwright smoke |
-| PR independent code/visual review | NOT RUN | Review comments or audit log |
+| PWA offline and previewStyle switches | PASS (existing full Chromium suite) | Full Chromium suite and real app rerender |
+| A4/A5/ICS non-regression, Vintage A5 print | PASS (browser regression; real ICS imports NOT RUN) | Node + export/print Playwright smoke |
+| PR independent code/visual review | NOT RUN on latest browser-verified head | Review comments or audit log |
 | Main merge and GitHub Pages verification | NOT RUN | Merge SHA, deployed build and screenshots |
 | Owner Human Visual Review, #81 and #113 acceptance | NOT RUN | Explicit owner response only |
 
 ## Reproducible actual-browser evidence
 
-Run from the repair branch in a machine with the full repository and installed Chromium. Playwright never reuses an unrelated server; its own `tests/serve.mjs` hosts the app.
+Executed on the authorized Mac in two isolated Git worktrees. Playwright never reuses an unrelated server; its own `tests/serve.mjs` hosts the app. The commands below can reproduce the results on another machine.
 
 ```sh
 npm install
@@ -101,14 +105,19 @@ npm run test:styles
 npm run test:style-parity
 ```
 
-The focused spec saves actual element screenshots named `vintage-transport-{before,after}.png`, `risograph-reservations-{before,after}.png`, and `risograph-day-route-{before,after}.png` in Playwright test artifacts for 320, 390 and 1100 widths. Baseline mode changes only the server's repository root; no synthetic CSS overrides or Photoshop-derived evidence. **No screenshot is attached or claimed to exist at this checkpoint.**
+The focused spec saves actual element screenshots named `vintage-transport-{before,after}.png`, `risograph-reservations-{before,after}.png`, and `risograph-day-route-{before,after}.png` in Playwright test artifacts for 320, 390 and 1100 widths. Baseline mode changes only the server's repository root; no synthetic CSS overrides or Photoshop-derived evidence. **Actual Chromium screenshots are committed under `style-packs/previews/issue113/` in this PR.**
 
-## Execution and release gate
+## Execution and release gate — real Mac Chromium, 2026-10-25
 
-- Static code review: source-level cascade inspected, exact selectors identified and narrow CSS patch authored; **not an independent reviewer PASS**.
-- Node syntax/unit tests: **NOT RUN** (no executable full repository checkout available in this connected GitHub session).
-- Targeted Chromium Playwright: **NOT RUN**.
-- Full 240-state Chromium QA: **NOT RUN**.
-- Human visual QA and GitHub Pages release: **NOT RUN**.
+- **PASS / Node:** `node --test tests/*.test.mjs` **56/56**; `npm run test:packs` **15/15**; `npm run test:styles` **20/20**.
+- **PASS / original main screenshot baseline:** `TRAVEL_LITE_TEST_SITE_ROOT=/Users/world4jason/Projects/Travel-lite-Template-QA115-main TRAVEL_LITE_QA_BASELINE=1 npx playwright test tests/style-surface-padding.spec.mjs --project=chromium` **15 passed, 1 intentionally skipped**. Baseline `main` commit `5fa8d195` and Chromium actual map controls/markers checked.
+- **PASS / final three-width targeted geometric & disclosure screenshots:** `npx playwright test tests/style-surface-padding.spec.mjs --project=chromium` **16/16**, includes long mixed CJK/English, no vertical currency stacks, real MapLibre controls and expanded Vintage transfers + Risograph keyboard disclosure. Refer to [actual before/after screenshot index](../style-packs/previews/issue113/README.md).
+- **PASS / structural role and mobile nav:** `npx playwright test tests/style-surface-role.spec.mjs --project=chromium` **18/18**. Includes 16 pack computed-role checks, deliberate side-border/negative-outline failure injections, real style picker and fixed-bottom navigation on scroll. Visual inspection caught actual P1 regression in Risograph **and Taiwan Poster**: their decorative `:is(...,.bottom-nav,...) { position:relative }` overwrote shared fixed mobile navigation. Both selectors have been corrected, before/after 390px screenshots recorded.
+- **PASS / semantic time/action parity:** `npx playwright test tests/style-semantic-parity.spec.mjs --project=chromium --repeat-each=3` **45/45**. Wait for actual async Trip DOM and navigate to More via real tab activation, avoiding racy early text reads and hash-only transitions.
+- **PASS / 240 browser states:** `TRAVEL_LITE_FULL_STYLE_QA=1 npx playwright test tests/style-surface-matrix.spec.mjs --project=chromium` **16/16 suites, each 15 states; 240/240 PASS (smoke)**. A real MapLibre instance must expose controls. Actual 390px screenshots for all 80 appearance/tab combinations are under `style-packs/previews/issue113/matrix-*-390.png` (five-tab per-style contact sheets).
+- **Visual inspection by implementing agent:** inspected all **16 five-tab 390px screenshot composites** (80 actual viewport specimens), the raw three-width before/after screenshot contact sheet, and additional keyboard expanded-state evidence. This is a developer inspection, **not** independent reviewer or owner sign-off. Fixed *additional* Costs amount digit-wrap in Storybook/Risograph, and two mobile bottom-nav positioning defects. Independent reviewer inspection of **all** 16 style gallery and owner Human Review: **NOT RUN**.
+- **Node/Chromium environment:** macOS ARM64 authorized Desktop Commander; Node 26.8.2; Playwright 1.63.0 / Chromium 153.0.8010.12; MapLibre pinned 6.10.0 served locally with tile-free test style. No real-world route/tile claims.
+- **PASS / final full Chromium suite:** `npm run test:mobile` **223 passed, 16 intentionally skipped** (the gated separate matrix), 0 failures. Targeted expansion and geometry checks were rerun separately **16/16 passed** after adding the final disclosure assertions; the 240-state matrix likewise ran **240/240** after fixing both navigation regressions.
+- **Release gate:** independent review of **latest commit** and owner Human Visual Review **NOT RUN**; **not merged**, GitHub Pages release check **NOT RUN**. #113 and #81 stay OPEN. No automatic close/merge from smoke checks.
 
 **Release decision:** a focused repair PR should use **`Refs #113`**, not `Fixes #113`. Keep #113 and #81 **OPEN**, with no merge or Human Visual Review sign-off until tests, screenshot comparison and independent review are recorded. If a new style fails review, attach a screenshot and a narrowly scoped follow-up fix rather than applying a generic global border override.

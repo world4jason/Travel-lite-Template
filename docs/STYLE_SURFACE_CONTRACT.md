@@ -73,6 +73,14 @@ A new static guard detects `border`, `border-left/right`, `border-inline*`, `bor
 
 **Known differences pending #116:** illustrated Trip uses `<ol>/<li>/<time>` and localized flexible `Time TBD`, while Editorial/Risograph use `<section>/<div>` and raw `TBD`. Current scoped tests verify factual/time/action parity without rewriting the renderer. Any actual behavior drift found by those tests requires a focused fix; unifying markup remains #116.
 
+## Navigation is not an ornamental surface
+
+The primary `.bottom-nav` is **functional responsive shell chrome**, not decoration. The shared shell owns its `position:fixed` behavior on phones and in-flow/sticky desktop placement. A Style Pack may change its paper, ink, radius and active-state visuals, but **MUST NOT** put `.bottom-nav` in a broad `:is(...){position:relative}` selector or otherwise override navigation positioning/scroll semantics. Real 390px five-tab screenshots caught this existing flaw in **Risograph** and **Taiwan Poster**; both were repaired in PR #115. The 16-appearance default Chromium role test now measures computed `position:fixed` and the nav's viewport-relative top before and after scrolling.
+
+CSS `:is(...)` adopts the **highest specificity** of its selectors, even if a simpler member matches. For example, a broad `:is(.panel, .trip-day-view > .day-summary, ...)` perimeter can unexpectedly outrank `... .more-section`, even if the frame is actually a More section. The Vintage fix explicitly scopes `.more-section.panel` to regain ownership. Inspect the **computed cascade** in a real browser; loading an override later is not a specificity guarantee.
+
+Long mixed-language expense titles are flexible and may wrap; the associated amount is a single atomic value and `[data-surface-role="reading-row"].compact-row > strong` must not vertically break its currency digits. The 320/390/1100 browser tests include intentionally long CJK/English descriptions to catch this.
+
 ## Ownership and invariants
 
 1. **Shared layout** owns semantic/source order, flex/grid, breakpoint shell, scroll rails, map hit targets, details/dialog behavior and fallback. A Style Pack can alter deliberate presentation/composition but must preserve those invariants.

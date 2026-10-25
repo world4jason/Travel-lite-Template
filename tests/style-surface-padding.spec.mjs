@@ -3,6 +3,7 @@
    SPDX-License-Identifier: AGPL-3.0-or-later */
 import { test, expect } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { serveMapLibreLocally } from "./maplibre-local.mjs";
 
 const baseline = process.env.TRAVEL_LITE_QA_BASELINE === "1";
 const sample = JSON.parse(readFileSync(new URL("../trip.json", import.meta.url), "utf8"));
@@ -16,7 +17,7 @@ test.beforeEach(async ({ page }) => {
   await page.route("https://fonts.googleapis.com/**", route =>
     route.fulfill({ status: 200, contentType: "text/css", body: "" }));
   await page.route("https://fonts.gstatic.com/**", route => route.abort());
-  await page.route("https://tiles.openfreemap.org/**", route => route.abort());
+  await serveMapLibreLocally(page);
 });
 
 async function noDocumentOverflow(page) {
@@ -47,8 +48,18 @@ for (const size of sizes) {
     await expect(panel).toBeVisible();
     await expect(panel.locator(".map-heading h2")).toContainText("Asakusa");
     await expect(panel.locator(".transport-day-context > summary")).toContainText("Published transfers");
+    // Screenshots must show a real interactive map and its controls, not just
+    // an unresolved "Loading planned stops" skeleton from blocked CDNs.
+    await expect(panel.locator("#runtime-map .maplibregl-ctrl").first()).toBeVisible({timeout:15000});
+    await expect(panel.locator("#runtime-map .map-marker").first()).toBeVisible();
     if (baseline) {
       await panel.screenshot({ path: testInfo.outputPath("vintage-transport-before.png") });
+      const transfer = panel.locator(".transport-day-context");
+      await transfer.locator(":scope > summary").focus();
+      await page.keyboard.press("Enter");
+      await expect(transfer).toHaveAttribute("open", "");
+      await expect(transfer.locator(".transport-leg-list > li")).toHaveCount(2);
+      await panel.screenshot({ path: testInfo.outputPath("vintage-transport-expanded-before.png") });
       return;
     }
     const geometry = await panel.evaluate(node => {
@@ -78,6 +89,13 @@ for (const size of sizes) {
     expect(Math.abs(geometry.mapWidth - geometry.parentWidth), "Keep map pan/zoom area full width").toBeLessThanOrEqual(2);
     await noDocumentOverflow(page);
     await panel.screenshot({ path: testInfo.outputPath("vintage-transport-after.png") });
+    const transfer = panel.locator(".transport-day-context");
+    await transfer.locator(":scope > summary").focus();
+    await page.keyboard.press("Enter");
+    await expect(transfer).toHaveAttribute("open", "");
+    await expect(transfer.locator(".transport-leg-list > li")).toHaveCount(2);
+    await noDocumentOverflow(page);
+    await panel.screenshot({ path: testInfo.outputPath("vintage-transport-expanded-after.png") });
   });
 
   test("Risograph Reservations and reading rows use open typography at " + size.width, async ({ page }, testInfo) => {
@@ -131,6 +149,16 @@ for (const size of sizes) {
     }
     await noDocumentOverflow(page);
     await reservations.screenshot({ path: testInfo.outputPath("risograph-reservations-after.png") });
+    // Exercise native disclosure keyboard behavior in both directions.
+    // The published Reservations section starts open.
+    await reservations.locator(":scope > summary").focus();
+    await page.keyboard.press("Enter");
+    await expect(reservations).not.toHaveAttribute("open", "");
+    await expect(reservations.locator(".info-row").first()).toBeHidden();
+    await page.keyboard.press("Enter");
+    await expect(reservations).toHaveAttribute("open", "");
+    await expect(reservations.locator(".info-row").first()).toContainText("Shibuya hotel");
+    await noDocumentOverflow(page);
   });
 
   for (const look of ["risograph", "storybook"]) {
@@ -180,6 +208,30 @@ for (const size of sizes) {
       expect(geometry.rightInset).toBeGreaterThanOrEqual(threshold);
       expect(geometry.leftTextGap).toBeGreaterThanOrEqual(threshold);
       expect(geometry.rightTextGap).toBeGreaterThanOrEqual(threshold);
+      // Long mixed-language cost labels must wrap, but currency values must
+      // stay horizontally readable (no "¥6\n0\n0" vertical stacks).
+      const amounts = await section.locator(".info-row.compact-row > strong").evaluateAll(nodes =>
+        nodes.map(node => {
+          const rect = node.getBoundingClientRect();
+          const parent = node.parentElement.getBoundingClientRect();
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          return {
+            nowrap: getComputedStyle(node).whiteSpace,
+            fragments: range.getClientRects().length,
+            left: rect.left,
+            right: rect.right,
+            parentLeft: parent.left,
+            parentRight: parent.right,
+          };
+        }));
+      expect(amounts).toHaveLength(2);
+      for (const amount of amounts) {
+        expect(amount.nowrap).toBe("nowrap");
+        expect(amount.fragments).toBe(1);
+        expect(amount.left).toBeGreaterThanOrEqual(amount.parentLeft);
+        expect(amount.right).toBeLessThanOrEqual(amount.parentRight + 1);
+      }
       await noDocumentOverflow(page);
       await section.screenshot({ path: testInfo.outputPath(look + "-costs-after.png") });
     });

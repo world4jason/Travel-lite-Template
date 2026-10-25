@@ -33,9 +33,12 @@ for (const look of looks) {
     }));
     await page.goto(url + "#trip/day/" + day.date);
     await expect(page.locator("html")).toHaveAttribute("data-visual-style", look);
+    // Wait for the async itinerary renderer before snapshotting titles.
+    // Reading allTextContents() first could return [] when the style flag
+    // was already present but trip.json rendering had not yet completed.
+    await expect(page.locator(".trip-v2-item")).toHaveCount(day.items.length);
     expect(await page.locator(".trip-v2-item .item-heading > h3").allTextContents())
       .toEqual(day.items.map(item => item.title));
-    await expect(page.locator(".trip-v2-item")).toHaveCount(day.items.length);
     for (const item of await page.locator(".trip-v2-item").all()) await expect(item).toBeVisible();
     // Derive the renderer mode from its actual registry, not a style-ID list:
     // Risograph also enables the illustrated <ol>/<li>/<time> branch.
@@ -76,7 +79,11 @@ for (const look of looks) {
     const publishedRoute = await page.locator('[data-surface-role="route-step"]').allTextContents();
     expect(publishedRoute.map(line => line.replace(/^\d+/, "").trim())).toEqual(day.routeSummary);
 
-    await page.goto(url + "#more");
+    // The button navigation is synchronous with the app renderer. A second
+    // page.goto() on the same path with only a changed hash can race the
+    // hashchange handler immediately after keyboard interaction.
+    await page.locator('#bottom-nav [data-view="more"]').click();
+    await expect(page.locator('#bottom-nav [data-view="more"]')).toHaveClass(/active/);
     await expect(page.locator("#bottom-nav .nav-item")).toHaveCount(5);
     const reservation = page.locator('[data-surface-role="section"]').filter({
       has: page.locator("summary").filter({ hasText: "Reservations" }),
