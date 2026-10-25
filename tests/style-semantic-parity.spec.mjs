@@ -37,9 +37,13 @@ for (const look of looks) {
       .toEqual(day.items.map(item => item.title));
     await expect(page.locator(".trip-v2-item")).toHaveCount(day.items.length);
     for (const item of await page.locator(".trip-v2-item").all()) await expect(item).toBeVisible();
-    // Source-fact parity under illustrated <time> and Editorial/Riso <div>
-    // branches. They intentionally differ in DOM semantics until #116.
-    const illustrated = !["editorial", "risograph"].includes(look);
+    // Derive the renderer mode from its actual registry, not a style-ID list:
+    // Risograph also enables the illustrated <ol>/<li>/<time> branch.
+    // Editorial remains a <section>/<div> timeline until #116.
+    const illustrated = await page.evaluate(() => isIllustratedStyle());
+    await expect(page.locator(".trip-v2-timeline")).toHaveCount(1);
+    expect(await page.locator(".trip-v2-timeline").evaluate(node => node.tagName))
+      .toBe(illustrated ? "OL" : "SECTION");
     const rendered = page.locator(".trip-v2-item");
     for (const [index, item] of trip.days[0].items.entries()) {
       const card = rendered.nth(index);
