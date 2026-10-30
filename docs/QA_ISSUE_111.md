@@ -23,3 +23,21 @@ Real Playwright screenshots: [Day 2 selected (390px)](qa-issue111/places-filter-
 ## Release gate
 
 **Draft / DO NOT MERGE** until independent review of #109 and then #111, with a valid stacked diff, successful full tests and owner-approved history/date UX. After #109 is merged, retarget #111 to `main`, review diff again, merge, verify GitHub Pages, obtain owner Human Review, then close #111. Keep #109 OPEN pending its own review and deployment acceptance.
+
+
+## Review follow-up — 2026-10-31
+
+Independent source review found that an explicit `#places` link only reset the
+filter during a history event. On a fresh document, hydration could restore Day 2
+and silently rewrite the All days URL to that date.
+
+A real Chromium negative regression reproduced this on the original `c163bfa`
+runtime: **expected 3 cards, received 2**. The no-hash restoration control passed.
+The router now applies the explicit All days route on initial load as well as
+history navigation. No-hash visits still restore the device filter, and valid
+date/detail links keep their existing precedence.
+
+- `TRAVEL_LITE_TEST_PORT=4439 npx playwright test tests/issue111-places-history.spec.mjs --project=chromium`: **18 PASS / 0 FAIL** after the fix, including native Back/Forward, reload, offline PWA, legacy links, trip isolation, and both new cold-start cases.
+- [Fresh All days route at 390px](qa-issue111/places-explicit-all-cold-start-390.png) is actual Chromium evidence, inspected alongside the 320/390/1100 filtered views. This is Agent visual QA, not owner sign-off.
+- Service Worker shell cache changes to `shell-v47-places-explicit-route` so returning clients receive the corrected runtime.
+- Full post-integration regression, renewed independent review and Pages evidence are recorded on PR #118. This targeted checkpoint does not waive them. Owner Human Review remains pending and #111 must remain open until that acceptance.

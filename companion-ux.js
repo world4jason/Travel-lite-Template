@@ -367,7 +367,11 @@
         // Invalid dates have one stable canonical list URL and no extra
         // browser History entry.
         if (selected === "all") history.replaceState(history.state, "", location.pathname + location.search + "#places");
-      } else if (navigating && parts[1] !== "item") window.TravelLitePlaces?.applyRouteDate("all");
+      } else if (parts[1] !== "item" && window.TravelLitePlaces?.getFilterDate() !== "all") {
+        // An explicit All days link wins over the hydrated device filter,
+        // including the first document load; a visit without a hash keeps it.
+        window.TravelLitePlaces?.applyRouteDate("all");
+      }
       render();
     } else if (VIEW_META[parts[0]]) { state.view = parts[0]; render(); }
     window.setTimeout(() => { applyingHash = false; }, 0);

@@ -221,3 +221,38 @@ test("malformed Places date hash fails to a stable All days route",async({page})
   await page.locator('[data-places-date="2026-10-04"]').click();
   await expect(page.locator(".places-card")).toHaveCount(2);
 });
+
+
+test("explicit All days link overrides a saved filter on a fresh page and reload",async({page,context,baseURL},testInfo)=>{
+  await page.goto("/#places");
+  await page.locator('[data-places-date="2026-10-04"]').click();
+  await expect.poll(() => page.evaluate(() => TravelLiteStorage.get(tripKey("places:date")))).toBe("2026-10-04");
+  const fresh=await context.newPage();
+  try {
+    await fresh.setViewportSize({width:390,height:844});
+    // A fresh document is essential: same-document hashchange already worked.
+    await fresh.goto(baseURL+"/#places");
+    await expect(fresh.locator(".places-card")).toHaveCount(3);
+    await expect(fresh.locator('[data-places-date="all"]')).toHaveAttribute("aria-pressed","true");
+    await expect(fresh).toHaveURL(/#places$/);
+    await fresh.screenshot({path:testInfo.outputPath("places-explicit-all-cold-start-390.png"),animations:"disabled"});
+    await fresh.reload();
+    await expect(fresh.locator(".places-card")).toHaveCount(3);
+    await expect(fresh).toHaveURL(/#places$/);
+    await expect.poll(() => fresh.evaluate(() => TravelLiteStorage.get(tripKey("places:date")))).toBe("all");
+  } finally { await fresh.close(); }
+});
+
+test("no explicit route restores the device filter on a fresh page",async({page,context,baseURL})=>{
+  await page.goto("/#now");
+  await page.locator('[data-view="places"]').click();
+  await page.locator('[data-places-date="2026-10-04"]').click();
+  await expect.poll(() => page.evaluate(() => TravelLiteStorage.get(tripKey("places:date")))).toBe("2026-10-04");
+  const fresh=await context.newPage();
+  try {
+    await fresh.goto(baseURL+"/");
+    await expect(fresh.locator(".places-card")).toHaveCount(2);
+    await expect(fresh.locator('[data-places-date="2026-10-04"]')).toHaveAttribute("aria-pressed","true");
+    await expect(fresh).toHaveURL(/#places\/day\/2026-10-04$/);
+  } finally { await fresh.close(); }
+});
