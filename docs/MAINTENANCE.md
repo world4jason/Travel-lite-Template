@@ -85,7 +85,7 @@ The harness freezes time against an isolated 32-day stress fixture and covers:
 - 820 tablet portrait
 - 1100 compact desktop
 - 1600 wide desktop
-- Now / Trip / Map / Check / More
+- Now / Trip / Transport / Places / More, plus legacy `#map` / `#check` deep links
 - long-trip navigation
 - fully untimed Today Brief
 - long mixed-language/generated strings: every `title` / `label` / `location` / `prompt` / `subtitle` / `name` / `note` in the fixture carries an unbroken token, so a new component cannot escape coverage by having short sample text
@@ -98,7 +98,7 @@ A second invariant covers controls: every visible interactive element (links, bu
 
 The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead of the CDN, answers map style requests with a minimal local style (tiles are blocked), and checks the Map view only after a real map has initialised; a silent fallback fails the run. The fallback message has its own test, and the Map is rechecked after selecting another stop. When `runtime-features.js` moves to a new MapLibre version, bump the devDependency to the same version; the spec refuses to run if they differ.
 
-## Built-in Style Pack review (14 audited packs, 15 visible looks)
+## Built-in Style Pack review (15 Style IDs, 16 visible looks)
 
 `npm run test:mobile` also runs `tests/style-options.spec.mjs`, `tests/phase2-packs.spec.mjs`, `tests/style-settings.spec.mjs`, `tests/nine-looks.spec.mjs`, `tests/second-prompt-batch.spec.mjs` and `tests/responsive-style-picker.spec.mjs` (separate from the 32-day default fixture). Verify:
 
@@ -110,7 +110,7 @@ The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead 
 - the optional ordered timeline, TBD, transport labels and curated emphasis preserve actual itinerary truth
 - both OS reduced motion and the per-trip local motion control stop animations
 - no overlap/overflow at narrow, tablet and desktop widths, offline cache includes optional assets
-- More → Appearance instantly switches all fifteen appearances with no reload, persists per trip, preserves dark theme on returning to Editorial, and remains keyboard-reachable
+- More → Appearance instantly switches all sixteen appearances with no reload, persists per trip, preserves dark theme on returning to Editorial, and remains keyboard-reachable
 - collapsed More control stays compact; 320–767px modal bottom sheet keeps header/footer fixed while tile grid scrolls, selecting a tile closes the sheet; ≥768px right drawer remains open for live style comparisons
 - native dialog must close through Escape, backdrop click, Done/×, preserve focus trapping, return focus to the current trigger after re-render, and honor reduced motion
 - verify screenshots for both viewport modes and real Megan-trip before merging or publishing
@@ -136,17 +136,17 @@ The base template should continue to satisfy:
 - a selected day shows route-at-a-glance + compact timeline
 - transfer context is static/pre-researched and never presented as live transit
 - itinerary rows keep an action budget: small map action + optional overflow, not repeated large buttons
-- `Map` only shows already-planned stops and numbers markers in itinerary order
+- `Transport` only shows already-planned stops and numbers map markers in itinerary order
 - selected map stop is visually distinct
 - no route optimization/live routing is introduced
 - Google Maps/external handoff remains available if the interactive map fails
 - phone Map can use most of the remaining viewport without breaking bottom-nav safe areas
-- `Check` persists completion in IndexedDB with localStorage fallback
+- Preparation & checklists in `More`, and the legacy `#check` route, persist the same completion state in IndexedDB with localStorage fallback
 - `More` remains reference-oriented
 - provider failure never blocks core itinerary/reference use
 - header distinguishes network data from an offline snapshot when possible
 - Web Share/copy-link preserves current read-only context
-- deep links can restore Now / Trip overview / Trip day / Map stop / Check / More
+- deep links can restore Now / Trip overview / Trip day / Transport stop / Places list or item / More, with legacy `#map` and `#check` links retained
 - simple `ui.locale` / `ui.labels` customization does not fork trip data
 - phone layout remains usable on a narrow viewport
 - compact desktop reveals a persistent day rail without squeezing the main view
@@ -199,6 +199,8 @@ Test direct loads for at least:
 #trip/overview
 #trip/day/<date>
 #map/day/<date>/stop/<id>
+#places
+#places/item/<id>
 #check
 #more
 ```
@@ -255,8 +257,8 @@ Verify:
 - left trip-day/reference rail, main content, and right context rail are all visible
 - right rail content matches the active view
 - Now rail does not duplicate Trip-day context
-- Map rail shows selected-stop details rather than the whole timeline
-- Check rail shows completion/incomplete items
+- Transport rail shows selected-stop details rather than the whole timeline
+- Places and More show device/offline context; the legacy `#check` rail shows completion/incomplete items
 
 Across all sizes:
 
@@ -284,7 +286,7 @@ For phone-facing template changes, validate the page shell at **320 / 360 / 375 
 - readable page content must reflow without document-level horizontal scrolling
 - explicit horizontal rails such as day chips / route chips may scroll inside their own component
 - long generated titles, place names, URLs, and mixed CJK/Latin strings must wrap rather than widen the page
-- check `document.documentElement.scrollWidth <= window.innerWidth` on Now, Trip, Check, More, and the non-map shell around Map
+- check `document.documentElement.scrollWidth <= window.innerWidth` on Now, Trip, Places, More, the legacy `#check` view, and the non-map shell around Transport
 - full-bleed mobile surfaces must derive their negative margin from `--shell-gutter`; do not hard-code a different gutter
 - do not use page-level overflow clipping as the only fix for an overflowing child
 

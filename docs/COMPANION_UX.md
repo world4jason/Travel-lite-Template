@@ -15,7 +15,7 @@ Do not crowd the phone header with every utility control.
 - local trip time remains persistent
 - Share is available from **More** on phone
 - network/offline freshness is available from **More** on phone
-- Appearance remains under **More → Theme**
+- Appearance remains under **More → Appearance**
 - desktop/tablet may keep richer header utilities where width permits
 - these are composition changes only; they must not fork shared trip data or business logic
 
@@ -113,9 +113,9 @@ Recommended composition:
 | Now | previous/current/next, reminders, weather; or Today Brief context on a fully untimed day |
 | Trip overview | trip stats, open decisions, reservations |
 | Trip day | weather, reminders, day reservations, unresolved decisions |
-| Map | selected stop details and specialist links |
-| Check | completion summary and important incomplete items |
-| More | device/offline freshness |
+| Transport | selected stop details and specialist links |
+| Legacy `#check` checklist | completion summary and important incomplete items |
+| Places / More | device/offline freshness |
 
 Do not repeat the entire day timeline in the rail.
 
@@ -182,6 +182,8 @@ Supported deep-link shapes may include:
 #trip/overview
 #trip/day/2026-10-04
 #map/day/2026-10-04/stop/d2-ueno
+#places
+#places/item/d2-ueno
 #check
 #more
 ```

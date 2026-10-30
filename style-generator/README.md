@@ -2,7 +2,7 @@
 
 > **Status: extraction prototype / brief-only.** 這一層已實際整理兩批不同用途的自然語言風格提示詞、總計十二份去重後的 Style Brief，並可用 Node.js 零額外套件驗證結果；**不是已自動生成六套可直接部署的 CSS**。
 
-Travel Lite 已有 **Functional Template**（行程、地圖、清單、Now 等）及 14 套既有風格加上 Vintage Watercolor Style Pack。兩批文字提示詞的 12 份 Style Brief 是規格來源，而不是直接注入程式的 CSS。
+Travel Lite 已有 **Functional Template**（行程、地圖、清單、Now 等）及 15 個內建 Style IDs（Editorial 加 14 套選用風格，含 Vintage Watercolor），共 16 種外觀。兩批文字提示詞的 12 份 Style Brief 是規格來源，而不是直接注入程式的 CSS。
 
 ## Frame & Ornament Grammar（新抽取必填）
 
@@ -89,7 +89,7 @@ node style-generator/render-style-prompt.mjs ./my-style-brief.json ./my-output-d
 
 1. **抽取色彩，不等於量到照片顏色。** 糖果風描述了五個色名，但完全沒有 HEX；紙雕／橡皮章要求從照片抽色，照片缺席時只可保留抽色策略。
 2. **互斥指示要攤開。** 五色 + 額外純白描邊可能變六色；Zine 同時要求固定字與不能多字。輸出 `audit.conflicts` 而非替使用者默默決定。
-3. **媒介轉換不能照搬版型。** 明信片 3:4、年份落款、固定英文標語，不能套用在 Now/Trip/Map/Check/More。
+3. **媒介轉換不能照搬版型。** 明信片 3:4、年份落款、固定英文標語，不能套用在 Now/Trip/Transport/Places/More。
 4. **不要以風格推斷現實。** 「台灣復古」不代表原照片有機車、騎樓或燈籠；沒有照片時不能自動指認地標。網站真實地址、日期與訂位資訊只能取自使用者行程。
 
 ## Style Brief 與完成的 Style Pack 有何差異？
@@ -102,7 +102,7 @@ node style-generator/render-style-prompt.mjs ./my-style-brief.json ./my-output-d
 | 來源照片必須有嗎？ | 不用，沒照片記錄 unknowns | 製作忠於照片的素材才需要 |
 | 會直接塞進 `trip.json` 嗎？ | **不會** | 只有已安裝、白名單允許的 `ui.visualStyle` 才能選用 |
 
-第二階段已完成**十二個人工實作並驗收的提示詞來源網站風格**，包含 Candy Geometry、Paper Collage、Naive City Sketch、Risograph Zine、Taiwan Retro Poster、Field Stamp。另有 Editorial 和原 Megan Storybook，形成十四套 Style Pack／十五種外觀。[查看可用的 Style Pack 與測試](../style-packs/README.md)。
+第二階段已完成**十二個人工實作並驗收的提示詞來源網站風格**，包含 Candy Geometry、Paper Collage、Naive City Sketch、Risograph Zine、Taiwan Retro Poster、Field Stamp。加上 Editorial、原 Megan Storybook 與另行設計的 Vintage Watercolor，目前共有十五個 Style IDs／十六種外觀。[查看可用的 Style Pack 與測試](../style-packs/README.md)。
 
 這十二份原始來源 JSON 依然標為 `brief-only`，用來追溯當初的風格敘述，不是可執行程式；真正可選用的是另外經過程式碼與視覺驗收的 CSS／SVG + Manifest。下一個未知提示詞的 [E2E 驗收 Runbook](./NEXT_PROMPT_E2E.md) 已定義：抽取、審查、產生素材／樣式、模板／Megan 雙站一致性驗收、上線確認。
 

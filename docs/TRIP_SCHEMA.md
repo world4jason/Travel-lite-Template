@@ -94,7 +94,7 @@ More displays a collapsed Research Notes index only when source links exist, der
 Published GitHub Pages trip.json is public. Never insert passports, personal secrets, booking tokens or sensitive contact details. Always hand off real-time operations to official providers; an offline snapshot cannot verify live conditions.
 ## `ui`
 
-Website `vintage-watercolor` is a reviewed, bounded, optional built-in Style Pack after its implementation reaches `main`. All published trip data semantics stay unchanged, and the post-deployment Human visual review remains separate.
+Website `vintage-watercolor` is a released, bounded, optional built-in Style Pack. The 2026-10-25 owner acceptance is recorded in [#81](https://github.com/world4jason/Travel-lite-Template/issues/81) and [#113](https://github.com/world4jason/Travel-lite-Template/issues/113). All published trip data semantics stay unchanged; future changes still require their own review and acceptance.
 
 
 ```json
@@ -112,13 +112,13 @@ Website `vintage-watercolor` is a reviewed, bounded, optional built-in Style Pac
 ```
 
 - `theme` supports `system`, `light`, and `dark`
-- `visualStyle`: optional `editorial` (default, supports Auto/Light/Dark), `storybook` (paper-white illustrated, light-only), `candy` (five-fill candy sticker variant, light-only), `risograph` (indigo print), `paper-collage` (layered cardstock), `naive-city` (hand-drawn gouache), `taiwan-poster` (mid-century screenprint), `field-stamp` (carved ink), or the six new packs `quiet-linocut`, `doodle-memory-grid`, `crayon-journal`, `painterly-editorial`, `geometric-print`, `quiet-acrylic`; all opt-ins are light-only. Invalid values fall back to `editorial`. [Reviewed pack manifests](../style-packs/README.md).
+- `visualStyle`: optional `editorial` (default, supports Auto/Light/Dark), `storybook` (paper-white illustrated, light-only), `candy` (five-fill candy sticker variant, light-only), `risograph` (indigo print), `paper-collage` (layered cardstock), `naive-city` (hand-drawn gouache), `taiwan-poster` (mid-century screenprint), `field-stamp` (carved ink), or the six new packs `quiet-linocut`, `doodle-memory-grid`, `crayon-journal`, `painterly-editorial`, `geometric-print`, `quiet-acrylic`, plus `vintage-watercolor` (archival watercolor); all 14 opt-ins are light-only. Invalid values fall back to `editorial`. [Reviewed pack manifests](../style-packs/README.md).
 - Arbitrary prompts and Style Brief files are **not** `ui.visualStyle` values. The [Style Prompt Lab](../style-generator/README.md) describes the offline, non-executable extraction step. Only Style Packs implemented and reviewed in code may become selectable.
-- The publisher's `ui.visualStyle` is the shared **default**, not a compulsory choice for every traveller. **More → Appearance** lets a traveller select among fifteen visible looks (Editorial Light/Dark plus thirteen other packs) locally; the choice persists only on that device and per trip (key `<trip.id>:visualStyle`). **Follow trip default** removes it. Valid `?previewStyle=...` URLs have temporary precedence and do not change shared data. Nothing here permits arbitrary CSS or style IDs.
+- The publisher's `ui.visualStyle` is the shared **default**, not a compulsory choice for every traveller. **More → Appearance** lets a traveller select among sixteen visible looks (Editorial Light/Dark plus fourteen other packs) locally; the choice persists only on that device and per trip (key `<trip.id>:visualStyle`). **Follow trip default** removes it. Valid `?previewStyle=...` URLs have temporary precedence and do not change shared data. Nothing here permits arbitrary CSS or style IDs.
 - Storybook, Candy, Naive City, Doodle Memory Grid and Crayon Journal request Huninn when available with safe fallback fonts; Candy adds a reviewed stylesheet overlay. Risograph uses an independent static print overlay. All packs cache their local assets offline. No arbitrary style name, URL or custom CSS can be loaded from `trip.json`.
 - built-in shell/companion labels cover English and Traditional Chinese
 - `labels` is optional and only overrides shell/companion copy; it is not a second itinerary translation
-- unused views may be removed from `bottomNav`
+- the template normalizes `bottomNav` in memory to the fixed five destinations `["now", "trip", "map", "places", "more"]`; legacy arrays do not remove primary tabs or change the published source. `map` is Transport's internal ID, and `#check` remains a legacy checklist link.
 - phone and desktop reuse the same view list and data
 
 ## `providers`
