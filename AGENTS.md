@@ -146,11 +146,21 @@ See [`docs/SOURCE_NORMALIZATION.md`](./docs/SOURCE_NORMALIZATION.md).
 ## Five-tab IA and admission data
 
 The canonical tab navigation is Now/Trip/Transport/Places/More.
+For Places navigation changes (#111), preserve its browser history contract:
+`#places` All days; `#places/day/DATE` explicit source-backed day filter;
+`#places/item/ID` unique-only detail. Filter choice stays this-device,
+per-trip and does not change Trip's selected day until explicit handoff.
+Native Back/Forward, reload, long-trip select, legacy #map/#check and
+#109 fail-closed ambiguity must pass real Chromium tests. No sixth tab.
 Transport uses the MapLibre map with old #map links and no invented
 service or routes. Places lists researched planned destinations and
 existing optional infoCard data, not generic unknown meals or tourism
 recommendations. Use explicit itemId/itemIds to link reservation/files
-to Places, never title guessing. Private tickets/QRs are not appropriate
+to Places, never title guessing. Before every trip publication run
+`npm run test:integrity -- path/to/trip.json` to verify globally unique IDs
+across all day items. Any duplicate remains a publishing blocker; do not
+silently regenerate IDs or infer ticket destinations. The runtime displays
+source paths and disables ambiguous cross-page links while preserving records. Private tickets/QRs are not appropriate
 for public GitHub Pages. The checklist lives in More and retains the
 existing device-only keys and legacy #check route. Full transit and
 deep multi-section Guide are separate #104/#105 and #82 backlog.

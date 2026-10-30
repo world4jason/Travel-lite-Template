@@ -4,6 +4,7 @@ const state = {
   selectedDate: null,
   selectedMapItemId: null,
   selectedPlaceId: null,
+  itemIdentity: null, // global source-ID audit and unique lookup
   checks: {},
   todos: {},
   personalNote: "",
@@ -161,6 +162,26 @@ const escapeHtml = (value = "") => String(value)
   .replaceAll("'", "&#039;");
 
 const escapeAttr = escapeHtml;
+
+// Publisher-visible validation: source IDs and source paths only; never echo
+// reservation/file payloads, infer which duplicate was intended or silently
+// rename a public ID. This text is HTML-escaped at the final output boundary.
+function itemIdentityWarningHtml() {
+  const issues = state.itemIdentity?.diagnostics || [];
+  if (!issues.length) return "";
+  const zh = /^zh/i.test(state.data?.ui?.locale || "");
+  const heading = zh ? "行程來源資料需修正" : "Published itinerary IDs need correction";
+  const intro = zh
+    ? "部分行程項目 ID 重複或無效；跨頁連結、對應票券與深連結已安全停用，不影響原始行程與 More 中的預約。"
+    : "Some itinerary item IDs are duplicated or invalid. Ambiguous cross-page links and booking associations are disabled; original itinerary and More records are preserved.";
+  const rows = issues.map(problem => {
+    const id = problem.id === null ? (zh ? "無效 ID" : "Invalid ID") : escapeHtml(problem.id);
+    return `<li><code>${id}</code> — ${problem.paths.map(path => `<code>${escapeHtml(path)}</code>`).join(", ")}</li>`;
+  }).join("");
+  return `<section class="panel places-identity-warning" role="alert" data-item-identity-warning>
+    <strong>${heading}</strong><p>${intro}</p><ul>${rows}</ul></section>`;
+}
+
 function safePublishedUrl(raw) {
   if (typeof raw !== "string" || !raw.trim()) return "";
   try {
@@ -371,7 +392,7 @@ function openMapFor(item) {
 function itemActions(item) {
   if (!item) return "";
   const open = googleMapsOpenUrl(item);
-  const hasMap = Boolean(googleMapsEmbedUrl(item));
+  const hasMap = Boolean(googleMapsEmbedUrl(item)) && state.itemIdentity?.isUnique(item.id);
   return `<div class="action-row">
     ${hasMap ? `<button class="button-link primary" type="button" data-map-item="${escapeAttr(item.id)}">Show map</button>` : ""}
     ${open ? `<a class="button-link" href="${escapeAttr(open)}" target="_blank" rel="noreferrer">Directions ↗</a>` : ""}
@@ -381,8 +402,8 @@ function itemActions(item) {
 function attachMapButtons() {
   root.querySelectorAll("[data-map-item]").forEach((button) => {
     button.addEventListener("click", () => {
-      const item = flattenItems().find((candidate) => candidate.id === button.dataset.mapItem);
-      openMapFor(item);
+      const ref = state.itemIdentity?.resolveUnique(button.dataset.mapItem);
+      if (ref) openMapFor(ref.item);
     });
   });
 }
@@ -460,8 +481,11 @@ function renderMap() {
   if (selectedDay) state.selectedDate = selectedDay.date;
   const dayTabs = state.data.days.map((day) => `<button class="day-chip ${day.date === state.selectedDate ? "active" : ""}" type="button" data-map-date="${escapeAttr(day.date)}"><strong>${escapeHtml(day.label)}</strong><small>${prettyDate(day.date)}</small></button>`).join("");
   const items = getMappableItemsForSelectedDay();
-  const selected = items.find((item) => item.id === state.selectedMapItemId) || items[0] || null;
-  state.selectedMapItemId = selected?.id || null;
+  const requested = Boolean(state.selectedMapItemId);
+  const selected = requested
+    ? items.find(item => item.id === state.selectedMapItemId && state.itemIdentity?.isUnique(item.id)) || null
+    : items.find(item => state.itemIdentity?.isUnique(item.id)) || null;
+  state.selectedMapItemId = selected?.id || (requested ? state.selectedMapItemId : null);
   const placeChips = items.map((item) => `<button class="place-chip ${item.id === state.selectedMapItemId ? "active" : ""}" type="button" data-map-place="${escapeAttr(item.id)}"><span>${escapeHtml(item.start || "")}</span>${escapeHtml(item.title)}</button>`).join("");
   root.innerHTML = `<div class="day-tabs" aria-label="Map days">${dayTabs}</div><section class="panel map-panel">
     <div class="map-heading"><div><p class="eyebrow">Google Maps</p><h2>${escapeHtml(selectedDay?.title || "Trip map")}</h2></div>${selected ? `<a class="button-link" href="${escapeAttr(googleMapsOpenUrl(selected))}" target="_blank" rel="noreferrer">Open ↗</a>` : ""}</div>
@@ -809,6 +833,7 @@ function renderMore() {
       </section>`
     : `<section class="panel settings-card"><div><p class="eyebrow">Appearance</p><h2>Theme</h2></div><div class="theme-switcher">${["system", "dark", "light"].map((theme) => `<button type="button" data-theme="${theme}" class="theme-button ${state.theme === theme ? "active" : ""}">${theme}</button>`).join("")}</div><div class="storage-status"><span>Local storage</span><strong id="storage-mode">${escapeHtml(TravelLiteStorage.getMode())}</strong></div></section>`;
   root.innerHTML = `<div class="view-stack">
+    ${itemIdentityWarningHtml()}
     ${preparation}
     <section class="panel local-note-card"><div class="check-title-row"><h2>Personal note</h2><span>this device</span></div><textarea id="personal-note" rows="4" placeholder="Gate change, room number, quick memo…">${escapeHtml(state.personalNote)}</textarea><p class="helper-text">Saved locally in IndexedDB; falls back to localStorage if needed.</p></section>
     ${travelEssentialsSection(state.data.essentials, labelMore("Travel Essentials", "行前與交通指南"), moreZh)}
@@ -952,6 +977,8 @@ async function registerServiceWorker() {
 async function boot() {
   try {
     state.data = await loadTripData();
+    // Validate all published item IDs once before cross-page links or hashes.
+    state.itemIdentity = window.TravelLiteItemIds.audit(state.data.days);
     const storedStyle = await TravelLiteStorage.get(tripKey("visualStyle"));
     state.stylePreference = VISUAL_STYLES.has(storedStyle) ? storedStyle : null;
     activateVisualStyle();

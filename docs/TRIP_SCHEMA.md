@@ -449,8 +449,36 @@ The Transport tab uses the internal map ID for compatibility with legacy
 the main interactive checklist now resides in More. Legacy bottomNav
 values migrate in-memory and never delete personal checklist state.
 
+Places route policy (#111): `#places` represents All days, `#places/day/YYYY-MM-DD`
+represents a validated published day filter, and `#places/item/ITEM_ID` is
+an ID-only detail route subject to #109 uniqueness validation. The date
+filter is device-only and stored under `<trip.id>:places:date`; it never edits
+published `trip.json` or changes Trip/Transport selectedDate just because
+someone filters Places. Clicking list/date/detail uses browser history entries
+so native Back/Forward replays published source facts; page reload and direct
+date links restore valid selection. Invalid dates fall back to All days.
+Direct detail links override the visible list while retaining the stored
+filter for the in-app Back action. Handoffs to Trip/Transport set their source
+date intentionally. Legacy `#map`, `#transport` and `#check` retain their
+existing meanings. This is a Places UX contract, not a new backend or tab.
+
 Places reuses published days[].items and optional item.infoCard only,
-with a unique stable item ID per scheduled place. Trip can link directly
+with a globally unique stable item ID across **every** `days[].items[]` record,
+including transport, accommodation and other non-Places.
+
+**Issue #109 fail-closed policy:** run `npm run test:integrity` (or pass a
+destination trip.json path) before publishing. The deterministic audit lists
+duplicate IDs and every conflicting source path, such as
+`days[0].items[2]` and `days[1].items[0]`, without exposing booking payloads.
+Legacy missing/empty IDs retain the existing generated fallback in memory;
+collisions involving fallback IDs are still blocked. Do not silently rename
+published IDs or deduplicate visits: bookmarks and linked records may use them.
+
+An ambiguous ID-only Places/Trip/Transport link never resolves the first matching
+venue. Places retains the original source cards but disables ambiguous details,
+and displays a publisher warning with escaped source ID/path information.
+`reservations[].itemId` / `itemIds` and `files[].itemId` / `itemIds` associations
+are suppressed for ambiguous IDs; unmodified records remain in More. Trip can link directly
 to #places/item/ITEM_ID. Unconfirmed meals without a researched venue,
 transport segments and accommodation are excluded from Places.
 
