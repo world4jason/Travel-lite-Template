@@ -161,3 +161,171 @@ test("malicious duplicate source IDs render as text, never executable markup",as
   await expect(page.locator("[data-item-identity-warning] img")).toHaveCount(0);
   await expect(page.locator(".places-ambiguous-card")).toHaveCount(2);
 });
+
+
+// Residual #109 review finding: a personal choice must never cross source items.
+const personal = label => ({
+  mode: "personal", prompt: `Preference ${label}`,
+  options: [
+    { id: "a", label: `A ${label}`, note: `First ${label}` },
+    { id: "b", label: `B ${label}`, note: `Second ${label}` },
+  ],
+});
+const personalTrip = () => {
+  const trip = data();
+  trip.days[0].items[0].decision = personal("Day1");
+  trip.days[1].items[1].decision = personal("Day2");
+  return trip;
+};
+const decisionCard = (page, label) => page.locator("#view-root .decision-card").filter({ hasText: `Preference ${label}` });
+async function storedPersonal(page) {
+  return page.evaluate(() => TravelLiteStorage.get(tripKey("personalDecisions")));
+}
+async function staleChoice(page, itemId, optionId) {
+  return page.evaluate(async ({ itemId, optionId }) => {
+    const originalSet = TravelLiteStorage.set;
+    let writes = 0;
+    TravelLiteStorage.set = async (...args) => { writes++; return originalSet.apply(TravelLiteStorage, args); };
+    const button = document.createElement("button");
+    button.dataset.personalDecisionItem = itemId;
+    button.dataset.personalDecisionOption = optionId;
+    document.querySelector("#view-root").append(button);
+    button.click();
+    await Promise.resolve();
+    button.remove();
+    TravelLiteStorage.set = originalSet;
+    return writes;
+  }, { itemId, optionId });
+}
+
+for (const width of [320, 390, 1100]) {
+  test(`personal choices stay stored but unattributed after a cross-day ID collision at ${width}`, async ({ page }, info) => {
+    const trip = personalTrip();
+    const id = trip.days[0].items[0].id;
+    await page.setViewportSize({ width, height: width === 1100 ? 900 : 844 });
+    await provide(page, trip);
+    await page.goto("/#trip/day/2026-10-03");
+    const day1 = decisionCard(page, "Day1");
+    await day1.getByRole("button", { name: "A Day1", exact: true }).click();
+    await expect.poll(async () => (await storedPersonal(page))?.[id]).toBe("a");
+    await expect(day1.getByRole("button", { name: "✓ A Day1", exact: true })).toHaveClass(/primary/);
+
+    // A later published revision introduces the duplicate; old device data is
+    // retained, but neither source item may claim ownership of that selection.
+    trip.days[1].items[1].id = id;
+    await page.unroute("**/trip.json");
+    await provide(page, trip);
+    await page.reload();
+    await expect.poll(() => page.evaluate(key => state.personalDecisionSelections[key], id)).toBe("a");
+    await expect(day1.locator("[data-personal-decision-unavailable]")).toBeVisible();
+    await expect(day1.locator("[data-personal-decision-unavailable]")).toContainText("Ask the trip publisher");
+    await expect(day1.locator("[data-personal-decision-item]")).toHaveCount(0);
+    await expect(day1).toContainText("A Day1");
+    await expect(day1).not.toContainText("✓ A Day1");
+    await page.goto("/#trip/day/2026-10-04");
+    const day2 = decisionCard(page, "Day2");
+    await expect(day2.locator("[data-personal-decision-unavailable]")).toBeVisible();
+    await expect(day2.locator("[data-personal-decision-unavailable]")).toContainText("Ask the trip publisher");
+    await expect(day2.locator("[data-personal-decision-item]")).toHaveCount(0);
+    await expect(day2).toContainText("A Day2");
+    await expect(day2).not.toContainText("✓ A Day2");
+    await day2.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: info.outputPath(`personal-collision-${width}.png`), animations: "disabled" });
+    expect(await staleChoice(page, id, "b")).toBe(0);
+    expect((await storedPersonal(page))[id]).toBe("a");
+    expect(await page.evaluate(key => state.personalDecisionSelections[key], id)).toBe("a");
+  });
+}
+
+test("unique personal selections persist without selecting another day's choice", async ({ page }) => {
+  const trip = personalTrip();
+  const id = trip.days[0].items[0].id;
+  await provide(page, trip);
+  await page.goto("/#trip/day/2026-10-03");
+  await decisionCard(page, "Day1").getByRole("button", { name: "B Day1", exact: true }).click();
+  await expect.poll(async () => (await storedPersonal(page))?.[id]).toBe("b");
+  await page.goto("/#trip/day/2026-10-04");
+  await expect(decisionCard(page, "Day2").getByRole("button", { name: "A Day2", exact: true })).toBeVisible();
+  await expect(decisionCard(page, "Day2").locator("button.primary")).toHaveCount(0);
+  await page.goto("/#trip/day/2026-10-03");
+  await expect(decisionCard(page, "Day1").getByRole("button", { name: "✓ B Day1", exact: true })).toHaveClass(/primary/);
+  await page.reload();
+  await expect(decisionCard(page, "Day1").getByRole("button", { name: "✓ B Day1", exact: true })).toHaveClass(/primary/);
+  expect(await staleChoice(page, id, "unpublished-option")).toBe(0);
+  expect((await storedPersonal(page))[id]).toBe("b");
+});
+
+for (const invalid of [" invalid-id ", 123]) {
+  test(`malformed personal item ID stays read-only: ${JSON.stringify(invalid)}`, async ({ page }) => {
+    const trip = personalTrip();
+    trip.days[0].items[0].id = invalid;
+    await provide(page, trip);
+    await page.goto("/#trip/day/2026-10-03");
+    const card = decisionCard(page, "Day1");
+    await expect(card.locator("[data-personal-decision-unavailable]")).toBeVisible();
+    await expect(card.locator("[data-personal-decision-item]")).toHaveCount(0);
+    await expect(card).toContainText("A Day1");
+    expect(await staleChoice(page, String(invalid), "a")).toBe(0);
+  });
+}
+
+test("a generated missing-ID fallback remains usable only while globally unique", async ({ page }) => {
+  const trip = personalTrip();
+  delete trip.days[0].items[0].id;
+  const fallback = `${trip.days[0].id}-item-1`;
+  await provide(page, trip);
+  await page.goto("/#trip/day/2026-10-03");
+  await decisionCard(page, "Day1").getByRole("button", { name: "A Day1", exact: true }).click();
+  await expect.poll(async () => (await storedPersonal(page))?.[fallback]).toBe("a");
+  trip.days[1].items[1].id = fallback;
+  await page.unroute("**/trip.json");
+  await provide(page, trip);
+  await page.reload();
+  await expect(decisionCard(page, "Day1").locator("[data-personal-decision-unavailable]")).toBeVisible();
+  await page.goto("/#trip/day/2026-10-04");
+  await expect(decisionCard(page, "Day2").locator("[data-personal-decision-unavailable]")).toBeVisible();
+  await expect(decisionCard(page, "Day2")).not.toContainText("✓ A Day2");
+  expect(await staleChoice(page, fallback, "b")).toBe(0);
+  expect((await storedPersonal(page))[fallback]).toBe("a");
+});
+
+test("shared source decisions remain readable and reject synthetic personal controls", async ({ page }) => {
+  const trip = personalTrip();
+  const first = trip.days[0].items[0];
+  const second = trip.days[1].items[1];
+  first.decision.mode = "shared";
+  second.decision.resolvedOptionId = "b";
+  await provide(page, trip);
+  await page.goto("/#trip/day/2026-10-03");
+  await expect(decisionCard(page, "Day1")).toContainText("A Day1");
+  await expect(decisionCard(page, "Day1").locator("[data-personal-decision-item]")).toHaveCount(0);
+  expect(await staleChoice(page, first.id, "a")).toBe(0);
+  expect(await staleChoice(page, "unknown-item-id", "a")).toBe(0);
+  await page.goto("/#trip/day/2026-10-04");
+  await expect(decisionCard(page, "Day2")).toContainText("✓ B Day2");
+  expect(await staleChoice(page, second.id, "a")).toBe(0);
+  // Even a duplicate source ID must not hide an explicit published resolution.
+  second.id = first.id;
+  await page.unroute("**/trip.json");
+  await provide(page, trip);
+  await page.reload();
+  await expect(decisionCard(page, "Day2")).toContainText("✓ B Day2");
+  await expect(decisionCard(page, "Day2").locator("[data-personal-decision-item]")).toHaveCount(0);
+  expect(await staleChoice(page, first.id, "a")).toBe(0);
+});
+
+test("personal choice storage treats prototype-shaped unique IDs as own data", async ({ page }) => {
+  const trip = personalTrip();
+  trip.days[0].items[0].id = "__proto__";
+  await provide(page, trip);
+  await page.goto("/#trip/day/2026-10-03");
+  await decisionCard(page, "Day1").getByRole("button", { name: "B Day1", exact: true }).click();
+  // Read the own value inside the browser: transporting an object with a
+  // __proto__ key can discard that key in the test driver's object serializer.
+  await expect.poll(() => page.evaluate(async () => {
+    const saved = await TravelLiteStorage.get(tripKey("personalDecisions"));
+    return saved && Object.hasOwn(saved, "__proto__") ? saved["__proto__"] : null;
+  })).toBe("b");
+  await page.reload();
+  await expect(decisionCard(page, "Day1").getByRole("button", { name: "✓ B Day1", exact: true })).toHaveClass(/primary/);
+});

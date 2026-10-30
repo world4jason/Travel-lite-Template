@@ -30,3 +30,21 @@ Ambiguous IDs **do not identify a unique visit**. Places list preserves every so
 ## Release boundary
 
 Code/Node/Chromium developer QA is not independent Agent code review, merged deployment, GitHub Pages verification or owner Human Review. Keep #109 Open, and keep PR Draft / `Refs #109` until review. No automated ID renumbering, data editing, new tab or changes to A4/A5/ICS.
+
+
+## Personal-decision review repair — 2026-10-31
+
+The independent review's residual ID-collision blocker is repaired. Device-only selections are read/rendered only for an audited unique valid item ID. The mutation handler independently resolves that ID and checks the source is still personal, unresolved and contains the requested option. Duplicate/invalid/unknown IDs and stale controls cannot save or project a preference. Existing local selections are preserved; published shared/resolved decisions remain readable. Prototype-shaped IDs are treated as own data.
+
+A source audit found no additional per-itinerary-item personal preference read/write outlet outside runtime-handoff.js; companion-ux.js hydrates the whole stored map only. Its generic copy cleanup now preserves the explicit localized unavailable warning. Actual screenshot review caught that cleanup initially overwriting the explanation; the regression now asserts the publisher guidance text as well as disabled controls.
+
+Executed on the authorized Mac:
+
+- Original runtime + new collision regression: **FAIL as expected**, confirming the missing fail-closed personal state.
+- `node --test tests/*.test.mjs`: **61 PASS / 0 FAIL**.
+- `TRAVEL_LITE_TEST_PORT=4437 npx playwright test tests/issue109-identity.spec.mjs tests/places-transport.spec.mjs --project=chromium`: **38 PASS / 0 FAIL** after the repair (nine new cases).
+- Cases cover a persisted valid selection followed by a newer cross-day collision, no false selection on either day, zero stale-handler writes, unique-ID persistence, malformed/generated fallback IDs, source resolutions, unknown options, and own-property storage.
+- Real warning screenshots were inspected at [320px](qa-issue109/personal-collision-320.png), [390px](qa-issue109/personal-collision-390.png), and [1100px](qa-issue109/personal-collision-1100.png).
+- Service Worker cache is `shell-v46-personal-decision-identity` under the existing site prefix.
+
+Full regression, renewed independent review and Pages verification are recorded on PR #117. These are Agent checks, not owner Human Review; #109 remains open until its post-deployment owner acceptance. Published trip.json and export/ICS behavior are unchanged.
