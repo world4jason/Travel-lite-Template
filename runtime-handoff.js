@@ -97,13 +97,18 @@
     const resolvedId = decision.resolvedOptionId || "";
     const resolved = options.find((option) => option.id === resolvedId);
     const personalMode = decision.mode === "personal";
-    const personalSelectedId = personalMode ? (state.personalDecisionSelections[item.id] || "") : "";
+    // A device preference has no trustworthy owner when the published ID is
+    // ambiguous or malformed. Keep stored values untouched, but never project
+    // one onto a different source item. Shared resolvedOptionId stays authoritative.
+    const personalAllowed = personalMode && state.itemIdentity?.isUnique(item.id);
+    const personalSelectedId = personalAllowed && Object.hasOwn(state.personalDecisionSelections, item.id)
+      ? state.personalDecisionSelections[item.id] : "";
     const personalSelected = options.find((option) => option.id === personalSelectedId);
 
     let optionHtml = "";
     if (resolved) {
       optionHtml = `<div class="action-row"><span class="button-link primary">✓ ${escapeHtml(resolved.label)}</span></div>${resolved.note ? `<p class="helper-text">${escapeHtml(resolved.note)}</p>` : ""}`;
-    } else if (personalMode) {
+    } else if (personalAllowed) {
       optionHtml = `<div class="action-row">${options.map((option) => {
         const active = option.id === personalSelectedId;
         return `<button class="button-link ${active ? "primary" : ""}" type="button" data-personal-decision-item="${escapeAttr(item.id)}" data-personal-decision-option="${escapeAttr(option.id)}">${active ? "✓ " : ""}${escapeHtml(option.label)}</button>`;
@@ -112,7 +117,11 @@
       optionHtml = `<div class="decision-options">${options.map((option) => {
         const optionUrl = safeUrl(option.url);
         return `<div class="text-card"><strong>${escapeHtml(option.label)}</strong>${option.note ? `<p>${escapeHtml(option.note)}</p>` : ""}${optionUrl ? `<a class="inline-link" href="${escapeAttr(optionUrl)}" target="_blank" rel="noreferrer">Open option ↗</a>` : ""}</div>`;
-      }).join("")}</div><p class="helper-text">Shared TBD · this page does not resolve it locally. Update trip.json after the group decides.</p>`;
+      }).join("")}</div>${personalMode
+        ? `<p class="helper-text" data-personal-decision-unavailable>${/^zh/i.test(state.data?.ui?.locale || "")
+          ? "此行程項目的識別資料有誤，暫時無法選擇個人偏好。請聯絡行程發布者確認；原有偏好仍保留於此裝置。"
+          : "Personal preference unavailable for this stop because its published reference is not unique or valid. Ask the trip publisher to check it. Existing preferences remain saved on this device."}</p>`
+        : `<p class="helper-text">Shared TBD · this page does not resolve it locally. Update trip.json after the group decides.</p>`}`;
     }
 
     const resolutionUrl = safeUrl(decision.resolutionLink?.url);
@@ -188,7 +197,15 @@
   root.addEventListener("click", async (event) => {
     const button = event.target.closest("[data-personal-decision-item][data-personal-decision-option]");
     if (!button || !state.data) return;
-    state.personalDecisionSelections[button.dataset.personalDecisionItem] = button.dataset.personalDecisionOption;
+    const itemId = button.dataset.personalDecisionItem;
+    const optionId = button.dataset.personalDecisionOption;
+    // Recheck the source at the mutation boundary, including stale controls.
+    const item = state.itemIdentity?.resolveUnique(itemId)?.item;
+    if (!item || item.decision?.mode !== "personal") return;
+    const options = decisionOptions(item);
+    if (options.some(option => option.id === item.decision.resolvedOptionId) ||
+        !options.some(option => option.id === optionId)) return;
+    state.personalDecisionSelections = { ...state.personalDecisionSelections, [itemId]: optionId };
     await TravelLiteStorage.set(tripKey("personalDecisions"), state.personalDecisionSelections);
     render();
   });

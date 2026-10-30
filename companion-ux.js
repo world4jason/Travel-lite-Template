@@ -232,7 +232,9 @@
   }
 
   function cleanTravelerCopy() {
-    root.querySelectorAll(".helper-text").forEach((node) => {
+    // Identity warnings already carry a specific, localized explanation.
+    // Do not replace them with the generic personal-preference status label.
+    root.querySelectorAll(".helper-text:not([data-personal-decision-unavailable])").forEach((node) => {
       const next = /Shared TBD|update trip\.json/i.test(node.textContent) ? t("notDecided") : (/Personal preference/i.test(node.textContent) ? `${t("myPreference")} · ${t("deviceOnly")}` : "");
       if (next && node.textContent !== next) node.textContent = next;
     });
