@@ -13,7 +13,9 @@ test("Vintage Watercolor stays opt-in, preserving real overview text and optiona
     // Fixed navigation is shown in a separate viewport screenshot.
     style:"#bottom-nav { visibility:hidden !important; }"});
   await page.goto("/?previewStyle=storybook#trip/overview");
-  expect(await page.locator(".trip-overview-day h3").allTextContents()).toEqual(existing);
+  // trip.json and the overview render asynchronously after document load.
+  // Keep the exact content comparison, waiting for the observable result.
+  await expect(page.locator(".trip-overview-day h3")).toHaveText(existing);
   await page.goto(preview);
   await page.locator(".trip-overview-day").first().click();
   await expect(page.locator(".trip-v2-item").first()).toBeVisible();
