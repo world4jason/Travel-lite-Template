@@ -1,6 +1,6 @@
 # Style Pack Surface Contract (v1) — Geometry is not a color token
 
-**Status: implementation in Draft PR #115; Chromium/Human visual acceptance NOT RUN.** This contract prevents the #113 family of frame-and-text collisions without making 16 appearances share the same artistic geometry.
+**Status: released in [PR #115](https://github.com/world4jason/Travel-lite-Template/pull/115); owner Human Visual Acceptance recorded on 2026-10-25 in [#113](https://github.com/world4jason/Travel-lite-Template/issues/113) and [#81](https://github.com/world4jason/Travel-lite-Template/issues/81), after merge and successful GitHub Pages deployment.** This is release-level acceptance, not 240 manual aesthetic reviews. The remaining Trip DOM and Map/Route geometry migration is tracked in [#116](https://github.com/world4jason/Travel-lite-Template/issues/116). This contract prevents the #113 family of frame-and-text collisions without making 16 appearances share the same artistic geometry.
 
 ## Architecture and root cause
 
@@ -71,7 +71,7 @@ The first repair found **eight more packs** with `.more-section > summary, .cost
 
 A new static guard detects `border`, `border-left/right`, `border-inline*`, `border-width` and inward `outline` declarations on reading/cost rows lacking horizontal inset. **This lint is conservative and cannot substitute for real computed CSS specificity.** A separate runtime guard now checks each side independently rather than requiring a four-sided frame, with negative cases for side-only frame injection.
 
-**Known differences pending #116:** illustrated Trip uses `<ol>/<li>/<time>` and localized flexible `Time TBD`, while Editorial/Risograph use `<section>/<div>` and raw `TBD`. Current scoped tests verify factual/time/action parity without rewriting the renderer. Any actual behavior drift found by those tests requires a focused fix; unifying markup remains #116.
+**Known differences pending #116:** illustrated Trip (including Risograph) uses `<ol>/<li>/<time>` and localized flexible `Time TBD`, while Editorial uses `<section>/<div>` and raw `TBD`. Current scoped tests verify factual/time/action parity without rewriting the renderer. Any actual behavior drift found by those tests requires a focused fix; unifying markup remains #116.
 
 ## Navigation is not an ornamental surface
 
@@ -100,14 +100,14 @@ Long mixed-language expense titles are flexible and may wrap; the associated amo
 - `npx playwright test tests/style-surface-padding.spec.mjs --project=chromium` checks three specific #113 regressions at 320/390/1100, long mixed text and real before/after capture mode.
 - `TRAVEL_LITE_FULL_STYLE_QA=1 npx playwright test tests/style-surface-matrix.spec.mjs --project=chromium` is the separately gated 240-state smoke matrix. **Smoke metrics do not replace screenshot/Human QA**.
 
-The authorized Mac later ran the real Node and Chromium suites: **255 default browser tests PASS, 16 opt-in matrix tests intentionally skipped**; the 240-state matrix and 32 zoom cases were run separately. See [QA execution ledger](./QA_STYLE_SURFACE_PADDING_2026-10-24.md). Independent review of the latest head and owner Human Review remain separate release gates.
+The authorized Mac later ran the real Node and Chromium suites: **255 default browser tests PASS, 16 opt-in matrix tests intentionally skipped**; the 240-state matrix and 32 zoom cases were run separately. See [QA execution ledger](./QA_STYLE_SURFACE_PADDING_2026-10-24.md). The subsequent independent review, merge, Pages deployment and 2026-10-25 owner acceptance for that release are recorded in #113/#81; future changes retain those separate release gates.
 
 ## Migration policy (avoid a 15-theme big bang)
 
-**Phase A / PR #115:** annotate semantic roles, move More reading-row geometry into atomic CSS tokens, repair the confirmed Vintage/Risograph collisions, add static and browser gates. In addition, Risograph Map's frame now belongs to the *map stage*, not a zero-inset workspace.
+**Phase A / PR #115 (released and accepted):** annotate semantic roles, move More reading-row geometry into atomic CSS tokens, repair the confirmed Vintage/Risograph collisions, add static and browser gates. In addition, Risograph Map's frame now belongs to the *map stage*, not a zero-inset workspace.
 
 **Phase B / [Issue #116](https://github.com/world4jason/Travel-lite-Template/issues/116), separate scoped PR only after screenshot evidence:** converge the two Trip DOM branches into one accessible hierarchy and migrate additional `map-workspace` and `route-endpoints/route-step` geometry into paired role tokens where cross-pack review proves it safe. Keep intentionally different ink, cardstock, stickers and archival frames. Do not erase pack identities with one universal border rule.
 
 **Phase C / future packs:** use this role API in the template/manifest review checklist, add screenshots for the newly introduced role at 320/390/1100 and add a targeted regression if a design needs an exception. Accept exceptions only with an explicit named role and observed computed values.
 
-**Release gate:** independent Agent code review → Node and actual Chromium → screenshots/matrix → merge → GitHub Pages → **owner Human Review**. Do not auto-close #81/#113 based on a source-only audit.
+**Release gate:** independent Agent code review → Node and actual Chromium → screenshots/matrix → merge → GitHub Pages → **owner Human Review**. Do not treat a source-only audit or the prior #81/#113 acceptance as Human Review for new changes.

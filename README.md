@@ -88,7 +88,7 @@ Also included:
 - **Offline/PWA:** after a successful first visit, the app shell and last loaded trip snapshot can remain available without network access. Weather, fresh map tiles, and external booking sites may still need internet.
 - **Read-only sharing:** share a link to the trip, a specific day, or a planned map stop; no sign-in or collaboration backend.
 - **Multi-country trips:** day/item timezone overrides for correct schedule reference.
-- **Appearance:** 14 reviewed Style Packs (15 selectable appearances, including Editorial Light/Dark), plus English / Traditional Chinese interface labels. See [styles and previews](./style-packs/README.md).
+- **Appearance:** 15 reviewed Style Packs (16 selectable appearances, including Editorial Light/Dark), plus English / Traditional Chinese interface labels. See [styles and previews](./style-packs/README.md).
 
 **Travel Lite is not:** a trip planner/editor, navigation engine, live transit tracker, booking manager, reviews database, or real-time group chat. It links to specialist tools rather than rebuilding them.
 
@@ -148,7 +148,7 @@ This is a **partial example**; retain your trip's other fields. Travelers can ch
 
 For a full gallery, style IDs, preview links, optional illustration metadata, and implementation details, see:
 
-- [Style Packs: all 14 packs / 15 appearances](./style-packs/README.md)
+- [Style Packs: all 15 packs / 16 appearances](./style-packs/README.md)
 - [Style Prompt Lab: turn visual prompts into reviewed style briefs](./style-generator/README.md)
 
 ## Export your trip: PDF / booklet / calendar
@@ -184,7 +184,7 @@ Related work: [#70 A4/A5/ICS](https://github.com/world4jason/Travel-lite-Templat
 | [`docs/SOURCE_NORMALIZATION.md`](./docs/SOURCE_NORMALIZATION.md) | Converting source itineraries faithfully into concise stop data |
 | [`docs/TIMEZONE.md`](./docs/TIMEZONE.md) | Multi-timezone interpretation and cross-date travel |
 | [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md) | Static architecture, data boundary, storage, and handoff rules |
-| [`docs/COMPANION_UX.md`](./docs/COMPANION_UX.md) | Now / Trip / Map behavior, offline states, and responsive UX |
+| [`docs/COMPANION_UX.md`](./docs/COMPANION_UX.md) | Now / Trip / Transport / Places / More behavior, legacy links, offline states, and responsive UX |
 | [`docs/MAINTENANCE.md`](./docs/MAINTENANCE.md) | Local development, cache updates, and regression checks |
 | [`AGENTS.md`](./AGENTS.md) | Guardrails for coding agents |
 | [`NOTICE.md`](./NOTICE.md) | Attribution and reused-source notes |

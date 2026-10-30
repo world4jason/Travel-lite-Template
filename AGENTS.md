@@ -216,7 +216,7 @@ wide desktop
 └── context-sensitive rail
 ```
 
-The wide right rail must depend on the current view (Now / Trip / Map / Check / More). Do not fill it with duplicate timeline content just because space exists.
+The wide right rail must depend on the current view (Now / Trip / Transport / Places / More); retain checklist context for the legacy `#check` route. Do not fill it with duplicate timeline content just because space exists.
 
 Do not duplicate data loading, storage, decision semantics, or view business logic just to support another breakpoint.
 
@@ -239,11 +239,11 @@ Appearance must support `system`, `light`, and `dark`.
 
 ## Optional visual style
 
-The original `editorial` style remains the default; only reviewed `ui.visualStyle` IDs in the hardcoded 15-pack `VISUAL_PACKS` whitelist are audited **site-level opt-ins**. Preserve the current Editorial design and its Auto/Light/Dark behavior. None of the reviewed Style Pack overlays may leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
+The original `editorial` style remains the default; the hardcoded `VISUAL_PACKS` registry contains 15 reviewed `ui.visualStyle` IDs: Editorial plus 14 **site-level opt-ins**. Preserve the current Editorial design and its Auto/Light/Dark behavior. None of the reviewed Style Pack overlays may leak into the default theme, fork trip data, alter map/booking/decision logic, or build a free-form style marketplace. Art is whitelisted (day/item `illustration` keys) and generic by default; use new trip-specific SVG assets only when authored by the project. `transportMode` and `mustGo` require source/owner evidence.
 
-All thirteen opt-in Style Packs use light surfaces. Storybook/Candy/Crayon Journal honor OS `prefers-reduced-motion` and the local More → Motion setting; Risograph remains static. Review [style-packs/README.md](./style-packs/README.md), test all fourteen packs and preview overrides, and keep inaccessible color combinations out of text/focus states.
+All fourteen opt-in Style Packs use light surfaces. Storybook/Candy/Crayon Journal honor OS `prefers-reduced-motion` and the local More → Motion setting; Risograph remains static. Review [style-packs/README.md](./style-packs/README.md), test all 15 Style IDs, all 16 appearances and preview overrides, and keep inaccessible color combinations out of text/focus states.
 
-The bounded **More → Appearance** selector allows visitors to pick from these fourteen audited packs, stored under their own trip-ID-scoped `visualStyle` key in TravelLiteStorage. This selection UI uses **one collapsed current-style row** and a native modal `<dialog>` that becomes a mobile bottom sheet (≤767px) or right drawer (≥768px). Preserve ESC/backdrop/done closing, focus containment, return focus after async style save, accessible footer and mobile auto-close versus desktop stay-open comparison. Precedence: whitelisted URL preview > on-device preference > published default. Switching must never modify shared `trip.json` or break checklists, local notes, navigation or offline cache. Selecting/resetting in More may clear the URL-only preview parameter while preserving deep links. `Follow trip default` must clear the local override.
+The bounded **More → Appearance** selector offers 16 appearances (Editorial Light/Dark plus 14 opt-in Style Packs), stored under their own trip-ID-scoped `visualStyle` key in TravelLiteStorage. This selection UI uses **one collapsed current-style row** and a native modal `<dialog>` that becomes a mobile bottom sheet (≤767px) or right drawer (≥768px). Preserve ESC/backdrop/done closing, focus containment, return focus after async style save, accessible footer and mobile auto-close versus desktop stay-open comparison. Precedence: whitelisted URL preview > on-device preference > published default. Switching must never modify shared `trip.json` or break checklists, local notes, navigation or offline cache. Selecting/resetting in More may clear the URL-only preview parameter while preserving deep links. `Follow trip default` must clear the local override.
 
 ## Offline / share / locale
 

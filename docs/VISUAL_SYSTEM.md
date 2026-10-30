@@ -487,7 +487,7 @@ The editorial hierarchy and composition must remain recognizable in both themes.
 
 ## Bounded, opt-in visual style
 
-The original Editorial Atlas remains the **default system**. A later product decision added thirteen explicit site-level styles—`storybook`, `candy`, `paper-collage`, `naive-city`, `risograph`, `taiwan-poster`, `field-stamp` and the six styles in [the second-prompt audit](../style-generator/batches/2026-10-11-editorial-posters.md)—validated through a fixed `ui.visualStyle` whitelist.
+The original Editorial Atlas remains the **default system**. A later product decision added fourteen explicit site-level styles—`storybook`, `candy`, `paper-collage`, `naive-city`, `risograph`, `taiwan-poster`, `field-stamp`, the six styles in [the second-prompt audit](../style-generator/batches/2026-10-11-editorial-posters.md), and `vintage-watercolor`—validated through a fixed `ui.visualStyle` whitelist.
 
 This is a **bounded exception** to the original 2026-09 no-preset direction. It was informed by a real user trip implementation and a requirement to reuse that outcome. It allows a **bounded built-in Style Pack picker in More → Appearance**, with a per-trip device-only override; it does not permit a free-form style editor, marketplace, arbitrary CSS/HTML injection or destination-dependent appearance inference.
 
@@ -507,10 +507,11 @@ This is a **bounded exception** to the original 2026-09 no-preset direction. It 
 | `painterly-editorial` | source-audited second prompt | pastel gouache/acrylic dry brush, airy large soft shapes |
 | `geometric-print` | source-audited second prompt | hard-edged polygon print without illustration outlines or shadows |
 | `quiet-acrylic` | source-audited second prompt | tiny thin-line acrylic motif and very large ivory-paper whitespace |
+| `vintage-watercolor` | reviewed archival watercolor pack | antique paper, original botanical ornaments, small radii and generic ink-wash art; light-only |
 
 ### Responsive Appearance selector: progressive disclosure
 
-Do not permanently render fifteen visual tiles in the More page. Show one compact row with **the currently selected Style Pack** and a clear "Change visual style" action.
+Do not permanently render all sixteen appearance tiles in the More page. Show one compact row with **the currently selected Style Pack** and a clear "Change visual style" action.
 
 - **Narrow phone (≤767px):** activate a native modal **bottom sheet**, occupying at most 88dvh by default; only the tiles scroll. Header, reset and close stay available. Selecting a tile applies it and closes the sheet so the actual itinerary is visible.
 - **Tablet / desktop (≥768px):** activate a native modal **right drawer** (max-width 550px). The rest of the page remains behind a dim overlay. The drawer stays open after selection for quick consecutive comparisons until user closes it.
@@ -521,13 +522,13 @@ Do not permanently render fifteen visual tiles in the More page. Show one compac
 Shared and invariant across styles:
 
 - single `trip.json` source of facts and state semantics
-- Now / Trip / Map / Check / More jobs and deep links
+- Now / Trip / Transport / Places / More jobs and deep links, including legacy `#map` and `#check` compatibility
 - read-only itinerary/decisions and source order
 - offline support, weather/map fallbacks and specialist handoffs
 - semantic labels, focus states, legible contrast, keyboard and motion accessibility
 - phone, compact desktop and wide desktop reachability
 
-The visual language may vary **within these fourteen controlled styles** (font families, surface grammar, radius, illustrations, timeline composition); the itinerary data model and workflow do not fork. The published default remains in `trip.json`, while a traveller may locally preview/switch using whitelisted IDs. Resetting follows the publisher default; the URL preview is temporary and higher precedence.
+The visual language may vary **within these fifteen controlled Style IDs (sixteen appearances)** (font families, surface grammar, radius, illustrations, timeline composition); the itinerary data model and workflow do not fork. The published default remains in `trip.json`, while a traveller may locally preview/switch using whitelisted IDs. Resetting follows the publisher default; the URL preview is temporary and higher precedence.
 
 All illustrative pack assets are local, statically bundled and whitelisted; the six new pack directories are described in [Style Packs](../style-packs/README.md). Storybook supports only built-in SVG illustration keys in `assets/storybook/`. Unknown art keys use the generic fallback and do not request remote images. No trip content may inject CSS, arbitrary URLs, scripts, fonts, animations, or external presets. Styles are applied by an isolated disabled-until-opted-in stylesheet, so default Editorial rendering remains unaffected.
 
