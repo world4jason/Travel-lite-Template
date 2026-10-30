@@ -16,6 +16,15 @@ Independent exploratory review of public Pages after PR #108 and source code, Ch
 ### Fixed in this follow-up: duplicate source item IDs create ambiguous admission associations
 Published item IDs must be unique across the trip. Previously Places resolved duplicate IDs to the first matching place. Reservations or files using that ID could appear linked to the wrong visit. The new guard displays a source warning and suppresses all automatically linked reservations/files when any itinerary item shares that ID, without deleting data. Actual source-side normalization should validate uniqueness before publishing. One new negative Playwright test covers the failure.
 
+### Later follow-up (Issue #111, stacked after #109; pending merge)
+
+Draft #111 now adopts native browser History entries for Places list/date/detail,
+per-trip stored day filters, validated direct `#places/day/DATE` links,
+Back/Forward/reload, and explicit Trip/Transport handoffs. New real Chromium
+acceptance tests are recorded separately in `docs/QA_ISSUE_111.md`. The
+following historical observations were accurate when first recorded on
+2026-10-18; they are not evidence of a regression on the new branch.
+
 ### Observed, not fixed: native Back semantics
 Travel Lite intentionally synchronizes route hashes via history.replaceState. Native browser Back can leave Travel Lite, rather than navigate a Place detail → Places list. The in-app Back control functions. Changing the browser history behavior requires an explicit navigation-wide design decision, not a silent UX patch.
 
