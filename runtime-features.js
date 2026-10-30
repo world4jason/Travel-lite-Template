@@ -209,10 +209,15 @@
         el.title = item.title || item.location || "Trip stop";
         el.setAttribute("aria-label", `${markerSelected ? "Selected stop: " : "Select stop: "}${item.title || item.location || "Trip stop"}`);
         el.setAttribute("aria-pressed", markerSelected ? "true" : "false");
-        el.addEventListener("click", () => {
-          state.selectedMapItemId = item.id;
-          renderMap();
-        });
+        if (state.itemIdentity?.isUnique(item.id)) {
+          el.addEventListener("click", () => {
+            state.selectedMapItemId = item.id;
+            renderMap();
+          });
+        } else {
+          el.disabled = true;
+          el.setAttribute("aria-label", "Source item ID ambiguous: selection unavailable");
+        }
 
         new maplibregl.Marker({ element: el }).setLngLat([coord.lng, coord.lat]).addTo(mapInstance);
       });
@@ -233,24 +238,29 @@
     if (selectedDay) state.selectedDate = selectedDay.date;
     const items = selectedDay?.items || [];
 
-    const selected = items.find((item) => item.id === state.selectedMapItemId)
-      || items.find(itemCoordinates)
-      || items[0]
-      || null;
-    state.selectedMapItemId = selected?.id || null;
+    const requestedId = state.selectedMapItemId;
+    const sourceSafe = item => state.itemIdentity?.isUnique(item.id) === true;
+    const selected = requestedId
+      ? items.find(item => item.id === requestedId && sourceSafe(item)) || null
+      : items.find(item => sourceSafe(item) && itemCoordinates(item))
+        || items.find(sourceSafe) || null;
+    // Never choose a different stop for an ID-only invalid/duplicate deep link.
+    state.selectedMapItemId = selected?.id || (requestedId || null);
 
     const dayTabs = state.data.days.map((day) =>
       `<button class="day-chip ${day.date === state.selectedDate ? "active" : ""}" type="button" data-runtime-map-date="${escapeAttr(day.date)}"><strong>${escapeHtml(day.label)}</strong><small>${prettyDate(day.date)}</small></button>`
     ).join("");
 
     const placeChips = items.map((item) => {
-      const active = item.id === state.selectedMapItemId;
-      return `<button class="place-chip ${active ? "active" : ""}" type="button" data-runtime-map-place="${escapeAttr(item.id)}" aria-pressed="${active ? "true" : "false"}"><span>${escapeHtml(item.start || "")}</span>${escapeHtml(item.title)}</button>`;
+      const active = selected === item; // Ambiguous ID-only routes never mark a stop selected.
+      const unique = sourceSafe(item);
+      return `<button class="place-chip ${active ? "active" : ""}" type="button" ${unique ? `data-runtime-map-place="${escapeAttr(item.id)}"` : `disabled aria-label="Ambiguous published stop ID"`} aria-pressed="${active ? "true" : "false"}"><span>${escapeHtml(item.start || "")}</span>${escapeHtml(item.title)}</button>`;
     }).join("");
 
     const googleUrl = selected ? googleMapsOpenUrl(selected) : "";
 
     root.innerHTML = `<div class="day-tabs map-day-tabs" aria-label="Map days">${dayTabs}</div>
+      ${itemIdentityWarningHtml()}
       <section class="map-panel runtime-map-panel composition-narrative" data-surface-role="map-workspace" aria-label="Trip spatial reference">
         <div class="map-heading"><div><p class="eyebrow">Spatial reference</p><h2>${escapeHtml(selectedDay?.title || "Trip map")}</h2><p class="map-heading-copy">Planned stops only · select a stop for context</p></div>${googleUrl ? `<a class="button-link map-primary-handoff" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Open in Maps ↗</a>` : ""}</div>
         ${placeChips ? `<div class="place-chips" aria-label="Planned stops">${placeChips}</div>` : ""}

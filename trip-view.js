@@ -227,8 +227,10 @@
         ? `<span class="must-go-tag" aria-label="${localized("編輯精選", "Curated highlight")}">${localized("★ 必去", "★ Highlight")}</span>`
         : "";
       const mode = transportTag(item);
-      const placeLink = window.TravelLitePlaces?.isPlace(item) ?
-        `<button type="button" class="trip-place-detail" data-open-place="${escapeAttr(item.id)}" aria-label="${escapeAttr(localized("開啟景點詳情", "Open place details"))}">${localized("景點資訊", "Place details")} ↗</button>` : "";
+      const placeLink = window.TravelLitePlaces?.isPlace(item) && state.itemIdentity?.isUnique(item.id) ?
+        `<button type="button" class="trip-place-detail" data-open-place="${escapeAttr(item.id)}" aria-label="${escapeAttr(localized("開啟景點詳情", "Open place details"))}">${localized("景點資訊", "Place details")} ↗</button>` :
+        window.TravelLitePlaces?.isPlace(item) && state.itemIdentity?.isAmbiguous(item.id)
+          ? `<span class="trip-identity-warning">${localized("來源 ID 重複，景點連結暫停", "Duplicate source ID — place link unavailable")}</span>` : "";
       const itemTop = `<div class="trip-item-top"><div><div class="item-heading"><h3>${escapeHtml(item.title)}</h3>${highlight}${kind}${placeLink}</div>${mode ? `<div class="trip-transport-meta">${mode}</div>` : ""}${item.location ? `<p>${escapeHtml(item.location)}</p>` : ""}</div>${compactActions(item)}</div>`;
       const details = `<div class="timeline-content">${itemTop}${item.note ? `<p class="timeline-note">${escapeHtml(item.note)}</p>` : ""}${supplementaryContent(item)}</div>`;
       const currentClass = isCurrent ? "current" : "";

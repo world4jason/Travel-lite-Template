@@ -12,7 +12,7 @@ export default defineConfig({
     "bottom-nav-fixed.spec.mjs", "places-transport.spec.mjs",
     "style-surface-padding.spec.mjs", "style-surface-role.spec.mjs",
     "style-semantic-parity.spec.mjs", "style-surface-matrix.spec.mjs",
-    "style-text-zoom.spec.mjs"],
+    "style-text-zoom.spec.mjs", "issue109-identity.spec.mjs"],
   fullyParallel: false,
   workers: 1,
   retries: 0,
