@@ -19,8 +19,13 @@
     const name = localized(mode.zh, mode.en);
     return `<span class="transport-tag transport-tag--${item.transportMode}" aria-label="${escapeAttr(name)}"><span aria-hidden="true">${mode.symbol}</span>${escapeHtml(name)}</span>`;
   }
+  function hasTimedStart(item) {
+    // Trip follows the published HH:MM contract in every appearance. Keep
+    // the existing end-time parser/window policy separate from this gate.
+    return /^([01]\d|2[0-3]):[0-5]\d$/.test(item.start || "");
+  }
   function timeLabel(item) {
-    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(item.start || "")) {
+    if (!hasTimedStart(item)) {
       return `<span class="timeline-time timeline-time--floating">${localized("時間未定", "Time TBD")}</span>`;
     }
     return `<time class="timeline-time" datetime="${escapeAttr(item.start)}">${escapeHtml(item.start)}</time>`;
@@ -210,15 +215,13 @@
   }
 
   function renderDay(day) {
-    const storybook = typeof isIllustratedStyle === "function" && isIllustratedStyle();
     const isNewDay = lastRenderedDate !== day.date;
     lastRenderedDate = day.date;
 
     const currentDate = zonedNow(state.data.trip.timezone).date;
     const now = zonedNow(state.data.trip.timezone);
     const timeline = (day.items || []).map((item, index) => {
-      const validTime = /^([01]\d|2[0-3]):[0-5]\d$/.test(item.start || "");
-      const isCurrent = (!storybook || validTime) && day.date === currentDate &&
+      const isCurrent = hasTimedStart(item) && day.date === currentDate &&
         now.minuteOfDay >= toMinutes(item.start) &&
         now.minuteOfDay < toMinutes(item.end || item.start);
 
@@ -234,20 +237,13 @@
       const itemTop = `<div class="trip-item-top"><div><div class="item-heading"><h3>${escapeHtml(item.title)}</h3>${highlight}${kind}${placeLink}</div>${mode ? `<div class="trip-transport-meta">${mode}</div>` : ""}${item.location ? `<p>${escapeHtml(item.location)}</p>` : ""}</div>${compactActions(item)}</div>`;
       const details = `<div class="timeline-content">${itemTop}${item.note ? `<p class="timeline-note">${escapeHtml(item.note)}</p>` : ""}${supplementaryContent(item)}</div>`;
       const currentClass = isCurrent ? "current" : "";
-      if (storybook) {
-        return `<li class="trip-stop-wrap">
-          <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}">
-            ${timeLabel(item)}${details}
-          </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}
-        </li>`;
-      }
-      return `<div class="trip-stop-wrap">
-        <article class="timeline-item trip-v2-item ${currentClass}">
-          <div class="timeline-time">${escapeHtml(item.start || "TBD")}</div>
-          <div class="timeline-rail"><div class="timeline-dot"></div></div>
+      return `<li class="trip-stop-wrap">
+        <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}">
+          ${timeLabel(item)}
+          <div class="timeline-rail" aria-hidden="true"><div class="timeline-dot"></div></div>
           ${details}
         </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}
-      </div>`;
+      </li>`;
     }).join("");
 
     const summary = `<section class="day-summary composition-identity">
@@ -257,14 +253,13 @@
         ${day.note ? `<p class="day-note">${escapeHtml(day.note)}</p>` : ""}
       </section>`;
 
-    const timelineView = storybook
-      ? `<section class="trip-timeline-section" aria-label="${localized("每日時間軸", "Day timeline")}">
-          <div class="trip-timeline-heading"><h3>${localized("每日時間軸", "Day timeline")}</h3><p>${localized("依原行程順序排列 · 未定時間保留彈性", "Published order · flexible times stay flexible")}</p></div>
-          <ol class="timeline trip-v2-timeline">${timeline || `<li class="empty-state"><p>No plans yet.</p></li>`}</ol>
-        </section>`
-      : `<section class="timeline trip-v2-timeline composition-sequence">${timeline || `<div class="empty-state"><p>No plans yet.</p></div>`}</section>`;
+    const timelineView = `<section class="trip-timeline-section" aria-labelledby="trip-timeline-title">
+        <div class="trip-timeline-heading"><h2 id="trip-timeline-title" class="trip-timeline-title">${localized("每日時間軸", "Day timeline")}</h2><p>${localized("依原行程順序排列 · 未定時間保留彈性", "Published order · flexible times stay flexible")}</p></div>
+        <ol class="timeline trip-v2-timeline composition-sequence" role="list" aria-labelledby="trip-timeline-title">${timeline}</ol>
+        ${timeline ? "" : '<div class="empty-state"><p>No plans yet.</p></div>'}
+      </section>`;
 
-    root.innerHTML = `<div class="trip-v2 trip-day-view ${storybook && isNewDay ? "day-switch-enter" : ""}">
+    root.innerHTML = `<div class="trip-v2 trip-day-view ${isNewDay ? "day-switch-enter" : ""}">
       ${tripTabs()}
       ${summary}
       ${routeSummaryCard(day)}

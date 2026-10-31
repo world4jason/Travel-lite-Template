@@ -151,15 +151,21 @@
 }
 :root[data-visual-style="risograph"] .nav-item.active :is(.nav-svg, .nav-icon) { color: var(--riso-paper); }
 :root[data-visual-style="risograph"] .nav-item:hover { border: 1px solid var(--riso-ink); }
+
+:root[data-visual-style="risograph"] .panel,
+:root[data-visual-style="risograph"] .companion-window-card,
+:root[data-visual-style="risograph"] .companion-focus,
+:root[data-visual-style="risograph"] .shell-context-slot {
+  background: var(--riso-paper);
+  border: 1px solid var(--riso-ink);
+  border-radius: 2px;
+}
 :root[data-visual-style="risograph"] .panel,
 :root[data-visual-style="risograph"] .runtime-map-panel,
 :root[data-visual-style="risograph"] .companion-window-card,
 :root[data-visual-style="risograph"] .companion-focus,
 :root[data-visual-style="risograph"] .shell-context-slot {
-  background: var(--riso-paper);
   color: var(--riso-ink);
-  border: 1px solid var(--riso-ink);
-  border-radius: 2px;
 }
 :root[data-visual-style="risograph"] .trip-overview-hero {
   position: relative;
@@ -397,17 +403,17 @@
 /* Day Route is an editorial itinerary, not three nested boxes.
    Keep START/END as open typography and the sequence as numbered print steps. */
 :root[data-visual-style="risograph"] .trip-route-endpoints {
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  padding: 12px 0 14px;
+  --ui-route-endpoints-fill: transparent;
+  --ui-route-endpoints-frame: 0;
+  --ui-route-endpoints-radius: 0;
+  --ui-route-endpoints-padding: 12px 0 14px;
   gap: 12px;
 }
 :root[data-visual-style="risograph"] .trip-route-steps span {
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  padding: 4px 8px 4px 0;
+  --ui-route-step-fill: transparent;
+  --ui-route-step-frame: 0;
+  --ui-route-step-radius: 0;
+  --ui-route-step-padding: 4px 8px 4px 0;
   min-height: 36px;
   gap: 8px;
   font: .7rem var(--font-utility);
@@ -430,7 +436,11 @@
   border-top: 3px double var(--riso-ink);
   padding: 12px 0 0;
 }
-:root[data-visual-style="risograph"] .trip-timeline-heading h3 { font: 700 1.55rem var(--font-display); }
+:root[data-visual-style="risograph"] .trip-timeline-heading .trip-timeline-title {
+  font: 700 1.55rem var(--font-display);
+  /* Preserve the former h3 spacing when the shared hierarchy uses h2. */
+  margin-bottom: 1em;
+}
 :root[data-visual-style="risograph"] .trip-timeline-heading p {
   font: .7rem/1.35 var(--font-utility);
   color: var(--riso-muted);
@@ -616,10 +626,10 @@
 /* The map is an interactive workspace, not an ink card. Map stage controls
    retain the visible 2px print frame; the workspace has no zero-inset box. */
 :root[data-visual-style="risograph"] .runtime-map-panel[data-surface-role="map-workspace"] {
-  padding:0;
-  border:0;
-  border-radius:0;
-  background:transparent;
+  --ui-map-workspace-padding:0;
+  --ui-map-workspace-frame:0;
+  --ui-map-workspace-radius:0;
+  --ui-map-workspace-fill:transparent;
 }
 :root[data-visual-style="risograph"] :is(.map-stage, .map-frame) { border-radius: 0; border: 2px solid var(--riso-ink); }
 :root[data-visual-style="risograph"] .map-library-state { color: var(--riso-ink); background: var(--riso-paper); }

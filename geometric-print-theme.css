@@ -26,13 +26,28 @@
  color:#485A64; font-size:.73rem;
  letter-spacing:.10em; text-transform:uppercase;
 }
+
+:root[data-visual-style="geometric-print"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
+ .trip-highlight-card,.trip-open-decision,.trip-route-summary,
+ .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
+ .panel,.companion-window-card,.companion-focus,
+ .shell-context-slot,.bottom-nav) {
+  background: #FAF5E8;
+  border: 1px solid #334A62;
+  border-radius: 0;
+}
 :root[data-visual-style="geometric-print"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
  .trip-highlight-card,.trip-open-decision,.trip-route-summary,
  .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
  .panel,.runtime-map-panel,.companion-window-card,.companion-focus,
  .shell-context-slot,.bottom-nav) {
- background:#FAF5E8; border:1px solid #334A62;
- border-radius:0; box-shadow:none!important; color:#334A62;
+  box-shadow: none!important;
+  color: #334A62;
+}
+:root[data-visual-style="geometric-print"] .runtime-map-panel {
+  --ui-map-workspace-fill: #FAF5E8;
+  --ui-map-workspace-frame: 1px solid #334A62;
+  --ui-map-workspace-radius: 0;
 }
 :root[data-visual-style="geometric-print"] .trip-header {
  background:#FAF5E8;padding:17px 21px;
@@ -132,12 +147,12 @@
  font:700 1.16rem/1.25 var(--font-display);
 }
 :root[data-visual-style="geometric-print"] .trip-route-endpoints {
- border:1px solid #485A64;border-radius:0;
- background:#DDE2D8;
+ --ui-route-endpoints-frame:1px solid #485A64;--ui-route-endpoints-radius:0;
+ --ui-route-endpoints-fill:#DDE2D8;
 }
 :root[data-visual-style="geometric-print"] .trip-route-steps span {
- color:#334A62;background:#FAF5E8;
- border:1px solid #485A64;border-radius:0;
+ color:#334A62;--ui-route-step-fill:#FAF5E8;
+ --ui-route-step-frame:1px solid #485A64;--ui-route-step-radius:0;
 }
 :root[data-visual-style="geometric-print"] .trip-v2-timeline::before {
  background:#334A62;width:3px;left:13px;

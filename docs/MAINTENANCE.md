@@ -113,7 +113,7 @@ The harness serves MapLibre from the pinned `maplibre-gl` devDependency instead 
 - explicit `storybook` and the `?previewStyle=storybook` URL render correctly
 - Storybook white-paper/card tokens do not leak into Editorial
 - SVG art keys are whitelisted, the generic fallback applies, and the default artwork is destination-neutral
-- the optional ordered timeline, TBD, transport labels and curated emphasis preserve actual itinerary truth
+- the shared ordered timeline, TBD, transport labels and curated emphasis preserve actual itinerary truth in every appearance
 - both OS reduced motion and the per-trip local motion control stop animations
 - no overlap/overflow at narrow, tablet and desktop widths, offline cache includes optional assets
 - More → Appearance instantly switches all sixteen appearances with no reload, persists per trip, preserves dark theme on returning to Editorial, and remains keyboard-reachable
@@ -216,6 +216,10 @@ Verify sharing/copying the current URL preserves the selected read-only context.
 ## Trip-view review
 
 After changing Trip rendering, test both the Overview and at least one populated day.
+
+Run `tests/issue116-trip-contract.spec.mjs` for complete-boot, fixed-clock start-time classification and unchanged end/window behavior. Run `tests/style-semantic-parity.spec.mjs` for all 16 appearances, including both Editorial themes: the same named section/h2/list, one direct li/article per source item, same-li transfers, empty-day zero items, keyboard actions and source preservation. These tests load the actual script order; an isolated early parser is not evidence about the final runtime.
+
+For Route/Map geometry, run `tests/issue116-role-geometry.spec.mjs` in addition to the existing surface tests. It records role metrics and screenshots across narrow, desktop and short-height layouts. Use a separate pinned checkout through `TRAVEL_LITE_TEST_SITE_ROOT` for before/after evidence; capture-only baseline results are not acceptance PASS. Preserve the original baseline and bind the final full suite, matrix, screenshots and Pages verification to the same candidate version. The separate route-label deduplication defect is tracked in #120 and is not silently corrected by the #116 DOM/CSS migration.
 
 Verify:
 

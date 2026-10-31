@@ -127,13 +127,25 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
 .trip-highlight-card,
 .trip-open-decision,
 .trip-v2-item,
-.runtime-map-panel,
 .companion-window-card,
 .companion-focus,
 .shell-context-slot .panel {
   border: 3px solid var(--ink);
   border-radius: 27px;
   background: #fff;
+}
+.panel,
+.trip-overview-hero,
+.trip-day-view > .day-summary,
+.trip-route-summary,
+.trip-overview-day,
+.trip-highlight-card,
+.trip-open-decision,
+.trip-v2-item,
+.runtime-map-panel,
+.companion-window-card,
+.companion-focus,
+.shell-context-slot .panel {
   color: var(--ink);
   backdrop-filter: none;
 }
@@ -397,10 +409,10 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
 .trip-route-heading h3 { font: 700 1.1rem/1.35 var(--font-utility); color: var(--ink); }
 .trip-route-heading > span { color: var(--ink); }
 .trip-route-endpoints {
-  border: 2px solid var(--ink);
-  border-radius: 17px;
-  background: #FFF8EF;
-  padding: 12px;
+  --ui-route-endpoints-frame: 2px solid var(--ink);
+  --ui-route-endpoints-radius: 17px;
+  --ui-route-endpoints-fill: #FFF8EF;
+  --ui-route-endpoints-padding: 12px;
   color: var(--ink);
 }
 .trip-route-endpoints strong { overflow-wrap: anywhere; }
@@ -409,10 +421,10 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
 .trip-route-steps { padding-bottom: 4px; }
 .trip-route-steps span {
   min-height: 33px;
-  padding: 5px 9px;
-  border: 2px solid var(--ink);
-  border-radius: 999px;
-  background: #fff;
+  --ui-route-step-padding: 5px 9px;
+  --ui-route-step-frame: 2px solid var(--ink);
+  --ui-route-step-radius: 999px;
+  --ui-route-step-fill: #fff;
   color: var(--ink);
 }
 .trip-route-steps b {
@@ -515,10 +527,10 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
 .today-brief-item { border-bottom: 2px dashed var(--ink); }
 .weather-icon { background: var(--yamabuki); border: 2px solid var(--ink); color: var(--ink); }
 .runtime-map-panel {
-  padding: 17px;
-  border: 3px solid var(--ink);
-  border-radius: 27px;
-  background: #fff;
+  --ui-map-workspace-padding: 17px;
+  --ui-map-workspace-frame: 3px solid var(--ink);
+  --ui-map-workspace-radius: 27px;
+  --ui-map-workspace-fill: #fff;
 }
 .map-heading { align-items: flex-start; }
 .map-heading-copy { color: var(--muted-ink); }
@@ -641,7 +653,7 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
   .trip-day-view > .day-summary::after { width: 68px; height: 68px; right: 10px; }
   .trip-day-view > .day-summary h2 { font-size: 1.35rem; }
   .trip-route-summary { padding: 14px; }
-  .trip-route-endpoints { gap: 7px; padding: 9px; }
+  .trip-route-endpoints { gap: 7px; --ui-route-endpoints-padding: 9px; }
   .trip-v2-item { padding: 12px; grid-template-columns: 45px 14px minmax(0, 1fr); gap: 5px; }
   .trip-v2-item[data-storybook-kind] .timeline-time::after { width: 31px; height: 31px; }
   .trip-transfer { margin-left: 61px; }
@@ -676,7 +688,7 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
   gap: 5px 14px;
   padding: 0 4px;
 }
-.trip-timeline-heading h3 {
+.trip-timeline-heading .trip-timeline-title {
   margin: 0;
   color: var(--ink);
   font: 700 1.23rem/1.35 var(--font-utility);

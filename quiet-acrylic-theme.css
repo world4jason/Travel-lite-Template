@@ -26,13 +26,28 @@
  color:#52615D; font-size:.73rem;
  letter-spacing:.10em; text-transform:uppercase;
 }
+
+:root[data-visual-style="quiet-acrylic"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
+ .trip-highlight-card,.trip-open-decision,.trip-route-summary,
+ .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
+ .panel,.companion-window-card,.companion-focus,
+ .shell-context-slot,.bottom-nav) {
+  background: #FFFCF7;
+  border: 1px solid #CED6D0;
+  border-radius: 2px;
+}
 :root[data-visual-style="quiet-acrylic"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
  .trip-highlight-card,.trip-open-decision,.trip-route-summary,
  .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
  .panel,.runtime-map-panel,.companion-window-card,.companion-focus,
  .shell-context-slot,.bottom-nav) {
- background:#FFFCF7; border:1px solid #CED6D0;
- border-radius:2px; box-shadow:none!important; color:#52615D;
+  box-shadow: none!important;
+  color: #52615D;
+}
+:root[data-visual-style="quiet-acrylic"] .runtime-map-panel {
+  --ui-map-workspace-fill: #FFFCF7;
+  --ui-map-workspace-frame: 1px solid #CED6D0;
+  --ui-map-workspace-radius: 2px;
 }
 :root[data-visual-style="quiet-acrylic"] .trip-header {
  background:#FFFCF7;padding:17px 21px;
@@ -132,12 +147,12 @@
  font:700 1.16rem/1.25 var(--font-display);
 }
 :root[data-visual-style="quiet-acrylic"] .trip-route-endpoints {
- border:1px solid #52615D;border-radius:2px;
- background:#F2F1E8;
+ --ui-route-endpoints-frame:1px solid #52615D;--ui-route-endpoints-radius:2px;
+ --ui-route-endpoints-fill:#F2F1E8;
 }
 :root[data-visual-style="quiet-acrylic"] .trip-route-steps span {
- color:#52615D;background:#FFFCF7;
- border:1px solid #52615D;border-radius:2px;
+ color:#52615D;--ui-route-step-fill:#FFFCF7;
+ --ui-route-step-frame:1px solid #52615D;--ui-route-step-radius:2px;
 }
 :root[data-visual-style="quiet-acrylic"] .trip-v2-timeline::before {
  background:#52615D;width:3px;left:13px;
