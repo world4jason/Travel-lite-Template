@@ -19,8 +19,13 @@
     const name = localized(mode.zh, mode.en);
     return `<span class="transport-tag transport-tag--${item.transportMode}" aria-label="${escapeAttr(name)}"><span aria-hidden="true">${mode.symbol}</span>${escapeHtml(name)}</span>`;
   }
+  function hasTimedStart(item) {
+    // Trip follows the published HH:MM contract in every appearance. Keep
+    // the existing end-time parser/window policy separate from this gate.
+    return /^([01]\d|2[0-3]):[0-5]\d$/.test(item.start || "");
+  }
   function timeLabel(item) {
-    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(item.start || "")) {
+    if (!hasTimedStart(item)) {
       return `<span class="timeline-time timeline-time--floating">${localized("時間未定", "Time TBD")}</span>`;
     }
     return `<time class="timeline-time" datetime="${escapeAttr(item.start)}">${escapeHtml(item.start)}</time>`;
@@ -217,8 +222,7 @@
     const currentDate = zonedNow(state.data.trip.timezone).date;
     const now = zonedNow(state.data.trip.timezone);
     const timeline = (day.items || []).map((item, index) => {
-      const validTime = /^([01]\d|2[0-3]):[0-5]\d$/.test(item.start || "");
-      const isCurrent = (!storybook || validTime) && day.date === currentDate &&
+      const isCurrent = hasTimedStart(item) && day.date === currentDate &&
         now.minuteOfDay >= toMinutes(item.start) &&
         now.minuteOfDay < toMinutes(item.end || item.start);
 
@@ -243,7 +247,7 @@
       }
       return `<div class="trip-stop-wrap">
         <article class="timeline-item trip-v2-item ${currentClass}">
-          <div class="timeline-time">${escapeHtml(item.start || "TBD")}</div>
+          ${timeLabel(item)}
           <div class="timeline-rail"><div class="timeline-dot"></div></div>
           ${details}
         </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}

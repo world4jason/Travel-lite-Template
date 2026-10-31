@@ -13,7 +13,7 @@ export default defineConfig({
     "style-surface-padding.spec.mjs", "style-surface-role.spec.mjs",
     "style-semantic-parity.spec.mjs", "style-surface-matrix.spec.mjs",
     "style-text-zoom.spec.mjs", "issue109-identity.spec.mjs",
-    "issue111-places-history.spec.mjs"],
+    "issue111-places-history.spec.mjs", "issue116-trip-contract.spec.mjs"],
   fullyParallel: false,
   workers: 1,
   retries: 0,
