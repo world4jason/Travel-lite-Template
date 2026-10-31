@@ -139,7 +139,7 @@ async function openMap(page, trip, look) {
   await page.goto("/?previewStyle=" + look.style + "#map/day/" + day.date + "/stop/" + day.items[0].id,
     { waitUntil: "domcontentloaded" });
   await expect(page.locator('[data-surface-role="map-workspace"]')).toBeVisible();
-  await expect(page.locator(".map-selected-summary h3")).toHaveText(day.items[0].title);
+  await expect(page.locator(".map-selected-summary > div:first-child > h3")).toHaveText(day.items[0].title);
   await mapReady(page);
 }
 
@@ -427,7 +427,7 @@ async function exerciseMap(page, day) {
   const marker = page.getByRole("button", { name: "Select stop: " + target.title, exact: true });
   focus.push(await hitAndFocus(page, marker));
   await page.keyboard.press("Enter");
-  await expect(page.locator(".map-selected-summary h3")).toHaveText(target.title);
+  await expect(page.locator(".map-selected-summary > div:first-child > h3")).toHaveText(target.title);
   await mapReady(page);
   const disclosure = page.locator('[data-surface-role="transport-context"]');
   focus.push(await hitAndFocus(page, disclosure.locator(":scope > summary")));
@@ -520,7 +520,7 @@ test("#116 Map fallback compatibility " + mode + ": four representative appearan
           await expect(notice).toBeVisible({ timeout: 15000 });
           await expect(notice).toContainText(fallback === "blocked-library" ? "Interactive map unavailable" : "No mapped stops for this day");
           await expect(page.locator("#runtime-map canvas, #runtime-map .maplibregl-ctrl")).toHaveCount(0);
-          await expect(page.locator(".map-selected-summary h3")).toHaveText(day.items[0].title);
+          await expect(page.locator(".map-selected-summary > div:first-child > h3")).toHaveText(day.items[0].title);
           await expect(page.locator(".map-primary-handoff")).toHaveAttribute("href", /^https:\/\/www\.google\.com\/maps\//);
           await settleStyles(page);
           const state = { label: look.name + " " + fallback, viewport: page.viewportSize(),
@@ -633,7 +633,7 @@ test("#116 actual Appearance picker clears three-role geometry " + mode, async (
       const tripRecords = await tripMeasurements(page);
       await page.locator('#bottom-nav [data-view="map"]').click();
       await expect(page).toHaveURL(new RegExp("#map/day/" + day.date + "/stop/" + day.items[0].id + "$"));
-      await expect(page.locator(".map-selected-summary h3")).toHaveText(day.items[0].title);
+      await expect(page.locator(".map-selected-summary > div:first-child > h3")).toHaveText(day.items[0].title);
       await mapReady(page);
       const mapRecords = await mapMeasurements(page);
       const state = { label: "Actual picker " + name, viewport: page.viewportSize(), freshKey: name };
