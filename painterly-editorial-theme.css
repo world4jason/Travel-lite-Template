@@ -26,13 +26,28 @@
  color:#4F6673; font-size:.73rem;
  letter-spacing:.10em; text-transform:uppercase;
 }
+
+:root[data-visual-style="painterly-editorial"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
+ .trip-highlight-card,.trip-open-decision,.trip-route-summary,
+ .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
+ .panel,.companion-window-card,.companion-focus,
+ .shell-context-slot,.bottom-nav) {
+  background: #FCFCF7;
+  border: 1px solid #B9CDD0;
+  border-radius: 14px;
+}
 :root[data-visual-style="painterly-editorial"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
  .trip-highlight-card,.trip-open-decision,.trip-route-summary,
  .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
  .panel,.runtime-map-panel,.companion-window-card,.companion-focus,
  .shell-context-slot,.bottom-nav) {
- background:#FCFCF7; border:1px solid #B9CDD0;
- border-radius:14px; box-shadow:none!important; color:#304D64;
+  box-shadow: none!important;
+  color: #304D64;
+}
+:root[data-visual-style="painterly-editorial"] .runtime-map-panel {
+  --ui-map-workspace-fill: #FCFCF7;
+  --ui-map-workspace-frame: 1px solid #B9CDD0;
+  --ui-map-workspace-radius: 14px;
 }
 :root[data-visual-style="painterly-editorial"] .trip-header {
  background:#FCFCF7;padding:17px 21px;

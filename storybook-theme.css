@@ -127,13 +127,25 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
 .trip-highlight-card,
 .trip-open-decision,
 .trip-v2-item,
-.runtime-map-panel,
 .companion-window-card,
 .companion-focus,
 .shell-context-slot .panel {
   border: 3px solid var(--ink);
   border-radius: 27px;
   background: #fff;
+}
+.panel,
+.trip-overview-hero,
+.trip-day-view > .day-summary,
+.trip-route-summary,
+.trip-overview-day,
+.trip-highlight-card,
+.trip-open-decision,
+.trip-v2-item,
+.runtime-map-panel,
+.companion-window-card,
+.companion-focus,
+.shell-context-slot .panel {
   color: var(--ink);
   backdrop-filter: none;
 }
@@ -515,10 +527,10 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
 .today-brief-item { border-bottom: 2px dashed var(--ink); }
 .weather-icon { background: var(--yamabuki); border: 2px solid var(--ink); color: var(--ink); }
 .runtime-map-panel {
-  padding: 17px;
-  border: 3px solid var(--ink);
-  border-radius: 27px;
-  background: #fff;
+  --ui-map-workspace-padding: 17px;
+  --ui-map-workspace-frame: 3px solid var(--ink);
+  --ui-map-workspace-radius: 27px;
+  --ui-map-workspace-fill: #fff;
 }
 .map-heading { align-items: flex-start; }
 .map-heading-copy { color: var(--muted-ink); }

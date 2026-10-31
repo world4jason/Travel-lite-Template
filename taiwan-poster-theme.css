@@ -50,12 +50,26 @@
 :root[data-visual-style="taiwan-poster"] .live-time {
   color:#143C56;background:#E3AF50;border:2px solid #143C56;border-radius:0;
 }
+
+:root[data-visual-style="taiwan-poster"] .panel,
+:root[data-visual-style="taiwan-poster"] .companion-window-card,
+:root[data-visual-style="taiwan-poster"] .companion-focus,
+:root[data-visual-style="taiwan-poster"] .shell-context-slot {
+  border: 2px solid #143C56;
+  border-radius: 0;
+  background: #F5E7C4;
+}
 :root[data-visual-style="taiwan-poster"] .panel,
 :root[data-visual-style="taiwan-poster"] .runtime-map-panel,
 :root[data-visual-style="taiwan-poster"] .companion-window-card,
 :root[data-visual-style="taiwan-poster"] .companion-focus,
 :root[data-visual-style="taiwan-poster"] .shell-context-slot {
-  border:2px solid #143C56;border-radius:0;background:#F5E7C4;color:#143C56;
+  color: #143C56;
+}
+:root[data-visual-style="taiwan-poster"] .runtime-map-panel {
+  --ui-map-workspace-frame: 2px solid #143C56;
+  --ui-map-workspace-radius: 0;
+  --ui-map-workspace-fill: #F5E7C4;
 }
 :root[data-visual-style="taiwan-poster"] .trip-overview-hero {
   display:grid;grid-template-columns:minmax(0,1fr);

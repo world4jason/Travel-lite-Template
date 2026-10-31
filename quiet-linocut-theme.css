@@ -26,13 +26,28 @@
  color:#4E5A5E; font-size:.73rem;
  letter-spacing:.10em; text-transform:uppercase;
 }
+
+:root[data-visual-style="quiet-linocut"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
+ .trip-highlight-card,.trip-open-decision,.trip-route-summary,
+ .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
+ .panel,.companion-window-card,.companion-focus,
+ .shell-context-slot,.bottom-nav) {
+  background: #FAF6EB;
+  border: 2px dashed #253C51;
+  border-radius: 2px;
+}
 :root[data-visual-style="quiet-linocut"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
  .trip-highlight-card,.trip-open-decision,.trip-route-summary,
  .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
  .panel,.runtime-map-panel,.companion-window-card,.companion-focus,
  .shell-context-slot,.bottom-nav) {
- background:#FAF6EB; border:2px dashed #253C51;
- border-radius:2px; box-shadow:none!important; color:#253C51;
+  box-shadow: none!important;
+  color: #253C51;
+}
+:root[data-visual-style="quiet-linocut"] .runtime-map-panel {
+  --ui-map-workspace-fill: #FAF6EB;
+  --ui-map-workspace-frame: 2px dashed #253C51;
+  --ui-map-workspace-radius: 2px;
 }
 :root[data-visual-style="quiet-linocut"] .trip-header {
  background:#FAF6EB;padding:17px 21px;

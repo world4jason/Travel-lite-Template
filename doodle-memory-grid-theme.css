@@ -26,13 +26,28 @@
  color:#514D51; font-size:.73rem;
  letter-spacing:.10em; text-transform:uppercase;
 }
+
+:root[data-visual-style="doodle-memory-grid"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
+ .trip-highlight-card,.trip-open-decision,.trip-route-summary,
+ .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
+ .panel,.companion-window-card,.companion-focus,
+ .shell-context-slot,.bottom-nav) {
+  background: #FFFAF1;
+  border: 2px dashed #514D51;
+  border-radius: 17px 24px 15px 22px;
+}
 :root[data-visual-style="doodle-memory-grid"] :is(.trip-header,.trip-overview-hero,.trip-overview-day,
  .trip-highlight-card,.trip-open-decision,.trip-route-summary,
  .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,
  .panel,.runtime-map-panel,.companion-window-card,.companion-focus,
  .shell-context-slot,.bottom-nav) {
- background:#FFFAF1; border:2px dashed #514D51;
- border-radius:17px 24px 15px 22px; box-shadow:none!important; color:#514D51;
+  box-shadow: none!important;
+  color: #514D51;
+}
+:root[data-visual-style="doodle-memory-grid"] .runtime-map-panel {
+  --ui-map-workspace-fill: #FFFAF1;
+  --ui-map-workspace-frame: 2px dashed #514D51;
+  --ui-map-workspace-radius: 17px 24px 15px 22px;
 }
 :root[data-visual-style="doodle-memory-grid"] .trip-header {
  background:#FFFAF1;padding:17px 21px;

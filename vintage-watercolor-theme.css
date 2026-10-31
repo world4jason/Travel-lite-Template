@@ -26,13 +26,23 @@
   color:#445C43; font-family:var(--font-utility); font-size:.74rem;
   text-transform:none; letter-spacing:.065em;
 }
+
+:root[data-visual-style="vintage-watercolor"] :is(.trip-header,.trip-overview-hero,
+  .trip-overview-day,.trip-highlight-card,.trip-open-decision,.trip-route-summary,
+  .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,.panel,
+  .companion-window-card,.companion-focus,.shell-context-slot,
+  .bottom-nav) {
+  border: 1px solid #B3A38B;
+  border-radius: 8px;
+  background: #FFFCF5;
+}
 :root[data-visual-style="vintage-watercolor"] :is(.trip-header,.trip-overview-hero,
   .trip-overview-day,.trip-highlight-card,.trip-open-decision,.trip-route-summary,
   .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,.panel,
   .runtime-map-panel,.companion-window-card,.companion-focus,.shell-context-slot,
   .bottom-nav) {
-  border:1px solid #B3A38B; border-radius:8px;
-  background:#FFFCF5; color:#392F26; box-shadow:none !important;
+  color: #392F26;
+  box-shadow: none !important;
 }
 :root[data-visual-style="vintage-watercolor"] .trip-header {
   position:relative; padding:18px 22px; overflow:hidden;
@@ -210,14 +220,13 @@
 :root[data-visual-style="vintage-watercolor"] .map-stage {
   border:1px solid #B3A38B; border-radius:6px; background:#F7EFDF;
 }
-/* Transport is a functional full-bleed map surface, not a chapter frame.
-   The high-specificity chapter/panel rule above also matches runtime-map-panel;
-   match its specificity so no zero-inset outline survives the final cascade. */
+/* Transport stays an open workspace; its chapter materials remain separate.
+   Reset the inherited Storybook frame and inset together through role tokens. */
 :root[data-visual-style="vintage-watercolor"] .runtime-map-panel.map-panel {
-  padding:0;
-  border:0;
-  border-radius:0;
-  background:transparent;
+  --ui-map-workspace-padding:0;
+  --ui-map-workspace-frame:0;
+  --ui-map-workspace-radius:0;
+  --ui-map-workspace-fill:transparent;
 }
 :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .map-heading {
   margin:0 0 16px;

@@ -40,12 +40,19 @@
 :root[data-visual-style="field-stamp"] .live-time {
   background:transparent;color:#293C31;border:1px dashed #293C31;border-radius:1px;
 }
+
 :root[data-visual-style="field-stamp"] .panel,
 :root[data-visual-style="field-stamp"] .companion-window-card,
 :root[data-visual-style="field-stamp"] .companion-focus,
-:root[data-visual-style="field-stamp"] .shell-context-slot,
+:root[data-visual-style="field-stamp"] .shell-context-slot {
+  background: #F7F0E3;
+  border: 1px solid #617A6A;
+  border-radius: 2px;
+}
 :root[data-visual-style="field-stamp"] .runtime-map-panel {
-  background:#F7F0E3;border:1px solid #617A6A;border-radius:2px;
+  --ui-map-workspace-fill: #F7F0E3;
+  --ui-map-workspace-frame: 1px solid #617A6A;
+  --ui-map-workspace-radius: 2px;
 }
 :root[data-visual-style="field-stamp"] .trip-overview-hero {
   display:grid;grid-template-columns:minmax(0,1fr);

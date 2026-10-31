@@ -38,18 +38,32 @@
   background-image: none !important;
   color: var(--candy-ink);
 }
+
 :root[data-visual-style="candy"] :where(.trip-header, .trip-overview-hero,
   .trip-overview-day, .trip-route-summary, .trip-day-view > .day-summary,
   .trip-v2-timeline .trip-v2-item, .trip-highlight-card, .trip-open-decision,
-  .panel, .runtime-map-panel, .companion-window-card, .companion-focus,
+  .panel, .companion-window-card, .companion-focus,
   .shell-context-slot, .bottom-nav) {
   border: 3px solid var(--candy-milk);
   border-radius: 34px;
   outline: 2px solid var(--candy-ink);
   outline-offset: -1px;
   background: white;
+}
+:root[data-visual-style="candy"] :where(.trip-header, .trip-overview-hero,
+  .trip-overview-day, .trip-route-summary, .trip-day-view > .day-summary,
+  .trip-v2-timeline .trip-v2-item, .trip-highlight-card, .trip-open-decision,
+  .panel, .runtime-map-panel, .companion-window-card, .companion-focus,
+  .shell-context-slot, .bottom-nav) {
   color: var(--candy-ink);
   box-shadow: none !important;
+}
+:root[data-visual-style="candy"] .runtime-map-panel {
+  --ui-map-workspace-frame: 3px solid var(--candy-milk);
+  --ui-map-workspace-radius: 34px;
+  --ui-map-workspace-outline: 2px solid var(--candy-ink);
+  --ui-map-workspace-outline-offset: -1px;
+  --ui-map-workspace-fill: white;
 }
 :root[data-visual-style="candy"] .trip-header {
   background: var(--candy-sky);

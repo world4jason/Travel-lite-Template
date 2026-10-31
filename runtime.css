@@ -9,7 +9,7 @@
 .map-handoff strong { display: block; margin-bottom: 5px; }
 .map-handoff p { margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.4; }
 
-.runtime-map-panel { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.runtime-map-panel { --ui-map-workspace-padding: 0; --ui-map-workspace-frame: 0; --ui-map-workspace-fill: transparent; box-shadow: none; }
 .map-heading { align-items: end; margin-bottom: var(--space-4); }
 .map-heading h2 { margin: var(--space-1) 0 0; }
 .map-heading-copy { margin: var(--space-2) 0 0; color: var(--muted); font-size: var(--text-sm); }
