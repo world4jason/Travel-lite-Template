@@ -153,10 +153,10 @@
   font:900 1.27rem/1.15 var(--font-display);
 }
 :root[data-visual-style="taiwan-poster"] .trip-route-endpoints {
-  background:#F5E7C4;border:2px solid #143C56;border-radius:0;
+  --ui-route-endpoints-fill:#F5E7C4;--ui-route-endpoints-frame:2px solid #143C56;--ui-route-endpoints-radius:0;
 }
 :root[data-visual-style="taiwan-poster"] .trip-route-steps span {
-  background:#E3AF50;border:1px solid #143C56;border-radius:0;
+  --ui-route-step-fill:#E3AF50;--ui-route-step-frame:1px solid #143C56;--ui-route-step-radius:0;
 }
 :root[data-visual-style="taiwan-poster"] .trip-v2-timeline::before {width:4px;background:#143C56;}
 :root[data-visual-style="taiwan-poster"] .trip-v2-timeline > .trip-stop-wrap::before {

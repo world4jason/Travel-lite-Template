@@ -42,7 +42,7 @@
 .trip-route-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
 .trip-route-heading h3 { margin: 0; font-size: 1rem; }
 .trip-route-heading > span { color: var(--muted); font-size: .74rem; }
-.trip-route-endpoints { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 14px; padding: 14px 16px; border-radius: 16px; background: var(--surface-2); }
+.trip-route-endpoints { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 14px; }
 .trip-route-endpoints div { display: grid; gap: 4px; min-width: 0; }
 .trip-route-endpoints .end { text-align: right; }
 .trip-route-endpoints small { color: var(--muted); font-size: .65rem; text-transform: uppercase; letter-spacing: .07em; }
@@ -50,7 +50,7 @@
 .trip-route-endpoints > span { color: var(--accent); font-size: 1.1rem; }
 .trip-route-steps { display: flex; gap: 7px; margin-top: 11px; overflow-x: auto; scrollbar-width: none; }
 .trip-route-steps::-webkit-scrollbar { display: none; }
-.trip-route-steps span { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); color: var(--muted); font-size: .72rem; }
+.trip-route-steps span { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; min-height: 34px; color: var(--muted); font-size: .72rem; }
 .trip-route-steps b { display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: var(--accent-soft); color: color-mix(in srgb, var(--accent) 76%, var(--text)); font-size: .65rem; }
 
 .trip-timeline-section { min-width: 0; }
@@ -307,22 +307,12 @@
   font-size: var(--text-lg);
   font-weight: 650;
 }
-.trip-route-endpoints {
-  padding: var(--space-3) 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-}
 .trip-route-steps {
   gap: var(--space-2);
   margin-top: var(--space-2);
 }
 .trip-route-steps span {
   min-height: 30px;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
 }
 .trip-route-steps b {
   border-radius: var(--radius-sm);

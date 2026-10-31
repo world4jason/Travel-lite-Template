@@ -98,10 +98,10 @@
   border-radius:9px;background:#FFF9EE;
 }
 :root[data-visual-style="paper-collage"] .trip-route-endpoints {
-  border:1px solid #D6C6B2;border-radius:4px;background:#F2E4D0;color:#304C49;
+  --ui-route-endpoints-frame:1px solid #D6C6B2;--ui-route-endpoints-radius:4px;--ui-route-endpoints-fill:#F2E4D0;color:#304C49;
 }
 :root[data-visual-style="paper-collage"] .trip-route-steps span {
-  background:#DCE9E2;border:0;border-radius:3px;color:#304C49;
+  --ui-route-step-fill:#DCE9E2;--ui-route-step-frame:0;--ui-route-step-radius:3px;color:#304C49;
 }
 :root[data-visual-style="paper-collage"] .trip-v2-timeline::before {
   background:#A6BCB6;width:5px;border-radius:0;

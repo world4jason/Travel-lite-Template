@@ -8,6 +8,25 @@
    not new conditional render paths. Additional roles are audited in Chromium.
    SPDX-License-Identifier: AGPL-3.0-or-later */
 
+/* Route surfaces keep their layout and number artwork in the component/pack.
+   Packs set these tokens on the existing route elements; this sheet alone
+   consumes them as the final frame, inset and paint. Editorial stays open. */
+:root [data-surface-role="route-endpoints"] {
+  padding: var(--ui-route-endpoints-padding, var(--space-3) 0);
+  border: var(--ui-route-endpoints-frame, 0);
+  border-radius: var(--ui-route-endpoints-radius, 0);
+  background: var(--ui-route-endpoints-fill, transparent);
+  outline: var(--ui-route-endpoints-outline, none);
+  outline-offset: var(--ui-route-endpoints-outline-offset, 0);
+}
+
+:root [data-surface-role="route-step"] {
+  padding: var(--ui-route-step-padding, 0);
+  border: var(--ui-route-step-frame, 0);
+  border-radius: var(--ui-route-step-radius, 0);
+  background: var(--ui-route-step-fill, transparent);
+}
+
 :root [data-surface-role="reading-row"] {
   min-width: 0;
   box-sizing: border-box;

@@ -132,12 +132,12 @@
  font:700 1.16rem/1.25 var(--font-display);
 }
 :root[data-visual-style="painterly-editorial"] .trip-route-endpoints {
- border:1px solid #4F6673;border-radius:14px;
- background:#E0ECEE;
+ --ui-route-endpoints-frame:1px solid #4F6673;--ui-route-endpoints-radius:14px;
+ --ui-route-endpoints-fill:#E0ECEE;
 }
 :root[data-visual-style="painterly-editorial"] .trip-route-steps span {
- color:#304D64;background:#FCFCF7;
- border:1px solid #4F6673;border-radius:14px;
+ color:#304D64;--ui-route-step-fill:#FCFCF7;
+ --ui-route-step-frame:1px solid #4F6673;--ui-route-step-radius:14px;
 }
 :root[data-visual-style="painterly-editorial"] .trip-v2-timeline::before {
  background:#304D64;width:3px;left:13px;

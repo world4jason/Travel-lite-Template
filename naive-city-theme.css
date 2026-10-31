@@ -83,10 +83,10 @@
 }
 :root[data-visual-style="naive-city"] .trip-route-summary {border-radius:15px 29px 13px 18px;background:#F4E8D9;}
 :root[data-visual-style="naive-city"] .trip-route-endpoints {
- background:#E0E7D9;border:2px dashed #233C65;border-radius:18px 8px 17px 12px;
+ --ui-route-endpoints-fill:#E0E7D9;--ui-route-endpoints-frame:2px dashed #233C65;--ui-route-endpoints-radius:18px 8px 17px 12px;
 }
 :root[data-visual-style="naive-city"] .trip-route-steps span {
- background:#E3B15A;border:1px solid #233C65;border-radius:7px 15px 6px 11px;
+ --ui-route-step-fill:#E3B15A;--ui-route-step-frame:1px solid #233C65;--ui-route-step-radius:7px 15px 6px 11px;
 }
 :root[data-visual-style="naive-city"] .trip-v2-timeline::before {
  width:3px;background:#233C65;left:15px;transform:rotate(.4deg);

@@ -142,10 +142,10 @@
   padding:12px 0; border:0; border-block:1px dotted #AA8250; border-radius:0;
 }
 :root[data-visual-style="vintage-watercolor"] .trip-route-endpoints {
-  background:transparent; padding:10px 0; border:0;
+  --ui-route-endpoints-fill:transparent; --ui-route-endpoints-padding:10px 0; --ui-route-endpoints-frame:0;
 }
 :root[data-visual-style="vintage-watercolor"] .trip-route-steps span {
-  border:0; border-radius:0; background:transparent; color:#392F26;
+  --ui-route-step-frame:0; --ui-route-step-radius:0; --ui-route-step-fill:transparent; color:#392F26;
 }
 :root[data-visual-style="vintage-watercolor"] .trip-v2-timeline {
   border-left:1px solid #C7B99C; margin-left:8px; padding-left:16px;

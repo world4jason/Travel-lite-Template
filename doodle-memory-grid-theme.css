@@ -132,12 +132,12 @@
  font:700 1.16rem/1.25 var(--font-display);
 }
 :root[data-visual-style="doodle-memory-grid"] .trip-route-endpoints {
- border:1px solid #514D51;border-radius:17px 24px 15px 22px;
- background:#F2E7D8;
+ --ui-route-endpoints-frame:1px solid #514D51;--ui-route-endpoints-radius:17px 24px 15px 22px;
+ --ui-route-endpoints-fill:#F2E7D8;
 }
 :root[data-visual-style="doodle-memory-grid"] .trip-route-steps span {
- color:#514D51;background:#FFFAF1;
- border:1px solid #514D51;border-radius:17px 24px 15px 22px;
+ color:#514D51;--ui-route-step-fill:#FFFAF1;
+ --ui-route-step-frame:1px solid #514D51;--ui-route-step-radius:17px 24px 15px 22px;
 }
 :root[data-visual-style="doodle-memory-grid"] .trip-v2-timeline::before {
  background:#514D51;width:3px;left:13px;

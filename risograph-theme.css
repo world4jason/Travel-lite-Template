@@ -397,17 +397,17 @@
 /* Day Route is an editorial itinerary, not three nested boxes.
    Keep START/END as open typography and the sequence as numbered print steps. */
 :root[data-visual-style="risograph"] .trip-route-endpoints {
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  padding: 12px 0 14px;
+  --ui-route-endpoints-fill: transparent;
+  --ui-route-endpoints-frame: 0;
+  --ui-route-endpoints-radius: 0;
+  --ui-route-endpoints-padding: 12px 0 14px;
   gap: 12px;
 }
 :root[data-visual-style="risograph"] .trip-route-steps span {
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  padding: 4px 8px 4px 0;
+  --ui-route-step-fill: transparent;
+  --ui-route-step-frame: 0;
+  --ui-route-step-radius: 0;
+  --ui-route-step-padding: 4px 8px 4px 0;
   min-height: 36px;
   gap: 8px;
   font: .7rem var(--font-utility);

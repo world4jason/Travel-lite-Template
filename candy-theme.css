@@ -122,15 +122,15 @@
 :root[data-visual-style="candy"] .trip-day-view > .day-summary::after { background-image: url("./assets/candy/city.svg"); }
 :root[data-visual-style="candy"] .trip-route-summary { background: white; border-radius: 32px; }
 :root[data-visual-style="candy"] .trip-route-endpoints {
-  border: 3px solid var(--candy-milk);
-  outline: 2px solid var(--candy-ink);
-  border-radius: 25px;
-  background: var(--candy-mint);
+  --ui-route-endpoints-frame: 3px solid var(--candy-milk);
+  --ui-route-endpoints-outline: 2px solid var(--candy-ink);
+  --ui-route-endpoints-radius: 25px;
+  --ui-route-endpoints-fill: var(--candy-mint);
 }
 :root[data-visual-style="candy"] .trip-route-steps span {
-  background: var(--candy-milk);
-  border: 2px solid var(--candy-ink);
-  border-radius: 999px;
+  --ui-route-step-fill: var(--candy-milk);
+  --ui-route-step-frame: 2px solid var(--candy-ink);
+  --ui-route-step-radius: 999px;
 }
 :root[data-visual-style="candy"] .trip-route-steps b { background: var(--candy-yellow); }
 :root[data-visual-style="candy"] .trip-v2-timeline::before {

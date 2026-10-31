@@ -132,12 +132,12 @@
  font:700 1.16rem/1.25 var(--font-display);
 }
 :root[data-visual-style="quiet-linocut"] .trip-route-endpoints {
- border:1px solid #4E5A5E;border-radius:2px;
- background:#E8E9D9;
+ --ui-route-endpoints-frame:1px solid #4E5A5E;--ui-route-endpoints-radius:2px;
+ --ui-route-endpoints-fill:#E8E9D9;
 }
 :root[data-visual-style="quiet-linocut"] .trip-route-steps span {
- color:#253C51;background:#FAF6EB;
- border:1px solid #4E5A5E;border-radius:2px;
+ color:#253C51;--ui-route-step-fill:#FAF6EB;
+ --ui-route-step-frame:1px solid #4E5A5E;--ui-route-step-radius:2px;
 }
 :root[data-visual-style="quiet-linocut"] .trip-v2-timeline::before {
  background:#253C51;width:3px;left:13px;
