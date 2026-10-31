@@ -1,6 +1,6 @@
-# Style Pack Surface Contract (v1) — Geometry is not a color token
+# Style Pack Surface Contract (v2) — Geometry is not a color token
 
-**Status: released in [PR #115](https://github.com/world4jason/Travel-lite-Template/pull/115); owner Human Visual Acceptance recorded on 2026-10-25 in [#113](https://github.com/world4jason/Travel-lite-Template/issues/113) and [#81](https://github.com/world4jason/Travel-lite-Template/issues/81), after merge and successful GitHub Pages deployment.** This is release-level acceptance, not 240 manual aesthetic reviews. The remaining Trip DOM and Map/Route geometry migration is tracked in [#116](https://github.com/world4jason/Travel-lite-Template/issues/116). This contract prevents the #113 family of frame-and-text collisions without making 16 appearances share the same artistic geometry.
+**Release provenance:** the reading/cost contract was released in [PR #115](https://github.com/world4jason/Travel-lite-Template/pull/115), with owner Human Visual Acceptance recorded on 2026-10-25 in [#113](https://github.com/world4jason/Travel-lite-Template/issues/113) and [#81](https://github.com/world4jason/Travel-lite-Template/issues/81). That approval applies to that release. [#116](https://github.com/world4jason/Travel-lite-Template/issues/116) adds the shared Trip hierarchy and Route/Map workspace ownership; its independent review, actual browser evidence, deployment and owner gate are recorded separately. No prior approval or smoke count substitutes for the new release's visual review.
 
 ## Architecture and root cause
 
@@ -71,7 +71,19 @@ The first repair found **eight more packs** with `.more-section > summary, .cost
 
 A new static guard detects `border`, `border-left/right`, `border-inline*`, `border-width` and inward `outline` declarations on reading/cost rows lacking horizontal inset. **This lint is conservative and cannot substitute for real computed CSS specificity.** A separate runtime guard now checks each side independently rather than requiring a four-sided frame, with negative cases for side-only frame injection.
 
-**Known differences pending #116:** illustrated Trip (including Risograph) uses `<ol>/<li>/<time>` and localized flexible `Time TBD`, while Editorial uses `<section>/<div>` and raw `TBD`. Current scoped tests verify factual/time/action parity without rewriting the renderer. Any actual behavior drift found by those tests requires a focused fix; unifying markup remains #116.
+## Shared Trip hierarchy
+
+All appearances render one named section with an h2 and `ol[role="list"]`. Each source item contributes one direct li/article with an h3; its outgoing transfer remains in the same li. The empty-state message sits outside the list. Editorial's section heading remains accessible while visually hidden. A fixed aria-hidden rail and the existing direct-child artwork mapping preserve each pack's presentation without a second semantic renderer.
+
+Trip uses one strict `HH:MM` start classification for both `<time datetime>` and current eligibility. Invalid/missing starts use the localized floating span. The intentional Editorial change for one-digit hours, surrounding whitespace and invalid starts is covered by a complete-boot fixed-clock test. Raw data, end parsing, overlapping windows and timezone policy are unchanged; Now's existing format tolerance is not redesigned here. The independent return-visit/route-label deduplication bug is tracked in [#120](https://github.com/world4jason/Travel-lite-Template/issues/120), outside this migration.
+
+## Route and Map workspace ownership
+
+`surface-contract.css` consumes the final geometry for `route-endpoints`, `route-step` and `map-workspace`. Their parameters use `--ui-route-endpoints-*`, `--ui-route-step-*` and `--ui-map-workspace-*`: frame, padding, radius and fill; endpoints/workspace also account for decorative outline and offset. Keep frame and inset as a matched decision. Editorial's open route typography, Risograph's asymmetric open steps, Candy's double perimeter and Vintage's open workspace remain distinct.
+
+These pack parameters are declared at the existing role element/breakpoint scope, preserving the original cascade and variable resolution. Do not mix inherited root values with element-local mobile defaults that silently override the pack. Remove old direct geometry declarations when ownership moves; a later stylesheet or new token name alone does not prove ownership. The shared consumers use the same shorthand semantics as the displaced rules.
+
+Grid/arrow placement, route scroll rails and number badges remain component composition. Map stage/chrome retain their existing responsibilities, including the `max-width:899px OR max-height:600px` layout and Vintage's text inset around a full-bleed stage. Selected-stop and transport-context remain separate regression surfaces. The MapLibre lifecycle and non-Transport map callers are not redesigned. Material-only pack rules may retain color, backdrop or external shadow without reclaiming workspace geometry.
 
 ## Navigation is not an ornamental surface
 
@@ -94,9 +106,11 @@ Long mixed-language expense titles are flexible and may wrap; the associated amo
 
 ## Enforcement, not just style guidance
 
-- `node --test tests/style-surface-contract.test.mjs` checks the role annotations, final stylesheet load order, SW offline inclusion, tokens and newly introduced **full reading-row borders without padding**.
+- `node --test tests/style-surface-contract.test.mjs` checks role annotations, final stylesheet load order, SW offline inclusion, paired consumers, reading-row frame/inset and the three migrated roles' exclusive geometry ownership. It rejects direct geometry in component/pack rules and enforces zero remaining mixed panel/map frame groups, with deliberate negative cases for the lint itself.
 - `npx playwright test tests/style-surface-role.spec.mjs --project=chromium` checks all **16 appearances** on actual rendered More/Trip/Transport DOM at 390px. It rejects framed zero-inset rows/endpoints/route chips/map workspaces. This runs inside the default Playwright suite.
-- `npx playwright test tests/style-semantic-parity.spec.mjs --project=chromium` checks source itinerary/route stop order, booking facts and published transfers across all 15 built-in Style IDs. This is critical because the existing Editorial and illustrated Trip timelines have **different markup branches in `trip-view.js`**, even though visual styling should never change published facts. The additional Editorial Light/Dark choice is covered by the separate 16-appearance geometry check.
+- `npx playwright test tests/style-semantic-parity.spec.mjs --project=chromium` checks the same named section/h2/ordered-list hierarchy, direct source-item relationships, keyboard actions, empty days, facts and transfers across all 16 appearances, including both Editorial themes. Artwork differences are excluded from semantic signatures.
+- `npx playwright test tests/issue116-trip-contract.spec.mjs --project=chromium` checks 12 explicit time cases through the complete real script load order, including invalid starts, unchanged end tolerance, overlapping current windows and source/snapshot preservation.
+- `npx playwright test tests/issue116-role-geometry.spec.mjs --project=chromium` records all-appearance Route/Map role geometry at 320/390/1100 widths and a short-height layout, with real MapLibre controls, long labels, fallback and actual style-picker transitions. Baseline capture mode records evidence only; final acceptance requires the candidate assertions and before/after inspection.
 - `npx playwright test tests/style-surface-padding.spec.mjs --project=chromium` checks three specific #113 regressions at 320/390/1100, long mixed text and real before/after capture mode.
 - `TRAVEL_LITE_FULL_STYLE_QA=1 npx playwright test tests/style-surface-matrix.spec.mjs --project=chromium` is the separately gated 240-state smoke matrix. **Smoke metrics do not replace screenshot/Human QA**.
 
@@ -106,7 +120,7 @@ The authorized Mac later ran the real Node and Chromium suites: **255 default br
 
 **Phase A / PR #115 (released and accepted):** annotate semantic roles, move More reading-row geometry into atomic CSS tokens, repair the confirmed Vintage/Risograph collisions, add static and browser gates. In addition, Risograph Map's frame now belongs to the *map stage*, not a zero-inset workspace.
 
-**Phase B / [Issue #116](https://github.com/world4jason/Travel-lite-Template/issues/116), separate scoped PR only after screenshot evidence:** converge the two Trip DOM branches into one accessible hierarchy and migrate additional `map-workspace` and `route-endpoints/route-step` geometry into paired role tokens where cross-pack review proves it safe. Keep intentionally different ink, cardstock, stickers and archival frames. Do not erase pack identities with one universal border rule.
+**Phase B / [Issue #116](https://github.com/world4jason/Travel-lite-Template/issues/116):** one accessible Trip hierarchy plus paired `map-workspace` and `route-endpoints/route-step` geometry. Review the time-policy correction, DOM cutover, Route ownership and Map ownership as separate changes. The implementation preserves different ink, cardstock, stickers and archival frames; before/after screenshots and computed evidence must support the candidate. #120 is separately tracked and is not a prerequisite for this scope.
 
 **Phase C / future packs:** use this role API in the template/manifest review checklist, add screenshots for the newly introduced role at 320/390/1100 and add a targeted regression if a design needs an exception. Accept exceptions only with an explicit named role and observed computed values.
 
