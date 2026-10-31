@@ -424,11 +424,14 @@ async function exerciseMap(page, day) {
   await page.keyboard.press("Enter");
   await expect.poll(async () => Math.abs(await separation() - initialSeparation)).toBeLessThanOrEqual(2);
   const target = day.items[2];
-  const marker = page.getByRole("button", { name: "Select stop: " + target.title, exact: true });
+  // companion-ux numbers markers after the base map renderer finishes.
+  const marker = page.getByRole("button", { name: "Stop 2: " + target.title, exact: true });
+  await expect(marker).toHaveAttribute("aria-pressed", "false");
   focus.push(await hitAndFocus(page, marker));
   await page.keyboard.press("Enter");
   await expect(page.locator(".map-selected-summary > div:first-child > h3")).toHaveText(target.title);
   await mapReady(page);
+  await expect(marker).toHaveAttribute("aria-pressed", "true");
   const disclosure = page.locator('[data-surface-role="transport-context"]');
   focus.push(await hitAndFocus(page, disclosure.locator(":scope > summary")));
   await page.keyboard.press("Enter");
