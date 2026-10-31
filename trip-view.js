@@ -215,7 +215,6 @@
   }
 
   function renderDay(day) {
-    const storybook = typeof isIllustratedStyle === "function" && isIllustratedStyle();
     const isNewDay = lastRenderedDate !== day.date;
     lastRenderedDate = day.date;
 
@@ -238,20 +237,13 @@
       const itemTop = `<div class="trip-item-top"><div><div class="item-heading"><h3>${escapeHtml(item.title)}</h3>${highlight}${kind}${placeLink}</div>${mode ? `<div class="trip-transport-meta">${mode}</div>` : ""}${item.location ? `<p>${escapeHtml(item.location)}</p>` : ""}</div>${compactActions(item)}</div>`;
       const details = `<div class="timeline-content">${itemTop}${item.note ? `<p class="timeline-note">${escapeHtml(item.note)}</p>` : ""}${supplementaryContent(item)}</div>`;
       const currentClass = isCurrent ? "current" : "";
-      if (storybook) {
-        return `<li class="trip-stop-wrap">
-          <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}">
-            ${timeLabel(item)}${details}
-          </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}
-        </li>`;
-      }
-      return `<div class="trip-stop-wrap">
-        <article class="timeline-item trip-v2-item ${currentClass}">
+      return `<li class="trip-stop-wrap">
+        <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}">
           ${timeLabel(item)}
-          <div class="timeline-rail"><div class="timeline-dot"></div></div>
+          <div class="timeline-rail" aria-hidden="true"><div class="timeline-dot"></div></div>
           ${details}
         </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}
-      </div>`;
+      </li>`;
     }).join("");
 
     const summary = `<section class="day-summary composition-identity">
@@ -261,14 +253,13 @@
         ${day.note ? `<p class="day-note">${escapeHtml(day.note)}</p>` : ""}
       </section>`;
 
-    const timelineView = storybook
-      ? `<section class="trip-timeline-section" aria-label="${localized("每日時間軸", "Day timeline")}">
-          <div class="trip-timeline-heading"><h3>${localized("每日時間軸", "Day timeline")}</h3><p>${localized("依原行程順序排列 · 未定時間保留彈性", "Published order · flexible times stay flexible")}</p></div>
-          <ol class="timeline trip-v2-timeline">${timeline || `<li class="empty-state"><p>No plans yet.</p></li>`}</ol>
-        </section>`
-      : `<section class="timeline trip-v2-timeline composition-sequence">${timeline || `<div class="empty-state"><p>No plans yet.</p></div>`}</section>`;
+    const timelineView = `<section class="trip-timeline-section" aria-labelledby="trip-timeline-title">
+        <div class="trip-timeline-heading"><h2 id="trip-timeline-title" class="trip-timeline-title">${localized("每日時間軸", "Day timeline")}</h2><p>${localized("依原行程順序排列 · 未定時間保留彈性", "Published order · flexible times stay flexible")}</p></div>
+        <ol class="timeline trip-v2-timeline composition-sequence" role="list" aria-labelledby="trip-timeline-title">${timeline}</ol>
+        ${timeline ? "" : '<div class="empty-state"><p>No plans yet.</p></div>'}
+      </section>`;
 
-    root.innerHTML = `<div class="trip-v2 trip-day-view ${storybook && isNewDay ? "day-switch-enter" : ""}">
+    root.innerHTML = `<div class="trip-v2 trip-day-view ${isNewDay ? "day-switch-enter" : ""}">
       ${tripTabs()}
       ${summary}
       ${routeSummaryCard(day)}

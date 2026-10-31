@@ -430,7 +430,7 @@
   border-top: 3px double var(--riso-ink);
   padding: 12px 0 0;
 }
-:root[data-visual-style="risograph"] .trip-timeline-heading h3 { font: 700 1.55rem var(--font-display); }
+:root[data-visual-style="risograph"] .trip-timeline-heading .trip-timeline-title { font: 700 1.55rem var(--font-display); }
 :root[data-visual-style="risograph"] .trip-timeline-heading p {
   font: .7rem/1.35 var(--font-utility);
   color: var(--riso-muted);

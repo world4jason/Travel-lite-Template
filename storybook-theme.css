@@ -676,7 +676,7 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
   gap: 5px 14px;
   padding: 0 4px;
 }
-.trip-timeline-heading h3 {
+.trip-timeline-heading .trip-timeline-title {
   margin: 0;
   color: var(--ink);
   font: 700 1.23rem/1.35 var(--font-utility);
