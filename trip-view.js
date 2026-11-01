@@ -46,16 +46,11 @@
     const source = explicit.length
       ? explicit
       : (day?.items || []).map((item) => item.routeLabel || item.title || item.location).filter(Boolean);
-    const seen = new Set();
+    // #120 (2026-11-01): each occurrence is a visit, even with the same label.
     return source
       .map((entry) => typeof entry === "string" ? entry : entry?.label || entry?.title)
       .filter(Boolean)
-      .filter((label) => {
-        const key = String(label).trim().toLowerCase();
-        if (!key || seen.has(key)) return false;
-        seen.add(key);
-        return true;
-      });
+      .filter((label) => String(label).trim());
   }
 
   function unresolvedItems(day) {

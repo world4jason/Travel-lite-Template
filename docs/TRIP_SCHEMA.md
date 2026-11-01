@@ -190,7 +190,13 @@ A day may supply an `illustration` key (for example `"city"` or `"boat"`) **only
 
 ### Route summary
 
-`routeSummary` is optional. If omitted, the Trip view derives a simple route from item titles. Use it when a shorter human-friendly route is more useful than raw stop names.
+`routeSummary` is optional. Trip and Now's untimed Today Brief use the same source projection:
+
+- A nonempty `routeSummary` array is authoritative. An absent, non-array or empty summary uses ordered `item.routeLabel || item.title || item.location` values instead.
+- Each entry projects its string value, or its `label || title`. Falsy and whitespace-only projected labels are omitted. A nonempty explicit array that projects to no usable labels still does not fall back to items.
+- Preserve every remaining occurrence and its source text/order. `A → B → A` ends at A with three stops; `A → A → B` also has three stops. Matching names never identify a duplicate visit, including consecutive matches. This display projection does not modify `trip.json` or stored itinerary data.
+
+Use an explicit summary when shorter human-friendly labels are more useful than raw item names. The Trip overview retains its compact first-five-stops preview with an ellipsis for longer routes; the selected day's route and Today Brief retain the complete projected sequence.
 
 `routeLabel` is optional descriptive text such as `East Tokyo`, `Classic route`, or `Departure`.
 

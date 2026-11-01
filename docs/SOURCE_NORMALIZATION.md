@@ -137,7 +137,7 @@ Guidelines:
 
 - prefer place/area/activity labels over operational instructions
 - preserve important named transfers only when the source treats them as meaningful itinerary waypoints
-- avoid duplicate adjacent stops
+- preserve return visits and consecutive same-name waypoints when the source contains separate occurrences; do not deduplicate by label
 - keep source spelling/language unless normalization is clearly harmless
 - do not geocode or query routing services merely to populate `routeSummary`
 

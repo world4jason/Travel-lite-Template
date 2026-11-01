@@ -1,0 +1,2791 @@
+{
+  "baselineSha": "66aa14683cb890eea4d9e50684cc406ea2eaa652",
+  "publishedCodeSha": "471d287eacf69d4dc825dbdb76eef83e5c03801a",
+  "localExecutionCodeSha": "4e860109de768d9ddbe0939205b7bae2bd3730dc",
+  "identicalFullCodeTree": "e0ee6706f983b82f7b0bdde6a1e94eb2b70bb2eb",
+  "provenance": "The full run began on the local commit. GitHub plugin publication changed commit metadata only; git tree comparison confirms every tracked file is identical. Focused route evidence is rerun on the public code SHA.",
+  "suiteStats": {
+    "startTime": "2026-11-01T08:22:09.978Z",
+    "duration": 490315.618,
+    "expected": 361,
+    "skipped": 0,
+    "unexpected": 5,
+    "flaky": 0
+  },
+  "byFile": {
+    "bottom-nav-fixed.spec.mjs": {
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "export-ui.spec.mjs": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "issue109-identity.spec.mjs": {
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "issue111-places-history.spec.mjs": {
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "issue116-role-geometry.spec.mjs": {
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "issue116-trip-contract.spec.mjs": {
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "issue120-route-summary.spec.mjs": {
+      "passed": 33,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "journey-confidence.spec.mjs": {
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "mobile-layout.spec.mjs": {
+      "passed": 38,
+      "failed": 5,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "nine-looks.spec.mjs": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "phase2-packs.spec.mjs": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "places-transport.spec.mjs": {
+      "passed": 17,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "responsive-style-picker.spec.mjs": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "second-prompt-batch.spec.mjs": {
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "site-storage.spec.mjs": {
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "style-options.spec.mjs": {
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "style-semantic-parity.spec.mjs": {
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "style-settings.spec.mjs": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "style-surface-matrix.spec.mjs": {
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "style-surface-padding.spec.mjs": {
+      "passed": 16,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "style-surface-role.spec.mjs": {
+      "passed": 18,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "style-text-zoom.spec.mjs": {
+      "passed": 32,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "vintage-a5.spec.mjs": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "vintage-framing.spec.mjs": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "vintage-watercolor.spec.mjs": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0
+    }
+  },
+  "baselineIssue122Stats": {
+    "startTime": "2026-11-01T11:26:38.822Z",
+    "duration": 9973.129,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 5,
+    "flaky": 0
+  },
+  "knownIssue122Comparisons": [
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 320x568",
+      "candidateStatus": "unexpected",
+      "baselineStatus": "unexpected",
+      "sameFailureMessage": true,
+      "candidateError": "Error: unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\nunreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 34\n\n- Array []\n+ Array [\n+   \"unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+ ]",
+      "baselineError": "Error: unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\nunreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 34\n\n- Array []\n+ Array [\n+   \"unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+ ]"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "light theme reflows at 320x568",
+      "candidateStatus": "unexpected",
+      "baselineStatus": "unexpected",
+      "sameFailureMessage": true,
+      "candidateError": "Error: unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\nunreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 34\n\n- Array []\n+ Array [\n+   \"unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+ ]",
+      "baselineError": "Error: unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\nunreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 34\n\n- Array []\n+ Array [\n+   \"unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+ ]"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "dark theme reflows at 320x568",
+      "candidateStatus": "unexpected",
+      "baselineStatus": "unexpected",
+      "sameFailureMessage": true,
+      "candidateError": "Error: unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\nunreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 34\n\n- Array []\n+ Array [\n+   \"unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+ ]",
+      "baselineError": "Error: unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\nunreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 34\n\n- Array []\n+ Array [\n+   \"unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+ ]"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 697,
+      "title": "Map fallback keeps controls reachable when MapLibre cannot load",
+      "candidateStatus": "unexpected",
+      "baselineStatus": "unexpected",
+      "sameFailureMessage": true,
+      "candidateError": "Error: unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\nunreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 34\n\n- Array []\n+ Array [\n+   \"unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+ ]",
+      "baselineError": "Error: unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\nunreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\nunreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\nunreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\nunreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\n\nexpect(received).toEqual(expected) // deep equality\n\n- Expected  -  1\n+ Received  + 34\n\n- Array []\n+ Array [\n+   \"unreachable: button.day-chip[Day 1 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 2 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 3 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 4 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 5 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 6 GrandHotelReservat] centre stays at 339,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 7 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 8 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 9 GrandHotelReservat] centre stays at 338,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 10 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 11 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 12 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 13 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 14 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 15 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 16 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 17 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 18 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip.active[Day 19 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 20 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 21 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 22 GrandHotelReserva] centre stays at 342,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 23 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 24 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 25 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 26 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 27 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 28 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 29 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 30 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 31 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+   \"unreachable: button.day-chip[Day 32 GrandHotelReserva] centre stays at 343,284 after scrolling\",\n+ ]"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 740,
+      "title": "enlarged text keeps core read-only views inside a 320px shell",
+      "candidateStatus": "unexpected",
+      "baselineStatus": "unexpected",
+      "sameFailureMessage": true,
+      "candidateError": "Error: {\"width\":320,\"html\":320,\"body\":346}\n\nexpect(received).toBeLessThanOrEqual(expected)\n\nExpected: <= 321\nReceived:    346",
+      "baselineError": "Error: {\"width\":320,\"html\":320,\"body\":346}\n\nexpect(received).toBeLessThanOrEqual(expected)\n\nExpected: <= 321\nReceived:    346"
+    }
+  ],
+  "caseOutcomes": [
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 41,
+      "title": "editorial five bottom tabs stay fixed at 320x568, even while scrolling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 41,
+      "title": "vintage-watercolor five bottom tabs stay fixed at 320x568, even while scrolling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 41,
+      "title": "editorial five bottom tabs stay fixed at 360x800, even while scrolling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 41,
+      "title": "vintage-watercolor five bottom tabs stay fixed at 360x800, even while scrolling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 41,
+      "title": "editorial five bottom tabs stay fixed at 390x844, even while scrolling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 41,
+      "title": "vintage-watercolor five bottom tabs stay fixed at 390x844, even while scrolling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 41,
+      "title": "editorial five bottom tabs stay fixed at 430x932, even while scrolling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 41,
+      "title": "vintage-watercolor five bottom tabs stay fixed at 430x932, even while scrolling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 41,
+      "title": "editorial five bottom tabs stay fixed at 844x390, even while scrolling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 41,
+      "title": "vintage-watercolor five bottom tabs stay fixed at 844x390, even while scrolling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 84,
+      "title": "desktop intentionally uses a header-adjacent navigation row",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "bottom-nav-fixed.spec.mjs",
+      "line": 94,
+      "title": "all five destinations retain a fixed mobile tab bar after navigation",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "export-ui.spec.mjs",
+      "line": 18,
+      "title": "More offers three exports and A4 preview prints the shared itinerary",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "export-ui.spec.mjs",
+      "line": 40,
+      "title": "A5 preview includes cover, day overview, real PDF and no interactive site navigation",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "export-ui.spec.mjs",
+      "line": 58,
+      "title": "downloaded ICS includes timed events, stable UID, VALARM and skips TBD",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "export-ui.spec.mjs",
+      "line": 75,
+      "title": "ICS import warning is visible in English and Traditional Chinese",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "export-ui.spec.mjs",
+      "line": 91,
+      "title": "mobile export controls are reachable without horizontal overflow",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "export-ui.spec.mjs",
+      "line": 106,
+      "title": "32-day mixed-language A5 booklet paginates dense days without dropping stops",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "export-ui.spec.mjs",
+      "line": 148,
+      "title": "installed PWA keeps the export launcher and ICS working after offline reload",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "export-ui.spec.mjs",
+      "line": 193,
+      "title": "all-TBD trip shows zero-export skip count in zh-TW and never downloads",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "export-ui.spec.mjs",
+      "line": 210,
+      "title": "invalid DST, zone, missing ID and TBD show all skip reasons without a download",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 22,
+      "title": "two-day Senso-ji collision keeps source cards but never opens Shibuya or its booking",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 52,
+      "title": "Trip place action for duplicate ID is disabled, while unique Trip detail still works",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 67,
+      "title": "ambiguous Transport stop never selects the wrong day/venue at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 67,
+      "title": "ambiguous Transport stop never selects the wrong day/venue at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 67,
+      "title": "ambiguous Transport stop never selects the wrong day/venue at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 87,
+      "title": "same-day duplicate and non-Place collision are caught globally",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 97,
+      "title": "a non-Place item sharing a Place ID blocks that Place lookup",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 105,
+      "title": "missing/empty fallback ID is preserved without guessing; collided fallback is rejected",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 120,
+      "title": "malformed or unknown ID-only deep links show no inferred place or booking",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 130,
+      "title": "valid unique IDs and explicit admission links still work unchanged",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 143,
+      "title": "repeat reload does not mutate trip IDs or resurrect unsafe links",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 154,
+      "title": "malicious duplicate source IDs render as text, never executable markup",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 202,
+      "title": "personal choices stay stored but unattributed after a cross-day ID collision at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 202,
+      "title": "personal choices stay stored but unattributed after a cross-day ID collision at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 202,
+      "title": "personal choices stay stored but unattributed after a cross-day ID collision at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 240,
+      "title": "unique personal selections persist without selecting another day's choice",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 259,
+      "title": "malformed personal item ID stays read-only: \" invalid-id \"",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 259,
+      "title": "malformed personal item ID stays read-only: 123",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 272,
+      "title": "a generated missing-ID fallback remains usable only while globally unique",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 292,
+      "title": "shared source decisions remain readable and reject synthetic personal controls",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue109-identity.spec.mjs",
+      "line": 317,
+      "title": "personal choice storage treats prototype-shaped unique IDs as own data",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 8,
+      "title": "native Back/Forward traverses filtered Places list and its detail",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 33,
+      "title": "day filter survives refresh and same trip tab transitions, without changing Trip day",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 51,
+      "title": "native history over day filters restores all, day1, day2, without stale counts",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 69,
+      "title": "explicit direct date route overrides saved filter; invalid date fails to All days",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 82,
+      "title": "direct detail link and in-app Back restore device-selected Places filter",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 94,
+      "title": "Places detail Trip/Transport handoffs and native Back preserve correct visit",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 111,
+      "title": "native browser history retains legacy #map and #check compatibility",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 122,
+      "title": "32-day filter uses native select and survives Back/Forward/reload",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 146,
+      "title": "ambiguous #109 Place ID remains fail-closed after Back/Forward",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 163,
+      "title": "Places date route responsive and stable at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 163,
+      "title": "Places date route responsive and stable at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 163,
+      "title": "Places date route responsive and stable at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 176,
+      "title": "device-local day filter remains available on an offline PWA reload",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 191,
+      "title": "Trip-to-Places detail creates a usable native Back entry",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 204,
+      "title": "date filter is keyed by trip.id and never leaks to an unrelated trip",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 217,
+      "title": "malformed Places date hash fails to a stable All days route",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 226,
+      "title": "explicit All days link overrides a saved filter on a fresh page and reload",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue111-places-history.spec.mjs",
+      "line": 246,
+      "title": "no explicit route restores the device filter on a fresh page",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: editorial-light",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: editorial-dark",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: storybook",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: candy",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: risograph",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: paper-collage",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: naive-city",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: taiwan-poster",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: field-stamp",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: quiet-linocut",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: doodle-memory-grid",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: crayon-journal",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: painterly-editorial",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: geometric-print",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: quiet-acrylic",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 451,
+      "title": "#116 role geometry assert: vintage-watercolor",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 506,
+      "title": "#116 Map fallback compatibility assert: four representative appearances",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-role-geometry.spec.mjs",
+      "line": 577,
+      "title": "#116 actual Appearance picker clears three-role geometry assert",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-trip-contract.spec.mjs",
+      "line": 58,
+      "title": "strict Trip start and unchanged end semantics: editorial",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-trip-contract.spec.mjs",
+      "line": 58,
+      "title": "strict Trip start and unchanged end semantics: storybook",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-trip-contract.spec.mjs",
+      "line": 58,
+      "title": "strict Trip start and unchanged end semantics: risograph",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue116-trip-contract.spec.mjs",
+      "line": 58,
+      "title": "strict Trip start and unchanged end semantics: vintage-watercolor",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: editorial-light",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: editorial-dark",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: storybook",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: candy",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: risograph",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: paper-collage",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: naive-city",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: taiwan-poster",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: field-stamp",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: quiet-linocut",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: doodle-memory-grid",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: crayon-journal",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: painterly-editorial",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: geometric-print",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: quiet-acrylic",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 167,
+      "title": "#120 ordered return and consecutive visits: vintage-watercolor",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 197,
+      "title": "#120 explicit authority, fallbacks and compact overview controls",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: editorial-light at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: editorial-light at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: editorial-light at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: editorial-light at 1600",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: editorial-dark at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: editorial-dark at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: editorial-dark at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: storybook at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: storybook at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: storybook at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: risograph at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: risograph at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: risograph at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: vintage-watercolor at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: vintage-watercolor at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "issue120-route-summary.spec.mjs",
+      "line": 324,
+      "title": "#120 long repeated labels stay reachable: vintage-watercolor at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 81,
+      "title": "Plan B is opt-in, collapsed, source-ordered and never selects for the traveller",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 103,
+      "title": "Old trip JSON has zero Plan B, Essentials, Research Notes and publication notices",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 129,
+      "title": "Travel Essentials is collapsed, preserves three types, and Research Notes cite historic dates",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 143,
+      "title": "Structured transit computes only explicit source-backed leave-by and warns about tight schedules",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 156,
+      "title": "Transit does not fabricate leave-by: generic",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 156,
+      "title": "Transit does not fabricate leave-by: buffer",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 156,
+      "title": "Transit does not fabricate leave-by: bad-zone",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 168,
+      "title": "Malicious option and source values remain inert",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 187,
+      "title": "All secondary options fit viewport 320x568",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 187,
+      "title": "All secondary options fit viewport 390x844",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 187,
+      "title": "All secondary options fit viewport 1100x900",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "journey-confidence.spec.mjs",
+      "line": 200,
+      "title": "PWA precaches transit/trust runtime and styles for a first offline reload",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 320x568",
+      "status": "unexpected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 360x800",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 375x667",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 390x844",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 430x932",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 844x390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 932x430",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 820x1180",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 1100x900",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 444,
+      "title": "page shell reflows at 1600x900",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "light theme reflows at 320x568",
+      "status": "unexpected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "light theme reflows at 360x800",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "light theme reflows at 375x667",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "light theme reflows at 390x844",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "light theme reflows at 430x932",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "dark theme reflows at 320x568",
+      "status": "unexpected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "dark theme reflows at 360x800",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "dark theme reflows at 375x667",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "dark theme reflows at 390x844",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 477,
+      "title": "dark theme reflows at 430x932",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 493,
+      "title": "fully untimed current day renders Today Brief without widening the phone",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 499,
+      "title": "trip-day deep link survives portrait -> landscape phone -> desktop -> portrait resize",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 518,
+      "title": "desktop shell exposes stable right-context slots for view renderers",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 539,
+      "title": "32-day desktop rail scrolls internally and keeps first/last day controls reachable",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 568,
+      "title": "trip-day deep link is applied even when trip.json takes longer than 5s",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 575,
+      "title": "enhancement layers initialise on travel-lite-ready, not by polling",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 584,
+      "title": "enhancement layers initialise when trip.json takes longer than 5s",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 614,
+      "title": "Map opened on first load initialises MapLibre exactly once",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 630,
+      "title": "mobile Map full-bleed uses a root class, not :has()",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 652,
+      "title": "opened secondary-link menu stays inside a 320px shell",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 663,
+      "title": "reachability check fails when fixed or sticky chrome covers content controls",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 697,
+      "title": "Map fallback keeps controls reachable when MapLibre cannot load",
+      "status": "unexpected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 708,
+      "title": "opened disclosure menus and cards keep controls reachable at 320px",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 732,
+      "title": "long-text fixture keeps enum fields intact: personal decisions stay personal",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 740,
+      "title": "enlarged text keeps core read-only views inside a 320px shell",
+      "status": "unexpected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 778,
+      "title": "trip identity accepts a contrast-safe accent and rejects unsafe accent colors",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 787,
+      "title": "valid relative trip cover renders with bounded focal point and alt text",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 798,
+      "title": "trip cover rejects executable protocols and missing alt text",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 810,
+      "title": "unknown cover focal point normalizes to center",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 818,
+      "title": "failed trip cover collapses cleanly while core trip identity remains",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 828,
+      "title": "missing trip cover preserves the canonical no-cover composition",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 836,
+      "title": "#52 Map selected stop is structurally identifiable and keyboard-reachable",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "mobile-layout.spec.mjs",
+      "line": 856,
+      "title": "#52 Map fallback remains traveller-facing and handoff-safe",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "nine-looks.spec.mjs",
+      "line": 19,
+      "title": "extracted pack paper-collage shows a distinct real SVG/CSS composition",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "nine-looks.spec.mjs",
+      "line": 19,
+      "title": "extracted pack naive-city shows a distinct real SVG/CSS composition",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "nine-looks.spec.mjs",
+      "line": 19,
+      "title": "extracted pack taiwan-poster shows a distinct real SVG/CSS composition",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "nine-looks.spec.mjs",
+      "line": 19,
+      "title": "extracted pack field-stamp shows a distinct real SVG/CSS composition",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "nine-looks.spec.mjs",
+      "line": 49,
+      "title": "fifteen choices include two Editorial color modes and seven independent packs",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "nine-looks.spec.mjs",
+      "line": 72,
+      "title": "four new packs fit five functional views at 320/390/820/1600px",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "nine-looks.spec.mjs",
+      "line": 95,
+      "title": "reduced-motion disables paper and sketch floating animations",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "nine-looks.spec.mjs",
+      "line": 108,
+      "title": "no fixed postcard author, year or invented city tagline pollutes the trip",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "nine-looks.spec.mjs",
+      "line": 122,
+      "title": "the four new stylesheet + hero assets are precached",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "phase2-packs.spec.mjs",
+      "line": 29,
+      "title": "Candy is a true five-fill sticker style with editable labels and semantic timeline",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "phase2-packs.spec.mjs",
+      "line": 66,
+      "title": "Risograph has a distinct editorial print composition, halftone assets and static motion",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "phase2-packs.spec.mjs",
+      "line": 98,
+      "title": "Candy supports reduced-motion by OS and an editable per-trip preference",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "phase2-packs.spec.mjs",
+      "line": 115,
+      "title": "only registered style IDs can load; existing Editorial and Storybook stay isolated",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "phase2-packs.spec.mjs",
+      "line": 128,
+      "title": "Candy and Risograph preserve all five views, 320–1600px responsive layout and deep-linked day",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "phase2-packs.spec.mjs",
+      "line": 174,
+      "title": "a 15-day trip keeps long-trip date navigation usable in both new styles",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "phase2-packs.spec.mjs",
+      "line": 201,
+      "title": "style previews do not mutate private checklist state or the shared trip",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "phase2-packs.spec.mjs",
+      "line": 157,
+      "title": "candy cached assets and itinerary survive an offline reload",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "phase2-packs.spec.mjs",
+      "line": 157,
+      "title": "risograph cached assets and itinerary survive an offline reload",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 9,
+      "title": "primary destinations are Now Trip Transport Places More with exactly five tabs",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 25,
+      "title": "Places date filter, L0 card and L1 guide use real itinerary facts",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 41,
+      "title": "Trip item opens Places and back-to-day handoff preserves published itinerary day",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 50,
+      "title": "More has device-only checklist and retains checked state with legacy #check link",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 67,
+      "title": "legacy #map deep link still opens Transport and static published transfer text",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 80,
+      "title": "only explicit itemId references link booking & files; invalid URLs are never output",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 97,
+      "title": "missing guide, malicious script text, sparse content and 320px layouts degrade safely",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 113,
+      "title": "16 style appearances keep new Places view and mobile bottom navigation accessible",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 124,
+      "title": "new Places and Transport modules are offline precached",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 141,
+      "title": "32-day source-backed place index uses reachable native day selection, not 32 overflowing chips",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 159,
+      "title": "old saved Check landing migrates to More with all device ticks retained",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 171,
+      "title": "empty itinerary-only transport or accommodation has honest empty Places state",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 181,
+      "title": "all registered style packs can render Places and its source-backed detail",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 193,
+      "title": "capture real Transport, More and wide Places UI for artifact review",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 209,
+      "title": "capture explicitly linked synthetic entry and booking specimen",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 220,
+      "title": "public relative file links work; More and Places refuse executable schemes",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "places-transport.spec.mjs",
+      "line": 238,
+      "title": "duplicate published item IDs fail closed for admission links and show source ambiguity",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "responsive-style-picker.spec.mjs",
+      "line": 32,
+      "title": "More is compact by default; all sixteen styles are hidden until requested",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "responsive-style-picker.spec.mjs",
+      "line": 45,
+      "title": "phone bottom sheet fits viewport, scrolls options but pins header/footer",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "responsive-style-picker.spec.mjs",
+      "line": 72,
+      "title": "small 320×568 phone keeps all controls in viewport and close is reachable",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "responsive-style-picker.spec.mjs",
+      "line": 93,
+      "title": "Escape and backdrop close the sheet without altering saved style",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "responsive-style-picker.spec.mjs",
+      "line": 107,
+      "title": "desktop side drawer stays open for live comparison and traps keyboard focus",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "responsive-style-picker.spec.mjs",
+      "line": 138,
+      "title": "tablet drawer, compact desktop height and landscape resize preserve reachable controls",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "responsive-style-picker.spec.mjs",
+      "line": 160,
+      "title": "reset from native modal returns to non-Editorial published default and keeps hash",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "responsive-style-picker.spec.mjs",
+      "line": 178,
+      "title": "OS reduce-motion and manual preference suppress picker slide animation",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "responsive-style-picker.spec.mjs",
+      "line": 191,
+      "title": "cached modal markup and all choices are available offline",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 25,
+      "title": "new Style Pack quiet-linocut uses original art and preserved trip facts",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 25,
+      "title": "new Style Pack doodle-memory-grid uses original art and preserved trip facts",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 25,
+      "title": "new Style Pack crayon-journal uses original art and preserved trip facts",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 25,
+      "title": "new Style Pack painterly-editorial uses original art and preserved trip facts",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 25,
+      "title": "new Style Pack geometric-print uses original art and preserved trip facts",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 25,
+      "title": "new Style Pack quiet-acrylic uses original art and preserved trip facts",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 49,
+      "title": "sixteen styles available without extra duplicate Riso entries",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 60,
+      "title": "crayon journal respects OS motion and device setting; other new styles stay static",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 79,
+      "title": "new prompt copy cannot invent magazine captions, coordinates or exact city claims",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 90,
+      "title": "all six new packs keep all five views and no sideways overflow from 320 to 1600",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "second-prompt-batch.spec.mjs",
+      "line": 114,
+      "title": "six CSS and six heroes are precached and retain preference offline",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "site-storage.spec.mjs",
+      "line": 63,
+      "title": "two same-origin trip sites keep separate offline snapshots and freshness",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "site-storage.spec.mjs",
+      "line": 100,
+      "title": "a duplicate trip.id does not share personal checks, notes, styles, or motion",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "site-storage.spec.mjs",
+      "line": 154,
+      "title": "localStorage fallback is also site-scoped when IndexedDB is unavailable",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "site-storage.spec.mjs",
+      "line": 179,
+      "title": "never imports an unscoped legacy snapshot belonging to another trip",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "site-storage.spec.mjs",
+      "line": 216,
+      "title": "online boot ignores legacy checklist values, even with matching trip.id",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "site-storage.spec.mjs",
+      "line": 250,
+      "title": "updating published trip.json keeps same-site device choices and loads fresh facts",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "site-storage.spec.mjs",
+      "line": 287,
+      "title": "a real Service Worker preserves this site's data through an offline reload",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-options.spec.mjs",
+      "line": 31,
+      "title": "untouched trips remain editorial and preserve Auto/Light/Dark theme",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-options.spec.mjs",
+      "line": 55,
+      "title": "preview URL enables storybook without writing to trip.json",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-options.spec.mjs",
+      "line": 79,
+      "title": "shared ui.visualStyle config renders storybook without preview parameter",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-options.spec.mjs",
+      "line": 103,
+      "title": "storybook artwork accepts only known names and never parses user strings as urls",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-options.spec.mjs",
+      "line": 117,
+      "title": "storybook respects OS reduced motion plus a persistent per-trip manual control",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-options.spec.mjs",
+      "line": 140,
+      "title": "storybook works at narrow, tablet, and desktop widths without horizontal overflow",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-options.spec.mjs",
+      "line": 167,
+      "title": "invalid style choices preserve Editorial without CSS leakage",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-options.spec.mjs",
+      "line": 176,
+      "title": "storybook's five companion views keep the original data/actions and fit mobile and wide desktop",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-options.spec.mjs",
+      "line": 226,
+      "title": "storybook 15-day itinerary keeps compact mobile date selector and linked day timeline",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-options.spec.mjs",
+      "line": 203,
+      "title": "preloaded illustrated style and itinerary survive an offline reload",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: editorial-light",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: editorial-dark",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: storybook",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: candy",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: risograph",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: paper-collage",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: naive-city",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: taiwan-poster",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: field-stamp",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: quiet-linocut",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: doodle-memory-grid",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: crayon-journal",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: painterly-editorial",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: geometric-print",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: quiet-acrylic",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-semantic-parity.spec.mjs",
+      "line": 78,
+      "title": "appearance must not change itinerary facts or stop order: vintage-watercolor",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-settings.spec.mjs",
+      "line": 43,
+      "title": "Settings / More lists fifteen selectable appearances and a visible follow-default control",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-settings.spec.mjs",
+      "line": 59,
+      "title": "switches all previously supported looks live without navigating or mutating shared trip data",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-settings.spec.mjs",
+      "line": 87,
+      "title": "selection persists across reload but does not change existing deep link or checklist",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-settings.spec.mjs",
+      "line": 111,
+      "title": "a shared preview URL overrides the device temporarily, and Settings clears the URL override when saving",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-settings.spec.mjs",
+      "line": 132,
+      "title": "Follow trip default clears local selection and respects a published Storybook default",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-settings.spec.mjs",
+      "line": 155,
+      "title": "returning from light-only packs to Editorial restores stored dark theme and header toggle",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-settings.spec.mjs",
+      "line": 171,
+      "title": "the style picker supports keyboard input, manual motion preferences, and 320px mobile",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-settings.spec.mjs",
+      "line": 218,
+      "title": "choosing and resetting style does not raise JavaScript page errors",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-settings.spec.mjs",
+      "line": 198,
+      "title": "styles and settings survive offline reload after first visit",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: editorial-light",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: editorial-dark",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: storybook",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: candy",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: risograph",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: paper-collage",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: naive-city",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: taiwan-poster",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: field-stamp",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: quiet-linocut",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: doodle-memory-grid",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: crayon-journal",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: painterly-editorial",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: geometric-print",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: quiet-acrylic",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-matrix.spec.mjs",
+      "line": 37,
+      "title": "style surface matrix: vintage-watercolor",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 43,
+      "title": "Vintage Transport Day 2 has no zero-inset parent frame at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 101,
+      "title": "Risograph Reservations and reading rows use open typography at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 165,
+      "title": "risograph Costs total frame/text inset at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 165,
+      "title": "storybook Costs total frame/text inset at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 240,
+      "title": "Risograph Trip START/END and numbered route are borderless at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 43,
+      "title": "Vintage Transport Day 2 has no zero-inset parent frame at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 101,
+      "title": "Risograph Reservations and reading rows use open typography at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 165,
+      "title": "risograph Costs total frame/text inset at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 165,
+      "title": "storybook Costs total frame/text inset at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 240,
+      "title": "Risograph Trip START/END and numbered route are borderless at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 43,
+      "title": "Vintage Transport Day 2 has no zero-inset parent frame at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 101,
+      "title": "Risograph Reservations and reading rows use open typography at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 165,
+      "title": "risograph Costs total frame/text inset at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 165,
+      "title": "storybook Costs total frame/text inset at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 240,
+      "title": "Risograph Trip START/END and numbered route are borderless at 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-padding.spec.mjs",
+      "line": 276,
+      "title": "long mixed-language route endpoints and two-digit steps remain readable at 320px",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: editorial-light has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: editorial-dark has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: storybook has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: candy has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: risograph has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: paper-collage has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: naive-city has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: taiwan-poster has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: field-stamp has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: quiet-linocut has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: doodle-memory-grid has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: crayon-journal has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: painterly-editorial has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: geometric-print has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: quiet-acrylic has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 58,
+      "title": "surface contract: vintage-watercolor has no bordered zero-inset content",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 129,
+      "title": "negative control: side-only borders and inward outlines must fail geometry gate",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-surface-role.spec.mjs",
+      "line": 156,
+      "title": "actual More Appearance picker clears inherited frames, theme and stale tokens",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: editorial-light at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: editorial-light at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: editorial-dark at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: editorial-dark at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: storybook at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: storybook at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: candy at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: candy at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: risograph at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: risograph at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: paper-collage at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: paper-collage at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: naive-city at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: naive-city at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: taiwan-poster at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: taiwan-poster at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: field-stamp at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: field-stamp at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: quiet-linocut at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: quiet-linocut at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: doodle-memory-grid at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: doodle-memory-grid at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: crayon-journal at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: crayon-journal at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: painterly-editorial at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: painterly-editorial at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: geometric-print at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: geometric-print at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: quiet-acrylic at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: quiet-acrylic at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: vintage-watercolor at 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "style-text-zoom.spec.mjs",
+      "line": 29,
+      "title": "200% text reflow: vintage-watercolor at 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-a5.spec.mjs",
+      "line": 19,
+      "title": "Classic stays default, Vintage is a separate selectable HTML A5",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-a5.spec.mjs",
+      "line": 41,
+      "title": "Vintage A5 produces dense, text-selectable multiple print pages without changing items",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-framing.spec.mjs",
+      "line": 29,
+      "title": "ornate frame survives accessible responsive layout 320",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-framing.spec.mjs",
+      "line": 29,
+      "title": "ornate frame survives accessible responsive layout 390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-framing.spec.mjs",
+      "line": 29,
+      "title": "ornate frame survives accessible responsive layout 844",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-framing.spec.mjs",
+      "line": 29,
+      "title": "ornate frame survives accessible responsive layout 1100",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-framing.spec.mjs",
+      "line": 68,
+      "title": "four corners and divider are local fetchable assets, not remote image dependencies",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-framing.spec.mjs",
+      "line": 85,
+      "title": "320px long multilingual titles do not cover borders or controls",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-framing.spec.mjs",
+      "line": 103,
+      "title": "A5 Vintage prints original vector decorations; Classic stays unchanged and text selectable",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-framing.spec.mjs",
+      "line": 135,
+      "title": "new corner ornaments do not leak into other Style Packs",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-framing.spec.mjs",
+      "line": 146,
+      "title": "all new frame SVGs survive the first offline reload",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-watercolor.spec.mjs",
+      "line": 6,
+      "title": "Vintage Watercolor stays opt-in, preserving real overview text and optional info-card behavior",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-watercolor.spec.mjs",
+      "line": 28,
+      "title": "Vintage responsive overview, day and More 320x568",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-watercolor.spec.mjs",
+      "line": 28,
+      "title": "Vintage responsive overview, day and More 844x390",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-watercolor.spec.mjs",
+      "line": 28,
+      "title": "Vintage responsive overview, day and More 1100x900",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-watercolor.spec.mjs",
+      "line": 47,
+      "title": "New pack never runs decorative motion and is available offline after install",
+      "status": "expected",
+      "project": "chromium"
+    },
+    {
+      "file": "vintage-watercolor.spec.mjs",
+      "line": 65,
+      "title": "Vintage More and checklist headers use one filled silhouette at every width",
+      "status": "expected",
+      "project": "chromium"
+    }
+  ]
+}
