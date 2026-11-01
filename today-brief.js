@@ -43,13 +43,11 @@
   function routeStops(day) {
     const explicit = Array.isArray(day?.routeSummary) ? day.routeSummary : [];
     const source = explicit.length ? explicit : (day?.items || []).map((item) => item.routeLabel || item.title || item.location).filter(Boolean);
-    const seen = new Set();
-    return source.map((entry) => typeof entry === "string" ? entry : entry?.label || entry?.title).filter(Boolean).filter((value) => {
-      const key = String(value).trim().toLowerCase();
-      if (!key || seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
+    // #120 (2026-11-01): keep the same occurrence-preserving projection as Trip.
+    return source
+      .map((entry) => typeof entry === "string" ? entry : entry?.label || entry?.title)
+      .filter(Boolean)
+      .filter((label) => String(label).trim());
   }
 
   function supplementary(item) {
