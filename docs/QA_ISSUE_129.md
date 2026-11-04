@@ -46,3 +46,12 @@
 ## A — Act (pending)
 
 Document findings and resolution in this file/Issue, rerun checks, secure all three human passes, then merge → deploy → verify GitHub Pages & installed PWA → close Issue with evidence.
+
+## 2026-11-05 Owner-directed PDCA gate amendment
+
+The Owner subsequently instructed: update the Ise trip, run several independent Extra High AI reviews if possible, **merge now**, and arrange the three distinct human reviewers afterwards. This explicitly supersedes the earlier **human reviews before merge** sequence for this release. The three human reviews remain an **open post-merge follow-up**, not fictional approvals.
+
+- Additional external AI reviewer attempts: **NOT RUN / BLOCKED**. OpenAI Codex CLI `model_reasoning_effort=xhigh` with `gpt-6.1-sol`, `gpt-5.3-codex`, `gpt-6`, and `chatgpt-web/extra-high` could not complete: unsupported model or trusted environment network unavailable. Claude CLI `--effort xhigh --model opus` ended `Reached max turns (15)` without a review report. None qualifies as a PASS; do not count them as reviewer identities.
+- Automated self-checks and independent test processes remain **PASS** as stated above (23/23 date-navigation tests, 340/340 full browser suite with 16 original SKIP, 46 Node tests across export/style/pack, ID integrity). These are **not the requested three different people**.
+- Risk and responsibility: Owner authorized merging despite unavailable independent AI model reviews. The post-merge 3-human review and real-device acceptance remain pending and visible in Issue #129. Any findings must be remediated in follow-up PRs; Issue is not to be closed as fully reviewed.
+- The template merge **does not automatically update the already-forked Kansai website**; separately port the shared date navigator with regression tests before any claim that its Trip/Transport/Places selectors are unified.
