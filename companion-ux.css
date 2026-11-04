@@ -463,9 +463,31 @@
   min-height: 58px;
   padding-block: var(--space-3);
 }
-.companion-floating-list .type-pill {
+/* Compact category eyebrow for Now floating items. This intentionally avoids
+   the global .type-pill class because optional Style Packs own its borders. */
+.companion-floating-list .companion-kind-label {
+  display: block;
+  box-sizing: border-box;
+  max-width: 100%;
+  width: fit-content;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
   background: transparent;
-  padding-inline: 0;
+  color: var(--muted);
+  font-family: var(--font-utility);
+  font-size: .75rem;
+  line-height: 1.4;
+  font-weight: 750;
+  letter-spacing: .025em;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-transform: none;
+}
+.companion-floating-list .companion-kind-label + h3 {
+  margin-top: 5px;
 }
 .companion-reminders > div > span {
   border-radius: var(--radius-sm);

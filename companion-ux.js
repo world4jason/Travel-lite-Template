@@ -9,7 +9,8 @@
       updated: "updated", share: "Share", selectedStop: "Selected stop", openInMaps: "Open in Google Maps",
       noScheduledNow: "No scheduled item right now", betweenPlans: "Between plans", tripOverview: "Trip overview",
       openChoices: "Open choices", reservations: "Reservations", weather: "Weather", incomplete: "Incomplete",
-      deviceStatus: "Device status", today: "Today", tomorrow: "Tomorrow", tbd: "TBD"
+      deviceStatus: "Device status", today: "Today", tomorrow: "Tomorrow", tbd: "TBD",
+      kindTransport: "Transport", kindStay: "Stay", kindPlace: "Place", kindFood: "Food", kindEvent: "Event", kindActivity: "Activity"
     },
     "zh-TW": {
       navNow: "現在", navTrip: "行程", navMap: "交通", navPlaces: "景點", navCheck: "清單", navMore: "更多",
@@ -19,7 +20,8 @@
       updated: "更新", share: "分享", selectedStop: "目前地點", openInMaps: "Google Maps",
       noScheduledNow: "目前沒有排定行程", betweenPlans: "行程空檔", tripOverview: "旅程總覽",
       openChoices: "待決定", reservations: "預約 / 票券", weather: "天氣", incomplete: "未完成",
-      deviceStatus: "裝置狀態", today: "今天", tomorrow: "明天", tbd: "未定"
+      deviceStatus: "裝置狀態", today: "今天", tomorrow: "明天", tbd: "未定",
+      kindTransport: "交通", kindStay: "住宿", kindPlace: "景點", kindFood: "餐飲", kindEvent: "活動", kindActivity: "活動"
     }
   };
 
@@ -49,6 +51,24 @@
   function t(key, fallback = "") {
     const overrides = state?.data?.ui?.labels || {};
     return String(overrides[key] || dictionaries[currentLocale()]?.[key] || dictionaries.en[key] || fallback || key);
+  }
+
+  // Rendering-only label. Preserve item.type as the published taxonomy,
+  // and never couple the Now content label to a theme-owned badge class.
+  function itemKindLabel(type) {
+    const value = typeof type === "string" ? type.trim() : "";
+    const keys = {
+      transport: "kindTransport",
+      stay: "kindStay",
+      accommodation: "kindStay",
+      place: "kindPlace",
+      food: "kindFood",
+      meal: "kindFood",
+      event: "kindEvent",
+      activity: "kindActivity"
+    };
+    const normalized = value.toLowerCase();
+    return Object.hasOwn(keys, normalized) ? t(keys[normalized]) : (value || t("tbd"));
   }
 
   function safeUrl(rawUrl, protocols = ["http:", "https:"]) {
@@ -173,7 +193,7 @@
 
   function floatingHtml(items) {
     if (!items?.length) return "";
-    return `<section class="companion-section composition-narrative"><div class="companion-section-heading"><p class="eyebrow">${escapeHtml(t("tbd"))}</p><h2>${escapeHtml(t("flexibleToday"))}</h2></div><div class="companion-floating-list">${items.map((item) => `<article><div><span class="type-pill">${escapeHtml(item.type || t("tbd"))}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.location || item.note || "")}</p></div>${compactLinks(item)}${supplementary(item)}</article>`).join("")}</div></section>`;
+    return `<section class="companion-section composition-narrative"><div class="companion-section-heading"><p class="eyebrow">${escapeHtml(t("tbd"))}</p><h2>${escapeHtml(t("flexibleToday"))}</h2></div><div class="companion-floating-list">${items.map((item) => `<article><div><span class="companion-kind-label">${escapeHtml(itemKindLabel(item.type))}</span><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.location || item.note || "")}</p></div>${compactLinks(item)}${supplementary(item)}</article>`).join("")}</div></section>`;
   }
 
   function laterHtml(items) {
