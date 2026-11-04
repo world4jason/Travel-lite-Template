@@ -347,7 +347,10 @@
     applyingHash = true;
     if (parts[0] === "trip") {
       state.view = "trip";
-      if (parts[1] === "day" && state.data.days.some((day) => day.date === parts[2])) state.selectedDate = parts[2];
+      if (parts[1] === "day" && state.data.days.some((day) => day.date === parts[2])) {
+        state.selectedDate = parts[2];
+        TravelLiteStorage.set(tripKey("ui:selectedDate"), state.selectedDate);
+      }
       render();
       queueMicrotask(() => {
         const button = parts[1] === "overview" ? root.querySelector("[data-trip-mode='overview']") : [...root.querySelectorAll("[data-trip-day]")].find((node) => node.dataset.tripDay === parts[2]);
@@ -355,7 +358,10 @@
       });
     } else if (parts[0] === "map" || parts[0] === "transport") {
       state.view = "map";
-      if (parts[1] === "day" && state.data.days.some((day) => day.date === parts[2])) state.selectedDate = parts[2];
+      if (parts[1] === "day" && state.data.days.some((day) => day.date === parts[2])) {
+        state.selectedDate = parts[2];
+        TravelLiteStorage.set(tripKey("ui:selectedDate"), state.selectedDate);
+      }
       if (parts[3] === "stop") state.selectedMapItemId = parts[4] || null;
       render();
     } else if (parts[0] === "places") {
@@ -364,6 +370,13 @@
       // Preserve unknown/ambiguous ID-only deep links for a readable warning;
       // never resolve the first visit merely because an ID occurs somewhere.
       state.selectedPlaceId = id || null;
+      if (id) {
+        const entry = state.itemIdentity?.resolveUnique(id);
+        if (entry?.day?.date && state.data.days.some(day => day.date === entry.day.date)) {
+          state.selectedDate = entry.day.date;
+          TravelLiteStorage.set(tripKey("ui:selectedDate"), state.selectedDate);
+        }
+      }
       if (parts[1] === "day") {
         const selected = window.TravelLitePlaces?.applyRouteDate(parts[2]);
         // Invalid dates have one stable canonical list URL and no extra

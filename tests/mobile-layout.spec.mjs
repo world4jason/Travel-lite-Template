@@ -460,10 +460,10 @@ for (const viewport of FULL_MATRIX) {
 
     if (isMobileShell(viewport)) {
       await openView(page, "trip");
-      await expect(page.locator(".long-trip-nav")).toBeVisible();
+      await expect(page.locator(".unified-date-nav")).toBeVisible();
       await expect(page.locator(".shell-context-left")).toBeHidden();
       await expect(page.locator(".shell-context-right")).toBeHidden();
-      await page.locator("[data-long-trip-select]").selectOption(TODAY);
+      await page.locator("[data-unified-date-select]").selectOption(TODAY);
       await expect(page.locator(`[data-trip-day="${TODAY}"].active`)).toHaveCount(1);
       await assertNoDocumentOverflow(page);
     } else {
@@ -574,7 +574,7 @@ test("trip-day deep link is applied even when trip.json takes longer than 5s", a
 
 test("enhancement layers initialise on travel-lite-ready, not by polling", () => {
   // Guards the contract in docs/ARCHITECTURE.md: a timed poll can give up before a slow trip.json arrives.
-  for (const file of ["companion-ux.js", "responsive-shell.js", "theme-shell.js", "long-trip-nav.js"]) {
+  for (const file of ["companion-ux.js", "responsive-shell.js", "theme-shell.js", "long-trip-nav.js", "date-navigation.js"]) {
     const source = readFileSync(resolve(REPO_ROOT, file), "utf8");
     expect(source, `${file} must initialise on travel-lite-ready`).toContain('"travel-lite-ready"');
     expect(source, `${file} must not poll for trip data`).not.toMatch(/setInterval\s*\(/);
@@ -586,8 +586,8 @@ test("enhancement layers initialise when trip.json takes longer than 5s", async 
 
   // Phone: long-trip navigator (long-trip-nav.js).
   await boot(page, { width: 390, height: 844 }, { hash: `#trip/day/${TODAY}`, tripDelayMs: 6_000 });
-  await expect(page.locator(".long-trip-nav")).toBeVisible();
-  await expect(page.locator("[data-long-trip-select]")).toHaveValue(TODAY);
+  await expect(page.locator(".unified-date-nav")).toBeVisible();
+  await expect(page.locator("[data-unified-date-select]")).toHaveValue(TODAY);
 
   // Desktop: context rails (responsive-shell.js).
   await page.setViewportSize({ width: 1600, height: 900 });
@@ -629,7 +629,7 @@ test("Map opened on first load initialises MapLibre exactly once", async ({ page
 
 test("mobile Map full-bleed uses a root class, not :has()", async ({ page }) => {
   // Browsers without :has() (iOS Safari < 15.4) must get the same Map layout.
-  for (const file of ["styles.css", "runtime.css", "companion-ux.css", "trip-view.css", "responsive-shell.css", "desktop-theme.css", "long-trip-nav.css", "today-brief.css"]) {
+  for (const file of ["styles.css", "runtime.css", "companion-ux.css", "trip-view.css", "responsive-shell.css", "desktop-theme.css", "long-trip-nav.css", "date-navigation.css", "today-brief.css"]) {
     expect(readFileSync(resolve(REPO_ROOT, file), "utf8"), `${file} must not rely on :has()`).not.toContain(":has(");
   }
 

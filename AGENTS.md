@@ -148,8 +148,11 @@ See [`docs/SOURCE_NORMALIZATION.md`](./docs/SOURCE_NORMALIZATION.md).
 The canonical tab navigation is Now/Trip/Transport/Places/More.
 For Places navigation changes (#111), preserve its browser history contract:
 `#places` All days; `#places/day/DATE` explicit source-backed day filter;
-`#places/item/ID` unique-only detail. Filter choice stays this-device,
-per-trip and does not change Trip's selected day until explicit handoff.
+`#places/item/ID` unique-only detail. Filter mode stays this-device/per-trip: Places All is independent from
+Trip Overview, but an explicit Places day selection updates the single shared
+Trip/Transport/Places `state.selectedDate`. Valid selected-day handoffs follow
+that date; no view may retain a second independent selected-date value.
+See docs/DATE_NAVIGATION_PDCA_129.md. This supersedes the old #111-only rule.
 Native Back/Forward, reload, long-trip select, legacy #map/#check and
 #109 fail-closed ambiguity must pass real Chromium tests. No sixth tab.
 Transport uses the MapLibre map with old #map links and no invented

@@ -233,6 +233,19 @@ Verify:
 - `transferAfter` appears between the correct stops and disappears cleanly when absent
 - a dense item still scans well on mobile
 
+## Shared Date Navigator regression (Issue #129)
+
+- Trip / Transport / Places must use the same mobile Date Navigator component;
+  check 3 / 11 / 32-day fixtures and all three routes at 320/390px plus desktop.
+- `ui:selectedDate` is the only date truth. `places:mode` persists All/Day only;
+  migrate old `places:date` without picking a second independent date.
+- Trip Overview and Places All remain different view-specific modes; Transport
+  has no whole-trip Overview. A chosen day follows all Day-mode views.
+- Verify `#trip/overview`, `#trip/day/DATE`, `#map/day/DATE/stop/ID`, `#places`,
+  `#places/day/DATE`, `#places/item/ID`, `#check`, Back/Forward and offline.
+- 15 Style IDs, 200% text, keyboard-native select, no duplicate visible controls;
+  the three-distinct-human, three-round review gate stays NOT RUN until verified.
+
 ## Responsive-shell review
 
 Responsive changes must be tested across all three compositions, not just one phone and one desktop.

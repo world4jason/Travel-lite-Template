@@ -129,6 +129,21 @@ Existing #check bookmarks still work and stored checklist state persists.
 At long trip lengths, prefer a native date selector over offscreen
 unreachable date chips.
 
+## Trip / Transport / Places date navigation (Issue #129)
+
+The three date-bearing pages share the same mobile Date Navigator (short Day N,
+MM/DD label; native select, prev/next day, Today, optional Overview). Trip keeps
+its whole-trip summary-card Overview; Places keeps its all-places list; Transport
+has no whole-trip Overview by default. Choosing a concrete published date on
+any page updates the one device-local selected date. Each page can remain in
+its explicit Overview/All mode without erasing that day. Moving among the
+views while they are in Day mode keeps the same selected date. Desktop Trip
+retains the day sidebar. Dates without places show a source-faithful empty list.
+
+Direct URLs and browser Back/Forward take precedence over a stored selection;
+invalid dates do not select arbitrary items. This is read-only navigation,
+not itinerary editing or cross-device collaboration.
+
 ## Map: read-only spatial reference
 
 The map exists to answer “where are today’s planned stops relative to each other?”

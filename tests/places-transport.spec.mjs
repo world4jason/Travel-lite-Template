@@ -25,7 +25,7 @@ test("primary destinations are Now Trip Transport Places More with exactly five 
 test("Places date filter, L0 card and L1 guide use real itinerary facts",async({page})=>{
   await page.setViewportSize({width:390,height:844});
   await page.goto("/#places");
-  await page.locator('[data-places-date="2026-10-04"]').click();
+  await page.locator("[data-unified-date-select]").selectOption("2026-10-04");
   await expect(page.locator(".places-card")).toHaveCount(2);
   await page.locator('[data-open-place="d2-sensoji"]').click();
   await expect(page.locator(".places-detail-heading h2")).toHaveText("Senso-ji");
@@ -149,9 +149,9 @@ test("32-day source-backed place index uses reachable native day selection, not 
   await page.route("**/trip.json",route=>route.fulfill({status:200,contentType:"application/json",body:JSON.stringify(trip)}));
   await page.setViewportSize({width:320,height:568});
   await page.goto("/#places");
-  await expect(page.locator("[data-places-select]")).toBeVisible();
+  await expect(page.locator("[data-unified-date-select]")).toBeVisible();
   await expect(page.locator(".places-filters")).toHaveCount(0);
-  await page.locator("[data-places-select]").selectOption("2026-10-12");
+  await page.locator("[data-unified-date-select]").selectOption("2026-10-12");
   await expect(page.locator(".places-card")).toHaveCount(2);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 });

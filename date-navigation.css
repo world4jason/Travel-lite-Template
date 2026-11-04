@@ -1,0 +1,146 @@
+/* Single mobile date control for Trip, Transport and Places.
+ * Preserve existing desktop Trip sidebar and original renderers.
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ */
+#view-root.unified-date-enabled .trip-v2-tabs,
+#view-root.unified-date-enabled .long-trip-nav,
+#view-root.unified-date-enabled .map-day-tabs,
+#view-root.unified-date-enabled .places-date-picker,
+#view-root.unified-date-enabled .places-filters {
+  display: none !important;
+}
+.unified-date-nav {
+  box-sizing: border-box;
+  display: grid;
+  gap: 10px;
+  max-width: 100%;
+  margin: 0 0 16px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg, 14px);
+  background: var(--surface);
+  color: var(--text);
+}
+.unified-date-nav *,
+.unified-date-nav *::before,
+.unified-date-nav *::after { box-sizing: border-box; }
+.unified-date-main {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 10px;
+}
+.unified-date-arrow {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 1.13rem;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+}
+.unified-date-arrow:disabled {
+  opacity: .34;
+  cursor: default;
+}
+.unified-date-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text);
+}
+.unified-date-value {
+  display: block;
+  min-width: 0;
+  padding: 0 35px 0 12px;
+  font-size: .88rem;
+  font-weight: 730;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.unified-date-chevron {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 1rem;
+}
+.unified-date-select {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  appearance: none;
+  opacity: .01;
+  cursor: pointer;
+}
+.unified-date-select-wrap:focus-within,
+.unified-date-arrow:focus-visible,
+.unified-date-quick button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.unified-date-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  align-items: center;
+  min-height: 36px;
+}
+.unified-date-quick button {
+  appearance: none;
+  cursor: pointer;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: transparent;
+  color: var(--text);
+  font-size: .76rem;
+  font-weight: 730;
+}
+.unified-date-quick button.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.unified-date-quick button:disabled {
+  opacity: .35;
+  cursor: default;
+}
+.unified-date-count,
+.unified-date-quick small {
+  margin-left: auto;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: .72rem;
+}
+@media (max-width: 899px), (max-height: 600px) {
+  #view-root.view-root--map > .unified-date-nav {
+    margin-left: var(--shell-gutter, 14px);
+    margin-right: var(--shell-gutter, 14px);
+  }
+}
+@media (max-width: 360px) {
+  .unified-date-nav { padding: 9px; gap: 8px; }
+  .unified-date-main { gap: 6px; }
+  .unified-date-value { font-size: .82rem; padding-left: 9px; padding-right: 27px; }
+  .unified-date-chevron { right: 8px; }
+}
+@media (min-width: 900px) and (min-height: 601px) {
+  /* Desktop Trip already has a complete persistent, accessible day sidebar. */
+  #view-root[data-date-nav-view="trip"] > .unified-date-nav { display: none; }
+}

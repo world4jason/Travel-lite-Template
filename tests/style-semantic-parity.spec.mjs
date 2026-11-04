@@ -181,7 +181,7 @@ for (const look of appearances) {
 
     // An empty source day has no invented stop/listitem. The explanatory
     // message is outside the ordered list, so it is not counted as a visit.
-    await page.locator('.trip-v2-tabs [data-trip-day="' + emptyDay.date + '"]').click();
+    await page.locator('[data-unified-date-select]').selectOption(emptyDay.date);
     await expect(page.locator(".day-summary h2")).toHaveText(emptyDay.title);
     const emptyList = await canonicalTimeline(page, emptyDay);
     await expect(emptyList.locator("li, article")).toHaveCount(0);

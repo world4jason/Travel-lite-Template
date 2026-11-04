@@ -1,7 +1,9 @@
 /* Reusable read-only Places directory and context. No discovery or secrets. SPDX-License-Identifier: AGPL-3.0-or-later */
 (() => {
   let filterDate = "all";
-  const availableDates = () => new Set(entries().map(row => row.day.date));
+  // All published trip days are selectable, including a day with no Places.
+  // The rendered Places list may then legitimately show its empty state.
+  const availableDates = () => new Set((state.data?.days || []).map(day => day.date));
   const validFilter = date => date === "all" || availableDates().has(date) ? date : "all";
   const currentListHash = () => filterDate === "all" ? "#places" : "#places/day/" + encodeURIComponent(filterDate);
   function pushRoute(hash) {
@@ -9,11 +11,27 @@
   }
   function applyRouteDate(date, persist = true) {
     filterDate = validFilter(date);
-    if (persist) TravelLiteStorage.set(tripKey("places:date"), filterDate);
+    // The date is shared across Trip/Transport/Places; only All/Day mode
+    // remains Places-specific. Never retain a second independently selected date.
+    if (filterDate !== "all") {
+      state.selectedDate = filterDate;
+      TravelLiteStorage.set(tripKey("ui:selectedDate"), filterDate);
+    }
+    if (persist) TravelLiteStorage.set(tripKey("places:mode"), filterDate === "all" ? "all" : "day");
     return filterDate;
   }
   async function hydrateFilter() {
-    filterDate = validFilter(await TravelLiteStorage.get(tripKey("places:date")));
+    // Legacy places:date contains a date or 'all'. Migrate its intent to
+    // places:mode, keeping the single ui:selectedDate as actual date truth.
+    const mode = await TravelLiteStorage.get(tripKey("places:mode"));
+    const legacy = await TravelLiteStorage.get(tripKey("places:date"));
+    const savedMode = mode === "all" || mode === "day" ? mode
+      : validFilter(legacy) === "all" ? "all" : "day";
+    // The old Places date is only an All/Day mode hint. Never overwrite
+    // ui:selectedDate with a possibly stale, formerly independent date.
+    filterDate = savedMode === "day" ? validFilter(state.selectedDate) : "all";
+    if (mode !== "all" && mode !== "day")
+      await TravelLiteStorage.set(tripKey("places:mode"), savedMode);
   }
   function selectFilter(date) {
     const next = validFilter(date);
@@ -184,6 +202,10 @@
     </div>`;
   }
   function render() {
+    // A date chosen in Trip or Transport follows us if Places is in Day mode.
+    // An explicit Places All mode is retained independently of the shared day.
+    if (filterDate !== "all" && validFilter(state.selectedDate) !== "all")
+      filterDate = state.selectedDate;
     const all=entries();
     const ref=state.itemIdentity?.resolveUnique(state.selectedPlaceId);
     const selected=ref && isPlace(ref.item) ? {item:ref.item,day:ref.day} : null;
@@ -198,6 +220,11 @@
   }
   function open(id) {
     if (typeof id !== "string" || !id) return;
+    const entry = state.itemIdentity?.resolveUnique(id);
+    if (entry?.day?.date && availableDates().has(entry.day.date)) {
+      state.selectedDate = entry.day.date;
+      TravelLiteStorage.set(tripKey("ui:selectedDate"), state.selectedDate);
+    }
     state.selectedPlaceId = id;
     pushRoute("#places/item/" + encodeURIComponent(id));
     setView("places");
@@ -213,6 +240,7 @@
       const entry=state.itemIdentity?.resolveUnique(id);
       if (!entry || !isPlace(entry.item)) return;
       state.selectedDate=entry.day.date;
+      TravelLiteStorage.set(tripKey("ui:selectedDate"), state.selectedDate);
       if (target.hasAttribute("data-places-transport")) {
         state.selectedMapItemId = id;
         pushRoute("#map/day/" + encodeURIComponent(entry.day.date) + "/stop/" + encodeURIComponent(id));

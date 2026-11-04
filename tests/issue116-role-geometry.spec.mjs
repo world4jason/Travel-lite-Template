@@ -629,7 +629,7 @@ test("#116 actual Appearance picker clears three-role geometry " + mode, async (
 
       await page.locator('#bottom-nav [data-view="trip"]').click();
       expect(await page.evaluate(() => state.selectedDate)).toBe(day.date);
-      await page.locator('.trip-v2-tabs [data-trip-day="' + day.date + '"]').click();
+      await page.locator('[data-unified-date-select]').selectOption(day.date);
       await expect(page).toHaveURL(new RegExp("#trip/day/" + day.date + "$"));
       await expect(choice).toHaveClass(/\bprimary\b/);
       await settleStyles(page);

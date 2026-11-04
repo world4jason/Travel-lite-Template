@@ -145,7 +145,7 @@ test("storybook works at narrow, tablet, and desktop widths without horizontal o
     await page.locator(".bottom-nav [data-view='trip']").click();
     if (await page.locator(".trip-overview-day").count() === 0) {
       if (width >= 900) await page.locator("[data-shell-overview]").click();
-      else await page.locator("[data-trip-mode='overview']").click();
+      else await page.locator("[data-unified-date-overview]").click();
     }
     const first = page.locator(".trip-overview-day").first();
     await first.click();
@@ -242,11 +242,11 @@ test("storybook 15-day itinerary keeps compact mobile date selector and linked d
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto("/#trip/day/2026-10-12");
   await storybookReady(page);
-  await expect(page.locator(".long-trip-nav")).toBeVisible();
-  await expect(page.locator("[data-long-trip-select]")).toHaveValue("2026-10-12");
+  await expect(page.locator(".unified-date-nav")).toBeVisible();
+  await expect(page.locator("[data-unified-date-select]")).toHaveValue("2026-10-12");
   await expect(page.locator("ol.trip-v2-timeline > li")).toHaveCount(4);
-  await page.locator("[data-long-trip-next]").click();
-  await expect(page.locator("[data-long-trip-select]")).toHaveValue("2026-10-13");
+  await page.locator("[data-unified-date-next]").click();
+  await expect(page.locator("[data-unified-date-select]")).toHaveValue("2026-10-13");
   await expect(page.locator(".day-summary")).toContainText("A day to explore 11");
   const widths = await page.evaluate(() => [innerWidth, document.documentElement.scrollWidth]);
   expect(widths[1]).toBeLessThanOrEqual(widths[0] + 2);
