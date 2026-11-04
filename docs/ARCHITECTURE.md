@@ -52,6 +52,22 @@ preparation checklist and non-core tools; the legacy #check route remains.
 All screens project one published trip dataset, without duplicate bookings
 or transit data. Optional admission references use explicit item IDs.
 
+## Shared date navigation (Issue #129)
+
+Trip, Transport and Places now use one reusable date-control renderer on phone,
+with a single validated, device-local `state.selectedDate` persisted under
+`ui:selectedDate`. On desktop the Trip rail is retained; its buttons project
+that same chosen date. Trip Overview, Places All and Transport Day are
+**independent view modes**, not competing date values. Selecting a date on any
+of the three views changes the shared date; a view already in Day mode uses
+that latest date when entered. Explicit Overview/All selection retains its
+own mode without clearing the shared date. The old Places `places:date` key
+is migration input only; `places:mode` persists All/Day intent.
+
+This deliberately supersedes the October #111 rule that Places day filtering
+never updated Trip's selected date. See `DATE_NAVIGATION_PDCA_129.md` for the
+transition table, rollback and three-human acceptance gate.
+
 ## Trip information hierarchy
 
 The Trip view is intentionally **information first, actions second**.

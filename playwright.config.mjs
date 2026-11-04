@@ -14,7 +14,7 @@ export default defineConfig({
     "style-semantic-parity.spec.mjs", "style-surface-matrix.spec.mjs",
     "style-text-zoom.spec.mjs", "issue109-identity.spec.mjs",
     "issue111-places-history.spec.mjs", "issue116-trip-contract.spec.mjs",
-    "issue116-role-geometry.spec.mjs"],
+    "issue116-role-geometry.spec.mjs", "issue129-unified-date-navigation.spec.mjs"],
   fullyParallel: false,
   workers: 1,
   retries: 0,

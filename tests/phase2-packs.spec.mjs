@@ -189,10 +189,10 @@ test("a 15-day trip keeps long-trip date navigation usable in both new styles", 
   for(const pack of ["candy","risograph"]){
     await page.goto("/?previewStyle="+pack+"#trip/day/2026-10-12");
     await ready(page,pack);
-    await expect(page.locator("[data-long-trip-select]")).toHaveValue("2026-10-12");
+    await expect(page.locator("[data-unified-date-select]")).toHaveValue("2026-10-12");
     await expect(page.locator("ol.trip-v2-timeline > li")).toHaveCount(4);
-    await page.locator("[data-long-trip-next]").click();
-    await expect(page.locator("[data-long-trip-select]")).toHaveValue("2026-10-13");
+    await page.locator("[data-unified-date-next]").click();
+    await expect(page.locator("[data-unified-date-select]")).toHaveValue("2026-10-13");
     const width=await page.evaluate(()=>document.documentElement.scrollWidth);
     expect(width).toBeLessThanOrEqual(322);
   }

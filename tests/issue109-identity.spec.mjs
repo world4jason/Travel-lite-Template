@@ -78,7 +78,8 @@ for(const width of [320,390,1100]){
     await expect(page.locator(".map-primary-handoff")).toHaveCount(0);
     await page.screenshot({path:info.outputPath("ambiguous-transport-"+width+".png"),animations:"disabled"});
     // Unique day source remains accessible and is not projected as an ambiguous booking.
-    await page.locator('[data-runtime-map-date="2026-10-03"]').click();
+    // Shared Date Navigator is the public control; legacy Map day chips are hidden.
+    await page.locator('[data-unified-date-select]').selectOption('2026-10-03');
     await expect(page.locator(".map-selected-summary")).toBeVisible();
     await expect(page.locator(".map-selected-summary")).not.toContainText("Shibuya walk");
   });

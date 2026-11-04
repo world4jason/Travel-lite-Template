@@ -278,6 +278,11 @@
       renderOverview();
       return;
     }
+    // Trip's Overview/Day mode is independent. Inside Day mode the date is
+    // shared: if Transport/Places changed it, use that date instead of a
+    // stale private tripMode date.
+    if (state.data.days.some((candidate) => candidate.date === state.selectedDate))
+      tripMode = state.selectedDate;
     const day = state.data.days.find((candidate) => candidate.date === tripMode)
       || state.data.days.find((candidate) => candidate.date === state.selectedDate)
       || state.data.days[0];

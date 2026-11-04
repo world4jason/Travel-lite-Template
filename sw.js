@@ -3,7 +3,7 @@
 // shell/runtime, and activating one cannot delete the other's cache.
 const CACHE_PREFIX = "travel-lite:" + new URL(self.registration.scope).pathname
   .replace(/[^a-z0-9]/gi, "-") + ":";
-const CACHE = CACHE_PREFIX + "shell-v48-shared-trip-surface-roles";
+const CACHE = CACHE_PREFIX + "shell-v49-unified-date-navigation-129";
 const RUNTIME_CACHE = CACHE_PREFIX + "runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -18,6 +18,7 @@ const CORE = [
   "./companion-ux.css",
   "./places-view.css",
   "./long-trip-nav.css",
+  "./date-navigation.css",
   "./today-brief.css",
   "./style-settings.css",
   "./export.css",
@@ -55,6 +56,7 @@ const CORE = [
   "./companion-ux.js",
   "./timezone.js",
   "./long-trip-nav.js",
+  "./date-navigation.js",
   "./today-brief.js",
   "./journey-trust.js",
   "./journey-transit.js",

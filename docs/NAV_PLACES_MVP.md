@@ -64,3 +64,14 @@ No trip was automatically rewritten and no source picture was copied into the Gu
 ## Human gates
 
 The original manual real-itinerary import QA remains NOT RUN/owner-waived per previous agreement. Code review and browser regression are separate from Human Visual Review after Pages deployment. No AI-generated pass may be labeled owner-approved visual acceptance.
+
+## 2026-11-04 refinement — Issue #129
+
+The earlier `places:date` independent date-filter persistence belongs to the
+2026-10-17 MVP, not the unified-date navigation contract. The new `places:mode`
+persists All/Day; the actual day is the existing site-scoped `ui:selectedDate`.
+A Places day choice intentionally updates Trip/Transport selected day. Choosing
+Places All never erases the shared day or Trip Overview, and Trip Overview does
+not forcibly change Places All. Existing `#places` and `#places/day/DATE` URLs,
+unique-only details, local-device semantics and Back/Forward stay supported.
+See `DATE_NAVIGATION_PDCA_129.md` for the approved product decision and QA gate.

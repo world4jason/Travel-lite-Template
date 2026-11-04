@@ -451,10 +451,12 @@ values migrate in-memory and never delete personal checklist state.
 
 Places route policy (#111): `#places` represents All days, `#places/day/YYYY-MM-DD`
 represents a validated published day filter, and `#places/item/ITEM_ID` is
-an ID-only detail route subject to #109 uniqueness validation. The date
-filter is device-only and stored under `<trip.id>:places:date`; it never edits
-published `trip.json` or changes Trip/Transport selectedDate just because
-someone filters Places. Clicking list/date/detail uses browser history entries
+an ID-only detail route subject to #109 uniqueness validation. The date filter is device-only. Since Issue #129 the Places local key
+`<trip.id>:places:mode` stores only `all`/`day`; an explicit Places day filter
+updates the shared `<trip.id>:ui:selectedDate` also used by Trip/Transport.
+The old `<trip.id>:places:date` is read **only to migrate All/Day mode** and
+must never become a second selected-day truth. Neither selection edits
+published `trip.json` or synchronizes to other travellers. Clicking list/date/detail uses browser history entries
 so native Back/Forward replays published source facts; page reload and direct
 date links restore valid selection. Invalid dates fall back to All days.
 Direct detail links override the visible list while retaining the stored
