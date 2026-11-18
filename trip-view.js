@@ -282,7 +282,8 @@
       localized("段交通／轉乘明細", "travel legs / transfers");
     return '<details class="trip-journey-details"><summary>' +
       '<span>' + escapeHtml(summary) + '</span><span class="trip-journey-chevron" aria-hidden="true">⌄</span></summary>' +
-      '<ol class="trip-journey-legs" role="list">' + list + '</ol></details>';
+      '<ol class="trip-journey-legs" role="list">' + list + '</ol>' +
+      '<p class="trip-journey-map-note">' + escapeHtml(localized("Google Maps 可能推薦不同路線／班次，請以業者資訊為準。", "Google Maps may suggest different routes or times; check the operator.")) + '</p></details>';
   }
 
   function renderDay(day) {
