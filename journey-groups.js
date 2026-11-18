@@ -23,6 +23,9 @@
     if(parts.length<2) return {from:"",to:""};
     const first = parts[0].replace(/^(?:(?:JR|京阪|近鐵|南海|阪急|地下鐵|地鐵|巴士|公車|列車|步行|[^\s：:]{1,14}線)[^：:]{0,15})[：:]\s*/u,"").trim();
     const last=parts.at(-1);
+    // A train service is not an origin station: never send "Airport Express"
+    // or "Limited Express" as the location in an automatic Maps route.
+    if(/(?:急行|特急|快速|列車|Express|Limited Express)$/iu.test(first)) return {from:"",to:""};
     if(!first || !last || first===last) return {from:"",to:""};
     return {from:first,to:last};
   }

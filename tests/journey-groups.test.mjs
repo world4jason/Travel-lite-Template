@@ -81,3 +81,9 @@ test("walk mode is an outlined footprints SVG, not a running-human glyph",()=>{
   assert.match(iconSource,/walk:\s*'<path d="M4 16v-2\.38/);
   assert.doesNotMatch(iconSource,/walk:\s*'<circle cx="12" cy="4"/);
 });
+
+test("service names are not used as fabricated origin stations",()=>{
+  const route=api.routeFromLeg({title:"南海空港急行 → 難波轉四橋線 → 肥後橋"});
+  assert.equal(route.from,"");
+  assert.equal(route.to,"");
+});
