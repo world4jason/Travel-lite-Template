@@ -1,6 +1,6 @@
 # Travel Lite Template
 
-> **Mandatory:** [Chronological Itinerary Timeline + Time-blocked Schedule](docs/CHRONOLOGICAL_TIMELINE_CONTRACT.md). Every known visit, transport segment, meal and activity is one independent chronological time-range block. See `AGENTS.md`; run `npm run test:timeline` before publishing.
+> **Mandatory UI/UX contract:** [docs/UIUX.md](docs/UIUX.md) (P0/P1/P2), with [Chronological Timeline details](docs/CHRONOLOGICAL_TIMELINE_CONTRACT.md). `AGENTS.md` requires every inheriting Agent to read it first. Validate with `npm run test:uiux` and `npm run test:timeline` before release.
 
 > 把已經排好的旅行，變成同行者能在手機上快速查看的行程網站。  
 > **Plan elsewhere. Travel with clarity.**
@@ -20,6 +20,7 @@ Replace the itinerary and destination repository placeholders, then paste the pr
 來源模板：https://github.com/world4jason/Travel-lite-Template
 行程資料：<貼上行程全文、檔案路徑，或可讀取的 PDF／Excel／網頁網址>
 目標 Repository：<https://github.com/OWNER/TRIP-REPO.git>
+開始前請完整閱讀 AGENTS.md、docs/UIUX.md 與 Timeline Contract；新 Repo 保留契約，並執行 npm run test:uiux + npm run test:timeline。
 網站語言：繁體中文（如原始行程另有要求，以原始要求為準）
 ```
 
@@ -33,6 +34,7 @@ and publish it to GitHub Pages. Perform the work, not just explain it.
 Source: https://github.com/world4jason/Travel-lite-Template
 Itinerary: <paste itinerary text, accessible file path, PDF/Excel, or URL>
 Destination repository: <https://github.com/OWNER/TRIP-REPO.git>
+First read AGENTS.md, docs/UIUX.md and the Timeline Contract in full; preserve these files in the new repo and run npm run test:uiux + npm run test:timeline.
 Interface locale: en (change to zh-TW for Traditional Chinese)
 ```
 

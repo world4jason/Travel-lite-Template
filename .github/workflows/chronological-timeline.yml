@@ -13,6 +13,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Enforce mandatory UI/UX contract and agent references
+        run: npm run test:uiux
       - name: Enforce canonical time-blocked itinerary
         run: npm run test:timeline
       - name: Check globally unique item IDs

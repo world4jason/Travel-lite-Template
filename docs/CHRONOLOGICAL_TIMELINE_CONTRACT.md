@@ -1,6 +1,6 @@
 # Chronological Itinerary Timeline + Time-blocked Schedule
 
-> P0 — **Immutable UX/data contract / 最高優先死律**。Agent、人工修改、Style Pack 與所有由 Travel Lite 複製的行程，都不得違反。唯一主 Timeline 來源是 `days[].items[]`。
+> P0 — **Immutable UX/data contract / 最高優先死律**。本文件是 [UIUX.md](./UIUX.md) 的 Timeline 詳細契約，不是另一份優先級規則。Agent、人工修改、Style Pack 與所有由 Travel Lite 複製的行程都不得違反。唯一主 Timeline 來源是 `days[].items[]`。
 
 ## Canonical UI example
 

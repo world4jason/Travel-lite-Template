@@ -1,0 +1,91 @@
+# Travel Lite — UI/UX Product Contract
+
+> **Normative / 必須遵守** — 此文件是 Travel Lite 的 UI/UX **Single Source of Truth**，適用於 Template、由 Template 衍生的獨立旅行站、Agent、人工修改與所有 Style Packs。`AGENTS.md` 是 Agent 的強制讀取入口，不是第二份 UI/UX 規格。
+
+## 0. Scope, precedence and document ownership
+
+- **P0 / Immutable**：不得因美觀、個人偏好、旅行目的地或 Theme 而取消。若實作與 P0 衝突，停止該實作路線，修正後才能提交；不要在 runtime 偷偷降級。
+- **P1 / Required**：新功能與維護必須保持的可用性與一致性；有既有缺陷則如實列在驗收紀錄，不能暗稱已修好。
+- **P2 / Flexible**：可依 Style Pack 或旅程特性改變，但不得破壞 P0 / P1。
+- 優先序：**P0 > P1 > P2**。資料 Schema、Style Pack 及 Trip 專屬文件用於細節補充；若內容衝突，應修正規格與實作，不應默默選擇較寬鬆版本。法律、資安與其他較高權限的指令仍須遵守。
+- 唯一產品 UI/UX 要求在此維護；[CHRONOLOGICAL_TIMELINE_CONTRACT.md](./CHRONOLOGICAL_TIMELINE_CONTRACT.md) 解釋 Timeline 實作／驗收，[TRIP_SCHEMA.md](./TRIP_SCHEMA.md) 定義資料，[STYLE_SURFACE_CONTRACT.md](./STYLE_SURFACE_CONTRACT.md) 定義跨 Theme 的表面幾何，[MAINTENANCE.md](./MAINTENANCE.md) 提供測試流程。不要再複製一份互相矛盾的 P0 規格。
+
+## P0 — Immutable product rules / 產品死律
+
+### P0.1 Chronological Itinerary Timeline + Time-blocked Schedule
+
+**Trip Day 主內容永遠是一條完整、可見、依原始資料時間順序排列的 Timeline。** 所有已排定的景點、交通、餐飲、住宿、活動、等候／手續均為同層的 `days[].items[]` 獨立項目；不是只有景點的清單加交通附註。
+
+```text
+10:00–11:00  參觀 XXX 景點
+11:00–11:30  交通：地鐵 A 站 → B 站
+11:30–13:00  午餐
+13:00–15:00  交通：前往下一個目的地
+```
+
+以上僅為格式示意，**不是**可直接發布的真實時刻。對於有來源且已知的時段，顯示 `HH:MM–HH:MM`；缺某端時顯示 TBD / 已知資訊，不得補造。已排定交通用獨立 `type: transport` item，含穩定 ID、可確認的交通模式與站點。步行／轉乘同樣適用。**禁止**只把已知交通藏在 `transferAfter`、Journey Board、Transport 分頁或收合區塊。
+
+主 Timeline 不得整段收合、被地圖替代、被 Theme 分割成景點／交通兩份清單，也不得重複顯示同一交通段。`days[].items[]` 是已發布的 canonical 順序；瀏覽器不能默默排序、補洞或調時。跨時區／跨午夜依 IANA timezone 比較絕對時刻，資料衝突需提示並回到來源修正。完整規格與邊界案例見 [Timeline Contract](./CHRONOLOGICAL_TIMELINE_CONTRACT.md)。
+
+### P0.2 Read-only schedule and honest status
+
+Travel Lite 是**已規劃行程的旅行中查閱工具**，不是行程編輯器、路線最佳化器或即時交通 API。Now 顯示「排定的此刻／前一站／下一站」，不是 GPS 追蹤或聲稱已抵達。資料未知時保留 `TBD`；不能假裝知道交通 ETA、班次可用性、預約狀態、座標或末班時間。Plan B 僅為使用者提供或明確要求研究過的**選填、靜態、手動展開**資訊，不自動改排或替人選擇。
+
+### P0.3 Fixed five-tab information architecture
+
+唯一頂層導覽及順序固定為 **Now / Trip / Transport / Places / More**。保留既有路由、已發布項目 ID、景點詳細頁、書籤及歷史連結；**不可**擅自增添第六分頁、退回舊 Map/Check 頂層分頁或在 Transport 再造 Places 資料庫。
+
+### P0.4 Shared date semantics without duplicated overview
+
+Trip、Transport、Places 共用 `state.selectedDate`，日期切換應攜帶同一天並尊重明確 deep link。Trip Overview 與 Places「全部日期」是**各自獨立的 view mode**，不是一個虛構日期；Transport **僅單日**，不為了視覺對稱新增跨日 Overview。瀏覽器 Back/Forward、refresh、重新開啟與跨分頁 handoff 均不可破壞已選日期或 item。
+
+### P0.5 One published truth; no invented transportation
+
+`trip.json` 的 `days[].items[]` 是主行程事實與可見時序的唯一來源。Now / Trip / Transport / Journey Board 可以使用各自的閱讀方式投影同一資訊，**不得**另維護衝突的 `mobility.legs` 時刻表。沒有可信座標不能創造 pin；無座標或地圖失敗時保留站名、已發布行程與外部地圖連結。研究來源／核對日期 ≠ 即時營運 ≠ Human Gate 驗收。
+
+### P0.6 No regression in access to core itinerary
+
+任何 Style Pack、動畫、收合面板或離線故障處理，不得使主 Timeline、核心資訊、導覽、鍵盤可操作性與已存本機狀態消失。裝置偏好只存裝置，不可呈現成同行者共享決策；外部供應商失敗時靜態行程仍可使用。
+
+## P1 — Required interaction and accessibility standards
+
+### P1.1 Progressive disclosure and hierarchy
+
+- 先顯示日期、主時段、名稱、必要狀態與交通重點；長備註、詳細班次、備案、研究來源及巡禮資訊可依需求展開，**主 Timeline 不可被折疊**。
+- Trip 主責時間順序；Transport 主責已知上／下車站、轉乘與地圖／外部導航；Places 主責景點索引與內容；Now 是當日短版 handoff；More 是準備與偏好。減少跨分頁的同一資料重複輸入。
+- 不宣稱來源快照是即時資料。必要的危險／未確認提醒應可辨識，不以顏色作唯一語意。
+
+### P1.2 Responsive and inclusive reading
+
+- 需覆蓋至少 **320px、390px、1100px** 代表寬度與 **200% 文字縮放**；長中文、日文、完整站名、時區、連結與多行時間不可被裁切或造成無法操作的水平捲動。
+- 保留語意順序、可見鍵盤焦點、可理解的 ARIA/標籤與觸控目標；既有手機五分頁操作區依專案維護規則驗證，目標至少 **44px**。
+- 長途日期控制採既有共用 Date Navigator，不因個別 Theme 或日期數量而改出第二套資料狀態。
+
+### P1.3 Reliability and external handoff
+
+- 靜態 GitHub Pages、PWA 既有快取、離線閱讀、正確 URL encode／safe HTTP(S)、Google Maps 或官方交通 handoff 不得退化；外部圖磚與即時服務不可用時提供清楚 fallback。
+- MapLibre／標註座標只顯示已知的地點；若無精確地點，改用站名卡與外部查詢，不推估地理位置或交通路線。
+- 保留固定五分頁及歷史 hash；所有已發布 source item 保留穩定 ID、來源與對應操作。
+
+### P1.4 Style Pack semantic parity
+
+所有主題必須保留相同的核心資料、DOM 語意、閱讀順序、必需欄位、焦點與操作能力；可更改視覺材料但不能改掉資訊架構。CSS 表面幾何依 [Style Surface Contract](./STYLE_SURFACE_CONTRACT.md) 與現有 Playwright matrix 驗證。
+
+## P2 — Flexible visual direction
+
+Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓角、框線、陰影、微動畫及日概覽呈現手法。這些是**材料與排版選擇**，不得改變 P0 Timeline／五分頁／資料來源、P1 易讀性或操作順序。旅行專屬 UI 可在額外的 `docs/UIUX_<TRIP>.md` 中補充，但不得降低本文件要求。
+
+## Agent preflight / change / release acceptance
+
+1. Agent 在**開始任何 UI/UX、Timeline、資料正規化、導航、Style Pack、CSS、頁面修改或產生新旅行站之前**，必須實際讀取 `AGENTS.md`、**完整** `docs/UIUX.md`，再讀取相關延伸契約。只有看到一段摘錄或 README 連結不算完成閱讀。
+2. 新旅行 Repo 應保留 `AGENTS.md`、`docs/UIUX.md`、Timeline Contract、Schema 及相容的測試；不得複製一份較寬鬆的文件取代。新增產品要求先修改此文件及相應測試，再修改程式。
+3. **必跑** `npm run test:uiux` 與 `npm run test:timeline`；涉及 UI 行為再跑專案既有 Chromium／Style Pack、手機、PWA、離線與 deep-link 回歸。報告精確指令與 **PASS / FAIL / NOT RUN**，不能把靜態閱讀等同於視覺驗收。
+4. P0 衝突／測試失敗不得宣稱已完成或已具備合併條件。PR 應維持 Draft / 未合併至問題修復且 Owner 完成實際視覺驗收。GitHub Actions 只在 Repo 設定為 required status check 時才會形成伺服器側合併阻擋。
+
+## References / precedence guard
+
+- [Chronological Timeline Contract](./CHRONOLOGICAL_TIMELINE_CONTRACT.md) — 時段、未知值、跨區、映射與驗收詳述
+- [Trip Schema](./TRIP_SCHEMA.md) — 單一資料來源、item、type、時間、來源
+- [Maintenance Guide](./MAINTENANCE.md) — 發布／回歸流程
+- [Style Surface Contract](./STYLE_SURFACE_CONTRACT.md) — 有此檔案的 repo 依此驗證 Style Pack
+- [AGENTS.md](../AGENTS.md) — Agent 的強制入口，不複製另一份不同規則

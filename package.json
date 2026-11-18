@@ -12,7 +12,9 @@
     "render:style-prompts": "node style-generator/render-style-prompt.mjs style-generator/examples",
     "test:packs": "node --test tests/pack-manifests.test.mjs tests/four-pack-manifests.test.mjs tests/second-batch-manifests.test.mjs",
     "test:style-parity": "node scripts/verify-style-parity.mjs",
-    "test:timeline": "node --test tests/chronological-timeline.test.mjs && node scripts/check-chronological-timeline.mjs trip.json"
+    "test:timeline": "node --test tests/chronological-timeline.test.mjs && node scripts/check-chronological-timeline.mjs trip.json",
+    "test:uiux": "node --test tests/uiux-contract.test.mjs",
+    "test:contracts": "npm run test:uiux && npm run test:timeline"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

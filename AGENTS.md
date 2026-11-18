@@ -1,18 +1,16 @@
 # Agent instructions
 
-## P0 — Chronological Itinerary Timeline + Time-blocked Schedule（Agent 必守死律）
+## P0 — Mandatory UI/UX preflight / Agent 必須先讀
 
-此規則適用於 **Template 與從它產生的每一份旅行網站**，優先於既有示範資料、主題樣式和 Agent 個人偏好。修改、產生、繼承或重排任何旅行前，先閱讀 `docs/CHRONOLOGICAL_TIMELINE_CONTRACT.md` 與 `docs/TRIP_SCHEMA.md`。
+**在任何新行程建立、Template 繼承、UI、Timeline、Trip 資料、導航、CSS、Style Pack 或互動修改之前，Agent MUST 實際開啟並完整閱讀 [`docs/UIUX.md`](docs/UIUX.md)。** 不能只看 README、工具摘要或既有 Issue。再按工作範圍閱讀 [`docs/CHRONOLOGICAL_TIMELINE_CONTRACT.md`](docs/CHRONOLOGICAL_TIMELINE_CONTRACT.md)、[`docs/TRIP_SCHEMA.md`](docs/TRIP_SCHEMA.md) 和其中引用的細節規格。
 
-1. Trip Day 主畫面必須是**一條永遠可見的、依時間排序的 Timeline**；參觀景點、交通、午餐、住宿、活動都是 `days[].items[]` 的一筆**同層時段**。例如 `10:00–11:00 景點 → 11:00–11:30 交通 → 11:30–13:00 午餐 → 13:00–15:00 交通`（僅示意，非實際班次）。
-2. 已知時間一律顯示 `HH:MM–HH:MM`；不可捏造結束時間／交通時間／地點／ETA。若某端未知須明示 TBD；浮動項目以 `timeLabel` 標示，不得自動填 `00:00`。
-3. 交通有已知時段時，**必須**用獨立 `type: transport` item（有穩定 id、起訖、已知 mode、站名、來源），不可只藏在 `transferAfter`、Journey Board、地圖或 Transport 頁。舊 `transferAfter` 仍相容，但不能重複顯示與維護相同 leg。
-4. Source `days[].items[]` 是唯一已發布時序。runtime 不可重排、補空隙、擅自轉成一份額外 `mobility.legs` 時刻表；Journey Board 與 Transport 只能投影同一資料，不能隱藏主 Timeline。
-5. 必須用 `item.timezone` → `day.timezone` → `trip.timezone` 的 IANA 時區比較絕對時間；處理跨午夜，揭露時段重疊／倒序，而不是拿不同地區的時鐘字串比大小。
-6. 生成或修改後一定執行 `npm run test:timeline`，再執行既有 browser / Style Pack / PWA QA。測試未跑須標記 NOT RUN，不得宣稱通過。違反以上任一條，**不得合併／發布**。
+- **Hierarchy:** `docs/UIUX.md` 是 UI/UX Single Source of Truth，優先序 **P0 Immutable > P1 Required > P2 Flexible**；任何主題、Agent 習慣、行程資料或局部 UI 改動都不得私自推翻 P0。
+- **P0 reminder:** Trip Day 永遠顯示 **Chronological Itinerary Timeline + Time-blocked Schedule**；已知景點、步行/搭車、用餐、活動皆為各自獨立、同層、有來源的 `HH:MM–HH:MM` 區塊；缺時間保留 TBD，不捏造，不把交通只藏在連接註解或 Journey Board。
+- **Implementation gate:** 先比對變更與 `docs/UIUX.md` 的 P0/P1 合約；若衝突，停止該方案並修正。新增／變更 UX 規則時，先更新 `docs/UIUX.md` 與相關測試，再改程式，不要在 `AGENTS.md` 或 Style Pack 複製互相矛盾的定義。
+- **Validation gate:** 必須跑 `npm run test:uiux` + `npm run test:timeline`，涉及畫面再跑對應 Browser / Style Pack / PWA 驗收；如實列出 **PASS / FAIL / NOT RUN**。未修復 P0 失敗不可聲稱完成、合併或正式上線；PR 先保持 Draft。
+- **Inheritance gate:** 由本 Repo 產生新旅行站時，必須將此強制入口、`docs/UIUX.md`、Timeline Contract、Schema 及適用測試一起帶入，除非 Owner 明確批准更高層級的規格變動。
 
-**Hard stop:** 切勿將此體驗退化為『只有景點的清單＋小字交通』、自動規劃器或可收合的完整主時間軸。若需求含糊，保留未知並標示，而不是猜測。
-
+**Hard stop:** 如果無法讀取 UIUX 文件、實作打算取消完整 Timeline／把交通改回次級註解，或要求臆測時間、站點、位置，不能假裝符合規格。
 Travel Lite is a **post-planning trip decision companion** deployed as a static GitHub Pages site.
 
 ## AGPL compliance and responsible reuse — mandatory for agents
@@ -331,7 +329,9 @@ Follow the repeatable review checklist in [`docs/MAINTENANCE.md`](./docs/MAINTEN
 ## Documentation ownership
 
 - human setup/features → `README.md`
-- agent rules → `AGENTS.md`
+- agent entry / mandatory preflight → `AGENTS.md`
+- canonical UI/UX P0/P1/P2 contract → `docs/UIUX.md`
+- detailed canonical timeline behavior → `docs/CHRONOLOGICAL_TIMELINE_CONTRACT.md`
 - architecture/scope → `docs/ARCHITECTURE.md`
 - day-of interaction contract → `docs/COMPANION_UX.md`
 - trip data contract → `docs/TRIP_SCHEMA.md`
