@@ -16,6 +16,14 @@ Do not rely on opening `index.html` directly with `file://`; the app fetches `tr
 
 ## Validation
 
+**Before generating or modifying trip UI/UX:** read [`UIUX.md`](./UIUX.md) via `AGENTS.md` and run both publishing gates. UI/UX P0 rules must remain valid across themes and trip forks; a text-only test does not substitute for visual QA.
+
+```bash
+npm run test:uiux
+npm run test:timeline
+```
+
+
 For any Style Pack border/spacing change, also read [STYLE_SURFACE_CONTRACT.md](./STYLE_SURFACE_CONTRACT.md) and run the structural smoke:
 
 ```bash

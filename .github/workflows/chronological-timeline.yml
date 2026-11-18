@@ -1,0 +1,23 @@
+name: Chronological Timeline Contract
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  timeline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enforce mandatory UI/UX contract and agent references
+        run: npm run test:uiux
+      - name: Date/weather and flight projection contracts
+        run: npm run test:trip-widgets
+      - name: Enforce canonical time-blocked itinerary
+        run: npm run test:timeline
+      - name: Check globally unique item IDs
+        run: npm run test:integrity

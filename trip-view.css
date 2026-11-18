@@ -493,3 +493,58 @@
   white-space: nowrap;
 }
 .trip-transport-meta { display: flex; flex-wrap: wrap; gap: 7px; margin: 7px 0; }
+
+
+/* P0 canonical Chronological Itinerary Timeline + Time-blocked Schedule.
+   Time is equally visible for place, transport, food, stay and event rows. */
+.trip-v2-timeline .trip-v2-item {
+  grid-template-columns: minmax(0, 105px) 18px minmax(0, 1fr);
+  align-items: start;
+}
+.trip-v2-timeline .timeline-time--range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 1px;
+  row-gap: 2px;
+  min-width: 0;
+  max-width: 100%;
+  font-size: .75rem;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.trip-v2-timeline .timeline-time--range time { font: inherit; white-space: nowrap; color: var(--text); }
+.trip-v2-timeline .timeline-time--range .timeline-time-divider,
+.trip-v2-timeline .timeline-time--range .timeline-time-pending { color: var(--muted); }
+.trip-v2-timeline .timeline-time--range .timeline-time-zone {
+  display: block;
+  flex-basis: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: .66rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--muted);
+}
+.trip-v2-timeline .trip-v2-item[data-timeline-kind="transport"] .timeline-content h3 { font-weight: 620; }
+.timeline-chronology-warning {
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.timeline-chronology-warning ul { margin: 7px 0 0; padding-left: 20px; }
+@media (max-width: 520px) {
+  .trip-v2-timeline .trip-v2-item {
+    grid-template-columns: minmax(0, 87px) 14px minmax(0, 1fr);
+  }
+}
+@media (min-width: 900px) and (min-height: 601px) {
+  .trip-v2-timeline .trip-v2-item {
+    grid-template-columns: minmax(0, 112px) 20px minmax(0, 1fr);
+  }
+}

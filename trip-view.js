@@ -24,11 +24,58 @@
     // the existing end-time parser/window policy separate from this gate.
     return /^([01]\d|2[0-3]):[0-5]\d$/.test(item.start || "");
   }
-  function timeLabel(item) {
+  // The itinerary source owns the only visible sequence: time ranges for all kinds.
+  function validTimelineClock(value) {
+    return typeof value === "string" && /^([01]\d|2[0-3]):[0-5]\d$/.test(value);
+  }
+  function timeLabel(item, day) {
     if (!hasTimedStart(item)) {
-      return `<span class="timeline-time timeline-time--floating">${localized("時間未定", "Time TBD")}</span>`;
+      const label = typeof item.timeLabel === "string" && item.timeLabel.trim()
+        ? item.timeLabel.trim() : localized("時間未定", "Time TBD");
+      return '<span class="timeline-time timeline-time--floating">' + escapeHtml(label) + '</span>';
     }
-    return `<time class="timeline-time" datetime="${escapeAttr(item.start)}">${escapeHtml(item.start)}</time>`;
+    const hasEnd = validTimelineClock(item.end);
+    const end = hasEnd ? item.end : localized("待定", "TBD");
+    const nextDay = hasEnd && item.end < item.start && !item.endDate;
+    const dayZone = day?.timezone || state.data?.trip?.timezone || "";
+    const zone = item.timezone && item.timezone !== dayZone ? item.timezone : "";
+    const label = item.start + "–" + end + (nextDay ? " (+1 day)" : "") + (zone ? " " + zone : "");
+    return '<span class="timeline-time timeline-time--range" aria-label="' + escapeAttr(label) + '">' +
+      '<time datetime="' + escapeAttr(item.start) + '">' + escapeHtml(item.start) + '</time>' +
+      '<span class="timeline-time-divider" aria-hidden="true">–</span>' +
+      (hasEnd ? '<time datetime="' + escapeAttr(item.end) + '">' + escapeHtml(item.end) + '</time>'
+        : '<span class="timeline-time-pending">' + escapeHtml(end) + '</span>') +
+      (nextDay ? '<small class="timeline-time-zone">+1 day</small>' : '') +
+      (zone ? '<small class="timeline-time-zone">' + escapeHtml(zone) + '</small>' : '') +
+      '</span>';
+  }
+
+  function chronologicalDiagnostics(day) {
+    const toEpoch = window.TravelLiteTime?.localDateTimeToEpoch;
+    if (typeof toEpoch !== "function") return [];
+    const problems = [];
+    let last = null;
+    for (const item of day.items || []) {
+      if (!hasTimedStart(item)) continue;
+      const zone = item.timezone || day.timezone || state.data?.trip?.timezone;
+      const date = item.startDate || day.date;
+      const startEpoch = toEpoch(date, item.start, zone);
+      if (!Number.isFinite(startEpoch)) continue;
+      let endEpoch = validTimelineClock(item.end) ? toEpoch(item.endDate || date, item.end, zone) : NaN;
+      if (Number.isFinite(endEpoch) && endEpoch < startEpoch && !item.endDate) {
+        const nextDate = new Date(date + "T12:00:00Z");
+        nextDate.setUTCDate(nextDate.getUTCDate() + 1);
+        endEpoch = toEpoch(nextDate.toISOString().slice(0, 10), item.end, zone);
+      }
+      if (last && startEpoch < last.startEpoch) {
+        problems.push(localized("時間倒序：", "Out of order: ") + (item.title || item.id));
+      } else if (last && Number.isFinite(last.endEpoch) && startEpoch < last.endEpoch) {
+        problems.push(localized("時間重疊：", "Overlap: ") +
+          (last.item.title || last.item.id) + " / " + (item.title || item.id));
+      }
+      last = { item, startEpoch, endEpoch };
+    }
+    return problems;
   }
 
   function safeUrl(rawUrl, protocols = ["http:", "https:"]) {
@@ -114,7 +161,7 @@
 
   function transferHtml(item, next, day) {
     const transfer = item?.transferAfter;
-    if (!transfer) return "";
+    if (!transfer || next?.type === "transport") return "";
     const url = safeUrl(transfer.url);
     const structured = window.TravelLiteTransit?.durationText(transfer.estimate) || "";
     const meta = [transfer.mode, structured || transfer.duration].filter(Boolean).join(" · ");
@@ -220,6 +267,7 @@
 
     const currentDate = zonedNow(state.data.trip.timezone).date;
     const now = zonedNow(state.data.trip.timezone);
+    const chronologyWarnings = chronologicalDiagnostics(day);
     const timeline = (day.items || []).map((item, index) => {
       const isCurrent = hasTimedStart(item) && day.date === currentDate &&
         now.minuteOfDay >= toMinutes(item.start) &&
@@ -238,8 +286,8 @@
       const details = `<div class="timeline-content">${itemTop}${item.note ? `<p class="timeline-note">${escapeHtml(item.note)}</p>` : ""}${supplementaryContent(item)}</div>`;
       const currentClass = isCurrent ? "current" : "";
       return `<li class="trip-stop-wrap">
-        <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}">
-          ${timeLabel(item)}
+        <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}" data-timeline-kind="${escapeAttr(item.type || "activity")}" data-timeline-item-id="${escapeAttr(item.id || "")}">
+          ${timeLabel(item, day)}
           <div class="timeline-rail" aria-hidden="true"><div class="timeline-dot"></div></div>
           ${details}
         </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}
@@ -254,7 +302,8 @@
       </section>`;
 
     const timelineView = `<section class="trip-timeline-section" aria-labelledby="trip-timeline-title">
-        <div class="trip-timeline-heading"><h2 id="trip-timeline-title" class="trip-timeline-title">${localized("每日時間軸", "Day timeline")}</h2><p>${localized("依原行程順序排列 · 未定時間保留彈性", "Published order · flexible times stay flexible")}</p></div>
+        <div class="trip-timeline-heading"><h2 id="trip-timeline-title" class="trip-timeline-title">${localized("每日時間軸", "Day timeline")}</h2><p>${localized("依時間排列：景點、交通、餐飲皆為獨立時段", "Chronological time blocks: visits, transit and meals")}</p></div>
+        ${chronologyWarnings.length ? '<div class="timeline-chronology-warning" role="status"><strong>' + localized("請核對行程時間", "Check published times") + '</strong><ul>' + chronologyWarnings.map(x => '<li>' + escapeHtml(x) + '</li>').join("") + '</ul></div>' : ""}
         <ol class="timeline trip-v2-timeline composition-sequence" role="list" aria-labelledby="trip-timeline-title">${timeline}</ol>
         ${timeline ? "" : '<div class="empty-state"><p>No plans yet.</p></div>'}
       </section>`;
