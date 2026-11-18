@@ -20,7 +20,7 @@
     subway: '<rect x="5" y="2" width="14" height="17" rx="3"/><path d="M7 7h10v6H7zM8 22l2-3m6 3-2-3"/><circle cx="9" cy="16" r=".8"/><circle cx="15" cy="16" r=".8"/>',
     cable: '<path d="m2 6 20-4M8 4l2 3m6-5-1 5"/><rect x="5" y="8" width="14" height="12" rx="3"/><path d="M5 14h14M8 23l2-3m6 3-2-3"/>',
     bus: '<rect x="4" y="3" width="16" height="17" rx="3"/><path d="M5 11h14M8 20v2m8-2v2"/><circle cx="8" cy="16" r="1"/><circle cx="16" cy="16" r="1"/>',
-    walk: '<circle cx="12" cy="4" r="2"/><path d="m10 22 2-6-2-4-4 3-3 1m7-8 3 4 4 1 3 5m-8-5 3-3"/>',
+    walk: '<path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4M4 13h4"/>',
     museum: '<path d="m2 9 10-6 10 6M3 10h18M5 10v9m5-9v9m4-9v9m5-9v9M2 21h20"/>',
     ticket: '<path d="M4 5h16v5a2 2 0 0 0 0 4v5H4v-5a2 2 0 0 0 0-4Z"/><path d="M12 6v2m0 3v2m0 3v2"/>',
     sparkles: '<path d="m12 2 2.7 7.3L22 12l-7.3 2.7L12 22l-2.7-7.3L2 12l7.3-2.7L12 2Z"/>',
