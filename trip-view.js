@@ -302,7 +302,7 @@
         now.minuteOfDay >= toMinutes(item.start) &&
         now.minuteOfDay < toMinutes(item.end || item.start);
 
-      const kind = item.type ? `<span class="type-pill">${escapeHtml(item.type)}</span>` : "";
+      const kind = item.type ? `<span class="type-pill">${escapeHtml(journey ? localized("交通", "Transport") : item.type)}</span>` : "";
       const highlight = item.mustGo === true
         ? `<span class="must-go-tag" aria-label="${localized("編輯精選", "Curated highlight")}">${localized("★ 必去", "★ Highlight")}</span>`
         : "";
