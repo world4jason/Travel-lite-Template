@@ -48,3 +48,10 @@ test("a newly added Style Pack cannot bypass the audit",()=>{
   assert.match(auditMapWorkspaceInsets({...source,"index.html":modified}).join("\n"),
     /future-theme\.css: unreviewed Style Pack/);
 });
+
+test("rendered panel must account for border and padding in the same width",()=>{
+  const broken=source["surface-contract.css"].replace("box-sizing: border-box;","");
+  assert.notEqual(broken,source["surface-contract.css"]);
+  assert.match(auditMapWorkspaceInsets({...source,"surface-contract.css":broken}).join("\n"),
+    /border-box sizing/);
+});

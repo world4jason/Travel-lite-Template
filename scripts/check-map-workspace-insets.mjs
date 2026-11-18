@@ -44,9 +44,12 @@ export function auditMapWorkspaceInsets(files){
   if(!/\.runtime-map-panel\s*\{[^}]*--ui-map-workspace-padding:\s*0\s*;/s.test(baseline) ||
      !/\.runtime-map-panel\s*\{[^}]*--ui-map-workspace-frame:\s*0\s*;/s.test(baseline))
     errors.push("runtime.css: open Editorial workspace must keep paired zero frame/inset baseline");
-  if(!surface.includes("padding: var(--ui-map-workspace-padding, 0)") ||
-     !surface.includes("border: var(--ui-map-workspace-frame, 0)"))
-    errors.push("surface-contract.css: map-workspace must consume both frame and inset tokens");
+  const mapRole=surface.match(/:root\s+\[data-surface-role="map-workspace"\]\s*\{([^}]*)\}/)?.[1]||"";
+  if(!mapRole.includes("padding: var(--ui-map-workspace-padding, 0)") ||
+     !mapRole.includes("border: var(--ui-map-workspace-frame, 0)") ||
+     !/box-sizing:\s*border-box/.test(mapRole) ||
+     !/min-width:\s*0/.test(mapRole))
+    errors.push("surface-contract.css: map-workspace must pair frame/inset with border-box sizing");
   const index=get("index.html");
   const installed=[...index.matchAll(/<link\b[^>]*href="\.\/([^"]+-theme\.css)"[^>]*\bdisabled\b/g)]
     .map(m=>m[1]);
