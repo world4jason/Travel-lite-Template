@@ -28,7 +28,8 @@
   }
   function sameJourney(current,next) {
     if(!next || next.type!=="transport" || next.journeyStart===true ||
-        current.journeyEnd===true) return false;
+        current.journeyEnd===true || current.transportMode==="flight" ||
+        next.transportMode==="flight") return false;
     // Explicit source grouping boundaries always take priority.
     const a=clean(current.journeyId),b=clean(next.journeyId);
     if(a!==b) return false;

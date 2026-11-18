@@ -310,7 +310,12 @@
         ? [...new Set(entry.legs.map(leg => leg.transportMode))].map(transportMode =>
           transportTag({transportMode})).join("")
         : transportTag(item);
-      const journeyUrl = journey ? safeUrl(window.TravelLiteJourneys?.directionsUrl?.(entry)) : "";
+      // Every trusted A→B transport can link to directions, including a
+      // single walking or rail leg. Grouped Journeys use their outer endpoints.
+      const directionsTarget = journey ? entry : item.type === "transport"
+        ? {route:window.TravelLiteJourneys?.routeFromLeg?.(item),legs:[item]} : null;
+      const journeyUrl = directionsTarget
+        ? safeUrl(window.TravelLiteJourneys?.directionsUrl?.(directionsTarget)) : "";
       const journeyAction = journeyUrl
         ? '<a class="trip-journey-directions" href="' + escapeAttr(journeyUrl) +
           '" target="_blank" rel="noopener noreferrer" aria-label="' +
