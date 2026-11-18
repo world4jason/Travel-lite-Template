@@ -50,11 +50,17 @@ export function auditMapWorkspaceInsets(files){
      !/box-sizing:\s*border-box/.test(mapRole) ||
      !/min-width:\s*0/.test(mapRole))
     errors.push("surface-contract.css: map-workspace must pair frame/inset with border-box sizing");
-  const index=get("index.html");
-  const installed=[...index.matchAll(/<link\b[^>]*href="\.\/([^"]+-theme\.css)"[^>]*\bdisabled\b/g)]
+  const index=get("index.html"),serviceWorker=get("sw.js");
+  const installed=[...index.matchAll(/<link\b[^>]*href="\.\/([^"?]+-theme\.css)(?:\?[^"]*)?"[^>]*\bdisabled\b/g)]
     .map(m=>m[1]);
   for(const path of installed)
     if(!THEME_FILES.includes(path))errors.push(path+": unreviewed Style Pack must declare map frame/inset pair");
+  for(const path of [...THEME_FILES,"surface-contract.css"]){
+    const pattern=new RegExp('href="\\./('+path.replaceAll(".","\\.")+'(?:\\?[^"]*)?)"');
+    const referenced=index.match(pattern)?.[1];
+    if(!referenced || !serviceWorker.includes('"./'+referenced+'"'))
+      errors.push(path+": HTML and PWA Service Worker must use the same stylesheet URL");
+  }
   for(const path of THEME_FILES){
     if(!installed.includes(path))errors.push(path+": audited Style Pack missing from index.html");
     const rules=mapRules(get(path));
@@ -76,7 +82,7 @@ export function auditMapWorkspaceInsets(files){
   return errors;
 }
 if(process.argv[1] && import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
-  const paths=["runtime.css","surface-contract.css","index.html",...THEME_FILES];
+  const paths=["runtime.css","surface-contract.css","index.html","sw.js",...THEME_FILES];
   const files={};
   for(const path of paths){
     try{files[path]=readFileSync(resolve(path),"utf8")}

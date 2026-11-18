@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import {auditMapWorkspaceInsets} from "../scripts/check-map-workspace-insets.mjs";
 const names=[
-  "runtime.css","surface-contract.css","index.html","storybook-theme.css",
+  "runtime.css","surface-contract.css","index.html","sw.js","storybook-theme.css",
   "candy-theme.css","risograph-theme.css","paper-collage-theme.css",
   "naive-city-theme.css","taiwan-poster-theme.css","field-stamp-theme.css",
   "quiet-linocut-theme.css","doodle-memory-grid-theme.css",
@@ -54,4 +54,12 @@ test("rendered panel must account for border and padding in the same width",()=>
   assert.notEqual(broken,source["surface-contract.css"]);
   assert.match(auditMapWorkspaceInsets({...source,"surface-contract.css":broken}).join("\n"),
     /border-box sizing/);
+});
+
+test("a Service Worker with an outdated Style Pack URL fails",()=>{
+  const broken=source["sw.js"].replace(
+    "./candy-theme.css?v=20261118-map-insets-v1","./candy-theme.css");
+  assert.notEqual(broken,source["sw.js"]);
+  assert.match(auditMapWorkspaceInsets({...source,"sw.js":broken}).join("\n"),
+    /candy-theme\.css.*HTML and PWA/);
 });
