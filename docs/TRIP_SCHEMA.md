@@ -209,13 +209,19 @@ Keep `day.reminders` short and operational. They can be strings or linkable obje
 
 ## Immutable Chronological Itinerary Timeline
 
-Every published, known-time travel segment, visit, meal or event must have its own `days[].items[]` row and `HH:MM–HH:MM` range. A booked or otherwise confirmed transport interval may **never** be represented solely by `transferAfter`; use `type: transport`. Follow [the mandatory UI/UX hierarchy](UIUX.md) and [the full invariant contract](CHRONOLOGICAL_TIMELINE_CONTRACT.md), use IANA timezones for cross-zone journeys, preserve source order, and run `npm run test:timeline`. No guessed durations, timestamps, end stations or coordinates.
+Every known-time source transport **leg**, visit, meal or event has its own `days[].items[]` row and `HH:MM–HH:MM` range. The displayed Trip Timeline groups adjacent legs within one door-to-door Journey into a single visible row, without deleting any source IDs, times or details. A booked or otherwise confirmed transport interval may **never** be represented solely by `transferAfter`; use `type: transport`. Follow [the mandatory UI/UX hierarchy](UIUX.md) and [the full invariant contract](CHRONOLOGICAL_TIMELINE_CONTRACT.md), use IANA timezones for cross-zone journeys, preserve source order, and run `npm run test:timeline`. No guessed durations, timestamps, end stations or coordinates.
 
 ### Optional `weatherLocation` and flight metadata
 
 - `days[].weatherLocation`: optional public `{lat,lng,label}` to choose the appropriate **daily weather city/area**. If absent, only use a real coordinate from that day’s scheduled places/items; no fabricated coordinates. Weather uses live forecast for future dates or labelled historical model data for past dates (recent past_days or archive reanalysis). Missing weather means a clean date/title card with no fake icon, value, or dash; it is never a published itinerary fact.
 - For `type: "transport", transportMode: "flight"`, optional `item.flight` provides **display metadata only**: `number`, `airline`, `origin: {code,terminal}`, `destination: {code,terminal}`, `arrivalTimezone` (IANA). Flight cards derive the schedule from `item.start` and `item.end`, which represent **the departure item's timezone**; they convert the end instant to `arrivalTimezone`, not a duplicated second timetable. Do not guess terminals or passenger booking details.
 - Flight Overview and Transport card render only when source flight items exist. Never show a guessed arrival/updated status or confidential PNR.
+
+### Grouped transport Journey and Google Maps route links
+
+- `journeyId` (optional stable string), `journeyStart: true`, `journeyEnd: true` explicitly separate adjacent but different A→B journeys. Otherwise, consecutive source `type: transport` items until the next place/food/stay/event form one display Journey.
+- Source Leg `from` and `to` (or `route: {from,to}`) should be verified place names. The UI may read an unambiguous published `A → B` title. For a complete Journey with verified endpoints, form `https://www.google.com/maps/dir/?api=1&origin=...&destination=...&travelmode=transit|walking|driving` using URL encoding. No GPS coordinates or API key required. No inferred via-points or live ETA.
+- All original Leg IDs, order, times, notes and source URLs remain in the expandable transport detail. No duplicate canonical `mobility.legs` timetable.
 
 ## Itinerary item
 

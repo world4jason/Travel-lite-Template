@@ -50,6 +50,10 @@ Trip, Transport and Places share a horizontally scrollable date selector. Past d
 
 Known flights render as source-backed cards in Trip Overview and the applicable Transport day, while the flight and airport travel remain regular chronological Timeline items. Optional metadata is documented in [the schema](./docs/TRIP_SCHEMA.md) and the UI rules in [UIUX.md](./docs/UIUX.md).
 
+## Door-to-door transport journeys
+
+Trip Day shows one time-blocked Journey for each continuous origin-to-destination movement, even if it involves walking, train and metro transfers. Expand the Journey to see every original timed leg and station. When endpoints are known, click the A→B title to preview directions in Google Maps (no manual GPS or API key); Google Maps can recommend different connections from the published plan. Walking uses a footprints SVG icon.
+
 ## Why this exists
 
 Most trip plans already live across chats, documents, spreadsheets, maps, and bookings. Once a trip starts, other travelers usually need a **simple reference**, not another planning workflow.

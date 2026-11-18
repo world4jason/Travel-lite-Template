@@ -20,6 +20,9 @@ test("UI/UX has ordered P0, P1, P2 with mandatory canonical time blocks and five
   for (const id of ["P0.1", "P0.2", "P0.3", "P0.4", "P0.5", "P0.6"])
     assert.ok(uiux.includes("### " + id), "missing core UX rule " + id);
   assert.match(uiux, /Chronological Itinerary Timeline/);
+  assert.match(uiux, /P0\.1a/);
+  assert.match(uiux, /P1\.8/);
+  assert.match(uiux, /Journey/);
   assert.match(uiux, /Time-blocked Schedule/);
   assert.match(uiux, /10:00–11:00/);
   assert.match(uiux, /11:00–11:30/);
