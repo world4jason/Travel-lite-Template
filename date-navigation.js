@@ -160,7 +160,7 @@
     const first = items.find(x => x.type === "place" && validPoint(x)) ||
       items.find(x => x.type !== "transport" && validPoint(x)) ||
       items.find(x => validPoint(x));
-    return validPoint(first) || validPoint(state.data.trip.center);
+    return validPoint(first); // No assumed city: unknown location means no weather forecast.
   }
   const weatherPending = new Map();
   function forecastSymbol(code) {
