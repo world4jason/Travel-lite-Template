@@ -4,7 +4,7 @@ import {readFileSync} from "node:fs";
 import {resolve} from "node:path";
 import {pathToFileURL} from "node:url";
 
-const required = ["ui-icons.js","uiux-guard.css","trip-view.js","app.js",
+const required = ["ui-icons.js","uiux-guard.css","journey-groups.js","journey-groups.css","trip-view.js","app.js",
   "places-view.js","runtime-features.js","index.html","sw.js","trip.json",
   "AGENTS.md","docs/UIUX.md","package.json","playwright.config.mjs",
   ".github/workflows/chronological-timeline.yml"];
@@ -49,6 +49,30 @@ export function auditUIUX(files) {
   check(index.includes("ui-icons.js") &&
     index.indexOf("ui-icons.js")<index.indexOf("app.js"),
     "ui-icons.js must load before app.js");
+  const journey=get("journey-groups.js"),journeyCSS=get("journey-groups.css");
+  check(journey.includes("function groupItems") && journey.includes("function directionsUrl"),
+    "Missing journey grouping and route projection");
+  check(journey.includes("encodeURIComponent(route.from)") &&
+    journey.includes("encodeURIComponent(route.to)") && journey.includes("travelmode="),
+    "Journey Maps URL must encode origin/destination and mode");
+  check(trip.includes("TravelLiteJourneys?.groupItems") &&
+    trip.includes("trip-journey-details") && trip.includes("trip-journey-directions"),
+    "Trip must show one Journey card with readable leg details and Maps directions");
+  check(journeyCSS.includes("min-width:0") &&
+    journeyCSS.includes("#view-root .map-heading") &&
+    journeyCSS.includes("overflow-wrap:anywhere"),
+    "Desktop Journey and Transport must safely reflow, not clip");
+  check(/walk:\s*'<path d="M4 16v-2\.38/.test(icon),
+    "Walk must use footprints SVG, not a running human");
+  check(index.includes("journey-groups.js") &&
+    index.indexOf("journey-groups.js")<index.indexOf("trip-view.js"),
+    "Journey module must load before Trip renderer");
+  check(index.includes("journey-groups.css") &&
+    sw.includes("journey-groups.js") && sw.includes("journey-groups.css"),
+    "Journey assets must be linked and PWA cached");
+  check(get("docs/UIUX.md").includes("P0.1a") &&
+    get("docs/UIUX.md").includes("P1.8"),
+    "UIUX must require door-to-door journeys, Maps and desktop clipping guard");
   check(index.includes("uiux-guard.css"),
     "index.html must load inset guard stylesheet");
   check(sw.includes("uiux-guard.css")&&sw.includes("ui-icons.js"),
