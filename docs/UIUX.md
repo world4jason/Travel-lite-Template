@@ -14,7 +14,7 @@
 
 ### P0.1 Chronological Itinerary Timeline + Time-blocked Schedule
 
-**Trip Day 主內容永遠是一條完整、可見、依原始資料時間順序排列的 Timeline。** 所有已排定的景點、交通、餐飲、住宿、活動、等候／手續均為同層的 `days[].items[]` 獨立項目；不是只有景點的清單加交通附註。
+**Trip Day 主內容永遠是一條完整、可見、依原始資料時間順序排列的 Timeline。** 景點、餐飲、住宿、活動、等候與每一次**完整起點→終點交通 Journey** 在主 Timeline 都是同層時段。連續轉乘／步行仍以獨立 `days[].items[]` Leg 保存來源 ID 和時間，但主畫面只顯示一張交通卡，轉乘細節可展開；不是只有景點的清單加交通附註。
 
 ```text
 10:00–11:00  參觀 XXX 景點
@@ -23,9 +23,13 @@
 13:00–15:00  交通：前往下一個目的地
 ```
 
-以上僅為格式示意，**不是**可直接發布的真實時刻。對於有來源且已知的時段，顯示 `HH:MM–HH:MM`；缺某端時顯示 TBD / 已知資訊，不得補造。已排定交通用獨立 `type: transport` item，含穩定 ID、可確認的交通模式與站點。步行／轉乘同樣適用。**禁止**只把已知交通藏在 `transferAfter`、Journey Board、Transport 分頁或收合區塊。
+以上僅為格式示意，**不是**可直接發布的真實時刻。對於有來源且已知的時段，顯示 `HH:MM–HH:MM`；缺某端時顯示 TBD / 已知資訊，不得補造。已排定交通的每個 Leg 使用獨立來源 `type: transport` item，含穩定 ID、已知交通模式與站點；相鄰同一 Journey 的 Leg 在主畫面合為一張時段卡並保留可展開的每段細節。可以用 `journeyId`／`journeyStart`／`journeyEnd` 明確切分兩趟不同旅程。**禁止**只把已知交通藏在 `transferAfter`、Journey Board、Transport 分頁或收合區塊。
 
 主 Timeline 不得整段收合、被地圖替代、被 Theme 分割成景點／交通兩份清單，也不得重複顯示同一交通段。`days[].items[]` 是已發布的 canonical 順序；瀏覽器不能默默排序、補洞或調時。跨時區／跨午夜依 IANA timezone 比較絕對時刻，資料衝突需提示並回到來源修正。完整規格與邊界案例見 [Timeline Contract](./CHRONOLOGICAL_TIMELINE_CONTRACT.md)。
+
+### P0.1a Door-to-door Journey Maps directions
+
+完整 Journey 有來源確認的起點/終點時，使用 Google Maps URLs `https://www.google.com/maps/dir/?api=1&origin=...&destination=...&travelmode=...`（不需座標或 API Key）建立可點擊路線。使用 URL 編碼；純步行用 walking、公共運輸與混合轉乘用 transit、純自駕用 driving。起終點不可信或涉及航班時不硬湊地面路線。Google Maps 可能產生與原行程不同的轉乘或班次，**路線預覽不代表即時或一定開啟導航**；來源交通資料絕不能被重排或改時刻。
 
 ### P0.2 Read-only schedule and honest status
 
@@ -88,6 +92,10 @@ Trip、Transport、Places 使用**同一個**可橫向捲動的日期卡列（D 
 地鐵／火車／纜車／公車／Google Maps 連結／景點／票券等控制圖示，只能使用本地固定白名單 `ui-icons.js` 的語意 SVG：地鐵與火車圖像須不同；地圖使用通用定位針。**不得**以易缺字或意義不明的 `⌖`、`◫`、`≋`、`📍` 字型符號當操作圖示。使用語意 label / aria-label；不仿製第三方品牌商標。
 
 **雙重驗收：** (1) `npm run lint:uiux` 靜態檢查 icon whitelist、禁止 glyph、PWA 引用、必需的安全內距與文件；(2) `npm run test:uiux:geometry` 在 Chromium 中以 getBoundingClientRect 量測真正渲染的卡片與文字距離，覆蓋 320/390/1100px、200% 字體與支援的 Style Packs。兩者缺一不可。靜態 PASS 不等於視覺 PASS；CI FAIL 時不應宣稱完成。
+### P1.8 Desktop clipping and walking icon
+
+桌面 **1024／1280／1440／1920px** 及 200% 文字縮放必須驗證 Trip 完整 Journey、Transport 地圖與轉乘站點、日期導覽；不得用 `overflow:hidden` 直接裁切文字掩飾問題，需讓 Grid/Flex 使用 `min-width:0`、可換行文字與足夠框內距。**步行 icon 使用雙腳印 `footprints` SVG**，不使用奔跑人形。`npm run test:journey:browser` 驗證無水平溢出、長站名與 A→B 路線連結。
+
 ## P2 — Flexible visual direction
 
 Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓角、框線、陰影、微動畫及日概覽呈現手法。這些是**材料與排版選擇**，不得改變 P0 Timeline／五分頁／資料來源、P1 易讀性或操作順序。旅行專屬 UI 可在額外的 `docs/UIUX_<TRIP>.md` 中補充，但不得降低本文件要求。

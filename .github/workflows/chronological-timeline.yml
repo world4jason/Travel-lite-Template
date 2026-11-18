@@ -25,6 +25,10 @@ jobs:
         run: npm run test:uiux
       - name: Date/weather and flight projection contracts
         run: npm run test:trip-widgets
+      - name: Verify door-to-door Journeys and Maps URLs
+        run: npm run test:journey
+      - name: Desktop Journey browser reflow
+        run: npm run test:journey:browser
       - name: Enforce canonical time-blocked itinerary
         run: npm run test:timeline
       - name: Check globally unique item IDs

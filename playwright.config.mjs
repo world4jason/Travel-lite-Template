@@ -12,7 +12,7 @@ export default defineConfig({
     "bottom-nav-fixed.spec.mjs", "places-transport.spec.mjs",
     "style-surface-padding.spec.mjs", "style-surface-role.spec.mjs",
     "style-semantic-parity.spec.mjs", "style-surface-matrix.spec.mjs",
-    "style-text-zoom.spec.mjs", "uiux-safe-inset.spec.mjs", "issue109-identity.spec.mjs",
+    "style-text-zoom.spec.mjs", "uiux-safe-inset.spec.mjs", "journey-timeline.spec.mjs", "issue109-identity.spec.mjs",
     "issue111-places-history.spec.mjs", "issue116-trip-contract.spec.mjs",
     "issue116-role-geometry.spec.mjs", "issue129-unified-date-navigation.spec.mjs"],
   fullyParallel: false,

@@ -14,10 +14,12 @@
     "test:style-parity": "node scripts/verify-style-parity.mjs",
     "test:timeline": "node --test tests/chronological-timeline.test.mjs && node scripts/check-chronological-timeline.mjs trip.json",
     "test:uiux": "node --test tests/uiux-contract.test.mjs",
-    "test:contracts": "npm run lint:uiux && npm run test:uiux && npm run test:timeline",
+    "test:contracts": "npm run lint:uiux && npm run test:uiux && npm run test:timeline && npm run test:journey",
     "test:trip-widgets": "node --test tests/date-weather-flight.test.mjs",
     "lint:uiux": "node --test tests/uiux-lint.test.mjs && node scripts/lint-uiux.mjs",
-    "test:uiux:geometry": "playwright test tests/uiux-safe-inset.spec.mjs --project=chromium"
+    "test:uiux:geometry": "playwright test tests/uiux-safe-inset.spec.mjs --project=chromium",
+    "test:journey": "node --test tests/journey-groups.test.mjs",
+    "test:journey:browser": "playwright test tests/journey-timeline.spec.mjs --project=chromium"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

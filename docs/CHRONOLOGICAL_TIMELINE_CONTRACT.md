@@ -9,11 +9,17 @@
     11:30–13:00  [food]      午餐
     13:00–15:00  [transport] 前往下一個目的地
 
-上面時間**只是格式示範**，不得用於未核實的真實行程。每個已排定區塊擁有自己的 stable `id`、`type`、`title`、來源支持的 `start`/`end`，並一律以一筆 `days[].items[]` 表達。每段已安排交通含步行、地鐵、巴士、火車、纜車、渡船與飛機，必須是**獨立 `type: transport` 行**，與景點、餐飲同層。
+上面時間**只是格式示範**，不得用於未核實的真實行程。每個已排定區塊擁有自己的 stable `id`、`type`、`title`、來源支持的 `start`/`end`，並一律以一筆 `days[].items[]` 表達。每段已安排交通含步行、地鐵、巴士、火車、纜車、渡船與飛機，必須是**獨立 `type: transport` 來源 Leg**；主 Timeline 則將同一次移動的連續 Leg 投影成一張與景點、餐飲同層的完整 Journey 卡。
+
+## Journey grouping is a display projection (P0)
+
+一次 A→B 移動（包含站外步行、搭車、轉乘與抵達步行）只佔一筆主 Timeline 時段；細節在卡內以 `<details>` 保留各 Leg 的來源時間與 ID。相鄰非交通活動自然切開 Journey，若兩趟交通相鄰但不同，可用 `journeyId`、`journeyStart`、`journeyEnd` 明確斷開；**不能依空白時間自行推算**。主 Timeline 永遠展開，轉乘清單才允許收合。
+
+可核實 A/B 地名時顯示一鍵 Google Maps directions；缺端點時不顯示假的路線，飛機不可冒充地面交通。Google Maps 路線供參考，實際班次／轉乘仍以現場營運資訊為準。
 
 ## Render acceptance
 
-- Trip Day 的主軸是**永遠展開**的單一有序 `ol`/`li`；每個來源 item 一個 row，原始順序及 ID 保留。
+- Trip Day 的主軸是**永遠展開**的單一有序 `ol`/`li`；每個景點／用餐／完整 Journey 一個主 row，Journey 內的原始 Leg 在可展開清單保留順序和每一個 source ID。
 - 顯示開始與結束時間及活動名稱，不假造未提供的結束時刻；缺某端顯示待定、`timeLabel`；不使用推定 `00:00`、假路線及即時 ETA。
 - 地圖/站點資訊是補充；`Journey Board`、Transport tab 與 Plan B 只顯示來源投影／按需展開的細節，不得替代主軸、隱藏交通或新增第二份交通時刻表。
 - `transferAfter` 只供舊資料或沒有已發布時間的輕量銜接；其後緊接 `type:transport` 時不能把同一段交通顯示兩次。
