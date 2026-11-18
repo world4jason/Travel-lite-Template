@@ -175,7 +175,7 @@
     return ["", ""];
   }
   function loadWeather(nav) {
-    if (!window.TravelLiteProviders?.weather) return;
+    if (typeof TravelLiteProviders === "undefined" || !TravelLiteProviders.weather) return;
     const current = typeof zonedNow === "function" ?
       zonedNow(state.data.trip.timezone).date : "";
     const todayStamp = Date.parse(current + "T00:00:00Z");
