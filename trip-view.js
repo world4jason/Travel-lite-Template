@@ -263,6 +263,28 @@
     });
   }
 
+  function journeyLegsHtml(entry) {
+    if (entry.kind !== "journey") return "";
+    const list = entry.legs.map(leg => {
+      const mode = transportTag(leg);
+      const start = validTimelineClock(leg.start) ? leg.start : localized("待定", "TBD");
+      const end = validTimelineClock(leg.end) ? leg.end : localized("待定", "TBD");
+      return '<li class="trip-journey-leg" data-timeline-leg-id="' + escapeAttr(leg.id || "") +
+        '" data-source-item-id="' + escapeAttr(leg.id || "") + '">' +
+        '<span class="trip-journey-leg-time">' + escapeHtml(start) + '–' + escapeHtml(end) + '</span>' +
+        '<div class="trip-journey-leg-main"><div class="trip-journey-leg-heading">' +
+        mode + '<strong>' + escapeHtml(leg.title || localized("交通", "Transit")) + '</strong></div>' +
+        (leg.location ? '<p>' + escapeHtml(leg.location) + '</p>' : "") +
+        (leg.note ? '<p>' + escapeHtml(leg.note) + '</p>' : "") +
+        supplementaryContent(leg) + '</div>' + compactActions(leg) + '</li>';
+    }).join("");
+    const summary = localized("查看", "Show") + " " + entry.legs.length + " " +
+      localized("段交通／轉乘明細", "travel legs / transfers");
+    return '<details class="trip-journey-details"><summary>' +
+      '<span>' + escapeHtml(summary) + '</span><span class="trip-journey-chevron" aria-hidden="true">⌄</span></summary>' +
+      '<ol class="trip-journey-legs" role="list">' + list + '</ol></details>';
+  }
+
   function renderDay(day) {
     const isNewDay = lastRenderedDate !== day.date;
     lastRenderedDate = day.date;
@@ -270,7 +292,11 @@
     const currentDate = zonedNow(state.data.trip.timezone).date;
     const now = zonedNow(state.data.trip.timezone);
     const chronologyWarnings = chronologicalDiagnostics(day);
-    const timeline = (day.items || []).map((item, index) => {
+    const entries = window.TravelLiteJourneys?.groupItems?.(day.items || [], state.data?.ui?.locale) ||
+      (day.items || []).map(item => ({kind:"item",item,first:item,last:item,legs:[]}));
+    const timeline = entries.map((entry, index) => {
+      const item = entry.item;
+      const journey = entry.kind === "journey";
       const isCurrent = hasTimedStart(item) && day.date === currentDate &&
         now.minuteOfDay >= toMinutes(item.start) &&
         now.minuteOfDay < toMinutes(item.end || item.start);
@@ -279,27 +305,39 @@
       const highlight = item.mustGo === true
         ? `<span class="must-go-tag" aria-label="${localized("編輯精選", "Curated highlight")}">${localized("★ 必去", "★ Highlight")}</span>`
         : "";
-      const mode = transportTag(item);
-      const placeLink = window.TravelLitePlaces?.isPlace(item) && state.itemIdentity?.isUnique(item.id) ?
+      const mode = journey
+        ? [...new Set(entry.legs.map(leg => leg.transportMode))].map(transportMode =>
+          transportTag({transportMode})).join("")
+        : transportTag(item);
+      const journeyUrl = journey ? safeUrl(window.TravelLiteJourneys?.directionsUrl?.(entry)) : "";
+      const journeyAction = journeyUrl
+        ? '<a class="trip-journey-directions" href="' + escapeAttr(journeyUrl) +
+          '" target="_blank" rel="noopener noreferrer" aria-label="' +
+          escapeAttr(localized("Google Maps 路線：", "Google Maps directions: ") + item.title) +
+          '">' + escapeHtml(item.title) + ' <span class="trip-journey-map-cta">' +
+          (window.TravelLiteIcons?.svg?.("map-pin") || "") +
+          escapeHtml(localized("Google Maps 路線", "Directions")) + ' ↗</span></a>'
+        : escapeHtml(item.title);
+      const placeLink = !journey && window.TravelLitePlaces?.isPlace(item) && state.itemIdentity?.isUnique(item.id) ?
         `<button type="button" class="trip-place-detail" data-open-place="${escapeAttr(item.id)}" aria-label="${escapeAttr(localized("開啟景點詳情", "Open place details"))}">${localized("景點資訊", "Place details")} ↗</button>` :
         window.TravelLitePlaces?.isPlace(item) && state.itemIdentity?.isAmbiguous(item.id)
           ? `<span class="trip-identity-warning">${localized("來源 ID 重複，景點連結暫停", "Duplicate source ID — place link unavailable")}</span>` : "";
-      const itemTop = `<div class="trip-item-top"><div><div class="item-heading"><h3>${escapeHtml(item.title)}</h3>${highlight}${kind}${placeLink}</div>${mode ? `<div class="trip-transport-meta">${mode}</div>` : ""}${item.location ? `<p>${escapeHtml(item.location)}</p>` : ""}</div>${compactActions(item)}</div>`;
-      const details = `<div class="timeline-content">${itemTop}${item.note ? `<p class="timeline-note">${escapeHtml(item.note)}</p>` : ""}${supplementaryContent(item)}</div>`;
+      const itemTop = `<div class="trip-item-top"><div><div class="item-heading"><h3>${journeyAction}</h3>${highlight}${kind}${placeLink}</div>${mode ? `<div class="trip-transport-meta">${mode}</div>` : ""}${item.location ? `<p>${escapeHtml(item.location)}</p>` : ""}</div>${journey ? "" : compactActions(item)}</div>`;
+      const details = `<div class="timeline-content">${itemTop}${item.note ? `<p class="timeline-note">${escapeHtml(item.note)}</p>` : ""}${journey ? journeyLegsHtml(entry) : supplementaryContent(item)}</div>`;
       const currentClass = isCurrent ? "current" : "";
       return `<li class="trip-stop-wrap">
-        <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}" data-timeline-kind="${escapeAttr(item.type || "activity")}" data-timeline-item-id="${escapeAttr(item.id || "")}">
+        <article class="timeline-item trip-v2-item ${currentClass} ${item.mustGo === true ? "trip-must-go" : ""}" data-timeline-kind="${escapeAttr(item.type || "activity")}" data-timeline-item-id="${escapeAttr(item.id || "")}" data-journey-group="${journey ? "true" : "false"}">
           ${timeLabel(item, day)}
           <div class="timeline-rail" aria-hidden="true"><div class="timeline-dot"></div></div>
           ${details}
-        </article>${index < day.items.length - 1 ? transferHtml(item, day.items[index + 1], day) : ""}
+        </article>${index < entries.length - 1 ? transferHtml(entry.last, entries[index + 1].first, day) : ""}
       </li>`;
     }).join("");
 
     const summary = `<section class="day-summary composition-identity">
         <p class="eyebrow">${escapeHtml(day.label || "")} · ${prettyDate(day.date, { weekday: "short" })}</p>
         <h2>${escapeHtml(day.title || "Trip")}</h2>
-        <p>${day.items?.length || 0} ${localized("項行程", "planned stops")}</p>
+        <p>${entries.length} ${localized("項行程", "planned stops")}</p>
         ${day.note ? `<p class="day-note">${escapeHtml(day.note)}</p>` : ""}
       </section>`;
 
