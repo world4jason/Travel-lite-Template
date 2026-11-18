@@ -21,11 +21,11 @@ export function auditUIUX(files) {
   }
   check(icon.includes("Object.freeze")&&icon.includes("shapes[name]"),
     "SVG icon lookup must use a fixed allowlist");
-  check(trip.includes("TravelLiteIcons.svg(item.transportMode)"),
+  check(trip.includes("TravelLiteIcons?.svg?.(item.transportMode)"),
     "Trip transport must use semantic SVG");
-  check(trip.includes('TravelLiteIcons.svg("map-pin")'),
+  check(trip.includes('TravelLiteIcons?.svg?.("map-pin")'),
     "Trip map action must use map-pin SVG");
-  check(app.includes("TravelLiteIcons.svg(VIEW_META[view].icon)"),
+  check(app.includes("TravelLiteIcons?.svg?.(VIEW_META[view].icon)"),
     "Navigation must use semantic SVG");
   for(const path of ["trip-view.js","app.js","places-view.js","journey-board.js"]) {
     if(!files[path])continue;

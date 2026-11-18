@@ -19,7 +19,7 @@
     const mode = Object.hasOwn(TRANSPORT_MODES, item.transportMode) ? TRANSPORT_MODES[item.transportMode] : null;
     if (!mode) return "";
     const name = localized(mode.zh, mode.en);
-    return `<span class="transport-tag transport-tag--${item.transportMode}" aria-label="${escapeAttr(name)}"><span aria-hidden="true">${window.TravelLiteIcons.svg(item.transportMode)}</span>${escapeHtml(name)}</span>`;
+    return `<span class="transport-tag transport-tag--${item.transportMode}" aria-label="${escapeAttr(name)}"><span aria-hidden="true">${window.TravelLiteIcons?.svg?.(item.transportMode)}</span>${escapeHtml(name)}</span>`;
   }
   function hasTimedStart(item) {
     // Trip follows the published HH:MM contract in every appearance. Keep
@@ -142,7 +142,7 @@
     if (!mapUrl && !secondary.length) return "";
 
     const map = mapUrl
-      ? `<a class="trip-icon-action" href="${escapeAttr(mapUrl)}" target="_blank" rel="noreferrer" aria-label="Open ${escapeAttr(item.title || "stop")} in Google Maps" title="Google Maps"><span aria-hidden="true">${window.TravelLiteIcons.svg("map-pin")}</span></a>`
+      ? `<a class="trip-icon-action" href="${escapeAttr(mapUrl)}" target="_blank" rel="noreferrer" aria-label="Open ${escapeAttr(item.title || "stop")} in Google Maps" title="Google Maps"><span aria-hidden="true">${window.TravelLiteIcons?.svg?.("map-pin")}</span></a>`
       : "";
 
     const more = secondary.length
@@ -204,7 +204,7 @@
     const url = safeUrl(highlight.url);
     return `<article class="trip-highlight-card composition-narrative">
       <div class="trip-highlight-meta"><span>${escapeHtml(highlightDate(highlight))}</span>${highlight.status ? `<small>${escapeHtml(highlight.status)}</small>` : ""}</div>
-      <h3>${window.TravelLiteIcons.svg(highlight.icon) ? `<span class="trip-highlight-icon" aria-hidden="true">${window.TravelLiteIcons.svg(highlight.icon)}</span>` : ""}<span class="trip-highlight-title">${escapeHtml(highlight.title || "Activity")}</span></h3>
+      <h3>${window.TravelLiteIcons?.svg?.(highlight.icon) ? `<span class="trip-highlight-icon" aria-hidden="true">${window.TravelLiteIcons?.svg?.(highlight.icon)}</span>` : ""}<span class="trip-highlight-title">${escapeHtml(highlight.title || "Activity")}</span></h3>
       ${highlight.note ? `<p>${escapeHtml(highlight.note)}</p>` : ""}
       ${url ? `<a class="trip-text-link" href="${escapeAttr(url)}" target="_blank" rel="noreferrer">Open details ↗</a>` : ""}
     </article>`;
