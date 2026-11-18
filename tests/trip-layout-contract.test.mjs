@@ -24,6 +24,8 @@ test("the UI avoids repeating its own chronology and everyday mechanics in helpe
   assert.doesNotMatch(view,/依時間排列：景點、交通、餐飲皆為獨立時段/);
   assert.doesNotMatch(view,/<p class="day-note">/);
   assert.match(view,/noteDetail/);
+  assert.match(view,/function conciseLocation/);
+  assert.match(view,/function conciseNote/);
   assert.doesNotMatch(weather,/沒有資料仍可選日期/);
   const data=JSON.parse(source("trip.json"));
   assert.equal(data.days.filter(d=>/^依實走順序串起交通與遊覽/.test(d.note||"")).length,0);
