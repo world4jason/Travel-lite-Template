@@ -125,3 +125,7 @@ The authorized Mac later ran the real Node and Chromium suites: **255 default br
 **Phase C / future packs:** use this role API in the template/manifest review checklist, add screenshots for the newly introduced role at 320/390/1100 and add a targeted regression if a design needs an exception. Accept exceptions only with an explicit named role and observed computed values.
 
 **Release gate:** independent Agent code review → Node and actual Chromium → screenshots/matrix → merge → GitHub Pages → **owner Human Review**. Do not treat a source-only audit or the prior #81/#113 acceptance as Human Review for new changes.
+
+## Framed text inset rendered-geometry gate (UIUX P1.7)
+
+Every bordered reading card must retain at least 12 CSS px between readable text boxes and the inner left/right border, including at 320/390/1100px and 200% font zoom. Reserve extra illustration space separately. Pure borderless editorial divider rows are not forced into decorative frames. Run `npm run lint:uiux` and `npm run test:uiux:geometry`; see `docs/UIUX.md`. CSS source review alone is NOT a rendered-layout pass.

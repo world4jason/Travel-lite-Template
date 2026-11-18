@@ -1,0 +1,40 @@
+/* Shared UX guard: decorative themes must not put readable text on borders.
+ * Scope visual corrections to actual framed cards; preserve editorial open rows.
+ * SPDX-License-Identifier: AGPL-3.0-or-later */
+.tl-ui-icon {
+  display: inline-block;
+  width: 1.12em;
+  height: 1.12em;
+  flex: 0 0 auto;
+  vertical-align: -.12em;
+  stroke: currentColor;
+}
+.nav-icon .tl-ui-icon { width: 19px; height: 19px; vertical-align: middle; }
+.trip-icon-action .tl-ui-icon, .tl-map-link .tl-ui-icon { width: 19px; height: 19px; }
+.map-state-mark .tl-ui-icon { width: 26px; height: 26px; }
+.places-section-top .tl-ui-icon { width: 20px; height: 20px; }
+.trip-highlight-card h3 { display: flex; align-items: start; gap: .48em; min-width: 0; }
+.trip-highlight-icon { display: inline-flex; align-items: center; flex: 0 0 auto; line-height: 1.15; }
+.trip-highlight-title { min-width: 0; overflow-wrap: anywhere; }
+.trip-highlight-card :is(p,small), .trip-open-decision :is(strong,p,small) {
+  min-width: 0; overflow-wrap: anywhere;
+}
+/* Storybook uses a 3px ink frame and a right-side illustration. The left
+ * inset and the illustration reserve must both survive narrow breakpoints. */
+:root[data-visual-style="storybook"] :is(.trip-highlight-card,.trip-open-decision) {
+  box-sizing: border-box;
+  padding-inline-start: max(16px, var(--uiux-safe-inline-start, 16px));
+}
+:root[data-visual-style="storybook"] .trip-overview-day {
+  box-sizing: border-box;
+  padding-inline-start: max(14px, var(--uiux-safe-inline-start, 14px));
+}
+:root[data-visual-style="storybook"] .trip-v2-item {
+  padding-inline-start: max(12px, var(--uiux-safe-inline-start, 12px));
+}
+@media (max-width: 520px) {
+  :root[data-visual-style="storybook"] :is(.trip-highlight-card,.trip-open-decision) {
+    padding-inline-start: max(14px, var(--uiux-safe-inline-start, 14px));
+    padding-inline-end: max(72px, var(--uiux-art-safe-inline-end, 72px));
+  }
+}

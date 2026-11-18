@@ -176,7 +176,7 @@
         <p>${escapeHtml(item.location || label("地點資訊未提供", "Location not provided"))}</p>
       </header>
       ${hasBooking ? `<section class="panel places-entry">
-        <div class="places-section-top"><span aria-hidden="true">◫</span><div><p class="eyebrow">${label("入場與預約", "ENTRY & BOOKING")}</p><h3>${label("已連結的預約／票券", "Linked bookings & tickets")}</h3></div></div>
+        <div class="places-section-top"><span aria-hidden="true">${(window.TravelLiteIcons?.svg?.("ticket") || "")}</span><div><p class="eyebrow">${label("入場與預約", "ENTRY & BOOKING")}</p><h3>${label("已連結的預約／票券", "Linked bookings & tickets")}</h3></div></div>
         ${content.reservations.map(reservationHtml).join("")}${content.files.map(fileHtml).join("")}
         <p class="places-disclaimer">${label("僅顯示已明確關聯的資料；預約狀態與現場規則請依業者確認。", "Only explicitly linked records are shown. Confirm reservation status and entry rules with the operator.")}</p>
       </section>` : ""}
