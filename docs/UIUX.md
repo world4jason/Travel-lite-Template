@@ -81,6 +81,13 @@ Trip、Transport、Places 使用**同一個**可橫向捲動的日期卡列（D 
 
 如果 `days[].items[]` 存在明確 `type: "transport", transportMode: "flight"` 的航班，Trip Overview 以摘要卡顯示航班號、機場、已發布起降時間；Transport 對應日期呈現完整航段資訊（含有來源才顯示的航廈、航空公司與提醒）；飛行與機場前後交通仍保留在主 Timeline。沒有航班的旅行不出現空白卡。所有顯示必須由**同一筆 source item** 投影，絕不維護第二份機票時間；跨時區轉換依 IANA zone 與明確來源，不得猜測航廈、航班狀態或訂位資訊。公開網站不得放票號、訂位碼、登機證條碼等私密內容。
 
+### P1.7 Framed card safe insets & semantic UI icons — Mandatory dual gate
+
+**所有有框線的卡片與閱讀區塊，內文不可貼邊或被截斷。** 文字實際排版框至左右內側邊框至少保留 **12 CSS px** 的淨距離（推薦 16px）；不准用 padding:0、負 margin、clip/overflow:hidden 蓋掉裁切問題。插畫、絕對定位圖案須另外預留與文字不重疊的空間。無框 editorial row 可保留其分隔線閱讀語法，不需為了 Lint 畫假框。
+
+地鐵／火車／纜車／公車／Google Maps 連結／景點／票券等控制圖示，只能使用本地固定白名單 `ui-icons.js` 的語意 SVG：地鐵與火車圖像須不同；地圖使用通用定位針。**不得**以易缺字或意義不明的 `⌖`、`◫`、`≋`、`📍` 字型符號當操作圖示。使用語意 label / aria-label；不仿製第三方品牌商標。
+
+**雙重驗收：** (1) `npm run lint:uiux` 靜態檢查 icon whitelist、禁止 glyph、PWA 引用、必需的安全內距與文件；(2) `npm run test:uiux:geometry` 在 Chromium 中以 getBoundingClientRect 量測真正渲染的卡片與文字距離，覆蓋 320/390/1100px、200% 字體與支援的 Style Packs。兩者缺一不可。靜態 PASS 不等於視覺 PASS；CI FAIL 時不應宣稱完成。
 ## P2 — Flexible visual direction
 
 Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓角、框線、陰影、微動畫及日概覽呈現手法。這些是**材料與排版選擇**，不得改變 P0 Timeline／五分頁／資料來源、P1 易讀性或操作順序。旅行專屬 UI 可在額外的 `docs/UIUX_<TRIP>.md` 中補充，但不得降低本文件要求。
