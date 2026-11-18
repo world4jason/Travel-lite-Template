@@ -144,3 +144,47 @@
   /* Desktop Trip already has a complete persistent, accessible day sidebar. */
   #view-root[data-date-nav-view="trip"] > .unified-date-nav { display: none; }
 }
+
+
+/* P1 Weather-Integrated Date Navigator: one shared, horizontally scrollable
+   selection strip for Trip / Transport / Places, independent of forecasts. */
+.unified-date-nav { padding: 12px; gap: 11px; overflow: hidden; }
+.unified-date-toolbar { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:9px; }
+.unified-date-quick { flex: 1 1 auto; margin:0; min-width:0; }
+.unified-date-main { flex:0 1 208px; grid-template-columns:32px minmax(0,1fr) 32px; gap:5px; min-width:150px; }
+.unified-date-arrow { width:32px; height:36px; min-height:36px; font-size:1rem; }
+.unified-date-select-wrap { min-height:36px; }
+.unified-date-value { font-size:.77rem; padding:0 25px 0 9px; white-space:nowrap; }
+.unified-date-chevron { right:7px; }
+.unified-date-select { height:100%; }
+.unified-date-strip {
+  display:flex; gap:8px; width:100%; overflow-x:auto; overscroll-behavior-x:contain;
+  scroll-snap-type:x proximity; scroll-padding-inline:6px;
+  padding:2px 2px 10px; scrollbar-width:thin; -webkit-overflow-scrolling:touch;
+}
+.unified-date-card {
+  appearance:none; flex:0 0 104px; width:104px; min-width:0;
+  display:flex; flex-direction:column; gap:5px; align-items:center;
+  min-height:126px; padding:10px 7px; scroll-snap-align:start; cursor:pointer;
+  border:1px solid var(--line); border-radius:12px; background:var(--surface-2);
+  color:var(--text); text-align:center; font:inherit;
+}
+.unified-date-card:hover { border-color:var(--accent); }
+.unified-date-card.active { border:2px solid var(--accent); background:var(--accent-soft); padding:9px 6px; }
+.unified-date-card:focus-visible { outline:3px solid var(--accent); outline-offset:1px; }
+.unified-date-card-day { font-size:.68rem; font-weight:780; color:var(--muted); }
+.unified-date-card-date { font-weight:740; font-size:.92rem; font-variant-numeric:tabular-nums; }
+.unified-date-card-weather { display:grid; place-items:center; font-size:1.45rem; min-height:26px; line-height:1; color:var(--accent); }
+.unified-date-card-temperature { font-size:.77rem; line-height:1.35; color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums; }
+.unified-date-card-title { font-size:.68rem; color:var(--muted); max-width:100%; overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-height:1.3; overflow-wrap:anywhere; }
+.unified-date-weather-note { margin:0; font-size:.69rem; line-height:1.4; color:var(--muted); overflow-wrap:anywhere; }
+.unified-date-weather-note a { color:inherit; text-underline-offset:2px; }
+@media (max-width:520px) {
+  .unified-date-toolbar { gap:7px; }
+  .unified-date-main { flex-basis:100%; }
+  .unified-date-card { flex-basis:98px; width:98px; min-height:122px; }
+}
+/* The shared strip is visible on desktop too; existing day sidebars may remain. */
+@media (min-width:900px) and (min-height:601px) {
+  #view-root[data-date-nav-view="trip"] > .unified-date-nav { display:grid; }
+}
