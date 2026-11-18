@@ -1,0 +1,98 @@
+/* P0 journey projection + P1 desktop reflow guard.
+ * One visible door-to-door journey; original legs/IDs in expandable detail.
+ * No overflow clipping as a workaround for missing intrinsic sizing.
+ * SPDX-License-Identifier: AGPL-3.0-or-later */
+#view-root, #view-root > .trip-v2, #view-root > .view-stack,
+#view-root .trip-day-view, #view-root .trip-timeline-section,
+#view-root .trip-v2-timeline, #view-root .trip-stop-wrap,
+#view-root .trip-v2-item, #view-root .timeline-content {
+  min-width:0; max-width:100%; box-sizing:border-box;
+}
+.trip-v2-timeline .trip-v2-item {
+  width:100%;
+  grid-template-columns:minmax(0,105px) 18px minmax(0,1fr);
+}
+.trip-v2-timeline .trip-v2-item .timeline-content,
+.trip-v2-timeline .trip-item-top,
+.trip-v2-timeline .item-heading { min-width:0; max-width:100%; }
+.trip-v2-timeline .trip-item-top { flex-wrap:wrap; }
+.trip-v2-timeline .trip-item-top > div:first-child { flex:1 1 230px; min-width:0; }
+.trip-v2-timeline .trip-item-top h3 { min-width:0; overflow-wrap:anywhere; }
+.trip-v2-timeline .trip-compact-actions { flex:0 0 auto; margin-inline-start:auto; }
+.trip-v2-timeline .trip-v2-item[data-journey-group="true"] .timeline-content {
+  min-width:0; overflow-wrap:anywhere;
+}
+.trip-journey-directions {
+  display:inline-flex; align-items:baseline; flex-wrap:wrap;
+  gap:5px 12px; max-width:100%; min-width:0;
+  color:inherit; text-decoration:none; overflow-wrap:anywhere;
+}
+.trip-journey-directions:hover { text-decoration:underline; text-underline-offset:3px; }
+.trip-journey-directions:focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:3px; }
+.trip-journey-map-cta {
+  display:inline-flex; align-items:center; justify-content:flex-start;
+  gap:5px; max-width:100%; padding:4px 8px;
+  font:700 .7rem/1.4 var(--font-utility,system-ui,sans-serif);
+  color:var(--accent); border:1px solid var(--line);
+  border-radius:999px; white-space:normal; overflow-wrap:anywhere;
+}
+.trip-journey-map-cta .tl-ui-icon { width:15px; height:15px; }
+.trip-journey-details {
+  min-width:0; max-width:100%; box-sizing:border-box;
+  margin-top:12px; border:1px solid var(--line);
+  border-radius:12px; background:var(--surface-2);
+  overflow:visible;
+}
+.trip-journey-details > summary {
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; box-sizing:border-box; cursor:pointer;
+  min-height:44px; padding:10px 14px;
+  font:.78rem/1.4 var(--font-utility,system-ui,sans-serif);
+  font-weight:700; overflow-wrap:anywhere; list-style:none;
+}
+.trip-journey-details > summary::-webkit-details-marker { display:none; }
+.trip-journey-details > summary:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.trip-journey-chevron { flex:0 0 auto; transition:transform .16s; }
+.trip-journey-details[open] .trip-journey-chevron { transform:rotate(180deg); }
+.trip-journey-legs { list-style:none; margin:0; padding:0 14px 14px; min-width:0; max-width:100%; }
+.trip-journey-leg {
+  display:grid; grid-template-columns:minmax(0,76px) minmax(0,1fr) auto;
+  align-items:start; gap:10px; min-width:0; padding:11px 0;
+  border-top:1px solid var(--line);
+}
+.trip-journey-leg-time { font-size:.72rem; line-height:1.5; font-variant-numeric:tabular-nums; color:var(--muted); overflow-wrap:anywhere; }
+.trip-journey-leg-main { min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.trip-journey-leg-heading { display:flex; gap:6px; align-items:start; flex-wrap:wrap; min-width:0; }
+.trip-journey-leg-heading strong { flex:1 1 140px; min-width:0; font-weight:650; line-height:1.4; overflow-wrap:anywhere; }
+.trip-journey-leg-main p { max-width:100%; min-width:0; margin:5px 0; overflow-wrap:anywhere; line-height:1.5; }
+.trip-journey-leg .trip-compact-actions { justify-self:end; flex:0 0 auto; }
+.trip-journey-leg .transport-tag { flex:0 0 auto; white-space:normal; }
+/* The map heading can wrap on desktop rather than running into its buttons. */
+#view-root .runtime-map-panel, #view-root .map-heading,
+#view-root .map-heading > div,
+#view-root .map-selected-summary,
+#view-root .tl-board, #view-root .tl-board-head,
+#view-root .tl-route-frame, #view-root .tl-leg-list,
+#view-root .tl-leg, #view-root .tl-leg-main { min-width:0; max-width:100%; box-sizing:border-box; }
+#view-root .map-heading { display:flex; flex-wrap:wrap; align-items:start; gap:12px; }
+#view-root .map-heading > div { flex:1 1 220px; overflow-wrap:anywhere; }
+#view-root .map-heading > .button-link { flex:0 1 auto; max-width:100%; white-space:normal; text-align:center; }
+#view-root .tl-leg-main, #view-root .tl-leg-stations,
+#view-root .tl-board-title { overflow-wrap:anywhere; }
+#view-root .tl-board .tl-leg-stations strong { min-width:0; }
+/* Dense desktop shells and 200% text scaling must not crop content against frames. */
+@media(max-width:600px) {
+  .trip-v2-timeline .trip-v2-item { grid-template-columns:minmax(0,82px) 12px minmax(0,1fr); }
+  .trip-journey-leg { grid-template-columns:minmax(0,1fr); gap:4px; }
+  .trip-journey-leg-heading strong { flex-basis:160px; }
+  .trip-journey-leg .trip-compact-actions { justify-self:start; }
+  .trip-journey-details > summary { padding-inline:12px; }
+  .trip-journey-legs { padding-inline:12px; }
+}
+@media(min-width:900px) and (min-height:601px) {
+  .trip-v2-timeline .trip-v2-item { grid-template-columns:minmax(0,110px) 18px minmax(0,1fr); }
+  .trip-journey-details { max-width:100%; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .trip-journey-chevron { transition:none; }
+}
