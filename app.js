@@ -367,7 +367,7 @@ function renderNav() {
   bottomNav.style.setProperty("--nav-count", views.length);
   bottomNav.innerHTML = views.map((view) => `
     <button class="nav-item ${activeView === view ? "active" : ""}" data-view="${view}" type="button" aria-current="${activeView === view ? "page" : "false"}">
-      <span class="nav-icon">${window.TravelLiteIcons?.svg?.(VIEW_META[view].icon)}</span><span>${VIEW_META[view].label}</span>
+      <span class="nav-icon">${(window.TravelLiteIcons?.svg?.(VIEW_META[view].icon) || "")}</span><span>${VIEW_META[view].label}</span>
     </button>`).join("");
   bottomNav.querySelectorAll("[data-view]").forEach((button) => {
     button.addEventListener("click", () => {
