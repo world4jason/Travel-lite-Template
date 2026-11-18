@@ -29,7 +29,7 @@
 
 :root[data-visual-style="vintage-watercolor"] :is(.trip-header,.trip-overview-hero,
   .trip-overview-day,.trip-highlight-card,.trip-open-decision,.trip-route-summary,
-  .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,.panel,
+  .trip-day-view > .day-summary,.trip-v2-timeline .trip-v2-item,.panel:not([data-surface-role="map-workspace"]),
   .companion-window-card,.companion-focus,.shell-context-slot,
   .bottom-nav) {
   border: 1px solid #B3A38B;
@@ -229,12 +229,13 @@
   --ui-map-workspace-fill:transparent;
 }
 :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .map-heading {
-  margin:0 0 16px;
+  /* Functional text is inset even while the map stage remains full bleed. */
+  margin:0 16px 16px;
   padding:0 0 16px;
   border-bottom:1px solid #D6C6A9;
 }
 :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .transport-day-context {
-  margin:0 0 16px;
+  margin:0 16px 16px;
   border:1px solid #C7B99C;
   border-radius:6px;
   background:#FFFCF5;
@@ -243,7 +244,7 @@
   padding:14px 16px;
 }
 :root[data-visual-style="vintage-watercolor"] .runtime-map-panel .place-chips {
-  margin:0 0 14px;
+  margin:0 16px 14px;
   padding:3px 2px 12px;
   border-bottom:1px solid #E4D5B8;
 }

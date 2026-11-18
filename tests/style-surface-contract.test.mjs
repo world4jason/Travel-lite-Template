@@ -110,7 +110,165 @@ function findDirectGeometry(css, roles) {
 function incompleteConsumers(css, roles) {
   const rules = cssRules(css);
   return roles.flatMap(role => {
-    const owner = rules.filter(rule => new RegExp('^:root\\s+' + roleAttribute(role).source + '$').test(rule.selector));
+    const owner = rules.filter(rule => role === "map-workspace"
+      ? rule.selector === ':root [data-surface-role="map-workspace"].runtime-map-panel.map-panel'
+      : new RegExp('^:root\\s+' + roleAttribute(role).source + '
+    if (owner.length !== 1) return [{ role, ownerRules: owner.length }];
+    const missing = Object.entries(geometryTokens[role]).filter(([property, token]) =>
+      !new RegExp('^var\\(\\s*--ui-' + role + '-' + token + '\\s*[,)]')
+        .test(owner[0].declarations.get(property) || "")).map(([property]) => property);
+    return missing.length ? [{ role, missing }] : [];
+  });
+}
+
+test("semantic surface roles are stable markup in shared renderers, never pack-specific branches", () => {
+  const app = read("app.js");
+  const trip = read("trip-view.js");
+  const map = read("runtime-features.js");
+  const transport = read("transport-overview.js");
+  for (const tag of ['class="info-row"', 'class="info-row compact-row"',
+    'class="text-card"', 'class="text-card travel-essential"',
+    'class="file-row"']) {
+    const expression = tag.replaceAll('"', '\\"');
+    // App source contains HTML strings, not actual mounted DOM.
+    assert.ok(app.includes(tag + ' data-surface-role="reading-row"'),
+      "Missing role on " + expression);
+  }
+  assert.match(app, /class="panel more-section" data-surface-role="section"/);
+  assert.match(app, /class="panel more-section preparation-section" data-surface-role="section"/);
+  assert.match(app, /class="cost-total" data-surface-role="cost-summary"/);
+  assert.match(trip, /class="trip-route-endpoints" data-surface-role="route-endpoints"/);
+  assert.match(trip, /<span data-surface-role="route-step"><b>/);
+  assert.match(map, /class="map-panel runtime-map-panel composition-narrative" data-surface-role="map-workspace"/);
+  assert.match(map, /class="selected-place-card map-selected-summary" data-surface-role="selected-stop"/);
+  assert.match(transport, /details\.dataset\.surfaceRole="transport-context"/);
+});
+
+test("one shared last-loaded CSS file owns coupled reading row geometry", () => {
+  const index = read("index.html");
+  const contract = read("surface-contract.css");
+  const styleIndex = index.indexOf('id="vintage-watercolor-style"');
+  const contractIndex = index.indexOf('href="./surface-contract.css"');
+  assert.ok(styleIndex >= 0 && contractIndex > styleIndex,
+    "Surface contract MUST load after the last Style Pack overlay");
+  for (const property of [
+    "--ui-reading-row-frame", "--ui-reading-row-divider", "--ui-reading-row-padding",
+    "--ui-reading-row-radius", "--ui-reading-row-fill",
+  ]) assert.ok(contract.includes("var(" + property), property + " not controlled by role contract");
+  assert.match(contract, /:root \[data-surface-role="reading-row"\]/);
+  assert.match(contract, /:root \[data-surface-role="cost-summary"\]/);
+  for (const key of ["--ui-cost-summary-frame", "--ui-cost-summary-padding",
+    "--ui-cost-summary-radius", "--ui-cost-summary-fill"]) {
+    assert.ok(contract.includes("var(" + key), "Cost total must pair " + key);
+  }
+  const storybook = read("storybook-theme.css");
+  const riso = read("risograph-theme.css");
+  assert.match(storybook, /--ui-reading-row-frame:\s*2px solid/);
+  assert.match(storybook, /--ui-reading-row-padding:\s*13px;/);
+  assert.match(riso, /--ui-reading-row-frame:\s*0;/);
+  assert.match(riso, /--ui-reading-row-divider:\s*1px solid/);
+  assert.match(riso, /--ui-reading-row-padding:\s*13px 0;/);
+  assert.match(storybook, /--ui-cost-summary-frame:\s*2px solid/);
+  assert.match(storybook, /--ui-cost-summary-padding:\s*13px;/);
+  assert.match(riso, /--ui-cost-summary-frame:\s*2px solid/);
+  assert.match(riso, /--ui-cost-summary-padding:\s*12px 16px;/);
+});
+
+test("Map and Route roles have complete token consumers in the shared geometry owner", () => {
+  assert.deepEqual(incompleteConsumers(read("surface-contract.css"), geometryRoles), []);
+});
+
+test("component and pack rules cannot reclaim Map or Route frame, inset or paint", () => {
+  const styles = readdirSync(new URL("../", import.meta.url))
+    .filter(name => name.endsWith(".css") && name !== "surface-contract.css");
+  for (const path of styles) {
+    assert.deepEqual(findDirectGeometry(read(path), geometryRoles), [],
+      path + " writes Map/Route geometry directly; set the paired role tokens instead");
+  }
+});
+
+test("ownership guard catches shorthand, side overrides and mixed groups without claiming child surfaces", () => {
+  const roles = Object.keys(geometryTokens);
+  const bad = [
+    ['.trip-route-endpoints { border-inline-end: 1px solid; padding: 4px; }', "route-endpoints"],
+    [':root[data-visual-style="candy"] .trip-route-steps > span { background-color: red; }', "route-step"],
+    ['@media (max-width: 520px) { :root :is(.panel, .runtime-map-panel) { outline-offset: -2px; border: 0; } }', "map-workspace"],
+    ['[data-surface-role="route-step"] { all: unset; }', "route-step"],
+    ['.map-panel { padding: 18px; }', "map-workspace"],
+    ['.other:not([data-surface-role="map-workspace"]) .runtime-map-panel { border-radius: 8px; }', "map-workspace"],
+  ];
+  for (const [css, role] of bad) {
+    assert.deepEqual(findDirectGeometry(css, roles).map(problem => problem.role), [role], css);
+  }
+  const allowed = `
+    .trip-route-endpoints { --ui-route-endpoints-frame: 1px solid; }
+    .trip-route-endpoints > span { padding: 4px; }
+    .trip-route-steps span b { border-radius: 4px; background: yellow; }
+    .trip-route-endpoints::before { border: 1px solid; }
+    .runtime-map-panel .runtime-map-stage { border: 2px solid; }
+    .runtime-map-panel > .panel-heading { padding: 12px; }
+    :is(.panel, .runtime-map-panel) > .runtime-map-stage { border: 1px solid; }
+    :is(.runtime-map-panel > .panel-heading, .runtime-map-stage) { padding: 8px; }
+    .map-panel:not(:where([data-surface-role="map-workspace"])) { padding: 18px; }
+    .runtime-map-panel { --ui-map-workspace-padding: 16px; box-shadow: 0 1px 2px black; overflow: hidden; }
+  `;
+  assert.deepEqual(findDirectGeometry(allowed, roles), []);
+});
+
+test("consumer guard rejects a missing inset and a token from the wrong role", () => {
+  const contract = read("surface-contract.css");
+  const missingInset = contract.replace(/\bpadding\s*:\s*var\(--ui-route-endpoints-padding[^;]*;/, "");
+  assert.notEqual(missingInset, contract, "negative case must actually remove the owner inset");
+  assert.deepEqual(incompleteConsumers(missingInset, ["route-endpoints"]),
+    [{ role: "route-endpoints", missing: ["padding"] }]);
+  const wrongRole = contract.replace("var(--ui-route-step-fill", "var(--ui-route-endpoints-fill");
+  assert.notEqual(wrongRole, contract, "negative case must actually replace the step fill token");
+  assert.deepEqual(incompleteConsumers(wrongRole, ["route-step"]),
+    [{ role: "route-step", missing: ["background"] }]);
+});
+
+test("offline assets and contract smoke suites are registered", () => {
+  const sw = read("sw.js");
+  const config = read("playwright.config.mjs");
+  assert.match(sw, /"\.\/surface-contract\.css"/);
+  assert.match(config, /"style-surface-role\.spec\.mjs"/);
+  assert.match(config, /"style-surface-padding\.spec\.mjs"/);
+  assert.match(config, /"style-surface-matrix\.spec\.mjs"/);
+});
+
+test("no theme may add an unpaired frame to reading rows OR cost summaries", () => {
+  const names = [
+    "storybook", "candy", "risograph", "paper-collage", "naive-city",
+    "taiwan-poster", "field-stamp", "quiet-linocut", "doodle-memory-grid",
+    "crayon-journal", "painterly-editorial", "geometric-print",
+    "quiet-acrylic", "vintage-watercolor",
+  ];
+  for (const id of names) {
+    const problems = findUnpairedSurfaceFrames(read(id + "-theme.css"));
+    assert.deepEqual(problems, [],
+      id + " adds framed reading/cost rows without corresponding inline insets");
+  }
+});
+
+test("all migrated packs have zero mixed panel/map frame groups", () => {
+  // #116 removed the map member from each legacy perimeter group. Mixed
+  // typography/material groups remain valid, but the former frame budget is 0.
+  const names = [
+    "storybook", "candy", "risograph", "paper-collage", "naive-city",
+    "taiwan-poster", "field-stamp", "quiet-linocut", "doodle-memory-grid",
+    "crayon-journal", "painterly-editorial", "geometric-print",
+    "quiet-acrylic", "vintage-watercolor",
+  ];
+  for (const id of names) {
+    const css = read(id + "-theme.css");
+    const broadGroups = cssRules(css).filter(({ selector, declarations }) =>
+      /\.panel(?![\w-])/.test(selector) && targetsSurface(selector, "map-workspace")
+      && [...declarations.keys()].some(property => /^(?:all|(?:border|outline)(?:-[\w-]+)?)$/.test(property)));
+    assert.deepEqual(broadGroups.map(rule => rule.selector), [],
+      id + " restored a mixed .panel + map workspace frame rule; use the role tokens instead");
+  }
+});
+).test(rule.selector));
     if (owner.length !== 1) return [{ role, ownerRules: owner.length }];
     const missing = Object.entries(geometryTokens[role]).filter(([property, token]) =>
       !new RegExp('^var\\(\\s*--ui-' + role + '-' + token + '\\s*[,)]')

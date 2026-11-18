@@ -44,12 +44,17 @@ export function auditMapWorkspaceInsets(files){
   if(!/\.runtime-map-panel\s*\{[^}]*--ui-map-workspace-padding:\s*0\s*;/s.test(baseline) ||
      !/\.runtime-map-panel\s*\{[^}]*--ui-map-workspace-frame:\s*0\s*;/s.test(baseline))
     errors.push("runtime.css: open Editorial workspace must keep paired zero frame/inset baseline");
-  const mapRole=surface.match(/:root\s+\[data-surface-role="map-workspace"\]\s*\{([^}]*)\}/)?.[1]||"";
+  const mapRole=surface.match(/:root\s+\[data-surface-role="map-workspace"\]\.runtime-map-panel\.map-panel\s*\{([^}]*)\}/)?.[1]||"";
   if(!mapRole.includes("padding: var(--ui-map-workspace-padding, 0)") ||
      !mapRole.includes("border: var(--ui-map-workspace-frame, 0)") ||
      !/box-sizing:\s*border-box/.test(mapRole) ||
      !/min-width:\s*0/.test(mapRole))
-    errors.push("surface-contract.css: map-workspace must pair frame/inset with border-box sizing");
+    errors.push("surface-contract.css: map-workspace must own frame/inset at >=0-4-0 specificity (beating broad :is panel frames) with border-box sizing");
+  for(const name of ["vintage-watercolor-theme.css","risograph-theme.css"])
+    if(!get(name).includes(".panel:not([data-surface-role=\"map-workspace\"])"))
+      errors.push(name+": open workspace must be excluded from generic panel frame rules");
+  if(!/\.runtime-map-panel \.map-heading\s*\{[^}]*margin:\s*0 16px 16px/s.test(get("vintage-watercolor-theme.css")))
+    errors.push("vintage-watercolor-theme.css: open workspace heading must retain 16px desktop inline spacing");
   const index=get("index.html"),serviceWorker=get("sw.js");
   const installed=[...index.matchAll(/<link\b[^>]*href="\.\/([^"?]+-theme\.css)(?:\?[^"]*)?"[^>]*\bdisabled\b/g)]
     .map(m=>m[1]);

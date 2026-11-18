@@ -11,7 +11,11 @@
 /* Workspace geometry is separate from map-stage clipping, controls and
    reading chrome. Packs keep those compositions and supply a complete frame
    with its own inset; the open Editorial/Risograph/Vintage surfaces stay open. */
-:root [data-surface-role="map-workspace"] {
+/* Scope and specificity deliberately beat an opt-in pack's broad
+   :root[data-visual-style] :is(...,.panel,...) frame rule (0-4-0).
+   Older (0-2-0) role selector let Vintage/Riso paint a border while
+   the workspace tokens still supplied padding:0. This role owns BOTH. */
+:root [data-surface-role="map-workspace"].runtime-map-panel.map-panel {
   box-sizing: border-box;
   min-width: 0;
   padding: var(--ui-map-workspace-padding, 0);

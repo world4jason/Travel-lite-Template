@@ -152,7 +152,7 @@
 :root[data-visual-style="risograph"] .nav-item.active :is(.nav-svg, .nav-icon) { color: var(--riso-paper); }
 :root[data-visual-style="risograph"] .nav-item:hover { border: 1px solid var(--riso-ink); }
 
-:root[data-visual-style="risograph"] .panel,
+:root[data-visual-style="risograph"] .panel:not([data-surface-role="map-workspace"]),
 :root[data-visual-style="risograph"] .companion-window-card,
 :root[data-visual-style="risograph"] .companion-focus,
 :root[data-visual-style="risograph"] .shell-context-slot {
