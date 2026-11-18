@@ -19,10 +19,10 @@ Do not rely on opening `index.html` directly with `file://`; the app fetches `tr
 **Before generating or modifying trip UI/UX:** read [`UIUX.md`](./UIUX.md) via `AGENTS.md` and run both publishing gates. UI/UX P0 rules must remain valid across themes and trip forks; a text-only test does not substitute for visual QA.
 
 ```bash
-npm run lint:uiux
+npm run lint:uiux  # includes lint:map-insets
 npm run test:uiux
 npm run test:timeline
-npm run test:uiux:geometry
+npm run test:uiux:geometry  # includes test:map-insets:browser
 ```
 
 

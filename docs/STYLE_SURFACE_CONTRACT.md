@@ -129,3 +129,9 @@ The authorized Mac later ran the real Node and Chromium suites: **255 default br
 ## Framed text inset rendered-geometry gate (UIUX P1.7)
 
 Every bordered reading card must retain at least 12 CSS px between readable text boxes and the inner left/right border, including at 320/390/1100px and 200% font zoom. Reserve extra illustration space separately. Pure borderless editorial divider rows are not forced into decorative frames. Run `npm run lint:uiux` and `npm run test:uiux:geometry`; see `docs/UIUX.md`. CSS source review alone is NOT a rendered-layout pass.
+
+## Map workspace border/inset invariant (P1.9)
+
+Do not add a map workspace border by itself. Every framed Style Pack must declare **both** `--ui-map-workspace-frame` and `--ui-map-workspace-padding` on the same scoped `.runtime-map-panel` rule, with a minimum **12 CSS px** padding on all four sides (recommended `clamp(16px, 1.5vw, 24px)`). Storybook already declares 17px. Editorial, Risograph and Vintage Watercolor intentionally keep both frame and inset at zero. The final consumer is `surface-contract.css` with `box-sizing:border-box; min-width:0`; this is not a reason to mask overflow with `overflow:hidden`.
+
+Checks: `npm run lint:map-insets` audits **all 14 bundled Style Pack stylesheets** plus matching PWA URLs and negative controls. `npm run test:map-insets:browser` inspects rendered border/padding, map heading, route text and station chips at responsive/desktop widths and 200% text. Both are required and included in `lint:uiux` / `test:uiux:geometry`. If new Style Packs are added, update tests before publishing; unrecognized packs fail the static gate.
