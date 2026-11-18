@@ -96,6 +96,14 @@ Trip、Transport、Places 使用**同一個**可橫向捲動的日期卡列（D 
 
 桌面 **1024／1280／1440／1920px** 及 200% 文字縮放必須驗證 Trip 完整 Journey、Transport 地圖與轉乘站點、日期導覽；不得用 `overflow:hidden` 直接裁切文字掩飾問題，需讓 Grid/Flex 使用 `min-width:0`、可換行文字與足夠框內距。**步行 icon 使用雙腳印 `footprints` SVG**，不使用奔跑人形。`npm run test:journey:browser` 驗證無水平溢出、長站名與 A→B 路線連結。
 
+### P1.9 Map Workspace frame–inset pairing (不可再犯的設計契約)
+
+**Transport「地圖與站點」的外框與內容內距是同一組不可分離的設計 Token。** 任何 Style Pack 設定可見 `--ui-map-workspace-frame`（非 0）時，**同一個主題規則必須設定非零 `--ui-map-workspace-padding`，四邊至少 12px，建議 16–24px**。不能只加框線卻繼承 `runtime.css` 的 0px inset。Storybook 使用既有 17px；Editorial、Risograph、Vintage Watercolor 為刻意無外框設計，frame 與 padding 均可為 0，不能為了通過檢查硬加外框。
+
+`surface-contract.css` 使用成對 Token，且地圖工作區必須設 `box-sizing:border-box`、`min-width:0`；確保 Padding 計入實際寬度，不再靠 `overflow:hidden` 裁切內容。標題、`交通與位置`、路線文字、站點列以及地圖控制項都必須保持框線內的安全距離；地圖瓦片本身可在內部獨立裁切。
+
+**雙重必要檢查：** `npm run lint:map-insets`（掃描 Template/衍生 repo 所有已安裝 Style Packs，驗證 framed/open token 配對、HTML/PWA URL 一致性、遺漏主題的負向測試），以及 `npm run test:map-insets:browser`（Chromium 量測各外觀實際 `getComputedStyle` Padding、標題與站點位置，涵蓋 320/390/1024/1280/1440/1920px、200% 放大字體與故意破壞內距的負向測試）。兩項已整合到 `lint:uiux` 與 `test:uiux:geometry`，**不可只看靜態檢查就宣稱版面通過**。
+
 ## P2 — Flexible visual direction
 
 Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓角、框線、陰影、微動畫及日概覽呈現手法。這些是**材料與排版選擇**，不得改變 P0 Timeline／五分頁／資料來源、P1 易讀性或操作順序。旅行專屬 UI 可在額外的 `docs/UIUX_<TRIP>.md` 中補充，但不得降低本文件要求。

@@ -3,7 +3,7 @@
 // shell/runtime, and activating one cannot delete the other's cache.
 const CACHE_PREFIX = "travel-lite:" + new URL(self.registration.scope).pathname
   .replace(/[^a-z0-9]/gi, "-") + ":";
-const CACHE = CACHE_PREFIX + "shell-v54-journey-route";
+const CACHE = CACHE_PREFIX + "shell-v55-map-insets";
 const RUNTIME_CACHE = CACHE_PREFIX + "runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -28,20 +28,20 @@ const CORE = [
   "./journey-trust.css",
   "./journey-transit.css",
   "./storybook-theme.css",
-  "./candy-theme.css",
+  "./candy-theme.css?v=20261118-map-insets-v1",
   "./risograph-theme.css",
-  "./paper-collage-theme.css",
-  "./naive-city-theme.css",
-  "./taiwan-poster-theme.css",
-  "./field-stamp-theme.css",
-  "./quiet-linocut-theme.css",
-  "./doodle-memory-grid-theme.css",
-  "./crayon-journal-theme.css",
-  "./painterly-editorial-theme.css",
-  "./geometric-print-theme.css",
-  "./quiet-acrylic-theme.css",
+  "./paper-collage-theme.css?v=20261118-map-insets-v1",
+  "./naive-city-theme.css?v=20261118-map-insets-v1",
+  "./taiwan-poster-theme.css?v=20261118-map-insets-v1",
+  "./field-stamp-theme.css?v=20261118-map-insets-v1",
+  "./quiet-linocut-theme.css?v=20261118-map-insets-v1",
+  "./doodle-memory-grid-theme.css?v=20261118-map-insets-v1",
+  "./crayon-journal-theme.css?v=20261118-map-insets-v1",
+  "./painterly-editorial-theme.css?v=20261118-map-insets-v1",
+  "./geometric-print-theme.css?v=20261118-map-insets-v1",
+  "./quiet-acrylic-theme.css?v=20261118-map-insets-v1",
   "./vintage-watercolor-theme.css",
-  "./surface-contract.css",
+  "./surface-contract.css?v=20261118-map-insets-v1",
   "./site-scope.js",
   "./bootstrap.js",
   "./storage.js",

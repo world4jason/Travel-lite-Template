@@ -12,6 +12,8 @@
    reading chrome. Packs keep those compositions and supply a complete frame
    with its own inset; the open Editorial/Risograph/Vintage surfaces stay open. */
 :root [data-surface-role="map-workspace"] {
+  box-sizing: border-box;
+  min-width: 0;
   padding: var(--ui-map-workspace-padding, 0);
   border: var(--ui-map-workspace-frame, 0);
   border-radius: var(--ui-map-workspace-radius, 0);

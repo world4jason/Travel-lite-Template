@@ -20,6 +20,7 @@ test("UI/UX has ordered P0, P1, P2 with mandatory canonical time blocks and five
   for (const id of ["P0.1", "P0.2", "P0.3", "P0.4", "P0.5", "P0.6"])
     assert.ok(uiux.includes("### " + id), "missing core UX rule " + id);
   assert.match(uiux, /Chronological Itinerary Timeline/);
+  assert.match(uiux, /P1\.9/);
   assert.match(uiux, /P0\.1a/);
   assert.match(uiux, /P1\.8/);
   assert.match(uiux, /Journey/);
@@ -50,6 +51,8 @@ test("all mandatory contract references exist and schema/README link back to UIU
 test("test and CI scripts enforce reading contract without replacing chronology QA", () => {
   const pkg = JSON.parse(read("package.json"));
   assert.match(pkg.scripts["test:uiux"] || "", /uiux-contract\.test\.mjs/);
+  assert.match(pkg.scripts["lint:uiux"] || "", /lint:map-insets/);
+  assert.match(pkg.scripts["test:uiux:geometry"] || "", /map-workspace-insets\.spec\.mjs/);
   assert.match(pkg.scripts["test:timeline"] || "", /chronological-timeline/);
   const flow = read(".github/workflows/chronological-timeline.yml");
   assert.match(flow, /npm run test:uiux/);

@@ -41,6 +41,7 @@
 :root[data-visual-style="paper-collage"] .runtime-map-panel {
   --ui-map-workspace-fill: #FFF9EE;
   --ui-map-workspace-frame: 1px solid #D3C7B6;
+  --ui-map-workspace-padding: clamp(16px, 1.5vw, 24px);
   --ui-map-workspace-radius: 16px;
 }
 :root[data-visual-style="paper-collage"] .trip-header {

@@ -19,10 +19,10 @@ Do not rely on opening `index.html` directly with `file://`; the app fetches `tr
 **Before generating or modifying trip UI/UX:** read [`UIUX.md`](./UIUX.md) via `AGENTS.md` and run both publishing gates. UI/UX P0 rules must remain valid across themes and trip forks; a text-only test does not substitute for visual QA.
 
 ```bash
-npm run lint:uiux
+npm run lint:uiux  # includes lint:map-insets
 npm run test:uiux
 npm run test:timeline
-npm run test:uiux:geometry
+npm run test:uiux:geometry  # includes test:map-insets:browser
 ```
 
 
@@ -467,3 +467,7 @@ Before merge, review for:
 - human-facing setup or feature change → update root `README.md`
 
 Do not add one-off review notes or historical discussion documents to the template root. Use issues/PR history for that context.
+
+### GitHub Actions dependency note
+
+The repository intentionally has no `package-lock.json`. CI therefore uses `npm install --no-package-lock --ignore-scripts`, not `npm ci` (which requires an existing lockfile), and explicitly installs Chromium. This does not resolve GitHub runner failures with `steps:null`; see Issue #135. The paired map frame lint and Chromium geometry checks must still run before claiming UI acceptance.
