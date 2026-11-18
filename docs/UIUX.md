@@ -71,6 +71,16 @@ Trip、Transport、Places 共用 `state.selectedDate`，日期切換應攜帶同
 
 所有主題必須保留相同的核心資料、DOM 語意、閱讀順序、必需欄位、焦點與操作能力；可更改視覺材料但不能改掉資訊架構。CSS 表面幾何依 `docs/STYLE_SURFACE_CONTRACT.md`（若衍生 Repo 未附此檔，請參考 [Template 上游版](https://github.com/world4jason/Travel-lite-Template/blob/main/docs/STYLE_SURFACE_CONTRACT.md)） 與現有 Playwright matrix 驗證。
 
+### P1.5 Shared weather-integrated date strip
+
+Trip、Transport、Places 使用**同一個**可橫向捲動的日期卡列（D 編號、日期、每日短標題、天氣圖示和有資料才顯示的溫度），以取代主要 Dropdown 外觀；共同使用原本的 `state.selectedDate`、deep link、Back/Forward 與 view-specific Overview。長旅程向側邊延伸，不建立第二份日期狀態。保留「總覽」「今天」、前後一天及可存取的 Jump-to-day 下拉作為輔助操作；320px / 390px / 1100px、200% 字體與鍵盤仍可操作。卡片必須一直可選，不因天氣 API 失效而禁用。
+
+天氣由 Open-Meteo 逐日預報資料補充，有**有效日期、可信天氣座標、實際 weather code 及高低溫**才顯示相對應圖示/溫度，並標示資料來源；不在有效預報期內或無資料時顯示中性日曆及「—」，**不得用假雲、假雪或固定溫度當作預報**。不同日期採當日地點/明確 `weatherLocation`，不是以第一天城市取代全程；快取資料須保留 stale/離線語意。
+
+### P1.6 Flight overview without a second schedule
+
+如果 `days[].items[]` 存在明確 `type: "transport", transportMode: "flight"` 的航班，Trip Overview 以摘要卡顯示航班號、機場、已發布起降時間；Transport 對應日期呈現完整航段資訊（含有來源才顯示的航廈、航空公司與提醒）；飛行與機場前後交通仍保留在主 Timeline。沒有航班的旅行不出現空白卡。所有顯示必須由**同一筆 source item** 投影，絕不維護第二份機票時間；跨時區轉換依 IANA zone 與明確來源，不得猜測航廈、航班狀態或訂位資訊。公開網站不得放票號、訂位碼、登機證條碼等私密內容。
+
 ## P2 — Flexible visual direction
 
 Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓角、框線、陰影、微動畫及日概覽呈現手法。這些是**材料與排版選擇**，不得改變 P0 Timeline／五分頁／資料來源、P1 易讀性或操作順序。旅行專屬 UI 可在額外的 `docs/UIUX_<TRIP>.md` 中補充，但不得降低本文件要求。

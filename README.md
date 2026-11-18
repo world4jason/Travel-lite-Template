@@ -44,6 +44,12 @@ Interface locale: en (change to zh-TW for Traditional Chinese)
 
 > **Demo note:** The bundled Tokyo example is dated **October 3–5, 2026**. Outside those dates, the [Now view](https://world4jason.github.io/Travel-lite-Template/#now) correctly shows the trip as completed. Use **Trip overview** to explore the sample itinerary.
 
+## Daily date-and-weather navigation / flights
+
+Trip, Transport and Places share a horizontally scrollable date selector. When published dates fall within the provider's forecast window, each date card displays available Open-Meteo weather; unavailable data stays neutral and never disables day selection. An accessible Jump-to-day selector remains available for long trips.
+
+Known flights render as source-backed cards in Trip Overview and the applicable Transport day, while the flight and airport travel remain regular chronological Timeline items. Optional metadata is documented in [the schema](./docs/TRIP_SCHEMA.md) and the UI rules in [UIUX.md](./docs/UIUX.md).
+
 ## Why this exists
 
 Most trip plans already live across chats, documents, spreadsheets, maps, and bookings. Once a trip starts, other travelers usually need a **simple reference**, not another planning workflow.

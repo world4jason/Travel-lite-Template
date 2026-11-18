@@ -14,7 +14,8 @@
     "test:style-parity": "node scripts/verify-style-parity.mjs",
     "test:timeline": "node --test tests/chronological-timeline.test.mjs && node scripts/check-chronological-timeline.mjs trip.json",
     "test:uiux": "node --test tests/uiux-contract.test.mjs",
-    "test:contracts": "npm run test:uiux && npm run test:timeline"
+    "test:contracts": "npm run test:uiux && npm run test:timeline",
+    "test:trip-widgets": "node --test tests/date-weather-flight.test.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

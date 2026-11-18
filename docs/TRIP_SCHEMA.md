@@ -211,6 +211,12 @@ Keep `day.reminders` short and operational. They can be strings or linkable obje
 
 Every published, known-time travel segment, visit, meal or event must have its own `days[].items[]` row and `HH:MM–HH:MM` range. A booked or otherwise confirmed transport interval may **never** be represented solely by `transferAfter`; use `type: transport`. Follow [the mandatory UI/UX hierarchy](UIUX.md) and [the full invariant contract](CHRONOLOGICAL_TIMELINE_CONTRACT.md), use IANA timezones for cross-zone journeys, preserve source order, and run `npm run test:timeline`. No guessed durations, timestamps, end stations or coordinates.
 
+### Optional `weatherLocation` and flight metadata
+
+- `days[].weatherLocation`: optional public `{lat,lng,label}` to choose the appropriate **daily weather city/area**. If absent, only use a real coordinate from that day’s scheduled places/items; no fabricated coordinates. Weather is a provider forecast, never a published itinerary fact. No forecast means neutral UI.
+- For `type: "transport", transportMode: "flight"`, optional `item.flight` provides **display metadata only**: `number`, `airline`, `origin: {code,terminal}`, `destination: {code,terminal}`, `arrivalTimezone` (IANA). Flight cards derive the schedule from `item.start` and `item.end`, which represent **the departure item's timezone**; they convert the end instant to `arrivalTimezone`, not a duplicated second timetable. Do not guess terminals or passenger booking details.
+- Flight Overview and Transport card render only when source flight items exist. Never show a guessed arrival/updated status or confidential PNR.
+
 ## Itinerary item
 
 A timed item:
