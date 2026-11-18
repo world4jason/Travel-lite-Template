@@ -186,7 +186,7 @@
     const first = stops[0];
     const last = stops[stops.length - 1];
     return `<section class="trip-route-summary composition-operational">
-      <div class="trip-route-heading"><div><p class="eyebrow">Day route</p><h3>${escapeHtml(day.routeLabel || "At a glance")}</h3></div><span>${stops.length} stop${stops.length === 1 ? "" : "s"}</span></div>
+      <div class="trip-route-heading"><div><h3>${escapeHtml(day.routeLabel || "At a glance")}</h3></div><span>${stops.length} stop${stops.length === 1 ? "" : "s"}</span></div>
       <div class="trip-route-endpoints" data-surface-role="route-endpoints"><div><small>Start</small><strong>${escapeHtml(first)}</strong></div><span aria-hidden="true">→</span><div class="end"><small>End</small><strong>${escapeHtml(last)}</strong></div></div>
       ${stops.length > 2 ? `<div class="trip-route-steps">${stops.map((stop, index) => `<span data-surface-role="route-step"><b>${index + 1}</b>${escapeHtml(stop)}</span>`).join("")}</div>` : ""}
     </section>`;
@@ -302,7 +302,6 @@
         now.minuteOfDay >= toMinutes(item.start) &&
         now.minuteOfDay < toMinutes(item.end || item.start);
 
-      const kind = item.type ? `<span class="type-pill">${escapeHtml(journey ? localized("交通", "Transport") : item.type)}</span>` : "";
       const highlight = item.mustGo === true
         ? `<span class="must-go-tag" aria-label="${localized("編輯精選", "Curated highlight")}">${localized("★ 必去", "★ Highlight")}</span>`
         : "";
@@ -322,13 +321,13 @@
           escapeAttr(localized("Google Maps 路線：", "Google Maps directions: ") + item.title) +
           '">' + escapeHtml(item.title) + ' <span class="trip-journey-map-cta">' +
           (window.TravelLiteIcons?.svg?.("map-pin") || "") +
-          escapeHtml(localized("Google Maps 路線", "Directions")) + ' ↗</span></a>'
+          '<span aria-hidden="true">↗</span></span></a>'
         : escapeHtml(item.title);
       const placeLink = !journey && window.TravelLitePlaces?.isPlace(item) && state.itemIdentity?.isUnique(item.id) ?
         `<button type="button" class="trip-place-detail" data-open-place="${escapeAttr(item.id)}" aria-label="${escapeAttr(localized("開啟景點詳情", "Open place details"))}">${localized("景點資訊", "Place details")} ↗</button>` :
         window.TravelLitePlaces?.isPlace(item) && state.itemIdentity?.isAmbiguous(item.id)
           ? `<span class="trip-identity-warning">${localized("來源 ID 重複，景點連結暫停", "Duplicate source ID — place link unavailable")}</span>` : "";
-      const itemTop = `<div class="trip-item-top"><div><div class="item-heading"><h3>${journeyAction}</h3>${highlight}${kind}${placeLink}</div>${mode ? `<div class="trip-transport-meta">${mode}</div>` : ""}${item.location ? `<p>${escapeHtml(item.location)}</p>` : ""}</div>${journey ? "" : compactActions(item)}</div>`;
+      const itemTop = `<div class="trip-item-top"><div><div class="item-heading"><h3>${journeyAction}</h3>${highlight}${placeLink}</div>${mode ? `<div class="trip-transport-meta">${mode}</div>` : ""}${item.location ? `<p>${escapeHtml(item.location)}</p>` : ""}</div>${journey ? "" : compactActions(item)}</div>`;
       const details = `<div class="timeline-content">${itemTop}${item.note ? `<p class="timeline-note">${escapeHtml(item.note)}</p>` : ""}${journey ? journeyLegsHtml(entry) : supplementaryContent(item)}</div>`;
       const currentClass = isCurrent ? "current" : "";
       return `<li class="trip-stop-wrap">
@@ -340,15 +339,18 @@
       </li>`;
     }).join("");
 
+    const dayNote = typeof day.note === "string" ? day.note.trim() : "";
+    const usefulNote = dayNote && !/^依實走順序串起交通與遊覽/.test(dayNote);
+    const noteDetail = usefulNote ? `<details class="trip-day-note"><summary>${localized("備註", "Notes")}</summary><p>${escapeHtml(dayNote)}</p></details>` : "";
     const summary = `<section class="day-summary composition-identity">
         <p class="eyebrow">${escapeHtml(day.label || "")} · ${prettyDate(day.date, { weekday: "short" })}</p>
         <h2>${escapeHtml(day.title || "Trip")}</h2>
         <p>${entries.length} ${localized("項行程", "planned stops")}</p>
-        ${day.note ? `<p class="day-note">${escapeHtml(day.note)}</p>` : ""}
+        ${noteDetail}
       </section>`;
 
     const timelineView = `<section class="trip-timeline-section" aria-labelledby="trip-timeline-title">
-        <div class="trip-timeline-heading"><h2 id="trip-timeline-title" class="trip-timeline-title">${localized("每日時間軸", "Day timeline")}</h2><p>${localized("依時間排列：景點、交通、餐飲皆為獨立時段", "Chronological time blocks: visits, transit and meals")}</p></div>
+        <div class="trip-timeline-heading"><h2 id="trip-timeline-title" class="trip-timeline-title">${localized("每日時間軸", "Day timeline")}</h2></div>
         ${chronologyWarnings.length ? '<div class="timeline-chronology-warning" role="status"><strong>' + localized("請核對行程時間", "Check published times") + '</strong><ul>' + chronologyWarnings.map(x => '<li>' + escapeHtml(x) + '</li>').join("") + '</ul></div>' : ""}
         <ol class="timeline trip-v2-timeline composition-sequence" role="list" aria-labelledby="trip-timeline-title">${timeline}</ol>
         ${timeline ? "" : '<div class="empty-state"><p>No plans yet.</p></div>'}
