@@ -467,3 +467,7 @@ Before merge, review for:
 - human-facing setup or feature change → update root `README.md`
 
 Do not add one-off review notes or historical discussion documents to the template root. Use issues/PR history for that context.
+
+### GitHub Actions dependency note
+
+The repository intentionally has no `package-lock.json`. CI therefore uses `npm install --no-package-lock --ignore-scripts`, not `npm ci` (which requires an existing lockfile), and explicitly installs Chromium. This does not resolve GitHub runner failures with `steps:null`; see Issue #135. The paired map frame lint and Chromium geometry checks must still run before claiming UI acceptance.
