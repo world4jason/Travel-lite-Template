@@ -98,7 +98,7 @@ Trip、Transport、Places 使用**同一個**可橫向捲動的日期卡列（D 
 
 ### P1.9 Map Workspace frame–inset pairing (不可再犯的設計契約)
 
-**Transport「地圖與站點」的外框與內容內距是同一組不可分離的設計 Token。** 任何 Style Pack 設定可見 `--ui-map-workspace-frame`（非 0）時，**同一個主題規則必須設定非零 `--ui-map-workspace-padding`，四邊至少 12px，建議 16–24px**。不能只加框線卻繼承 `runtime.css` 的 0px inset。Storybook 使用既有 17px；Editorial、Risograph、Vintage Watercolor 為刻意無外框設計，frame 與 padding 均可為 0，不能為了通過檢查硬加外框。
+**Transport「地圖與站點」的外框與內容內距是同一組不可分離的設計 Token。** 任何 Style Pack 設定可見 `--ui-map-workspace-frame`（非 0）時，**同一個主題規則必須設定非零 `--ui-map-workspace-padding`，四邊至少 12px，建議 16–24px**。不能只加框線卻繼承 `runtime.css` 的 0px inset。Storybook 使用既有 17px；Editorial、Risograph、Vintage Watercolor 為刻意無外框設計，frame 與 padding 均可為 0，不能為了通過檢查硬加外框。**CSS cascade 優先權也是合約的一部分**：`surface-contract.css` 的 map-workspace selector 必須高於（或在同權重時後於）所有 Style Pack 的 `.panel` 與 `:is(...,.panel,...)` 框線規則；開放式主題不得從通用 `.panel` 意外繼承邊框。Vintage 的地圖全幅可維持，但地圖標題、站點列與交通摘要須各保留 16px 的功能性側邊留白。CI 同時檢查 Token、CSS selector specificity、Chromium computed border/padding、桌面 1920px 與 200% 字體，不可單憑存在 `padding` 變數就宣稱通過。
 
 `surface-contract.css` 使用成對 Token，且地圖工作區必須設 `box-sizing:border-box`、`min-width:0`；確保 Padding 計入實際寬度，不再靠 `overflow:hidden` 裁切內容。標題、`交通與位置`、路線文字、站點列以及地圖控制項都必須保持框線內的安全距離；地圖瓦片本身可在內部獨立裁切。
 

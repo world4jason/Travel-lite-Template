@@ -63,3 +63,28 @@ test("a Service Worker with an outdated Style Pack URL fails",()=>{
   assert.match(auditMapWorkspaceInsets({...source,"sw.js":broken}).join("\n"),
     /candy-theme\.css.*HTML and PWA/);
 });
+
+test("the old lower-specificity map role consumer is rejected (root cause)",()=>{
+  const broken=source["surface-contract.css"].replace(
+    ':root [data-surface-role="map-workspace"].runtime-map-panel.map-panel {',
+    ':root [data-surface-role="map-workspace"] {');
+  assert.notEqual(broken,source["surface-contract.css"]);
+  assert.match(auditMapWorkspaceInsets({...source,"surface-contract.css":broken}).join("\n"),
+    /specificity/);
+});
+test("Vintage and Riso cannot put a panel border on an open map workspace",()=>{
+  for(const path of ["vintage-watercolor-theme.css","risograph-theme.css"]){
+    const broken=source[path].replace(
+      ".panel:not([data-surface-role=\"map-workspace\"])",".panel");
+    assert.notEqual(broken,source[path]);
+    assert.match(auditMapWorkspaceInsets({...source,[path]:broken}).join("\n"),
+      /excluded from generic panel/);
+  }
+});
+test("the Vintage desktop heading inset is part of the contract",()=>{
+  const broken=source["vintage-watercolor-theme.css"].replace(
+    "margin:0 16px 16px;","margin:0 0 16px;");
+  assert.notEqual(broken,source["vintage-watercolor-theme.css"]);
+  assert.match(auditMapWorkspaceInsets({...source,"vintage-watercolor-theme.css":broken}).join("\n"),
+    /16px desktop inline spacing/);
+});
