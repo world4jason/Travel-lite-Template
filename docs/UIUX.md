@@ -69,7 +69,7 @@ Trip、Transport、Places 共用 `state.selectedDate`，日期切換應攜帶同
 
 ### P1.4 Style Pack semantic parity
 
-所有主題必須保留相同的核心資料、DOM 語意、閱讀順序、必需欄位、焦點與操作能力；可更改視覺材料但不能改掉資訊架構。CSS 表面幾何依 [Style Surface Contract](./STYLE_SURFACE_CONTRACT.md) 與現有 Playwright matrix 驗證。
+所有主題必須保留相同的核心資料、DOM 語意、閱讀順序、必需欄位、焦點與操作能力；可更改視覺材料但不能改掉資訊架構。CSS 表面幾何依 `docs/STYLE_SURFACE_CONTRACT.md`（若衍生 Repo 未附此檔，請參考 [Template 上游版](https://github.com/world4jason/Travel-lite-Template/blob/main/docs/STYLE_SURFACE_CONTRACT.md)） 與現有 Playwright matrix 驗證。
 
 ## P2 — Flexible visual direction
 
@@ -87,5 +87,5 @@ Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓
 - [Chronological Timeline Contract](./CHRONOLOGICAL_TIMELINE_CONTRACT.md) — 時段、未知值、跨區、映射與驗收詳述
 - [Trip Schema](./TRIP_SCHEMA.md) — 單一資料來源、item、type、時間、來源
 - [Maintenance Guide](./MAINTENANCE.md) — 發布／回歸流程
-- [Style Surface Contract](./STYLE_SURFACE_CONTRACT.md) — 有此檔案的 repo 依此驗證 Style Pack
+- `docs/STYLE_SURFACE_CONTRACT.md`（若衍生 Repo 未附此檔，請參考 [Template 上游版](https://github.com/world4jason/Travel-lite-Template/blob/main/docs/STYLE_SURFACE_CONTRACT.md)） — 有此檔案的 repo 依此驗證 Style Pack
 - [AGENTS.md](../AGENTS.md) — Agent 的強制入口，不複製另一份不同規則
