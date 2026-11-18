@@ -104,6 +104,15 @@ Trip、Transport、Places 使用**同一個**可橫向捲動的日期卡列（D 
 
 **雙重必要檢查：** `npm run lint:map-insets`（掃描 Template/衍生 repo 所有已安裝 Style Packs，驗證 framed/open token 配對、HTML/PWA URL 一致性、遺漏主題的負向測試），以及 `npm run test:map-insets:browser`（Chromium 量測各外觀實際 `getComputedStyle` Padding、標題與站點位置，涵蓋 320/390/1024/1280/1440/1920px、200% 放大字體與故意破壞內距的負向測試）。兩項已整合到 `lint:uiux` 與 `test:uiux:geometry`，**不可只看靜態檢查就宣稱版面通過**。
 
+
+### P1.10 Information economy / no redundant helper subtitles
+
+**頁面預設只顯示能幫助下一個動作的資訊。** Day 標題、日期、時段、景點／交通名稱與必要狀態優先；禁止用解釋元件如何運作的句子重複描述已可從介面看出的事實，例如「依時間排列：景點、交通、餐飲皆為獨立時段」或每一天都相同的「依實走順序串起交通與遊覽……」。泛用介紹、裝飾性 eyebrow、小標、重複分類（如 Transport＋步行）及過度冗長的天氣說明應從預設畫面移除，不能以縮小字體掩飾密度。資料來源歸屬維持簡潔可見。
+
+真實行程的**關鍵風險／未核對狀態、站點時刻、票券條件與必要安全提醒不可刪除**；長篇研究、班次免責或非當下決策所需的背景可放到可存取的展開詳情。行程來源資料 `days[].items[]` 不因精簡文案而刪除或修改；有資訊價值的 `day.note` 改用 `<details>`，各天完全重複的樣板式說明不渲染。Now 與 Trip 不可把同一段冗餘說明各顯示一次。
+
+**Style Pack 責任：** 主題可以改變字體／裝飾，但不得把一欄的語意卡片強制改成三欄並留下大片空白。Storybook 的 `.trip-v2-item` 為時間在上、內容在下的**單欄 Grid**；`journey-groups.css` 只管 Journey 內容與展開，不得重定義全主題通用 `grid-template-columns`。CI 必須同時檢查這個 CSS 契約和真實 Storybook 畫面，覆蓋 320／390／980／1100px、200% 文字，驗證內容佔用可用寬度且無水平裁切。
+
 ## P2 — Flexible visual direction
 
 Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓角、框線、陰影、微動畫及日概覽呈現手法。這些是**材料與排版選擇**，不得改變 P0 Timeline／五分頁／資料來源、P1 易讀性或操作順序。旅行專屬 UI 可在額外的 `docs/UIUX_<TRIP>.md` 中補充，但不得降低本文件要求。

@@ -50,6 +50,21 @@ export function auditUIUX(files) {
     index.indexOf("ui-icons.js")<index.indexOf("app.js"),
     "ui-icons.js must load before app.js");
   const journey=get("journey-groups.js"),journeyCSS=get("journey-groups.css");
+
+  const genericTrackOverride = [...journeyCSS.matchAll(/([^{}]+)\{([^{}]*)\}/g)]
+    .some(([,selector,body]) => selector.trim() === ".trip-v2-timeline .trip-v2-item"
+      && /grid-template-columns\s*:/.test(body));
+  check(!genericTrackOverride,
+    "Shared Journey CSS must not force a universal 3-column timeline grid");
+  check(journeyCSS.includes(':root[data-visual-style="storybook"] .trip-v2-timeline .trip-v2-item')
+    && journeyCSS.includes('grid-template-areas:"time" "content"'),
+    "Storybook must preserve time-over-content single-column grid");
+  check(!trip.includes("依時間排列：景點、交通、餐飲皆為獨立時段")
+    && !trip.includes('<p class="day-note">'),
+    "Trip must omit boilerplate timeline explanation and raw day-note paragraph");
+  check(get("docs/UIUX.md").includes("P1.10"),
+    "UIUX.md must explicitly forbid redundant helper subtitles and shared grid overrides");
+
   check(journey.includes("function groupItems") && journey.includes("function directionsUrl"),
     "Missing journey grouping and route projection");
   check(journey.includes("encodeURIComponent(route.from)") &&

@@ -34,3 +34,9 @@ test("reject removing desktop Journey width constraints",()=>{
   const broken=files["journey-groups.css"].replace("#view-root .map-heading","[missing-selector]");
   assert.match(auditUIUX({...files,"journey-groups.css":broken}).join(" "),/Desktop Journey/);
 });
+
+test("reject reintroducing the shared three-column Journey override",()=>{
+  const bad=files["journey-groups.css"]+
+    "\n.trip-v2-timeline .trip-v2-item { grid-template-columns: minmax(0,105px) 18px minmax(0,1fr); }";
+  assert.match(auditUIUX({...files,"journey-groups.css":bad}).join(" "),/universal 3-column/);
+});
