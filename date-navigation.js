@@ -107,13 +107,14 @@
       const active = selected === day.date, [y, m, d] = day.date.split("-");
       const title = day.shortTitle || day.title || tr("每日行程", "Trip day");
       return '<button type="button" class="unified-date-card' + (active ? " active" : "") +
-        '" data-unified-date-card="' + att(day.date) + '" aria-pressed="' + active +
+        '" data-unified-date-card="' + att(day.date) + '" data-weather-state="empty" aria-pressed="' + active +
         '" aria-label="' + att(dayLabel(day.date, true)) + '"' +
         (active ? ' aria-current="date"' : "") + '>' +
         '<span class="unified-date-card-day">D' + (index + 1) + '</span>' +
         '<span class="unified-date-card-date">' + esc(m + "/" + d) + '</span>' +
-        '<span class="unified-date-card-weather" aria-hidden="true">▦</span>' +
-        '<span class="unified-date-card-temperature">—</span>' +
+        '<span class="unified-date-card-weather" aria-hidden="true" hidden></span>' +
+        '<span class="unified-date-card-temperature" hidden></span>' +
+        '<span class="unified-date-card-kind" hidden></span>' +
         '<span class="unified-date-card-title" title="' + att(title) + '">' + esc(title) + '</span>' +
         '</button>';
     }).join("");
@@ -141,7 +142,7 @@
       '<div class="unified-date-strip" data-unified-date-strip role="group" aria-label="' +
         att(tr("滑動選擇日期", "Scrollable day selector")) + '">' + cards + '</div>' +
       '<p class="unified-date-weather-note">' +
-        esc(tr("天氣依預報期顯示；無預報仍可選日期。資料：", "Weather appears only when forecast is available. Source: ")) +
+        esc(tr("歷史天氣／未來預報依資料顯示；沒有資料仍可選日期。來源：", "Historical model weather and future forecasts when available. Source: ")) +
         '<a href="https://open-meteo.com/" rel="noopener noreferrer" target="_blank">Open-Meteo</a>' +
       '</p></nav>';
   }
@@ -174,6 +175,59 @@
     if ([95, 96, 99].includes(code)) return ["ϟ", tr("雷雨", "Storm")];
     return ["", ""];
   }
+  function weatherSvg(code) {
+    const sun = '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11 1.5 1.5M5 19l1.5-1.5m11-11L19 5"/>';
+    const cloud = '<path d="M7 19h10a4 4 0 0 0 .4-8A6 6 0 0 0 5.5 9.6 4.8 4.8 0 0 0 7 19Z"/>';
+    const snow = cloud + '<path d="M8 21v2m-1-1h2m7-1v2m-1-1h2"/>';
+    const rain = cloud + '<path d="m8 21-1 2m7-2-1 2m5-2-1 2"/>';
+    const kind = code === 0 ? sun : [1,2].includes(code) ?
+      '<circle cx="8" cy="8" r="3"/>' + cloud :
+      code === 3 ? cloud : [45,48].includes(code) ? cloud + '<path d="M3 22h18"/>' :
+      [71,73,75,77,85,86].includes(code) ? snow :
+      [95,96,99].includes(code) ? cloud + '<path d="m12 19-2 3h3l-2 2"/>' : rain;
+    return '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      kind + '</svg>';
+  }
+  function applyDailyWeather(nav, dates, data, historical) {
+    if (!nav.isConnected) return;
+    for (const date of dates) {
+      const card = [...nav.querySelectorAll("[data-unified-date-card]")]
+        .find(el => el.dataset.unifiedDateCard === date);
+      if (!card) continue;
+      const idx = data?.daily?.time?.indexOf(date) ?? -1;
+      if (idx < 0) continue;
+      const code = data.daily.weather_code?.[idx];
+      const high = data.daily.temperature_2m_max?.[idx];
+      const low = data.daily.temperature_2m_min?.[idx];
+      if (code == null || high == null || low == null ||
+          !Number.isFinite(Number(code)) || !Number.isFinite(Number(high)) ||
+          !Number.isFinite(Number(low))) continue;
+      const [symbol, condition] = forecastSymbol(Number(code));
+      if (!symbol) continue;
+      const weather = card.querySelector(".unified-date-card-weather");
+      const temperature = card.querySelector(".unified-date-card-temperature");
+      const kind = card.querySelector(".unified-date-card-kind");
+      const hi = Math.round(Number(high)), lo = Math.round(Number(low));
+      if (weather) { weather.innerHTML = weatherSvg(Number(code)); weather.hidden = false; }
+      if (temperature) { temperature.textContent = hi + "° / " + lo + "°"; temperature.hidden = false; }
+      if (kind) {
+        kind.textContent = historical ? tr("歷史", "History") : tr("預報", "Forecast");
+        kind.hidden = false;
+      }
+      const rain = historical ? data.daily.precipitation_sum?.[idx] :
+        data.daily.precipitation_probability_max?.[idx];
+      const title = (historical ? tr("歷史天氣（模式估計）", "Historical model weather") :
+        tr("天氣預報", "Weather forecast")) + " · " + condition + " · " +
+        hi + "°/" + lo + "°" +
+        (rain != null && Number.isFinite(Number(rain)) ? " · " +
+          (historical ? tr("降水 ", "Precipitation ") + Number(rain).toFixed(1) + " mm" :
+            tr("降雨機率 ", "Rain chance ") + Math.round(Number(rain)) + "%") : "") +
+        (data.__stale ? " · " + tr("快取", "cached") : "");
+      card.dataset.weatherState = historical ? "historical" : "forecast";
+      card.title = title;
+      card.setAttribute("aria-label", dayLabel(date, true) + " · " + title);
+    }
+  }
   function loadWeather(nav) {
     if (typeof TravelLiteProviders === "undefined" || !TravelLiteProviders.weather) return;
     const current = typeof zonedNow === "function" ?
@@ -182,51 +236,38 @@
     if (!Number.isFinite(todayStamp)) return;
     const grouped = new Map();
     for (const day of days()) {
-      const difference = Math.round((Date.parse(day.date + "T00:00:00Z") - todayStamp) / 86400000);
-      if (difference < 0 || difference > 15) continue;
+      const diff = Math.round((Date.parse(day.date + "T00:00:00Z") - todayStamp) / 86400000);
       const point = weatherCoordinate(day);
       if (!point) continue;
-      const key = point.lat.toFixed(3) + "," + point.lng.toFixed(3);
-      if (!grouped.has(key)) grouped.set(key, {point, dates:[]});
-      grouped.get(key).dates.push(day.date);
+      const source = diff < -92 ? "archive" : diff < 0 ? "recent" :
+        diff <= 15 ? "forecast" : "";
+      if (!source) continue;
+      const key = source + ":" + point.lat.toFixed(3) + "," + point.lng.toFixed(3);
+      if (!grouped.has(key)) grouped.set(key, {point, source, dates: [], pastDays: 0});
+      const group = grouped.get(key);
+      group.dates.push(day.date);
+      if (source === "recent") group.pastDays = Math.max(group.pastDays, -diff);
     }
     for (const [key, group] of grouped) {
-      let promise = weatherPending.get(key);
+      const first = group.dates.reduce((a,b) => a < b ? a : b);
+      const last = group.dates.reduce((a,b) => a > b ? a : b);
+      const queryKey = key + ":" + (group.source === "archive" ? first + ":" + last :
+        group.source === "recent" ? group.pastDays : "current");
+      let promise = weatherPending.get(queryKey);
       if (!promise) {
-        promise = TravelLiteProviders.weather(group.point.lat, group.point.lng);
-        weatherPending.set(key, promise);
-        promise.finally(() => { if (weatherPending.get(key) === promise) weatherPending.delete(key); }).catch(() => {});
+        promise = group.source === "archive" ?
+          TravelLiteProviders.historicalWeather?.(group.point.lat,group.point.lng,first,last) :
+          group.source === "recent" ?
+            TravelLiteProviders.recentWeather?.(group.point.lat,group.point.lng,group.pastDays) :
+            TravelLiteProviders.weather(group.point.lat,group.point.lng);
+        if (!promise) continue;
+        weatherPending.set(queryKey,promise);
+        promise.finally(() => {
+          if (weatherPending.get(queryKey) === promise) weatherPending.delete(queryKey);
+        }).catch(() => {});
       }
-      promise.then(data => {
-        if (!nav.isConnected) return;
-        for (const date of group.dates) {
-          const card = [...nav.querySelectorAll("[data-unified-date-card]")]
-            .find(el => el.dataset.unifiedDateCard === date);
-          if (!card) continue;
-          const idx = data?.daily?.time?.indexOf(date) ?? -1;
-          if (idx < 0) continue;
-          const code = data.daily.weather_code?.[idx];
-          const hi = data.daily.temperature_2m_max?.[idx];
-          const lo = data.daily.temperature_2m_min?.[idx];
-          if (!Number.isFinite(Number(code)) || !Number.isFinite(Number(hi)) ||
-              !Number.isFinite(Number(lo)) || hi == null || lo == null || code == null) continue;
-          const [symbol, condition] = forecastSymbol(Number(code));
-          if (!symbol) continue;
-          const weather = card.querySelector(".unified-date-card-weather");
-          const temperature = card.querySelector(".unified-date-card-temperature");
-          if (weather) weather.textContent = symbol;
-          if (temperature) temperature.textContent = Math.round(hi) + "°/" + Math.round(lo) + "°";
-          const rain = data.daily.precipitation_probability_max?.[idx];
-          const detail = condition + " · " + Math.round(hi) + "°/" + Math.round(lo) + "°" +
-            (Number.isFinite(Number(rain)) && rain != null ? " · " +
-              tr("降雨", "Rain") + Math.round(rain) + "%" : "") +
-            (data.__stale ? " · " + tr("快取", "cached") : "");
-          card.title = detail;
-          card.dataset.forecast = "available";
-          if (weather) weather.setAttribute("aria-label", detail);
-          card.setAttribute("aria-label", dayLabel(date, true) + " · " + detail);
-        }
-      }).catch(() => {}); // a weather outage never blocks the date picker
+      promise.then(data => applyDailyWeather(nav,group.dates,data,group.source !== "forecast"))
+        .catch(() => {}); // Failure never affects date navigation.
     }
   }
   function bind(nav) {

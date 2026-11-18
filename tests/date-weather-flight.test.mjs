@@ -15,14 +15,21 @@ test("date cards remain first-class, horizontal, keyboard accessible, and retain
   assert.match(dateSource,/function setSharedDate/);
   assert.match(source("date-navigation.css"),/scroll-snap-type:\s*x proximity/);
 });
-test("forecast is optional; only real codes and temperatures replace calendar placeholder",()=>{
-  assert.match(dateSource,/difference < 0 \|\| difference > 15/);
-  assert.match(dateSource,/data\.daily\.time\?\.indexOf\(date\)/);
-  assert.match(dateSource,/Number\.isFinite/);
-  assert.match(dateSource,/weatherPending/);
+test("past and future weather are data-driven; empty dates never show fake placeholders",()=>{
+  assert.match(dateSource,/data-weather-state="empty"/);
+  assert.match(dateSource,/source = diff < -92 \? "archive"/);
+  assert.match(dateSource,/TravelLiteProviders\.recentWeather/);
+  assert.match(dateSource,/TravelLiteProviders\.historicalWeather/);
+  assert.match(dateSource,/data\?\.daily\?\.time\?\.indexOf\(date\)/);
+  assert.match(dateSource,/code == null \|\| high == null \|\| low == null/);
+  assert.match(dateSource,/Historical model weather/);
   assert.match(dateSource,/if \(!nav\.isConnected\) return/);
-  assert.match(dateSource,/weather outage never blocks/);
   assert.match(dateSource,/day\.weatherLocation/);
+  assert.doesNotMatch(dateSource,/▦/);
+  assert.match(source("date-navigation.css"),/unified-date-card-kind\[hidden\]/);
+  assert.match(source("runtime-providers.js"),/historicalWeatherEndpoint/);
+  assert.match(source("runtime-providers.js"),/past_days: String\(days\)/);
+  assert.match(source("runtime-providers.js"),/start_date: startDate/);
 });
 test("flight cards use only source flight timeline items, no parallel flight schedule",()=>{
   const trip={timezone:"Asia/Tokyo"};
@@ -50,6 +57,55 @@ test("published trip has no private flight bookings",()=>{
     if(item.flight) {
       const keys=JSON.stringify(Object.keys(item.flight)).toLowerCase();
       assert.doesNotMatch(keys,/pnr|bookingcode|ticketnumber|boardingpass|passport/);
+    }
+  }
+});
+
+test("historical dates, recent past and upcoming dates choose their real provider", async () => {
+  const fixtures = [
+    ["2024-11-04","archive","historical"],
+    ["2026-11-04","recent","historical"],
+    ["2026-11-20","forecast","forecast"],
+    ["2026-12-20",null,"empty"],
+  ];
+  for (const [date, expectedProvider, expectedState] of fixtures) {
+    const names = [], children = {};
+    for (const selector of [".unified-date-card-weather",".unified-date-card-temperature",".unified-date-card-kind"])
+      children[selector] = {hidden:true,innerHTML:"",textContent:""};
+    const card = {dataset:{unifiedDateCard:date,weatherState:"empty"},attrs:{},
+      querySelector:selector => children[selector] || null,
+      setAttribute(key,value){this.attrs[key]=value;}};
+    const dom = {isConnected:true,querySelectorAll:selector => selector === "[data-unified-date-card]" ? [card] : []};
+    const response = {daily:{time:[date],weather_code:[61],temperature_2m_max:[17],
+      temperature_2m_min:[9],precipitation_sum:[2.5],precipitation_probability_max:[70]}};
+    const payload = {trip:{timezone:"Asia/Tokyo",title:"Demo"},ui:{locale:"zh-Hant"},
+      days:[{date,title:"Day",items:[{id:"point",title:"Park",type:"place",lat:34.7,lng:135.5}]}]};
+    const context = {state:{data:payload,ready:false,view:"trip",selectedDate:date},
+      document:{querySelector:()=>({querySelector:()=>null})},
+      MutationObserver:class{observe(){}},addEventListener(){},queueMicrotask(){},
+      escapeHtml:x=>String(x??""),escapeAttr:x=>String(x??""),
+      zonedNow:()=>({date:"2026-11-18"}),
+      TravelLiteProviders:{
+        weather:async()=>{names.push("forecast");return response;},
+        recentWeather:async()=>{names.push("recent");return response;},
+        historicalWeather:async()=>{names.push("archive");return response;}
+      }};
+    context.window=context;
+    const script = dateSource.replace("window.TravelLiteDateNav = Object.freeze({",
+      "window.TravelLiteDateNav = Object.freeze({html,loadWeather,");
+    runInNewContext(script,context);
+    const html = context.TravelLiteDateNav.html("trip");
+    assert.doesNotMatch(html,/▦|unified-date-card-temperature">—/);
+    context.TravelLiteDateNav.loadWeather(dom);
+    await new Promise(resolve=>setImmediate(resolve));
+    assert.equal(names[0]||null,expectedProvider,date+" API route");
+    assert.equal(card.dataset.weatherState,expectedState,date+" card status");
+    if (expectedState !== "empty") {
+      assert.equal(children[".unified-date-card-kind"].hidden,false);
+      assert.match(children[".unified-date-card-weather"].innerHTML,/<svg/);
+      assert.match(children[".unified-date-card-temperature"].textContent,/17°/);
+    } else {
+      assert.equal(children[".unified-date-card-kind"].hidden,true);
     }
   }
 });

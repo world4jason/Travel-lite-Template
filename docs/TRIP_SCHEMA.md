@@ -213,7 +213,7 @@ Every published, known-time travel segment, visit, meal or event must have its o
 
 ### Optional `weatherLocation` and flight metadata
 
-- `days[].weatherLocation`: optional public `{lat,lng,label}` to choose the appropriate **daily weather city/area**. If absent, only use a real coordinate from that day’s scheduled places/items; no fabricated coordinates. Weather is a provider forecast, never a published itinerary fact. No forecast means neutral UI.
+- `days[].weatherLocation`: optional public `{lat,lng,label}` to choose the appropriate **daily weather city/area**. If absent, only use a real coordinate from that day’s scheduled places/items; no fabricated coordinates. Weather uses live forecast for future dates or labelled historical model data for past dates (recent past_days or archive reanalysis). Missing weather means a clean date/title card with no fake icon, value, or dash; it is never a published itinerary fact.
 - For `type: "transport", transportMode: "flight"`, optional `item.flight` provides **display metadata only**: `number`, `airline`, `origin: {code,terminal}`, `destination: {code,terminal}`, `arrivalTimezone` (IANA). Flight cards derive the schedule from `item.start` and `item.end`, which represent **the departure item's timezone**; they convert the end instant to `arrivalTimezone`, not a duplicated second timetable. Do not guess terminals or passenger booking details.
 - Flight Overview and Transport card render only when source flight items exist. Never show a guessed arrival/updated status or confidential PNR.
 

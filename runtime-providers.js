@@ -7,6 +7,7 @@
 const TravelLiteProviders = (() => {
   const DEFAULTS = {
     weatherEndpoint: "https://api.open-meteo.com/v1/forecast",
+    historicalWeatherEndpoint: "https://archive-api.open-meteo.com/v1/archive",
     mapStyle: "https://tiles.openfreemap.org/styles/liberty",
     mapStyleLight: "https://tiles.openfreemap.org/styles/liberty",
     mapStyleDark: "https://tiles.openfreemap.org/styles/dark",
@@ -60,5 +61,32 @@ const TravelLiteProviders = (() => {
     return cachedFetchJson(key, `${cfg.weatherEndpoint}?${params}`, {}, 30 * 60 * 1000);
   }
 
-  return { config, weather };
+  // Last 92 days: source-supported recent history; older dates: archive/reanalysis.
+  async function recentWeather(lat, lng, pastDays) {
+    const days = Math.max(1, Math.min(92, Math.ceil(Number(pastDays) || 1)));
+    const cfg = config();
+    const params = new URLSearchParams({
+      latitude: String(lat), longitude: String(lng), timezone: "auto",
+      past_days: String(days), forecast_days: "1",
+      daily: "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum",
+    });
+    const key = "weather:recent:" + coordinateKey(lat,lng) + ":" + days;
+    return cachedFetchJson(key, cfg.weatherEndpoint + "?" + params, {}, 3 * 60 * 60 * 1000);
+  }
+
+  async function historicalWeather(lat, lng, startDate, endDate) {
+    const validDate = value => typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
+    if (!validDate(startDate) || !validDate(endDate) || startDate > endDate)
+      throw new Error("Invalid historical weather range");
+    const cfg = config();
+    const params = new URLSearchParams({
+      latitude: String(lat), longitude: String(lng), timezone: "auto",
+      start_date: startDate, end_date: endDate,
+      daily: "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum",
+    });
+    const key = "weather:archive:" + coordinateKey(lat,lng) + ":" + startDate + ":" + endDate;
+    return cachedFetchJson(key, cfg.historicalWeatherEndpoint + "?" + params, {}, 24 * 60 * 60 * 1000);
+  }
+
+  return { config, weather, recentWeather, historicalWeather };
 })();

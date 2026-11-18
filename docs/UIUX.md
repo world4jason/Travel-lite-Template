@@ -75,7 +75,7 @@ Trip、Transport、Places 共用 `state.selectedDate`，日期切換應攜帶同
 
 Trip、Transport、Places 使用**同一個**可橫向捲動的日期卡列（D 編號、日期、每日短標題、天氣圖示和有資料才顯示的溫度），以取代主要 Dropdown 外觀；共同使用原本的 `state.selectedDate`、deep link、Back/Forward 與 view-specific Overview。長旅程向側邊延伸，不建立第二份日期狀態。保留「總覽」「今天」、前後一天及可存取的 Jump-to-day 下拉作為輔助操作；320px / 390px / 1100px、200% 字體與鍵盤仍可操作。卡片必須一直可選，不因天氣 API 失效而禁用。
 
-天氣由 Open-Meteo 逐日預報資料補充，有**有效日期、可信天氣座標、實際 weather code 及高低溫**才顯示相對應圖示/溫度，並標示資料來源；不在有效預報期內或無資料時顯示中性日曆及「—」，**不得用假雲、假雪或固定溫度當作預報**。不同日期採當日地點/明確 `weatherLocation`，不是以第一天城市取代全程；快取資料須保留 stale/離線語意。
+天氣由 Open-Meteo 提供：**未來最多 16 天**顯示預報，**過去 92 天內**使用 Forecast API 的 `past_days`，更久的日期使用 Historical Weather API／reanalysis。歷史資料必須明確標成「歷史天氣（模式估計）」而不是即時／測站實測；歷史可呈現降水總量（mm），不能冒充歷史降雨機率。僅當資料確實包含當日 weather code 和最高／最低溫時才補上 SVG 天氣圖示與數值。**沒有資料時只保留日期、Day 標記與行程主題，隱藏天氣欄位、圖示及溫度**，不得重複顯示方格、假雲、假雪或 `—` 佔位。不同日期採當日地點／明確 `weatherLocation`，不拿首日城市代表整趟旅程；離線快取須標註 stale，不可影響日期切換。
 
 ### P1.6 Flight overview without a second schedule
 

@@ -188,3 +188,49 @@
 @media (min-width:900px) and (min-height:601px) {
   #view-root[data-date-nav-view="trip"] > .unified-date-nav { display:grid; }
 }
+
+
+/* History + future: a complete, attractive date card even with zero weather
+   information. Never render simulated climate icons or a row of em dashes. */
+.unified-date-card-weather[hidden],
+.unified-date-card-temperature[hidden],
+.unified-date-card-kind[hidden] { display:none !important; }
+.unified-date-card[data-weather-state="empty"] {
+  min-height:110px;
+  justify-content:flex-start;
+}
+.unified-date-card[data-weather-state="empty"] .unified-date-card-date {
+  margin-top:4px;
+  font-size:1.07rem;
+  letter-spacing:-.025em;
+}
+.unified-date-card[data-weather-state="empty"] .unified-date-card-title {
+  margin-top:auto; padding-top:10px; width:100%;
+  border-top:1px solid color-mix(in srgb,var(--line) 76%,transparent);
+}
+.unified-date-card[data-weather-state="historical"],
+.unified-date-card[data-weather-state="forecast"] { min-height:144px; }
+.unified-date-card-weather { min-height:26px; }
+.unified-date-card-weather svg { stroke:var(--accent); width:27px; height:27px; }
+.unified-date-card-temperature {
+  font-weight:760;
+  letter-spacing:-.02em;
+  color:var(--text);
+}
+.unified-date-card-kind {
+  display:inline-flex; align-items:center; justify-content:center;
+  border-radius:999px; padding:2px 7px;
+  font-size:.62rem; line-height:1.25; font-weight:700; letter-spacing:.02em;
+  background:var(--surface); color:var(--muted);
+}
+.unified-date-card[data-weather-state="historical"] .unified-date-card-kind {
+  border:1px solid var(--line);
+}
+.unified-date-card[data-weather-state="forecast"] .unified-date-card-kind {
+  color:var(--accent);
+}
+@media(max-width:520px) {
+  .unified-date-card[data-weather-state="empty"] { min-height:104px; }
+  .unified-date-card[data-weather-state="historical"],
+  .unified-date-card[data-weather-state="forecast"] { min-height:138px; }
+}

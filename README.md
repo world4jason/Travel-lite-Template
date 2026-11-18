@@ -46,7 +46,7 @@ Interface locale: en (change to zh-TW for Traditional Chinese)
 
 ## Daily date-and-weather navigation / flights
 
-Trip, Transport and Places share a horizontally scrollable date selector. When published dates fall within the provider's forecast window, each date card displays available Open-Meteo weather; unavailable data stays neutral and never disables day selection. An accessible Jump-to-day selector remains available for long trips.
+Trip, Transport and Places share a horizontally scrollable date selector. Past dates show available Open-Meteo historical model weather (recent past_days or older reanalysis); future dates show forecast within the valid horizon. Dates without weather display a clean day/date/title card without fake weather symbols or temperature placeholders; navigation always works. An accessible Jump-to-day selector remains available for long trips.
 
 Known flights render as source-backed cards in Trip Overview and the applicable Transport day, while the flight and airport travel remain regular chronological Timeline items. Optional metadata is documented in [the schema](./docs/TRIP_SCHEMA.md) and the UI rules in [UIUX.md](./docs/UIUX.md).
 
