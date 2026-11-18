@@ -42,9 +42,13 @@ async function insetViolations(page) {
 }
 test("every visual look preserves framed card text insets on mobile",async({page})=>{
   for(const style of looks){
+    await page.emulateMedia({colorScheme:"light"});
     await openOverview(page,style,390);
     expect(await insetViolations(page),style+" bordered text inset").toEqual([]);
   }
+  await page.emulateMedia({colorScheme:"dark"});
+  await openOverview(page,"editorial",390);
+  expect(await insetViolations(page),"editorial dark bordered text inset").toEqual([]);
 });
 test("320/1100px + 200 percent text still reflows framed Storybook cards",async({page})=>{
   for(const style of ["storybook","editorial"]){
