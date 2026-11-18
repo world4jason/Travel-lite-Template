@@ -3,7 +3,7 @@
 // shell/runtime, and activating one cannot delete the other's cache.
 const CACHE_PREFIX = "travel-lite:" + new URL(self.registration.scope).pathname
   .replace(/[^a-z0-9]/gi, "-") + ":";
-const CACHE = CACHE_PREFIX + "shell-v51-weather-date-flight";
+const CACHE = CACHE_PREFIX + "shell-v52-history-weather";
 const RUNTIME_CACHE = CACHE_PREFIX + "runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -18,7 +18,7 @@ const CORE = [
   "./companion-ux.css",
   "./places-view.css",
   "./long-trip-nav.css",
-  "./date-navigation.css?v=20261118-weatherstrip-v1",
+  "./date-navigation.css?v=20261118-history-v2",
   "./flight-overview.css?v=20261118-weatherstrip-v1",
   "./today-brief.css",
   "./style-settings.css",
@@ -46,7 +46,7 @@ const CORE = [
   "./item-identity.js",
   "./app.js",
   "./trip-view.js?v=20261118-chronological-v1",
-  "./runtime-providers.js",
+  "./runtime-providers.js?v=20261118-history-v2",
   "./runtime-features.js",
   "./runtime-handoff.js",
   "./places-view.js",
@@ -57,7 +57,7 @@ const CORE = [
   "./companion-ux.js",
   "./timezone.js",
   "./long-trip-nav.js",
-  "./date-navigation.js?v=20261118-weatherstrip-v1",
+  "./date-navigation.js?v=20261118-history-v2",
   "./flight-overview.js?v=20261118-weatherstrip-v1",
   "./today-brief.js",
   "./journey-trust.js",

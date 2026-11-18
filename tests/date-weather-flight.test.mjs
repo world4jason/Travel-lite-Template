@@ -15,14 +15,21 @@ test("date cards remain first-class, horizontal, keyboard accessible, and retain
   assert.match(dateSource,/function setSharedDate/);
   assert.match(source("date-navigation.css"),/scroll-snap-type:\s*x proximity/);
 });
-test("forecast is optional; only real codes and temperatures replace calendar placeholder",()=>{
-  assert.match(dateSource,/difference < 0 \|\| difference > 15/);
-  assert.match(dateSource,/data\.daily\.time\?\.indexOf\(date\)/);
-  assert.match(dateSource,/Number\.isFinite/);
-  assert.match(dateSource,/weatherPending/);
+test("past and future weather are data-driven; empty dates never show fake placeholders",()=>{
+  assert.match(dateSource,/data-weather-state="empty"/);
+  assert.match(dateSource,/source = diff < -92 \? "archive"/);
+  assert.match(dateSource,/TravelLiteProviders\.recentWeather/);
+  assert.match(dateSource,/TravelLiteProviders\.historicalWeather/);
+  assert.match(dateSource,/data\?\.daily\?\.time\?\.indexOf\(date\)/);
+  assert.match(dateSource,/code == null \|\| high == null \|\| low == null/);
+  assert.match(dateSource,/Historical model weather/);
   assert.match(dateSource,/if \(!nav\.isConnected\) return/);
-  assert.match(dateSource,/weather outage never blocks/);
   assert.match(dateSource,/day\.weatherLocation/);
+  assert.doesNotMatch(dateSource,/▦/);
+  assert.match(source("date-navigation.css"),/unified-date-card-kind\[hidden\]/);
+  assert.match(source("runtime-providers.js"),/historicalWeatherEndpoint/);
+  assert.match(source("runtime-providers.js"),/past_days: String\(days\)/);
+  assert.match(source("runtime-providers.js"),/start_date: startDate/);
 });
 test("flight cards use only source flight timeline items, no parallel flight schedule",()=>{
   const trip={timezone:"Asia/Tokyo"};
