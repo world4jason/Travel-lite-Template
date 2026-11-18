@@ -94,7 +94,7 @@
         <span>${day.items.length} ${escapeHtml(label("todayBriefPlans", "plans", "項"))}</span>
       </div>
       ${route.length ? `<p class="today-brief-route">${route.map(escapeHtml).join(" → ")}</p>` : ""}
-      ${day.note ? `<p class="today-brief-day-note">${escapeHtml(day.note)}</p>` : ""}
+      ${day.note && !/^依實走順序串起交通與遊覽/.test(day.note) ? `<details class="today-brief-day-note"><summary>${escapeHtml(label("todayBriefDayNote", "Notes", "備註"))}</summary><p>${escapeHtml(day.note)}</p></details>` : ""}
       <p class="today-brief-timing">${escapeHtml(label("todayBriefNoFixedTime", "No fixed times in this itinerary. Use the published order and your operator or specialist app for live timing.", "這天的行程沒有固定時間；依既有順序參考，實際時間以領隊、營運單位或專項 App 為準。"))}</p>
       <div class="today-brief-list">${day.items.map(briefItem).join("")}</div>
     </section>`;

@@ -471,3 +471,11 @@ Do not add one-off review notes or historical discussion documents to the templa
 ### GitHub Actions dependency note
 
 The repository intentionally has no `package-lock.json`. CI therefore uses `npm install --no-package-lock --ignore-scripts`, not `npm ci` (which requires an existing lockfile), and explicitly installs Chromium. This does not resolve GitHub runner failures with `steps:null`; see Issue #135. The paired map frame lint and Chromium geometry checks must still run before claiming UI acceptance.
+
+## Storybook Timeline and quiet-copy regression (P1.10)
+
+A decorative Style Pack may not override the single-column Storybook card with a shared three-column Journey grid. Generic explanatory day notes are not part of the default timeline surface. Run `npm run test:trip-layout` (static + failure injection), `npm run test:trip-layout:browser` (Storybook actual computed columns and readable width at 320/390/980/1100px + 200% root text), and full `npm run test:uiux:geometry` before release. Do not label browser checks PASS if they did not execute.
+
+## Storybook timeline and information economy (UIUX P1.10)
+
+Never override every Style Pack's Timeline column tracks from a Journey module. Storybook time-over-content cards remain one column. Default Trip/Now surfaces omit generic explanatory notes and use short weather attribution. After related changes run `npm run test:trip-layout` and `npm run test:trip-layout:browser` at 320/390/980/1100px plus 200% text. Do not report browser PASS if only source inspection was possible.

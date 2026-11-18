@@ -142,7 +142,7 @@
       '<div class="unified-date-strip" data-unified-date-strip role="group" aria-label="' +
         att(tr("滑動選擇日期", "Scrollable day selector")) + '">' + cards + '</div>' +
       '<p class="unified-date-weather-note">' +
-        esc(tr("歷史天氣／未來預報依資料顯示；沒有資料仍可選日期。來源：", "Historical model weather and future forecasts when available. Source: ")) +
+        esc(tr("天氣來源：", "Weather: ")) +
         '<a href="https://open-meteo.com/" rel="noopener noreferrer" target="_blank">Open-Meteo</a>' +
       '</p></nav>';
   }

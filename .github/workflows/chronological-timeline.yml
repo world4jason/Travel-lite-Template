@@ -29,6 +29,10 @@ jobs:
         run: npm run test:journey
       - name: Desktop Journey browser reflow
         run: npm run test:journey:browser
+      - name: Storybook layout and quiet-copy source contract
+        run: npm run test:trip-layout
+      - name: Render Storybook trip cards across phone/desktop widths
+        run: npm run test:trip-layout:browser
       - name: Enforce canonical time-blocked itinerary
         run: npm run test:timeline
       - name: Check globally unique item IDs
