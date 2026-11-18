@@ -148,7 +148,7 @@ test("one shared last-loaded CSS file owns coupled reading row geometry", () => 
   const index = read("index.html");
   const contract = read("surface-contract.css");
   const styleIndex = index.indexOf('id="vintage-watercolor-style"');
-  const contractIndex = index.indexOf('href="./surface-contract.css"');
+  const contractIndex = index.indexOf('href="./surface-contract.css');
   assert.ok(styleIndex >= 0 && contractIndex > styleIndex,
     "Surface contract MUST load after the last Style Pack overlay");
   for (const property of [
@@ -230,7 +230,7 @@ test("consumer guard rejects a missing inset and a token from the wrong role", (
 test("offline assets and contract smoke suites are registered", () => {
   const sw = read("sw.js");
   const config = read("playwright.config.mjs");
-  assert.match(sw, /"\.\/surface-contract\.css"/);
+  assert.match(sw, /"\.\/surface-contract\.css(?:\?[^"]*)?"/);
   assert.match(config, /"style-surface-role\.spec\.mjs"/);
   assert.match(config, /"style-surface-padding\.spec\.mjs"/);
   assert.match(config, /"style-surface-matrix\.spec\.mjs"/);
@@ -304,7 +304,7 @@ test("one shared last-loaded CSS file owns coupled reading row geometry", () => 
   const index = read("index.html");
   const contract = read("surface-contract.css");
   const styleIndex = index.indexOf('id="vintage-watercolor-style"');
-  const contractIndex = index.indexOf('href="./surface-contract.css"');
+  const contractIndex = index.indexOf('href="./surface-contract.css');
   assert.ok(styleIndex >= 0 && contractIndex > styleIndex,
     "Surface contract MUST load after the last Style Pack overlay");
   for (const property of [
@@ -386,7 +386,7 @@ test("consumer guard rejects a missing inset and a token from the wrong role", (
 test("offline assets and contract smoke suites are registered", () => {
   const sw = read("sw.js");
   const config = read("playwright.config.mjs");
-  assert.match(sw, /"\.\/surface-contract\.css"/);
+  assert.match(sw, /"\.\/surface-contract\.css(?:\?[^"]*)?"/);
   assert.match(config, /"style-surface-role\.spec\.mjs"/);
   assert.match(config, /"style-surface-padding\.spec\.mjs"/);
   assert.match(config, /"style-surface-matrix\.spec\.mjs"/);

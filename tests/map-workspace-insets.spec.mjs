@@ -101,3 +101,29 @@ test("geometry check fails if a framed style accidentally reintroduces zero padd
   expect(bad.paddingLeft).toBe(0);
   expect(bad.measured.some(x=>x.left<11.5)).toBe(true);
 });
+
+test("Vintage/Risograph desktop maps defeat broad panel frames at 1024–1920px and 200% text",async({page})=>{
+  test.setTimeout(120000);
+  for(const style of ["vintage-watercolor","risograph"]){
+    for(const width of [1024,1280,1440,1920]){
+      const panel=await visit(page,style,width);
+      const g=await geometry(panel);
+      expect(g.borderLeft,style+" "+width+"px leaked panel frame").toBe(0);
+      expect(g.borderRight,style+" "+width+"px leaked panel frame").toBe(0);
+      if(style==="vintage-watercolor"){
+        const textNodes=g.measured.filter(v=>v.selector.startsWith(".map-heading")||v.selector===".place-chips");
+        expect(textNodes.length).toBeGreaterThan(0);
+        for(const node of textNodes){
+          expect(node.left,style+" "+width+"px "+node.selector+" functional inset").toBeGreaterThanOrEqual(11.5);
+          expect(node.right,style+" "+width+"px "+node.selector+" right inset").toBeGreaterThanOrEqual(11.5);
+        }
+      }
+      expect(g.scrollOverflow,style+" "+width+"px should not overflow").toBeLessThanOrEqual(2);
+    }
+    const panel=await visit(page,style,1280,200);
+    const g=await geometry(panel);
+    expect(g.borderLeft,style+" at 200% leaked panel frame").toBe(0);
+    if(style==="vintage-watercolor")
+      expect(g.measured.filter(v=>v.selector.startsWith(".map-heading")).every(v=>v.left>=11.5&&v.right>=11.5)).toBe(true);
+  }
+});

@@ -3,7 +3,7 @@
 // shell/runtime, and activating one cannot delete the other's cache.
 const CACHE_PREFIX = "travel-lite:" + new URL(self.registration.scope).pathname
   .replace(/[^a-z0-9]/gi, "-") + ":";
-const CACHE = CACHE_PREFIX + "shell-v55-map-insets";
+const CACHE = CACHE_PREFIX + "shell-v56-map-role-cascade";
 const RUNTIME_CACHE = CACHE_PREFIX + "runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -29,7 +29,7 @@ const CORE = [
   "./journey-transit.css",
   "./storybook-theme.css",
   "./candy-theme.css?v=20261118-map-insets-v1",
-  "./risograph-theme.css",
+  "./risograph-theme.css?v=20261119-map-role-v2",
   "./paper-collage-theme.css?v=20261118-map-insets-v1",
   "./naive-city-theme.css?v=20261118-map-insets-v1",
   "./taiwan-poster-theme.css?v=20261118-map-insets-v1",
@@ -40,8 +40,8 @@ const CORE = [
   "./painterly-editorial-theme.css?v=20261118-map-insets-v1",
   "./geometric-print-theme.css?v=20261118-map-insets-v1",
   "./quiet-acrylic-theme.css?v=20261118-map-insets-v1",
-  "./vintage-watercolor-theme.css",
-  "./surface-contract.css?v=20261118-map-insets-v1",
+  "./vintage-watercolor-theme.css?v=20261119-map-role-v2",
+  "./surface-contract.css?v=20261119-map-role-v2",
   "./site-scope.js",
   "./bootstrap.js",
   "./storage.js",
