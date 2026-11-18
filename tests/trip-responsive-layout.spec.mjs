@@ -63,7 +63,7 @@ test("timeline no longer explains itself or displays boilerplate day notes by de
 test("repeat-only transport labels and duration notes are not shown twice",async({page})=>{
   const target=data.days.flatMap(day=>(day.items||[]).map(item=>({day,item})))
     .find(({item})=>item.type==="transport" && item.location===item.title &&
-      /^約\\s*\\d{2}:\\d{2}[-–]\\d{2}:\\d{2}[｜|]/.test(item.note||""));
+      typeof item.note==="string" && item.note.includes(item.start+"–"+item.end));
   if(!target)return; // Template demo may intentionally have no redundant source
   await page.setViewportSize({width:390,height:850});
   await page.goto("/?previewStyle=storybook#trip/day/"+target.day.date);
