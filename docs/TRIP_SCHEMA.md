@@ -207,6 +207,10 @@ Keep `day.reminders` short and operational. They can be strings or linkable obje
 }
 ```
 
+## Immutable Chronological Itinerary Timeline
+
+Every published, known-time travel segment, visit, meal or event must have its own `days[].items[]` row and `HH:MM–HH:MM` range. A booked or otherwise confirmed transport interval may **never** be represented solely by `transferAfter`; use `type: transport`. Follow [the full invariant contract](CHRONOLOGICAL_TIMELINE_CONTRACT.md), use IANA timezones for cross-zone journeys, preserve source order, and run `npm run test:timeline`. No guessed durations, timestamps, end stations or coordinates.
+
 ## Itinerary item
 
 A timed item:

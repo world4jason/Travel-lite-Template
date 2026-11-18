@@ -1,5 +1,7 @@
 # Travel Lite Template
 
+> **Mandatory:** [Chronological Itinerary Timeline + Time-blocked Schedule](docs/CHRONOLOGICAL_TIMELINE_CONTRACT.md). Every known visit, transport segment, meal and activity is one independent chronological time-range block. See `AGENTS.md`; run `npm run test:timeline` before publishing.
+
 > 把已經排好的旅行，變成同行者能在手機上快速查看的行程網站。  
 > **Plan elsewhere. Travel with clarity.**
 

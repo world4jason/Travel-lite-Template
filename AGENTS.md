@@ -1,5 +1,18 @@
 # Agent instructions
 
+## P0 — Chronological Itinerary Timeline + Time-blocked Schedule（Agent 必守死律）
+
+此規則適用於 **Template 與從它產生的每一份旅行網站**，優先於既有示範資料、主題樣式和 Agent 個人偏好。修改、產生、繼承或重排任何旅行前，先閱讀 `docs/CHRONOLOGICAL_TIMELINE_CONTRACT.md` 與 `docs/TRIP_SCHEMA.md`。
+
+1. Trip Day 主畫面必須是**一條永遠可見的、依時間排序的 Timeline**；參觀景點、交通、午餐、住宿、活動都是 `days[].items[]` 的一筆**同層時段**。例如 `10:00–11:00 景點 → 11:00–11:30 交通 → 11:30–13:00 午餐 → 13:00–15:00 交通`（僅示意，非實際班次）。
+2. 已知時間一律顯示 `HH:MM–HH:MM`；不可捏造結束時間／交通時間／地點／ETA。若某端未知須明示 TBD；浮動項目以 `timeLabel` 標示，不得自動填 `00:00`。
+3. 交通有已知時段時，**必須**用獨立 `type: transport` item（有穩定 id、起訖、已知 mode、站名、來源），不可只藏在 `transferAfter`、Journey Board、地圖或 Transport 頁。舊 `transferAfter` 仍相容，但不能重複顯示與維護相同 leg。
+4. Source `days[].items[]` 是唯一已發布時序。runtime 不可重排、補空隙、擅自轉成一份額外 `mobility.legs` 時刻表；Journey Board 與 Transport 只能投影同一資料，不能隱藏主 Timeline。
+5. 必須用 `item.timezone` → `day.timezone` → `trip.timezone` 的 IANA 時區比較絕對時間；處理跨午夜，揭露時段重疊／倒序，而不是拿不同地區的時鐘字串比大小。
+6. 生成或修改後一定執行 `npm run test:timeline`，再執行既有 browser / Style Pack / PWA QA。測試未跑須標記 NOT RUN，不得宣稱通過。違反以上任一條，**不得合併／發布**。
+
+**Hard stop:** 切勿將此體驗退化為『只有景點的清單＋小字交通』、自動規劃器或可收合的完整主時間軸。若需求含糊，保留未知並標示，而不是猜測。
+
 Travel Lite is a **post-planning trip decision companion** deployed as a static GitHub Pages site.
 
 ## AGPL compliance and responsible reuse — mandatory for agents
