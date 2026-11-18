@@ -10,7 +10,7 @@ day.items=[
  {id:"fixture-l1",type:"transport",transportMode:"walk",title:"大阪天滿宮附近商業街 → 南森町站",start:"10:00",end:"10:10"},
  {id:"fixture-l2",type:"transport",transportMode:"subway",title:"谷町線：南森町 → 谷町四丁目",start:"10:10",end:"10:20"},
  {id:"fixture-l3",type:"transport",transportMode:"train",title:"中央線：谷町四丁目 → 生駒站",start:"10:20",end:"10:50"},
- {id:"fixture-l4",type:"transport",transportMode:"walk",title:"生駒站 → 近鐵生駒纜車鳥居前站",start:"10:50",end:"11:10"},
+ {id:"fixture-l4",type:"transport",transportMode:"walk",title:"生駒站 → 近鐵生駒纜車鳥居前站",note:"由出站改札口轉步行天橋，朝向寶山寺方面的長型站名與指示資訊必須在桌面和放大文字時完整換行，不可被切掉。",start:"10:50",end:"11:10"},
  {id:"fixture-p1",type:"place",title:"參拜寶山寺",start:"11:10",end:"12:00"}
 ];
 day.routeSummary=["大阪天滿宮附近商業街","南森町站","鳥居前站","參拜寶山寺"];

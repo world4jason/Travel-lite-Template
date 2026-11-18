@@ -57,6 +57,9 @@ test("missing endpoints and flights fail closed (no fabricated route)",()=>{
   const flying=api.groupItems([item("a","Airport A → Airport B","flight","10:00","11:00"),
     item("b","Airport B → Hotel","walk","11:00","11:15")])[0];
   assert.equal(api.directionsUrl(flying),"");
+  assert.equal(api.groupItems([item("a","Airport A → Airport B","flight","10:00","11:00"),
+    item("b","Airport B → Hotel","walk","11:00","11:15")]).length,2,
+    "flight remains a distinct time block rather than a fake ground journey");
 });
 test("real published itinerary retains every leg ID after display projection",()=>{
   const published=JSON.parse(readFileSync(new URL("../trip.json",import.meta.url),"utf8"));
