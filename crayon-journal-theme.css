@@ -47,6 +47,7 @@
 :root[data-visual-style="crayon-journal"] .runtime-map-panel {
   --ui-map-workspace-fill: #FFF9ED;
   --ui-map-workspace-frame: 2px solid #53565D;
+  --ui-map-workspace-padding: clamp(16px, 1.5vw, 24px);
   --ui-map-workspace-radius: 23px 13px 26px 17px;
 }
 :root[data-visual-style="crayon-journal"] .trip-header {

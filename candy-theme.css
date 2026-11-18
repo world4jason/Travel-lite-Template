@@ -60,6 +60,7 @@
 }
 :root[data-visual-style="candy"] .runtime-map-panel {
   --ui-map-workspace-frame: 3px solid var(--candy-milk);
+  --ui-map-workspace-padding: clamp(16px, 1.5vw, 24px);
   --ui-map-workspace-radius: 34px;
   --ui-map-workspace-outline: 2px solid var(--candy-ink);
   --ui-map-workspace-outline-offset: -1px;

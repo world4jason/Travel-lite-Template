@@ -47,6 +47,7 @@
 :root[data-visual-style="doodle-memory-grid"] .runtime-map-panel {
   --ui-map-workspace-fill: #FFFAF1;
   --ui-map-workspace-frame: 2px dashed #514D51;
+  --ui-map-workspace-padding: clamp(16px, 1.5vw, 24px);
   --ui-map-workspace-radius: 17px 24px 15px 22px;
 }
 :root[data-visual-style="doodle-memory-grid"] .trip-header {

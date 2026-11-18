@@ -52,6 +52,7 @@
 :root[data-visual-style="field-stamp"] .runtime-map-panel {
   --ui-map-workspace-fill: #F7F0E3;
   --ui-map-workspace-frame: 1px solid #617A6A;
+  --ui-map-workspace-padding: clamp(16px, 1.5vw, 24px);
   --ui-map-workspace-radius: 2px;
 }
 :root[data-visual-style="field-stamp"] .trip-overview-hero {

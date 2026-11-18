@@ -47,6 +47,7 @@
 :root[data-visual-style="painterly-editorial"] .runtime-map-panel {
   --ui-map-workspace-fill: #FCFCF7;
   --ui-map-workspace-frame: 1px solid #B9CDD0;
+  --ui-map-workspace-padding: clamp(16px, 1.5vw, 24px);
   --ui-map-workspace-radius: 14px;
 }
 :root[data-visual-style="painterly-editorial"] .trip-header {
