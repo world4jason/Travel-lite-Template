@@ -11,13 +11,22 @@
     "accent": "#4f6f5e",
     "themeColor": "#0b1020",
     "homeLabel": "Tokyo, Japan",
-    "center": { "lat": 35.6812, "lng": 139.7671 }
+    "center": {
+      "lat": 35.6812,
+      "lng": 139.7671
+    }
   },
   "ui": {
     "defaultView": "now",
     "theme": "system",
     "locale": "en",
-    "bottomNav": ["now", "trip", "map", "places", "more"]
+    "bottomNav": [
+      "now",
+      "trip",
+      "map",
+      "places",
+      "more"
+    ]
   },
   "providers": {
     "mapStyle": "https://tiles.openfreemap.org/styles/liberty",
@@ -31,7 +40,7 @@
       "id": "autumn-illumination",
       "dateLabel": "Oct 3–5",
       "title": "Autumn illumination",
-      "icon": "✦",
+      "icon": "sparkles",
       "status": "optional",
       "note": "A flexible evening idea if energy and weather are good."
     },
@@ -39,7 +48,7 @@
       "id": "museum-backup",
       "dateLabel": "Oct 4",
       "title": "Indoor museum backup",
-      "icon": "◫",
+      "icon": "museum",
       "status": "backup",
       "note": "Keep one indoor option ready instead of over-planning the day."
     }
@@ -51,7 +60,11 @@
       "label": "Day 1",
       "title": "Arrival & Shibuya",
       "routeLabel": "Arrival day",
-      "routeSummary": ["Haneda", "Shibuya", "Ebisu"],
+      "routeSummary": [
+        "Haneda",
+        "Shibuya",
+        "Ebisu"
+      ],
       "reminders": [
         "Open the airline/operator app if the arrival time changes.",
         "Check the hotel message before heading to check-in."
@@ -73,7 +86,10 @@
             "summary": "Use the live route in your normal transit/map app before leaving the airport."
           },
           "externalLinks": [
-            { "label": "Haneda Airport", "url": "https://tokyo-haneda.com/en/" }
+            {
+              "label": "Haneda Airport",
+              "url": "https://tokyo-haneda.com/en/"
+            }
           ]
         },
         {
@@ -115,8 +131,14 @@
           "lat": 35.6467,
           "lng": 139.7101,
           "googleSearches": [
-            { "label": "Nearby restaurants", "query": "restaurants" },
-            { "label": "Nearby cafes", "query": "cafe" }
+            {
+              "label": "Nearby restaurants",
+              "query": "restaurants"
+            },
+            {
+              "label": "Nearby cafes",
+              "query": "cafe"
+            }
           ]
         }
       ]
@@ -127,7 +149,11 @@
       "label": "Day 2",
       "title": "Asakusa & Ueno",
       "routeLabel": "East Tokyo",
-      "routeSummary": ["Senso-ji", "Asakusa / Ueno lunch", "Ueno Park"],
+      "routeSummary": [
+        "Senso-ji",
+        "Asakusa / Ueno lunch",
+        "Ueno Park"
+      ],
       "reminders": [
         "Keep lunch flexible; choose based on crowds, hunger, and how the morning is going."
       ],
@@ -155,7 +181,10 @@
               "Use Google Maps or the official site for current details."
             ],
             "sourceLinks": [
-              { "label": "Wikipedia", "url": "https://en.wikipedia.org/wiki/Sens%C5%8D-ji" }
+              {
+                "label": "Wikipedia",
+                "url": "https://en.wikipedia.org/wiki/Sens%C5%8D-ji"
+              }
             ]
           }
         },
@@ -170,13 +199,27 @@
             "prompt": "Eat in Asakusa, or move to Ueno first?",
             "context": "Choose on the day based on hunger, crowds, and how quickly the morning is moving.",
             "options": [
-              { "id": "asakusa", "label": "Eat in Asakusa", "note": "Less travel while hungry." },
-              { "id": "ueno", "label": "Move to Ueno first", "note": "Eat closer to the afternoon stop." }
+              {
+                "id": "asakusa",
+                "label": "Eat in Asakusa",
+                "note": "Less travel while hungry."
+              },
+              {
+                "id": "ueno",
+                "label": "Move to Ueno first",
+                "note": "Eat closer to the afternoon stop."
+              }
             ]
           },
           "googleSearches": [
-            { "label": "Asakusa lunch", "query": "lunch" },
-            { "label": "Ueno lunch", "query": "restaurants Ueno" }
+            {
+              "label": "Asakusa lunch",
+              "query": "lunch"
+            },
+            {
+              "label": "Ueno lunch",
+              "query": "restaurants Ueno"
+            }
           ],
           "transferAfter": {
             "label": "Transfer",
@@ -202,7 +245,10 @@
       "label": "Day 3",
       "title": "Departure",
       "routeLabel": "Departure",
-      "routeSummary": ["Shibuya", "Haneda"],
+      "routeSummary": [
+        "Shibuya",
+        "Haneda"
+      ],
       "reminders": [
         "Check live flight status in the airline/operator app before leaving for the airport."
       ],
@@ -236,35 +282,78 @@
     }
   ],
   "todos": [
-    { "id": "esim", "label": "Activate eSIM", "dueDate": "2026-10-02", "priority": "high" },
-    { "id": "offline", "label": "Open Travel Lite once to cache it offline", "dueDate": "2026-10-02", "priority": "normal" }
+    {
+      "id": "esim",
+      "label": "Activate eSIM",
+      "dueDate": "2026-10-02",
+      "priority": "high"
+    },
+    {
+      "id": "offline",
+      "label": "Open Travel Lite once to cache it offline",
+      "dueDate": "2026-10-02",
+      "priority": "normal"
+    }
   ],
   "checklists": [
     {
       "id": "before",
       "title": "Before you go",
       "items": [
-        { "id": "passport", "label": "Passport" },
-        { "id": "insurance", "label": "Travel insurance" },
-        { "id": "tickets", "label": "Flight & hotel confirmations" }
+        {
+          "id": "passport",
+          "label": "Passport"
+        },
+        {
+          "id": "insurance",
+          "label": "Travel insurance"
+        },
+        {
+          "id": "tickets",
+          "label": "Flight & hotel confirmations"
+        }
       ]
     },
     {
       "id": "packing",
       "title": "Packing",
       "items": [
-        { "id": "charger", "label": "Phone charger" },
-        { "id": "camera", "label": "Camera + battery" },
-        { "id": "meds", "label": "Personal medicine" }
+        {
+          "id": "charger",
+          "label": "Phone charger"
+        },
+        {
+          "id": "camera",
+          "label": "Camera + battery"
+        },
+        {
+          "id": "meds",
+          "label": "Personal medicine"
+        }
       ]
     }
   ],
   "reservations": [
-    { "id": "hotel", "type": "stay", "title": "Shibuya hotel", "date": "2026-10-03", "time": "14:00 check-in", "location": "Shibuya", "status": "confirmed" }
+    {
+      "id": "hotel",
+      "type": "stay",
+      "title": "Shibuya hotel",
+      "date": "2026-10-03",
+      "time": "14:00 check-in",
+      "location": "Shibuya",
+      "status": "confirmed"
+    }
   ],
-  "costs": { "currency": "JPY", "entries": [] },
+  "costs": {
+    "currency": "JPY",
+    "entries": []
+  },
   "notes": [
-    { "id": "public-data", "title": "Public site reminder", "body": "Do not put passport numbers, full booking codes, or other secrets in trip.json." }
+    {
+      "id": "public-data",
+      "title": "Public site reminder",
+      "body": "Do not put passport numbers, full booking codes, or other secrets in trip.json."
+    }
   ],
   "files": [],
   "contacts": [],

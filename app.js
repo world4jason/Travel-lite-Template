@@ -15,12 +15,12 @@ const state = {
 };
 
 const VIEW_META = {
-  now: { label: "Now", icon: "●" },
-  trip: { label: "Trip", icon: "≡" },
-  map: { label: "Transport", icon: "≋" }, // internal ID/legacy #map links remain stable
-  check: { label: "Check", icon: "✓" }, // legacy #check route
-  places: { label: "Places", icon: "⌖" },
-  more: { label: "More", icon: "•••" },
+  now: { label: "Now", icon: "clock" },
+  trip: { label: "Trip", icon: "list" },
+  map: { label: "Transport", icon: "route" }, // internal ID/legacy #map links remain stable
+  check: { label: "Check", icon: "check" }, // legacy #check route
+  places: { label: "Places", icon: "map-pin" },
+  more: { label: "More", icon: "more" },
 };
 
 const root = document.querySelector("#view-root");
@@ -367,7 +367,7 @@ function renderNav() {
   bottomNav.style.setProperty("--nav-count", views.length);
   bottomNav.innerHTML = views.map((view) => `
     <button class="nav-item ${activeView === view ? "active" : ""}" data-view="${view}" type="button" aria-current="${activeView === view ? "page" : "false"}">
-      <span class="nav-icon">${VIEW_META[view].icon}</span><span>${VIEW_META[view].label}</span>
+      <span class="nav-icon">${window.TravelLiteIcons.svg(VIEW_META[view].icon)}</span><span>${VIEW_META[view].label}</span>
     </button>`).join("");
   bottomNav.querySelectorAll("[data-view]").forEach((button) => {
     button.addEventListener("click", () => {

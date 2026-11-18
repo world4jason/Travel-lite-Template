@@ -176,7 +176,7 @@
     if (!mappable.length) {
       const zh = /^zh/i.test(state.data?.ui?.locale || "");
       container.innerHTML = `<div class="map-library-state map-library-fallback" role="status">
-        <span class="map-state-mark" aria-hidden="true">⌖</span>
+        <span class="map-state-mark" aria-hidden="true">${window.TravelLiteIcons.svg("map-pin")}</span>
         <div><p class="eyebrow">${zh ? "地點位置" : "Spatial reference"}</p><strong>${zh ? "尚未標註精確座標" : "No mapped stops for this day"}</strong><p>${zh ? "原始資料未提供精確經緯度，請透過地點詳細資訊與 Google Maps 導航。" : "The itinerary still works normally. Use the stop details and map handoff below when available."}</p></div>
       </div>`;
       return;
@@ -227,7 +227,7 @@
       if (generation !== mapInitGeneration) return;
       console.warn("MapLibre unavailable", error);
       container.innerHTML = `<div class="map-library-state map-library-fallback" role="status">
-        <span class="map-state-mark" aria-hidden="true">⌖</span>
+        <span class="map-state-mark" aria-hidden="true">${window.TravelLiteIcons.svg("map-pin")}</span>
         <div><p class="eyebrow">Map fallback</p><strong>Interactive map unavailable</strong><p>Your planned stops and external map handoffs remain available.</p></div>
       </div>`;
     }
@@ -265,7 +265,7 @@
         <div class="map-heading"><div><p class="eyebrow">Spatial reference</p><h2>${escapeHtml(selectedDay?.title || "Trip map")}</h2><p class="map-heading-copy">Planned stops only · select a stop for context</p></div>${googleUrl ? `<a class="button-link map-primary-handoff" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Open in Maps ↗</a>` : ""}</div>
         ${placeChips ? `<div class="place-chips" aria-label="Planned stops">${placeChips}</div>` : ""}
         <div class="map-stage">
-          <div id="runtime-map" class="interactive-map" aria-label="Interactive trip map"><div class="map-library-state map-library-loading" role="status"><span class="map-state-mark" aria-hidden="true">⌖</span><div><p class="eyebrow">Spatial reference</p><strong>Loading planned stops…</strong><p>Trip details remain available while the map loads.</p></div></div></div>
+          <div id="runtime-map" class="interactive-map" aria-label="Interactive trip map"><div class="map-library-state map-library-loading" role="status"><span class="map-state-mark" aria-hidden="true">${window.TravelLiteIcons.svg("map-pin")}</span><div><p class="eyebrow">Spatial reference</p><strong>Loading planned stops…</strong><p>Trip details remain available while the map loads.</p></div></div></div>
         </div>
         ${selected ? `<div class="selected-place-card map-selected-summary" data-surface-role="selected-stop" aria-label="Selected stop"><div><p class="eyebrow">Selected stop · ${escapeHtml(selected.start || "TBD")}</p><h3>${escapeHtml(selected.title || selected.location || "Place")}</h3><p>${escapeHtml(selected.location || "")}</p></div>${googleUrl ? `<a class="button-link map-secondary-handoff" href="${escapeAttr(googleUrl)}" target="_blank" rel="noreferrer">Navigation ↗</a>` : ""}</div>` : ""}
       </section>`;
