@@ -148,6 +148,7 @@ Places 是**真正可介紹的景點／場域目錄**，不是所有有座標或
 - 資料來源僅限現有 `days[].routeSummary` 或 `days[].items[]`；不因新旅行缺少大阪專屬的 `mobility` 就降級畫面，也不得新增第二份時刻表。每日卡仍須導向正確單日；已發布的 Flight Overview、必要警告與選填亮點仍可使用。
 - **主題只改字體、配色、框線等材料。** `::before`／`::after` 的九宮格貼圖、通用旅行道具、與旅行無關的 SVG、巨大固定尺寸或斜轉動畫，不得占據 Overview 的 Hero 與日卡。封面圖片必須與旅程相符、具來源及使用權；沒有就使用無圖版型。不可用 `overflow:hidden` 偽裝解決文字溢出。
 - **根據可用內容寬度響應，不根據 viewport 猜。** 桌面／手機（320、390、980、1100、1440、1920px）與文字放大 200% 都不得裁切主題、日期、路線或造成整頁水平捲動，且卡片左右文字安全內距仍符合 P1.7。
+- **選填 Highlights 與待確認事項同樣受 Compact Overview 約束。** `highlights` 是來源提供的活動備選／安全提醒，不應刪資料，也不得預設展示成大型卡片牆；有資料時呈現預設收合、可用鍵盤展開的精簡清單。內容要依 locale 顯示中文／英文，開啟後保留日期、狀態、備註與連結；任何 Style Pack 不得在 Highlight 或 Open Decision 卡自動加入重複的九宮格／通用 sticker，必須檢查 `::before`、`::after`。沒有 Highlights 不顯示空區塊。重要警告仍由對應 Day/Now 的來源提醒保留，不可只藏在 Highlights。
 - **右側 Context Rail 不能複製主總覽統計。** 僅在有不同的、來源可信的預約／提醒等實用內容時出現，否則收起。裝置本機選擇 Style Pack 不得破壞上述結構。
 - **雙重驗收：** `npm run test:overview`、`npm run test:overview:browser`，且加入正式 `test:contracts`；要檢查 DOM、Pseudo-elements、Hero 實際高度、文字／卡片安全內距、不同風格和深連結。測試未跑必須回報 NOT RUN，不得宣稱視覺 PASS。
 
