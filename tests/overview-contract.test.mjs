@@ -34,6 +34,14 @@ function overviewDefects(source) {
   if (!compact.includes("dayRouteText(day)")) issues.push("overview route summary missing");
   if (!view.includes('trip-overview-compact-hero')) issues.push("compact hero missing");
   if (!view.includes('trip-overview-compact-day')) issues.push("compact day missing");
+  const extra = view.split("\n").find(line => line.includes("${highlights.length ?")) || "";
+  if (!extra.includes('<details class="trip-overview-section trip-overview-extras"') ||
+      !extra.includes('localized("備選活動與提醒", "Optional activities & notes")') ||
+      extra.includes("Highlights & activities"))
+    issues.push("optional highlights must be collapsed and localized");
+  const stickerRule = css.match(/:root \.trip-overview-view \.trip-highlight-card::before,[\s\S]*?\.trip-open-decision::after\s*\{([^}]*)\}/)?.[1] || "";
+  if (!/content:\s*none\s*!important/.test(stickerRule))
+    issues.push("highlight/decision generic stickers are still enabled");
   if (!view.includes('localized("行程項目", "itinerary items")') || view.includes("planned stops")) issues.push("incorrect itinerary count label");
   if (!css.includes("trip-overview-compact-hero::after") ||
       !css.includes("trip-overview-compact-day::after") ||
@@ -86,4 +94,18 @@ test("reject redundant right rail stats returning", () => {
 test("reject a second quick theme toggle in the global header", () => {
   const broken = {...files, "theme-shell.js": files["theme-shell.js"] + '\nbutton.addEventListener("click", toggleTheme);'};
   assert.match(overviewDefects(broken).join(" "), /quick theme switcher/);
+});
+
+
+test("reject expanded generic Highlights gallery returning to Trip Overview", () => {
+  const broken = {...files, "trip-view.js": files["trip-view.js"].replace(
+    '<details class="trip-overview-section trip-overview-extras"',
+    '<section class="trip-overview-section"')};
+  assert.match(overviewDefects(broken).join(" "), /highlights must be collapsed/);
+});
+test("reject generic nine-grid stickers reappearing on highlight cards", () => {
+  const broken = {...files, "overview-compact.css": files["overview-compact.css"].replace(
+    /(:root \.trip-overview-view \.trip-highlight-card::before,[\s\S]*?\.trip-open-decision::after\s*\{[^}]*?)content:\s*none\s*!important/,
+    "$1content: \"\"")};
+  assert.match(overviewDefects(broken).join(" "), /highlight\/decision generic stickers/);
 });
