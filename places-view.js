@@ -97,6 +97,13 @@
       return [`<a class="places-source-link" href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)} <span aria-hidden="true">↗</span></a>`];
     }).join("");
   }
+  // A scheduled action and a researched venue are different display concepts.
+  // Places may show an explicit, source-authored venueName without changing
+  // the chronological item's title or any published timestamp.
+  function displayPlaceName(item) {
+    const name = typeof item?.venueName === "string" ? item.venueName.trim() : "";
+    return name || item.title;
+  }
   function cardHtml(entry) {
     const item = entry.item;
     const contents = badges(item);
@@ -111,7 +118,7 @@
     return `${start}
       ${thumbnail ? `<img class="places-card-photo" src="${escapeAttr(thumbnail)}" alt="${escapeAttr(imageAlt)}" loading="lazy" referrerpolicy="no-referrer">` : ""}
       <span class="places-card-meta">${escapeHtml(smallDay(entry))}</span>
-      <span class="places-card-title">${escapeHtml(item.title)}</span>
+      <span class="places-card-title">${escapeHtml(displayPlaceName(item))}</span>
       <span class="places-card-excerpt">${escapeHtml(excerpt)}</span>
       <span class="places-card-foot"><span>${escapeHtml(item.location || label("這趟行程的地點", "Planned place"))}</span>
       ${contents.hasEntry ? `<span class="places-entry-chip">${label("入場／預約", "Entry / booking")}</span>` : ""}
@@ -178,7 +185,7 @@
       ${ambiguousId ? `<section class="panel places-identity-warning" role="alert">${label("景點 ID 重複：無法安全對應票券或唯一深連結，請修正行程來源。", "Duplicate place ID: booking association and unique deep links are unavailable until the source is corrected.")}</section>` : ""}
       <button type="button" class="places-back" data-places-back>← ${label("全部景點", "All places")}</button>
       <header class="places-detail-heading">
-        <p class="eyebrow">${escapeHtml(smallDay(entry))}</p><h2>${escapeHtml(item.title)}</h2>
+        <p class="eyebrow">${escapeHtml(smallDay(entry))}</p><h2>${escapeHtml(displayPlaceName(item))}</h2>
         <p>${escapeHtml(item.location || label("地點資訊未提供", "Location not provided"))}</p>
       </header>
       ${hasBooking ? `<section class="panel places-entry">
@@ -188,7 +195,7 @@
       </section>` : ""}
       ${hasAbout ? `<section class="panel places-about">
         <p class="eyebrow">${label("景點介紹", "PLACE GUIDE")}</p>
-        <h3>${escapeHtml(info.title || item.title)}</h3>
+        <h3>${escapeHtml(info.title || displayPlaceName(item))}</h3>
         ${photo ? `<figure class="places-photo-figure"><img src="${escapeAttr(photo)}" alt="${escapeAttr(photoAlt)}" loading="lazy" referrerpolicy="no-referrer" class="places-photo">
           ${photoCaption ? `<figcaption>${photoSource ? `<a href="${escapeAttr(photoSource)}" target="_blank" rel="noopener noreferrer">${escapeHtml(photoCaption)}</a>` : escapeHtml(photoCaption)}</figcaption>` : ""}</figure>` : ""}
         ${info.summary ? `<p>${escapeHtml(info.summary)}</p>` : ""}
