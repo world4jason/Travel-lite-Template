@@ -6,6 +6,7 @@
 
 - **All days** (`#places`) and **a selected day** (`#places/day/DATE`) are distinct Places view modes. `#places/item/ID` opens only an unambiguous source-backed detail. When a day is explicitly selected, update shared `state.selectedDate` so Trip and Transport follow it; Places All must **not** overwrite selectedDate with a fake “all-day” value.
 - Primary list is a compact, scannable curated catalogue: verified venue name, short independent guide intro, place/area, appropriate link to detail and a clear Maps handoff. Avoid default long operational notes, overlarge action buttons and repeated labels.
+- **Venue names are nouns, not timeline instructions.** A named destination such as a bath cave, viewpoint or temple should appear in Places under its official/verified venue name (e.g. 「忘歸洞」, not 「早上去忘歸洞泡湯」). Repeated scheduled visits remain separate `days[].items[]` chronological entries. Multiple visits do not create duplicate Places entities; verify identity and eligibility before adding an entry.
 - Detailed venue view is informative, not a copied schedule: title → concise “why it matters / what to see” → useful factual context (as researched) → sourced official site / trusted tourist guide / Maps → appropriately credited image when available. Essential on-site cautions can remain visible; optional deep notes expand.
 
 ## 2. Strict inclusion / type gate (P1)
@@ -26,6 +27,7 @@
 - Each published venue should have venue-specific **`infoCard.summary`** explaining the destination, not “約 15:00–16:00｜停留 60 分鐘” or a restatement of `item.note`. Aim for short, concrete history/context/highlights with no invented fact.
 - At least one verifiable first-party `infoCard.sourceLinks`: venue's genuine site, government, or official tourism organization. `infoCard.officialSite` is **only** the venue's own site; label regional tourism-board pages accurately. Do not assert current opening hours, price or availability as live if merely researched.
 - Photographs are **optional**. Embed only a subject-matching image with documented source/rights and `imageAlt`, `imageSource`, `imageCredit`, `imageLicense` (and source URL); do not hotlink an arbitrary official-site photo or confuse search-result thumbnails with permission. For unknown/license-incomplete images, omit the image entirely and retain text + links.
+- **Coverage review:** when a curated venue lacks a photo, keep it readable and record that coverage gap for the publishing/editorial pass. Search first-party/appropriately licensed photos, especially for named facilities or cave baths, but never fill the gap with a misleading stock picture. A named, independently researched bath cave within a hotel can qualify as a venue if it has its own specific guide and source; routine generic `break`-typed hotel bathing remains outside Places.
 - Official source links should be HTTPS/HTTP(S) safe, open the right location, and remain discoverable even when the image or map provider fails. Images must not force giant empty aspect-ratio placeholders.
 
 ## 4. Visual and accessibility details

@@ -438,9 +438,10 @@
 
     if (state.view === "trip") {
       if (currentTripMode() === "overview") {
-        const open = state.data.days.flatMap((d) => (d.items || []).filter((item) => item.decision?.options?.length && !item.decision.resolvedOptionId));
+        // The main Overview already displays trip counts; the right rail
+        // appears only for distinct, source-backed booking context.
         const reservations = reservationRows();
-        right.innerHTML = `<section class="shell-context-card trip-context-card"><div class="shell-context-heading trip-context-heading"><strong>${escapeHtml(t("tripOverview"))}</strong><span>${escapeHtml(state.data.trip.subtitle || "")}</span></div><div class="shell-stat-grid trip-context-stats"><span><b>${state.data.days.length}</b> days</span><span><b>${flattenItems().length}</b> stops</span><span><b>${open.length}</b> ${escapeHtml(t("openChoices"))}</span></div></section>${reservations ? `<section class="shell-context-section trip-context-card"><div class="shell-context-heading trip-context-heading"><strong>${escapeHtml(t("reservations"))}</strong></div><div class="companion-context-list">${reservations}</div></section>` : ""}`;
+        right.innerHTML = reservations ? `<section class="shell-context-section trip-context-card"><div class="shell-context-heading trip-context-heading"><strong>${escapeHtml(t("reservations"))}</strong></div><div class="companion-context-list">${reservations}</div></section>` : "";
       } else {
         const open = (day?.items || []).filter((item) => item.decision?.options?.length && !item.decision.resolvedOptionId);
         const reminders = Array.isArray(day?.reminders) ? day.reminders.slice(0, 3) : [];

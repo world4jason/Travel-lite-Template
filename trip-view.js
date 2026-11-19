@@ -210,13 +210,40 @@
     </article>`;
   }
 
-  function overviewDayCard(day) {
+
+  // Overview is a compact reference projection, not another itinerary table.
+  // All metadata comes from the published days/items; mobility is optional.
+  function overviewModeIcons(day) {
+    const seen = new Set();
+    const modes = (day.items || []).filter((item) => item.type === "transport")
+      .map((item) => item.transportMode)
+      .filter((mode) => {
+        if (!Object.hasOwn(TRANSPORT_MODES, mode) || seen.has(mode)) return false;
+        seen.add(mode);
+        return true;
+      }).slice(0, 3);
+    return modes.map((mode) => {
+      const svg = window.TravelLiteIcons?.svg?.(mode) || "";
+      const name = TRANSPORT_MODES[mode];
+      return svg ? `<span title="${escapeAttr(localized(name.zh, name.en))}">${svg}</span>` : "";
+    }).join("");
+  }
+
+  function overviewDayCard(day, index) {
     const open = unresolvedItems(day).length;
-    return `<button class="trip-overview-day composition-sequence" type="button" data-trip-day="${escapeAttr(day.date)}">
-      <div class="trip-overview-day-meta"><span>${escapeHtml(day.label || "Day")}</span><time>${prettyDate(day.date, { weekday: "short" })}</time></div>
-      <h3>${escapeHtml(day.title || "Trip day")}</h3>
-      <p>${escapeHtml(dayRouteText(day))}</p>
-      <div class="trip-overview-day-foot"><span>${day.items?.length || 0} planned</span>${open ? `<span class="trip-open-count">${open} TBD</span>` : ""}<span aria-hidden="true">→</span></div>
+    const title = day.shortTitle || day.title || localized("當日行程", "Trip day");
+    const route = dayRouteText(day);
+    const routeLine = route === "No route summary" || route === title ? "" : route;
+    const date = /^\d{4}-\d{2}-\d{2}$/.test(day.date || "")
+      ? day.date.slice(5).replace("-", "/") : prettyDate(day.date);
+    const modes = overviewModeIcons(day);
+    const authoredCue = typeof day.overviewCue === "string" ? day.overviewCue.trim() : "";
+    const cue = authoredCue || (open ? localized(`${open} 項待確認`, `${open} open choices`) : "");
+    return `<button class="trip-overview-day trip-overview-compact-day composition-sequence" type="button" data-trip-day="${escapeAttr(day.date)}">
+      <span class="trip-compact-day-index"><time datetime="${escapeAttr(day.date)}">${escapeHtml(date)}</time><strong>${String(index + 1).padStart(2, "0")}</strong></span>
+      <span class="trip-compact-day-main"><strong>${escapeHtml(title)}</strong>${routeLine ? `<small>${escapeHtml(routeLine)}</small>` : ""}</span>
+      <span class="trip-compact-day-signals">${modes ? `<span class="trip-compact-day-modes" aria-hidden="true">${modes}</span>` : ""}${cue ? `<small>${escapeHtml(cue)}</small>` : ""}</span>
+      <span class="trip-compact-day-chevron" aria-hidden="true">›</span>
     </button>`;
   }
 
@@ -229,13 +256,12 @@
 
     root.innerHTML = `<div class="trip-v2 trip-overview-view">
       ${tripTabs()}
-      <section class="trip-overview-hero composition-identity">
-        <p class="eyebrow">Trip overview</p>
+      <section class="trip-overview-hero trip-overview-compact-hero composition-identity" aria-label="${escapeAttr(localized("旅程總覽", "Trip overview"))}">
+        <div class="trip-compact-cover-top"><span>${escapeHtml(localized("旅程總覽", "Trip overview"))}</span><time>${escapeHtml(dateRangeLabel(state.data.trip))}</time></div>
         <h2>${escapeHtml(state.data.trip.title)}</h2>
-        <p>${escapeHtml(dateRangeLabel(state.data.trip))}</p>
-        <div class="trip-overview-stats"><span><strong>${days.length}</strong> days</span><span><strong>${stopCount}</strong> planned stops</span>${openDecisions.length ? `<span><strong>${openDecisions.length}</strong> open choice${openDecisions.length === 1 ? "" : "s"}</span>` : ""}</div>
+        <div class="trip-overview-stats trip-overview-compact-stats"><span><strong>${days.length}</strong> ${localized("天", "days")}</span><span><strong>${stopCount}</strong> ${localized("行程項目", "itinerary items")}</span>${openDecisions.length ? `<span><strong>${openDecisions.length}</strong> ${localized("項待確認", "open choices")}</span>` : ""}</div>
       </section>
-      <section class="trip-overview-days" aria-label="Daily overview">${days.map(overviewDayCard).join("")}</section>
+      <section class="trip-overview-days trip-overview-compact-days" aria-label="${escapeAttr(localized("每日總覽", "Daily overview"))}">${days.map(overviewDayCard).join("")}</section>
       ${window.TravelLitePlanB?.(state.data.pocketPicks, localized("口袋清單", "Pocket picks")) || ""}
       ${highlights.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">Flexible</p><h2>Highlights & activities</h2></div><span>${highlights.length}</span></div><div class="trip-highlight-grid">${highlights.map(highlightCard).join("")}</div></section>` : ""}
       ${openDecisions.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">TBD</p><h2>Open decisions</h2></div><span>${openDecisions.length}</span></div><div class="trip-open-decisions">${openDecisions.map(({ day, item }) => `<button type="button" class="trip-open-decision composition-narrative" data-trip-day="${escapeAttr(day.date)}"><span>${prettyDate(day.date, { weekday: "short" })}</span><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.decision?.prompt || "Decide on the day")}</p><small>View day →</small></button>`).join("")}</div></section>` : ""}

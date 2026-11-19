@@ -8,7 +8,7 @@ const state = {
   checks: {},
   todos: {},
   personalNote: "",
-  theme: "system",
+  theme: "light",
   visualStyle: "editorial",
   stylePreference: null, // per-trip and device-only
   styleSource: "trip",
@@ -818,20 +818,20 @@ function renderMore() {
     </button>
     <p class="helper-text style-source" role="status">${origin}</p>
   </div>`;
-  const appearance = isFixedLightStyle()
-    ? `<section class="panel settings-card">
-        <div><p class="eyebrow">Appearance</p><h2>${names[state.visualStyle]} · Light only</h2></div>
-        ${hasIllustrationMotion() ? `<p class="helper-text">Gentle illustration animation respects your device accessibility settings.</p>
+  // Color is chosen only through the unified Style Picker: Editorial Light
+  // and Editorial Dark are already separate choices there.
+  // Motion remains an independent accessibility preference when needed.
+  const appearance = hasIllustrationMotion()
+    ? `<section class="panel settings-card motion-settings-card">
+        <div><h2>${isZh ? "動態效果" : "Motion"}</h2></div>
         <div class="motion-preference">
-          <h3>Motion / 動態效果</h3>
-          <div class="motion-options" role="group" aria-label="Motion preference">
-            ${[["system", "Follow device · 跟隨裝置"], ["reduce", "Reduce motion · 減少動畫"]]
+          <div class="motion-options" role="group" aria-label="${isZh ? "動態效果偏好" : "Motion preference"}">
+            ${[["system", isZh ? "跟隨裝置" : "Follow device"], ["reduce", isZh ? "減少動畫" : "Reduce motion"]]
               .map(([mode, label]) => `<button type="button" class="motion-choice" data-motion-choice="${mode}" aria-pressed="${window.TravelLiteStorybookMotion?.get() === mode}">${label}</button>`).join("")}
           </div>
-        </div>` : `<p class="helper-text">Static print-inspired design. No illustration animations.</p>`}
-        <div class="storage-status"><span>Local storage</span><strong id="storage-mode">${escapeHtml(TravelLiteStorage.getMode())}</strong></div>
+        </div>
       </section>`
-    : `<section class="panel settings-card"><div><p class="eyebrow">Appearance</p><h2>Theme</h2></div><div class="theme-switcher">${["system", "dark", "light"].map((theme) => `<button type="button" data-theme="${theme}" class="theme-button ${state.theme === theme ? "active" : ""}">${theme}</button>`).join("")}</div><div class="storage-status"><span>Local storage</span><strong id="storage-mode">${escapeHtml(TravelLiteStorage.getMode())}</strong></div></section>`;
+    : "";
   root.innerHTML = `<div class="view-stack">
     ${itemIdentityWarningHtml()}
     ${preparation}
@@ -864,12 +864,6 @@ function renderMore() {
     clearTimeout(noteTimer);
     noteTimer = setTimeout(() => TravelLiteStorage.set(tripKey("personalNote"), state.personalNote), 180);
   });
-  root.querySelectorAll("[data-theme]").forEach((button) => button.addEventListener("click", async () => {
-    state.theme = button.dataset.theme;
-    applyTheme();
-    await TravelLiteStorage.set(tripKey("theme"), state.theme);
-    renderMore();
-  }));
   root.querySelectorAll("[data-motion-choice]").forEach((button) => button.addEventListener("click", () => {
     if (!window.TravelLiteStorybookMotion?.set(button.dataset.motionChoice)) return;
     root.querySelectorAll("[data-motion-choice]").forEach((choice) =>
@@ -881,6 +875,9 @@ function applyTheme() {
   const mode = isFixedLightStyle() ? "light" : state.theme;
   document.documentElement.dataset.theme = mode;
   document.documentElement.style.colorScheme = mode === "system" ? "light dark" : mode;
+  const themeColor = isFixedLightStyle() ? packThemeColor()
+    : mode === "dark" ? "#0b1020" : (state.data?.trip?.themeColor || "#f5f6f2");
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", themeColor);
 }
 
 function render() {
@@ -927,7 +924,7 @@ function hydrateHeader() {
   const { trip } = state.data;
   document.title = `${trip.title} · Travel Lite`;
   document.documentElement.style.setProperty("--accent", trip.accent);
-  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", isFixedLightStyle() ? packThemeColor() : (trip.themeColor || "#0b1020"));
+  applyTheme(); // also keeps the browser toolbar consistent with the chosen Light/Dark style.
   document.querySelector("#trip-location").textContent = trip.homeLabel || "Travel Lite";
   document.querySelector("#trip-title").textContent = trip.title;
   document.querySelector("#trip-meta").textContent = `${trip.subtitle || ""}${trip.subtitle ? " · " : ""}${dateRangeLabel(trip)}`;
@@ -961,7 +958,7 @@ async function hydrateLocalState() {
   state.checks = (await TravelLiteStorage.get(tripKey("checks"))) || {};
   state.todos = (await TravelLiteStorage.get(tripKey("todos"))) || {};
   state.personalNote = (await TravelLiteStorage.get(tripKey("personalNote"))) || "";
-  state.theme = (await TravelLiteStorage.get(tripKey("theme"))) || state.data.ui.theme || "system";
+  state.theme = (await TravelLiteStorage.get(tripKey("theme"))) || state.data.ui.theme || "light";
 
   // Pre-site-scoping keys have no reliable site identity. Never auto-import
   // them: another trip hosted on the same origin may have written them.

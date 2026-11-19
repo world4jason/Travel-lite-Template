@@ -42,6 +42,8 @@ Interface locale: en (change to zh-TW for Traditional Chinese)
 
 **[Try the trip overview](https://world4jason.github.io/Travel-lite-Template/#trip/overview)** · [View all visual styles](./style-packs/README.md) · [Trip data guide](./docs/TRIP_SCHEMA.md)
 
+**Compact Overview & one appearance selector:** The shared Overview uses a small title/date cover and source-backed day route cards, not oversized generic travel stickers. All 16 visual choices retain the same compact information hierarchy; Editorial Light is the default. Editorial Light/Dark live in one Style Picker, without a second Theme toggle. Validation: `npm run test:overview` and `npm run test:overview:browser`. See [TRIP](./docs/uiux/TRIP.md), [SHARED](./docs/uiux/SHARED.md), and the P1.12–P1.13 rules in [UIUX.md](./docs/UIUX.md).
+
 > **Demo note:** The bundled Tokyo example is dated **October 3–5, 2026**. Outside those dates, the [Now view](https://world4jason.github.io/Travel-lite-Template/#now) correctly shows the trip as completed. Use **Trip overview** to explore the sample itinerary.
 
 ## Daily date-and-weather navigation / flights

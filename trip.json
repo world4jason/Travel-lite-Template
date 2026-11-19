@@ -9,7 +9,7 @@
     "updatedAt": "2026-09-17T16:10:00+08:00",
     "revision": "sample-2026-09-17-01",
     "accent": "#4f6f5e",
-    "themeColor": "#0b1020",
+    "themeColor": "#f5f6f2",
     "homeLabel": "Tokyo, Japan",
     "center": {
       "lat": 35.6812,
@@ -18,7 +18,7 @@
   },
   "ui": {
     "defaultView": "now",
-    "theme": "system",
+    "theme": "light",
     "locale": "en",
     "bottomNav": [
       "now",

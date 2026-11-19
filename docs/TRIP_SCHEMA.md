@@ -189,6 +189,10 @@ Keep this section small. It is an overview/decision aid, not a recommendation fe
 A day may supply an `illustration` key (for example `"city"` or `"boat"`) **only for Storybook's decorative image**. The base view ignores this artwork hint. Omitted or invalid values use a generic local icon. All icon keys are whitelisted in `storybook-decor.js`; never supply arbitrary URLs or CSS from itinerary data.
 
 ### Route summary
+- Optional `day.shortTitle` is a shorter *published* title for the compact Overview, if the full title is long; do not invent one in the browser.
+- Optional `day.overviewCue` is a source-backed concise operational note for the compact Overview (for example a confirmed activity start or critical reservation reminder). It is not a second schedule and is omitted when unavailable.
+- Compact Overview automatically renders actual transport mode icons from `days[].items[]`. `mobility` is *not* required. Item counts mean itinerary entries, not tourist stops. Style Packs do not insert large generic trip illustration in this surface.
+
 
 `routeSummary` is optional. If omitted, the Trip view derives a simple route from item titles. Use it when a shorter human-friendly route is more useful than raw stop names.
 

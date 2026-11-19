@@ -1,0 +1,156 @@
+/* P1.12: a compact, readable overview in every Style Pack.
+ * Source data, navigation and optional booking/flight projections are untouched.
+ * Loaded AFTER Style Packs so oversized art cannot consume the Overview.
+ * SPDX-License-Identifier: AGPL-3.0-or-later */
+.trip-overview-view { container-type: inline-size; min-width: 0; }
+:root .trip-overview-view .trip-overview-hero.trip-overview-compact-hero {
+  display: flex !important;
+  flex-direction: column !important;
+  grid-template-columns: none !important;
+  grid-template-areas: none !important;
+  gap: 9px !important;
+  min-width: 0;
+  min-height: 0 !important;
+  max-height: none !important;
+  height: auto !important;
+  padding: clamp(16px, 2.3vw, 24px) !important;
+  overflow: visible !important;
+}
+:root .trip-overview-view .trip-overview-hero.trip-overview-compact-hero::before,
+:root .trip-overview-view .trip-overview-hero.trip-overview-compact-hero::after,
+:root .trip-overview-view .trip-overview-day.trip-overview-compact-day::before,
+:root .trip-overview-view .trip-overview-day.trip-overview-compact-day::after {
+  content: none !important;
+  display: none !important;
+  background-image: none !important;
+}
+:root .trip-overview-view .trip-overview-hero.trip-overview-compact-hero h2 {
+  grid-area: auto !important;
+  margin: 0 !important;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  font-size: clamp(1.45rem, 3vw, 2.2rem) !important;
+  line-height: 1.22 !important;
+  overflow-wrap: anywhere;
+}
+.trip-compact-cover-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 5px 14px;
+  min-width: 0;
+  color: var(--muted);
+  font-size: .75rem;
+  letter-spacing: .025em;
+}
+.trip-compact-cover-top time { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+:root .trip-overview-view .trip-overview-stats.trip-overview-compact-stats {
+  grid-area: auto !important;
+  margin: 3px 0 0 !important;
+  display: flex !important;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  width: 100%;
+  padding-top: 6px;
+  font-size: .78rem;
+}
+:root .trip-overview-view .trip-overview-days.trip-overview-compact-days {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 9px !important;
+  min-width: 0;
+}
+:root .trip-overview-view .trip-overview-day.trip-overview-compact-day {
+  display: grid !important;
+  grid-template-columns: 46px minmax(0, 1fr) minmax(0, auto) 13px !important;
+  grid-template-areas: none !important;
+  align-items: center !important;
+  gap: 10px !important;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  height: auto !important;
+  min-height: 80px !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: 12px 16px !important;
+  transform: none !important;
+  overflow: visible !important;
+  text-align: left;
+}
+.trip-compact-day-index,
+.trip-compact-day-main,
+.trip-compact-day-signals { min-width: 0; }
+.trip-compact-day-index {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  border-right: 1px solid var(--line);
+  padding-right: 9px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.trip-compact-day-index time { font-size: .69rem; line-height: 1.2; color: var(--muted); }
+.trip-compact-day-index strong { font-size: 1.35rem; line-height: 1.1; color: var(--text); }
+.trip-compact-day-main { display: flex; flex-direction: column; gap: 5px; }
+.trip-compact-day-main > strong {
+  color: var(--text);
+  font-size: .96rem;
+  line-height: 1.35;
+  font-weight: 750;
+  overflow-wrap: anywhere;
+}
+.trip-compact-day-main > small {
+  display: block;
+  color: var(--muted);
+  font-size: .76rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.trip-compact-day-signals {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  max-width: 116px;
+  color: var(--muted);
+  text-align: right;
+}
+.trip-compact-day-modes { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 5px; }
+.trip-compact-day-modes svg { display: block; width: 17px; height: 17px; }
+.trip-compact-day-signals > small {
+  font-size: .72rem;
+  line-height: 1.35;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.trip-compact-day-chevron {
+  color: var(--muted);
+  font-size: 1.35rem;
+  line-height: 1;
+  justify-self: end;
+}
+@container (min-width: 840px) {
+  :root .trip-overview-view .trip-overview-days.trip-overview-compact-days {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+@container (max-width: 440px) {
+  :root .trip-overview-view .trip-overview-day.trip-overview-compact-day {
+    grid-template-columns: 36px minmax(0, 1fr) minmax(0, auto) 10px !important;
+    gap: 8px !important;
+    padding: 12px 13px !important;
+  }
+  .trip-compact-day-index { padding-right: 6px; }
+  .trip-compact-day-index strong { font-size: 1.18rem; }
+  .trip-compact-day-signals { max-width: 68px; }
+  .trip-compact-day-modes svg { width: 15px; height: 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trip-overview-compact-day { animation: none !important; transition: none !important; }
+}

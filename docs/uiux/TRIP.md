@@ -5,6 +5,7 @@
 ## 1. Two distinct modes: Overview and Day
 
 - **Overview** is a distinct view mode, never a synthetic date. First present a readable journey/day overview with dates, daily titles, concise route summary, accommodation or genuine unresolved decisions where supplied. Optional source-backed highlights and **flight overview** appear only when relevant; no generic filler sections. All overview cards open the correct day.
+- **P1.12 Compact Overview is mandatory across styles:** a short title/date/count cover followed by dense daily cards (day number/date, subject, published route, actual transport SVG and only source-backed cues). Label `days[].items[]` totals as itinerary items, not stops. Neither a large decorative grid/doodle nor a Kansai-only `mobility` field may become an overview prerequisite. No repeated right-rail counts; keep working day deep links, flight and genuine decisions.
 - **Day** begins with selected date, real day title, compact route at a glance and necessary warnings, then the **complete visible main timeline**. The date/weather strip uses [WEATHER.md](./WEATHER.md) and the single `state.selectedDate`.
 - Day source order is **`days[].items[]`**. Do not sort, optimize, interpolate gaps, guess missing duration or manufacture travel time in the browser. Separate source types remain same-level scheduled blocks: `place`/`attraction`, `event`, `food`, `stay`, `break`, and door-to-door `transport` Journey.
 
@@ -30,6 +31,8 @@
 - Readable on 320/390/980/1100/1440/1920px and 200% text. Unfolded main timeline must remain visible and keyboard-readable even when map/weather/image fails.
 
 ## 5. Acceptance
+
+- **Overview-specific:** `npm run test:overview` + `npm run test:overview:browser`, including compact Hero size, decorative `::before/::after` absence, all style themes, 320/390/980/1100/1440/1920 and 200% text, correct day navigation, truthful labels and no duplicate sidebar stats.
 
 - `npm run test:timeline`, `npm run test:journey`, `npm run test:trip-layout`, `npm run test:uiux`; with UI/style changes also `npm run test:journey:browser`, `npm run test:trip-layout:browser` and `npm run test:uiux:geometry`.
 - Test a multi-leg Japan rail transfer, walk-only Journey, back-to-back separate Journeys, event/break in-between, unknown leg time, cross-border flight, long Japanese stations, Storybook 200% and desktop clipping. Verify A→B Maps URL and per-leg disclosure are accurate.

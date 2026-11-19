@@ -140,6 +140,21 @@ Places 是**真正可介紹的景點／場域目錄**，不是所有有座標或
 
 必要驗證：`npm run test:places-curation`、`npm run test:places-curation:browser`、現有 Places/Timeline/ID/Style Pack 檢查；檢查負向案例「有座標的候場／活動仍不得進景點清單」，以及照片作者與授權欄位。
 
+### P1.12 Compact Trip Overview — source-led, no generic sticker wall
+
+**Trip Overview 必須簡約、可快速掃讀。** 預設首屏只保留緊湊的旅程標題、日期與少量有意義統計，接續可直接進入單日的摘要卡；**任何 Style Pack 都不能把總覽變成大幅通用插畫或空白裝飾板**。統計 `days[].items[]` 的總筆數必須標為「行程項目 / itinerary items」，而非 `planned stops`（其中包含交通、活動、住宿、休息，並非都是景點／停靠站）。
+
+- **每日卡必要資訊：** 日期、Day 序號、行程主題、來源支援的路線摘要；可從既有 `days[].items[]` 交通記錄投影最多三個語意 SVG（飛機、車、鐵路等）。只有來源明確時才顯示重點／未解決事項；不加入「5 planned」等無行動價值副標、假天氣或泛用旅行口號。沒資料的右側區域留空，不用裝飾補版。
+- 資料來源僅限現有 `days[].routeSummary` 或 `days[].items[]`；不因新旅行缺少大阪專屬的 `mobility` 就降級畫面，也不得新增第二份時刻表。每日卡仍須導向正確單日；已發布的 Flight Overview、必要警告與選填亮點仍可使用。
+- **主題只改字體、配色、框線等材料。** `::before`／`::after` 的九宮格貼圖、通用旅行道具、與旅行無關的 SVG、巨大固定尺寸或斜轉動畫，不得占據 Overview 的 Hero 與日卡。封面圖片必須與旅程相符、具來源及使用權；沒有就使用無圖版型。不可用 `overflow:hidden` 偽裝解決文字溢出。
+- **根據可用內容寬度響應，不根據 viewport 猜。** 桌面／手機（320、390、980、1100、1440、1920px）與文字放大 200% 都不得裁切主題、日期、路線或造成整頁水平捲動，且卡片左右文字安全內距仍符合 P1.7。
+- **右側 Context Rail 不能複製主總覽統計。** 僅在有不同的、來源可信的預約／提醒等實用內容時出現，否則收起。裝置本機選擇 Style Pack 不得破壞上述結構。
+- **雙重驗收：** `npm run test:overview`、`npm run test:overview:browser`，且加入正式 `test:contracts`；要檢查 DOM、Pseudo-elements、Hero 實際高度、文字／卡片安全內距、不同風格和深連結。測試未跑必須回報 NOT RUN，不得宣稱視覺 PASS。
+
+### P1.13 One appearance selector, light by default
+
+**更多 → 外觀只有一個樣式選擇入口。** Editorial Light / Editorial Dark 已在同一個 Style Picker 內，不能再顯示第二個 `System / Dark / Light` Theme Switcher，避免兩套設定互相覆蓋。動態偏好僅在動畫主題確實需要時獨立提供，不是第二組顏色控制。新的 Template 預設 Editorial Light（`ui.visualStyle: editorial`、`ui.theme: light`）；舊裝置已儲存的偏好不應被改版任意清掉，選擇「跟隨行程預設」會清除本機覆蓋並回到發布者預設。新旅程可在 `trip.json` 顯式選擇其他主題，但不得偷偷由作業系統深色模式改變發布者的 Light 預設。瀏覽器載入前的 `html[data-theme]` 也要採 Light，避免初始閃爍。必須測試深色選項可切換、重整後能保留、回預設可恢復。
+
 ## P2 — Flexible visual direction
 
 Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓角、框線、陰影、微動畫及日概覽呈現手法。這些是**材料與排版選擇**，不得改變 P0 Timeline／五分頁／資料來源、P1 易讀性或操作順序。旅行專屬 UI 可在額外的 `docs/UIUX_<TRIP>.md` 中補充，但不得降低本文件要求。
