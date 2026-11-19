@@ -113,6 +113,17 @@ Trip、Transport、Places 使用**同一個**可橫向捲動的日期卡列（D 
 
 **Style Pack 責任：** 主題可以改變字體／裝飾，但不得把一欄的語意卡片強制改成三欄並留下大片空白。Storybook 的 `.trip-v2-item` 為時間在上、內容在下的**單欄 Grid**；`journey-groups.css` 只管 Journey 內容與展開，不得重定義全主題通用 `grid-template-columns`。CI 必須同時檢查這個 CSS 契約和真實 Storybook 畫面，覆蓋 320／390／980／1100px、200% 文字，驗證內容佔用可用寬度且無水平裁切。
 
+
+### P1.11 Curated Places ≠ every scheduled activity
+
+Places 是**真正可介紹的景點／場域目錄**，不是所有有座標或 Google Maps 連結的行程項目。只有經確認的神社、寺院、古道、景點、公園、博物館、名勝等 `type: place|attraction|museum|landmark|nature|sight` 可進景點列表；單純的 `break`（看書、候場、休息、飯店日常泡湯）、`event`（祭典、煙火、市集、演出）、`transport`、`stay` 與一般 `food` 應只在 Chronological Timeline 保留，不可因 `location`、座標、`mapQuery` 或 `infoCard` 自動被認作景點。具明確店名和一手背景的 `restaurant` 可另作實體場域，不把未指定餐廳的午餐變景點。
+
+每個正式發布的景點應有簡短但具體的 `infoCard.summary`、**至少一個可查證的一手 `sourceLinks`**，如景點自身官網或官方觀光機構。明確區分「景點官網」和「政府／觀光協會介紹」，不可把後者冒稱為景點官方網站。照片為*可選*欄位，只有確認主體相符、圖片來源、作者及授權（或明確可用的公開授權）時才能嵌入；必須保留 `imageAlt`、`imageSource`、`imageCredit`、`imageLicense` 和來源連結。不可以抓任意官網照片後直接熱鏈當作已授權素材。圖片載入失敗時只隱藏圖片，不出現破圖符號、不影響介紹與官網連結。
+
+資料分類錯誤需回到 `trip.json` 改 `type`；**保留**每日時間軸的原始 ID、開始／結束時間、順序與備註。Places 卡片摘要只使用 `infoCard.summary`，**不得**拿「約 15:00–16:00｜停留 60 分鐘」這類排程 `item.note` 充當景點介紹。新旅行複製 Template 時，Agent 必須先查官方來源，缺資料時明確標記「介紹待整理」，不能虛構文字或顯示誤導圖片。
+
+必要驗證：`npm run test:places-curation`、`npm run test:places-curation:browser`、現有 Places/Timeline/ID/Style Pack 檢查；檢查負向案例「有座標的候場／活動仍不得進景點清單」，以及照片作者與授權欄位。
+
 ## P2 — Flexible visual direction
 
 Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓角、框線、陰影、微動畫及日概覽呈現手法。這些是**材料與排版選擇**，不得改變 P0 Timeline／五分頁／資料來源、P1 易讀性或操作順序。旅行專屬 UI 可在額外的 `docs/UIUX_<TRIP>.md` 中補充，但不得降低本文件要求。

@@ -3,7 +3,7 @@
 // shell/runtime, and activating one cannot delete the other's cache.
 const CACHE_PREFIX = "travel-lite:" + new URL(self.registration.scope).pathname
   .replace(/[^a-z0-9]/gi, "-") + ":";
-const CACHE = CACHE_PREFIX + "shell-v57-storybook-quiet-grid";
+const CACHE = CACHE_PREFIX + "shell-v58-curated-places";
 const RUNTIME_CACHE = CACHE_PREFIX + "runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -16,7 +16,7 @@ const CORE = [
   "./trip-view.css?v=20261118-chronological-v1",
   "./responsive-shell.css",
   "./companion-ux.css",
-  "./places-view.css",
+  "./places-view.css?v=20261119-places-v1",
   "./long-trip-nav.css",
   "./date-navigation.css?v=20261118-history-v2",
   "./flight-overview.css?v=20261118-weatherstrip-v1",
@@ -53,7 +53,7 @@ const CORE = [
   "./runtime-providers.js?v=20261118-history-v2",
   "./runtime-features.js?v=20261118-icons-v1",
   "./runtime-handoff.js",
-  "./places-view.js?v=20261118-icons-v1",
+  "./places-view.js?v=20261119-places-v1",
   "./transport-overview.js",
   "./runtime-google.js",
   "./theme-shell.js",

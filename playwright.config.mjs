@@ -9,7 +9,7 @@ export default defineConfig({
     "style-settings.spec.mjs", "nine-looks.spec.mjs", "second-prompt-batch.spec.mjs",
     "responsive-style-picker.spec.mjs", "export-ui.spec.mjs", "site-storage.spec.mjs",
     "journey-confidence.spec.mjs", "vintage-a5.spec.mjs", "vintage-watercolor.spec.mjs", "vintage-framing.spec.mjs",
-    "bottom-nav-fixed.spec.mjs", "places-transport.spec.mjs",
+    "bottom-nav-fixed.spec.mjs", "places-transport.spec.mjs", "places-curation.spec.mjs",
     "style-surface-padding.spec.mjs", "style-surface-role.spec.mjs",
     "style-semantic-parity.spec.mjs", "style-surface-matrix.spec.mjs",
     "style-text-zoom.spec.mjs", "uiux-safe-inset.spec.mjs", "journey-timeline.spec.mjs", "trip-responsive-layout.spec.mjs", "map-workspace-insets.spec.mjs", "issue109-identity.spec.mjs",

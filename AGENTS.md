@@ -6,6 +6,7 @@
 
 - **Hierarchy:** `docs/UIUX.md` 是 UI/UX Single Source of Truth，優先序 **P0 Immutable > P1 Required > P2 Flexible**；任何主題、Agent 習慣、行程資料或局部 UI 改動都不得私自推翻 P0。
 - **P0 reminder:** Trip Day 永遠顯示 Chronological Itinerary Timeline + Time-blocked Schedule；景點、餐飲、活動與一次完整起點→終點交通 Journey 是主軸同層時段。連續步行／搭車／轉乘的原始 `days[].items[]` Leg/ID/時間保持獨立來源，但主 Timeline 投影為一張可展開的交通卡。兩端已確認時提供 Google Maps 路線連結，不捏造中繼站、時刻或即時導航狀態。步行使用腳印 SVG。
+- **Places gate:** `type: place` means a researched destination; never classify a personal waiting/reading/rest block or fireworks performance as a tourist attraction merely because it has coordinates. Require sourced `infoCard` guide and licensed/attributed photos where available. Read `docs/UIUX.md` P1.11 and run `npm run test:places-curation` + `npm run test:places-curation:browser` before changing Places or generating a new trip.
 - **Implementation gate:** 先比對變更與 `docs/UIUX.md` 的 P0/P1 合約；若衝突，停止該方案並修正。新增／變更 UX 規則時，先更新 `docs/UIUX.md` 與相關測試，再改程式，不要在 `AGENTS.md` 或 Style Pack 複製互相矛盾的定義。
 - **Validation gate:** 必須跑 `npm run lint:uiux`（含 `lint:map-insets`） + `npm run test:uiux` + `npm run test:timeline` + `npm run test:journey` + `npm run test:uiux:geometry`（含 `test:map-insets:browser`） + `npm run test:journey:browser`，涉及畫面再跑對應 Browser / Style Pack / PWA 驗收；如實列出 **PASS / FAIL / NOT RUN**。未修復 P0 失敗不可聲稱完成、合併或正式上線；PR 先保持 Draft。
 - **Inheritance gate:** 由本 Repo 產生新旅行站時，必須將此強制入口、`docs/UIUX.md`、Timeline Contract、Schema 及適用測試一起帶入，除非 Owner 明確批准更高層級的規格變動。

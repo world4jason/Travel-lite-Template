@@ -19,7 +19,7 @@ Do not duplicate itinerary data across tabs. The map is still a spatial-referenc
 ## Key design choices
 
 - Places uses existing scheduled item IDs, not a separate tourist destination search API.
-- Filter out explicitly non-place transport/accommodation tasks and generic unconfirmed meals. Other published place types and venue-backed activities remain.
+- Use an explicit venue/attraction taxonomy: only curated actual `place|attraction|museum|landmark|nature|sight` and researched named `restaurant`. Exclude `event`, `break`, waiting, ticket procedures, transport, stays and unspecified meals, **even when they contain coordinates, mapQuery or infoCard**. Keep excluded activities as canonical Timeline rows.
 - Places cards show only title, itinerary date and existing short summary. Deep context stays in the detail screen.
 - The detail screen can display existing infoCard title/summary/facts/image/sourceLinks; no auto-generated Guide chapters.
 - A reservation or document appears on a Place only when the publisher explicitly provided itemId/itemIds. There is no fuzzy title/name matching.
