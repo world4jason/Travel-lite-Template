@@ -4,6 +4,8 @@
 
 **在任何新行程建立、Template 繼承、UI、Timeline、Trip 資料、導航、CSS、Style Pack 或互動修改之前，Agent MUST 實際開啟並完整閱讀 [`docs/UIUX.md`](docs/UIUX.md)。** 不能只看 README、工具摘要或既有 Issue。再按工作範圍閱讀 [`docs/CHRONOLOGICAL_TIMELINE_CONTRACT.md`](docs/CHRONOLOGICAL_TIMELINE_CONTRACT.md)、[`docs/TRIP_SCHEMA.md`](docs/TRIP_SCHEMA.md) 和其中引用的細節規格。
 
+
+- **Curated cover art gate:** optional `trip.overviewArtwork` must be based on explicit publisher-selected real item IDs; choose `event`/`break` too when personally important, not automatically city/popularity or Places-only. Publisher editor lives at `tools/overview-artwork-picker.html` and exports an offline brief; 1–3 approved local images only, Style Pack-specific when tagged, no runtime generation or extra user-facing navigation. Preserve Compact Overview P1.12 and image rights; check `npm run test:overview-artwork` before publishing.
 - **Hierarchy:** `docs/UIUX.md` 是 UI/UX Single Source of Truth，優先序 **P0 Immutable > P1 Required > P2 Flexible**；任何主題、Agent 習慣、行程資料或局部 UI 改動都不得私自推翻 P0。
 - **P0 reminder:** Trip Day 永遠顯示 Chronological Itinerary Timeline + Time-blocked Schedule；景點、餐飲、活動與一次完整起點→終點交通 Journey 是主軸同層時段。連續步行／搭車／轉乘的原始 `days[].items[]` Leg/ID/時間保持獨立來源，但主 Timeline 投影為一張可展開的交通卡。兩端已確認時提供 Google Maps 路線連結，不捏造中繼站、時刻或即時導航狀態。步行使用腳印 SVG。
 - **Places gate:** `type: place` means a researched destination; never classify a personal waiting/reading/rest block or fireworks performance as a tourist attraction merely because it has coordinates. Require sourced `infoCard` guide and licensed/attributed photos where available. Read `docs/UIUX.md` P1.11 and run `npm run test:places-curation` + `npm run test:places-curation:browser` before changing Places or generating a new trip.
