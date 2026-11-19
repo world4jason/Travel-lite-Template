@@ -7,7 +7,7 @@ import {readFileSync} from "node:fs";
 const read = (path) => readFileSync(new URL("../" + path, import.meta.url), "utf8");
 const files = Object.fromEntries([
   "trip-view.js", "overview-compact.css", "companion-ux.js", "app.js",
-  "index.html", "sw.js", "trip.json", "docs/UIUX.md", "docs/uiux/TRIP.md",
+  "index.html", "sw.js", "theme-shell.js", "manifest.webmanifest", "trip.json", "docs/UIUX.md", "docs/uiux/TRIP.md",
   "docs/uiux/SHARED.md"
 ].map((path) => [path, read(path)]));
 
@@ -19,6 +19,12 @@ function overviewDefects(source) {
   const app = source["app.js"];
   const index = source["index.html"];
   const sw = source["sw.js"];
+  if (source["theme-shell.js"].includes('document.createElement("button")') ||
+      source["theme-shell.js"].includes('button.addEventListener("click"'))
+    issues.push("top quick theme switcher duplicates Style Picker");
+  const manifest = JSON.parse(source["manifest.webmanifest"]);
+  if (manifest.background_color !== "#f5f6f2" || manifest.theme_color !== "#f5f6f2")
+    issues.push("PWA splash default must be Light");
   const data = JSON.parse(source["trip.json"]);
   const compact = view.slice(view.indexOf("function overviewModeIcons"), view.indexOf("function renderOverview"));
   const side = rail.slice(rail.indexOf('if (currentTripMode() === "overview") {'));
@@ -75,4 +81,9 @@ test("reject redundant right rail stats returning", () => {
   const broken = {...files, "companion-ux.js": files["companion-ux.js"].replace(
     'right.innerHTML = reservations ?', 'right.innerHTML = flattenItems().length && reservations ?')};
   assert.match(overviewDefects(broken).join(" "), /duplicates overview counts/);
+});
+
+test("reject a second quick theme toggle in the global header", () => {
+  const broken = {...files, "theme-shell.js": files["theme-shell.js"] + '\nbutton.addEventListener("click", toggleTheme);'};
+  assert.match(overviewDefects(broken).join(" "), /quick theme switcher/);
 });

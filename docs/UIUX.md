@@ -153,7 +153,7 @@ Places 是**真正可介紹的景點／場域目錄**，不是所有有座標或
 
 ### P1.13 One appearance selector, light by default
 
-**更多 → 外觀只有一個樣式選擇入口。** Editorial Light / Editorial Dark 已在同一個 Style Picker 內，不能再顯示第二個 `System / Dark / Light` Theme Switcher，避免兩套設定互相覆蓋。動態偏好僅在動畫主題確實需要時獨立提供，不是第二組顏色控制。新的 Template 預設 Editorial Light（`ui.visualStyle: editorial`、`ui.theme: light`）；舊裝置已儲存的偏好不應被改版任意清掉，選擇「跟隨行程預設」會清除本機覆蓋並回到發布者預設。新旅程可在 `trip.json` 顯式選擇其他主題，但不得偷偷由作業系統深色模式改變發布者的 Light 預設。瀏覽器載入前的 `html[data-theme]` 也要採 Light，避免初始閃爍。必須測試深色選項可切換、重整後能保留、回預設可恢復。
+**更多 → 外觀只有一個樣式選擇入口。** Editorial Light / Editorial Dark 已在同一個 Style Picker 內，不能再顯示第二個 `System / Dark / Light` Theme Switcher，**也不在頂部再放獨立的 Quick Theme Toggle**，避免兩套設定互相覆蓋。主題切換後的地圖配色與瀏覽器工具列仍應同步，但不另建立顏色控制。動態偏好僅在動畫主題確實需要時獨立提供，不是第二組顏色控制。新的 Template 預設 Editorial Light（`ui.visualStyle: editorial`、`ui.theme: light`）；舊裝置已儲存的偏好不應被改版任意清掉，選擇「跟隨行程預設」會清除本機覆蓋並回到發布者預設。新旅程可在 `trip.json` 顯式選擇其他主題，但不得偷偷由作業系統深色模式改變發布者的 Light 預設。瀏覽器載入前的 `html[data-theme]` 也要採 Light，避免初始閃爍。必須測試深色選項可切換、重整後能保留、回預設可恢復。
 
 ## P2 — Flexible visual direction
 

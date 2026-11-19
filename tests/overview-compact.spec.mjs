@@ -79,7 +79,7 @@ test("only one Light/Dark appearance selector exists; default is Light", async (
   await page.goto("/#more");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await expect(page.locator('[data-style-picker-open]')).toHaveCount(1);
-  await expect(page.locator(".theme-switcher, [data-theme].theme-button")).toHaveCount(0);
+  await expect(page.locator(".theme-switcher, [data-theme].theme-button, #quick-theme-toggle")).toHaveCount(0);
   await page.locator("[data-style-picker-open]").click();
   await expect(page.locator('[data-style-choice="editorial-light"]')).toHaveCount(1);
   await expect(page.locator('[data-style-choice="editorial-dark"]')).toHaveCount(1);
