@@ -94,14 +94,14 @@
       }
       $('make-brief').addEventListener('click', async () => {
         if(!brief())return;
-        try { await navigator.clipboard?.writeText($('result').value); $('status').textContent='製作需求已產生，可複製'; $('status').className=''; }
+        try { if (!navigator.clipboard?.writeText) throw new Error('clipboard unsupported'); await navigator.clipboard.writeText($('result').value); $('status').textContent='已複製製作需求'; $('status').className=''; }
         catch { $('result').focus(); $('result').select(); }
       });
       $('download-brief').addEventListener('click', () => {
         if(!brief())return;
         const blob=new Blob([$('result').value],{type:'application/json'});
         const url=URL.createObjectURL(blob), a=document.createElement('a');
-        a.href=url;a.download='overview-artwork-selection.json';a.click();URL.revokeObjectURL(url);
+        a.href=url;a.download='overview-artwork-selection.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
       });
       load();
     })();
