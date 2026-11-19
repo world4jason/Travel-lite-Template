@@ -136,7 +136,7 @@ Places 是**真正可介紹的景點／場域目錄**，不是所有有座標或
 
 每個正式發布的景點應有簡短但具體的 `infoCard.summary`、**至少一個可查證的一手 `sourceLinks`**，如景點自身官網或官方觀光機構。明確區分「景點官網」和「政府／觀光協會介紹」，不可把後者冒稱為景點官方網站。照片為*可選*欄位，只有確認主體相符、圖片來源、作者及授權（或明確可用的公開授權）時才能嵌入；必須保留 `imageAlt`、`imageSource`、`imageCredit`、`imageLicense` 和來源連結。不可以抓任意官網照片後直接熱鏈當作已授權素材。圖片載入失敗時只隱藏圖片，不出現破圖符號、不影響介紹與官網連結。
 
-資料分類錯誤需回到 `trip.json` 改 `type`；**保留**每日時間軸的原始 ID、開始／結束時間、順序與備註。Places 卡片摘要只使用 `infoCard.summary`，**不得**拿「約 15:00–16:00｜停留 60 分鐘」這類排程 `item.note` 充當景點介紹。新旅行複製 Template 時，Agent 必須先查官方來源，缺資料時明確標記「介紹待整理」，不能虛構文字或顯示誤導圖片。
+資料分類錯誤需回到 `trip.json` 改 `type`；**保留**每日時間軸的原始 ID、開始／結束時間、順序與備註。Places 的標題是可辨識的場館／景點名詞，不是「參拜／散步／等候／夜間點燈」等行程動詞；若需要在 Trip 保留「參拜 XXX」，可在該 item 明確提供 `venueName: "XXX"` 讓 Places 顯示純名稱，不得修改 Timeline 的原始時刻、ID 或既有 `title`。沒有明確 `venueName` 才退回 `item.title`；禁止透過字串刪字推測地點。Places 卡片摘要只使用 `infoCard.summary`，**不得**拿「約 15:00–16:00｜停留 60 分鐘」這類排程 `item.note` 充當景點介紹。新旅行複製 Template 時，Agent 必須先查官方來源，缺資料時明確標記「介紹待整理」，不能虛構文字或顯示誤導圖片。
 
 必要驗證：`npm run test:places-curation`、`npm run test:places-curation:browser`、現有 Places/Timeline/ID/Style Pack 檢查；檢查負向案例「有座標的候場／活動仍不得進景點清單」，以及照片作者與授權欄位。
 
