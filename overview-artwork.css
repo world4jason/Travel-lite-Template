@@ -9,6 +9,9 @@
   width: 100%;
   margin: 5px 0 0;
 }
+.trip-overview-artwork:has(.trip-overview-art-frame:only-child) {
+  max-width: 420px;
+}
 .trip-overview-artwork:has(.trip-overview-art-frame:nth-child(2)) {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
