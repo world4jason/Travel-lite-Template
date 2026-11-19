@@ -33,6 +33,10 @@ jobs:
         run: npm run test:trip-layout
       - name: Render Storybook trip cards across phone/desktop widths
         run: npm run test:trip-layout:browser
+      - name: Places classification and source-backed guides
+        run: npm run test:places-curation
+      - name: Places curated guide browser QA
+        run: npm run test:places-curation:browser
       - name: Enforce canonical time-blocked itinerary
         run: npm run test:timeline
       - name: Check globally unique item IDs

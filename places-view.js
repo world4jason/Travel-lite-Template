@@ -41,8 +41,8 @@
     pushRoute(currentListHash());
     render();
   }
-  const excludedTypes = new Set(["transport", "stay", "flight", "transfer", "lodging", "hotel", "drive", "bus", "train"]);
-  const namedTypes = new Set(["place", "attraction", "museum", "landmark", "nature", "activity", "event", "food", "restaurant", "sight"]);
+  const excludedTypes = new Set(["transport", "stay", "flight", "transfer", "lodging", "hotel", "drive", "bus", "train", "break", "rest", "wait", "event", "activity", "procedure", "preparation"]);
+  const namedTypes = new Set(["place", "attraction", "museum", "landmark", "nature", "sight"]);
   const zh = () => /^zh/i.test(state.data?.ui?.locale || "");
   const label = (cn, en) => zh() ? cn : en;
   const safeHttp = (raw) => {
@@ -60,10 +60,12 @@
     if (!item || !item.id || !item.title) return false;
     const type = String(item.type || "").trim().toLowerCase();
     if (excludedTypes.has(type)) return false;
-    // An unspecific Lunch/Dinner stop is an itinerary task, not a researched venue.
-    if (type === "food") return Boolean(item.infoCard || item.venueName || item.mapQuery || item.mapsUrl);
-    if (type === "restaurant") return hasLocation(item) || Boolean(item.infoCard);
-    return namedTypes.has(type) || Boolean(item.infoCard) || hasLocation(item);
+    // Search/map coordinates do not make an activity, meal, or waiting
+    // period a tourist attraction. A known restaurant is a separate venue
+    // category, not a generic food stop.
+    if (type === "food") return false;
+    if (type === "restaurant") return Boolean(item.venueName && item.infoCard?.summary);
+    return namedTypes.has(type);
   }
   function entries() {
     return state.data.days.flatMap((day) =>
@@ -99,12 +101,15 @@
     const item = entry.item;
     const contents = badges(item);
     const info = item.infoCard || {};
-    const excerpt = info.summary || item.note || item.location || label("尚無景點介紹", "Details not provided");
+    const excerpt = info.summary || label("景點介紹尚待整理", "Place guide not yet curated");
+    const thumbnail = safeHttp(info.image);
+    const imageAlt = info.imageAlt || item.location || item.title;
     const unique = isUniquePlaceId(item.id);
     const start = unique
       ? `<button class="places-card panel" data-open-place="${escapeAttr(item.id)}" type="button">`
       : `<article class="places-card panel places-ambiguous-card" data-ambiguous-place aria-label="${label("景點來源 ID 不明確", "Place source ID is ambiguous")}">`;
     return `${start}
+      ${thumbnail ? `<img class="places-card-photo" src="${escapeAttr(thumbnail)}" alt="${escapeAttr(imageAlt)}" loading="lazy" referrerpolicy="no-referrer">` : ""}
       <span class="places-card-meta">${escapeHtml(smallDay(entry))}</span>
       <span class="places-card-title">${escapeHtml(item.title)}</span>
       <span class="places-card-excerpt">${escapeHtml(excerpt)}</span>
@@ -132,10 +137,8 @@
     root.innerHTML = `<div class="places-view view-stack">
       ${itemIdentityWarningHtml()}
       <header class="places-heading">
-        <p class="eyebrow">${label("已安排景點與活動", "YOUR PLANNED PLACES")}</p>
         <h2>${label("景點指南", "Places")}</h2>
-        <p>${label("查看這趟旅程已安排的地點、入場事項與背景介紹。", "Find the places in this itinerary, entry details and source-backed context.")}</p>
-        <span class="places-count">${all.length} ${label("個地點", "places")}</span>
+        <span class="places-count">${all.length} ${label("個景點", "places")}</span>
       </header>
       ${picker}
       <div class="places-grid">${selected.length ? selected.map(cardHtml).join("") :
@@ -161,6 +164,9 @@
     const info = item.infoCard || {};
     const content = badges(item);
     const photo = safeHttp(info.image);
+    const photoSource = safeHttp(info.imageSource);
+    const photoCaption = [info.imageCredit, info.imageLicense].filter(Boolean).join(" · ");
+    const photoAlt = info.imageAlt || item.location || item.title;
     const map = safeHttp(googleMapsOpenUrl(item));
     const facts = (Array.isArray(info.facts) ? info.facts : []).filter(Boolean);
     const sources = linksHtml(info.sourceLinks);
@@ -183,7 +189,8 @@
       ${hasAbout ? `<section class="panel places-about">
         <p class="eyebrow">${label("景點介紹", "PLACE GUIDE")}</p>
         <h3>${escapeHtml(info.title || item.title)}</h3>
-        ${photo ? `<img src="${escapeAttr(photo)}" alt="" loading="lazy" class="places-photo">` : ""}
+        ${photo ? `<figure class="places-photo-figure"><img src="${escapeAttr(photo)}" alt="${escapeAttr(photoAlt)}" loading="lazy" referrerpolicy="no-referrer" class="places-photo">
+          ${photoCaption ? `<figcaption>${photoSource ? `<a href="${escapeAttr(photoSource)}" target="_blank" rel="noopener noreferrer">${escapeHtml(photoCaption)}</a>` : escapeHtml(photoCaption)}</figcaption>` : ""}</figure>` : ""}
         ${info.summary ? `<p>${escapeHtml(info.summary)}</p>` : ""}
         ${facts.length ? `<ul>${facts.map((fact) => `<li>${escapeHtml(fact)}</li>`).join("")}</ul>` : ""}
         ${sources ? `<div class="places-links"><strong>${label("資料來源", "Sources")}</strong>${sources}</div>` : ""}
@@ -229,6 +236,15 @@
     pushRoute("#places/item/" + encodeURIComponent(id));
     setView("places");
   }
+  // Remote Commons thumbnails may be blocked by the client; hide the failed
+  // image without leaving a broken icon or removing the verified guide text.
+  root.addEventListener("error", (event) => {
+    const img=event.target;
+    if (img?.matches?.(".places-photo, .places-card-photo")) {
+      // Retain the licensed image-source citation even if the photo fails.
+      img.remove();
+    }
+  }, true);
   root.addEventListener("click", (event) => {
     const target = event.target.closest("[data-open-place],[data-places-back],[data-places-date],[data-places-trip],[data-places-transport]");
     if (!target) return;

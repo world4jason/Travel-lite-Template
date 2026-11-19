@@ -369,6 +369,14 @@ For lightweight nearby/ad-hoc search, link out instead of adding a discovery pro
 
 The runtime scopes the search around the selected/planned stop when possible. In the Trip timeline these live under secondary-action overflow rather than as full-size buttons.
 
+## Place vs event vs break — publishing semantics
+
+- `type: "place"` means a **real destination worth a guide**, not a scheduled action. A venue/attraction must have independent identity and may carry a curated `infoCard`. Unknown facts must not be fabricated.
+- `type: "event"` is an actual time-bound festival, market, ceremony or performance; it remains on the main Timeline, not in the Places catalogue.
+- `type: "break"` is waiting for fireworks, reading at a riverside, resting or routine hotel bathing; it remains a scheduled Time-block, **not a place**. Keep the `location` and coordinates as transportation context without changing the category.
+- Generic `food`, `transport`, `stay` and activities with coordinates do not automatically qualify. Only explicitly researched named `restaurant` venues may enter Places; a `mapQuery` is not a category.
+- Prefer a short, venue-specific, sourced `infoCard.summary` and `infoCard.sourceLinks` for each public `place`. `infoCard.officialSite` is reserved for the venue's own website, not a government tourism listing. Images must be rights-cleared, accessible and credited. `item.note` is itinerary timing/practical info, never a substitute guide.
+
 ## Static place context: `infoCard`
 
 Use this for stable background researched by the LLM/agent before deployment:
@@ -380,7 +388,12 @@ Use this for stable background researched by the LLM/agent before deployment:
     "title": "Senso-ji",
     "summary": "Short context useful while visiting.",
     "facts": ["A useful historical fact.", "A useful visit-context fact."],
-    "image": "https://...",
+    "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Example.jpg?width=900",
+    "imageAlt": "Short factual image description",
+    "imageSource": "https://commons.wikimedia.org/wiki/File:Example.jpg",
+    "imageCredit": "Photographer / Wikimedia Commons",
+    "imageLicense": "CC BY 4.0",
+    "officialSite": "https://the-venue.example/",
     "sourceLinks": [
       { "label": "Wikipedia", "url": "https://..." },
       { "label": "Official site", "url": "https://..." }

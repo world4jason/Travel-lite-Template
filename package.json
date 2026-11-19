@@ -14,7 +14,7 @@
     "test:style-parity": "node scripts/verify-style-parity.mjs",
     "test:timeline": "node --test tests/chronological-timeline.test.mjs && node scripts/check-chronological-timeline.mjs trip.json",
     "test:uiux": "node --test tests/uiux-contract.test.mjs",
-    "test:contracts": "npm run lint:uiux && npm run test:uiux && npm run test:timeline && npm run test:journey && npm run test:trip-layout",
+    "test:contracts": "npm run lint:uiux && npm run test:uiux && npm run test:timeline && npm run test:journey && npm run test:trip-layout && npm run test:places-curation",
     "test:trip-widgets": "node --test tests/date-weather-flight.test.mjs",
     "lint:uiux": "node --test tests/uiux-lint.test.mjs && node scripts/lint-uiux.mjs && npm run lint:map-insets",
     "test:uiux:geometry": "playwright test tests/map-workspace-insets.spec.mjs tests/uiux-safe-inset.spec.mjs --project=chromium",
@@ -23,7 +23,9 @@
     "lint:map-insets": "node --test tests/map-workspace-insets.test.mjs && node scripts/check-map-workspace-insets.mjs",
     "test:map-insets:browser": "playwright test tests/map-workspace-insets.spec.mjs --project=chromium",
     "test:trip-layout": "node --test tests/trip-layout-contract.test.mjs",
-    "test:trip-layout:browser": "playwright test tests/trip-responsive-layout.spec.mjs --project=chromium"
+    "test:trip-layout:browser": "playwright test tests/trip-responsive-layout.spec.mjs --project=chromium",
+    "test:places-curation": "node --test tests/places-curation.test.mjs",
+    "test:places-curation:browser": "playwright test tests/places-curation.spec.mjs --project=chromium"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
