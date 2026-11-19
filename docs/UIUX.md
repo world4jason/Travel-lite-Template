@@ -10,6 +10,22 @@
 - 優先序：**P0 > P1 > P2**。資料 Schema、Style Pack 及 Trip 專屬文件用於細節補充；若內容衝突，應修正規格與實作，不應默默選擇較寬鬆版本。法律、資安與其他較高權限的指令仍須遵守。
 - 唯一產品 UI/UX 要求在此維護；[CHRONOLOGICAL_TIMELINE_CONTRACT.md](./CHRONOLOGICAL_TIMELINE_CONTRACT.md) 解釋 Timeline 實作／驗收，[TRIP_SCHEMA.md](./TRIP_SCHEMA.md) 定義資料，[STYLE_SURFACE_CONTRACT.md](./STYLE_SURFACE_CONTRACT.md) 定義跨 Theme 的表面幾何，[MAINTENANCE.md](./MAINTENANCE.md) 提供測試流程。不要再複製一份互相矛盾的 P0 規格。
 
+## 0.1 Mandatory per-page specifications / 頁面規範索引
+
+此文件持有不可變的 **P0 > P1 > P2** 產品契約；下列 `docs/uiux/*.md` 是本契約的**規範性延伸**，不是可忽略的建議、第二份相互競爭的總契約，也不是獨立產品分頁。開始更動任何頁面前，必須先讀完整的 `docs/UIUX.md`，再讀共用規範與受影響頁面的規範；涉及日期／天氣一定要讀 Weather。跨頁變更須讀所有受影響文件；新 Trip Repo 複製 Template 時必須一併帶入。
+
+| 範圍 / owner | 必讀規範 | 主要設計責任 |
+| --- | --- | --- |
+| **全站 Shell／共用元件／Style Packs** | [SHARED.md](./uiux/SHARED.md) | 五分頁 IA、內容密度、資訊階層、圖示、RWD、框內距、桌面切邊、可及性、deep link、離線 |
+| **Now／現在** | [NOW.md](./uiux/NOW.md) | 上一站／排定此刻／下一站、風險提醒、TBD、非 GPS |
+| **Trip／行程** | [TRIP.md](./uiux/TRIP.md) | 總覽與單日、完整 Timeline、交通 Journey 合併、飛行摘要、時段與備註 |
+| **Transport／交通** | [TRANSPORT.md](./uiux/TRANSPORT.md) | 單日交通、轉乘明細、地圖與站點、Google Maps A→B、地圖框線安全內距 |
+| **Places／景點** | [PLACES.md](./uiux/PLACES.md) | 真正景點目錄、介紹、官方來源、授權圖片、break/event 排除、詳情及篩選 |
+| **More／更多** | [MORE.md](./uiux/MORE.md) | 清單、Travel Essentials、票券對應、外觀偏好、裝置本機狀態與隱私 |
+| **共用日期／天氣元件（不是第六分頁）** | [WEATHER.md](./uiux/WEATHER.md) | Trip／Transport／Places 日期天氣卡列、Open-Meteo 未來／歷史、地點、缺值、快取與無障礙 |
+
+**衝突處理：** `docs/UIUX.md` P0/P1/P2 優先；各頁細節不得降低本文件要求；`docs/UIUX_KANSAI.md` 僅增列關西特例；`TRIP_SCHEMA.md` 決定資料欄位；`CHRONOLOGICAL_TIMELINE_CONTRACT.md` 決定時間軸映射；`STYLE_SURFACE_CONTRACT.md` 決定 CSS 表面實作與驗收。若看到規範矛盾，先修文件與對應測試、再修程式，不得靜默選較寬鬆版本。
+
 ## P0 — Immutable product rules / 產品死律
 
 ### P0.1 Chronological Itinerary Timeline + Time-blocked Schedule
@@ -130,8 +146,8 @@ Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓
 
 ## Agent preflight / change / release acceptance
 
-1. Agent 在**開始任何 UI/UX、Timeline、資料正規化、導航、Style Pack、CSS、頁面修改或產生新旅行站之前**，必須實際讀取 `AGENTS.md`、**完整** `docs/UIUX.md`，再讀取相關延伸契約。只有看到一段摘錄或 README 連結不算完成閱讀。
-2. 新旅行 Repo 應保留 `AGENTS.md`、`docs/UIUX.md`、Timeline Contract、Schema 及相容的測試；不得複製一份較寬鬆的文件取代。新增產品要求先修改此文件及相應測試，再修改程式。
+1. Agent 在**開始任何 UI/UX、Timeline、資料正規化、導航、Style Pack、CSS、頁面修改或產生新旅行站之前**，必須實際讀取 `AGENTS.md`、**完整** `docs/UIUX.md`，再讀取 `docs/uiux/SHARED.md`、受影響的五分頁頁面規範、日期／天氣改動時的 `docs/uiux/WEATHER.md`，及相關延伸契約。只有看到一段摘錄或 README 連結不算完成閱讀。
+2. 新旅行 Repo 應保留 `AGENTS.md`、`docs/UIUX.md`、完整 `docs/uiux/` 七份分頁／共用規範、Timeline Contract、Schema 及相容的測試；不得複製一份較寬鬆的文件取代。新增產品要求先修改此文件及相應測試，再修改程式。
 3. **必跑** `npm run test:uiux` 與 `npm run test:timeline`；涉及 UI 行為再跑專案既有 Chromium／Style Pack、手機、PWA、離線與 deep-link 回歸。報告精確指令與 **PASS / FAIL / NOT RUN**，不能把靜態閱讀等同於視覺驗收。
 4. P0 衝突／測試失敗不得宣稱已完成或已具備合併條件。PR 應維持 Draft / 未合併至問題修復且 Owner 完成實際視覺驗收。GitHub Actions 只在 Repo 設定為 required status check 時才會形成伺服器側合併阻擋。
 

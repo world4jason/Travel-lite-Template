@@ -68,3 +68,26 @@ test("Kansai-specific requirements can only extend, never replace the universal 
   assert.match(local, /UIUX\.md/);
   assert.match(local, /P0\/P1/);
 });
+
+test("all seven normative page and cross-page UIUX contracts are linked and checkable", () => {
+  const names = ["SHARED", "NOW", "TRIP", "TRANSPORT", "PLACES", "MORE", "WEATHER"];
+  for (const name of names) {
+    const path = "docs/uiux/" + name + ".md";
+    assert.ok(existsSync(new URL(path, root)), "missing page contract: " + path);
+    assert.ok(uiux.includes("./uiux/" + name + ".md"), "UIUX index omits " + name);
+    const spec = read(path);
+    assert.match(spec, /UIUX\.md/, path + " must reference the parent contract");
+    assert.match(spec, /Acceptance|驗收/, path + " requires explicit acceptance");
+  }
+  assert.match(agents, /docs\/uiux\/SHARED\.md/);
+  assert.match(agents, /docs\/uiux\/WEATHER\.md/);
+  const weather = read("docs/uiux/WEATHER.md");
+  assert.match(weather, /past_days/);
+  assert.match(weather, /16/);
+  assert.match(weather, /92/);
+  assert.match(weather, /Historical Weather API/);
+  const places = read("docs/uiux/PLACES.md");
+  assert.match(places, /break/);
+  assert.match(places, /event/);
+  assert.match(places, /imageLicense/);
+});
