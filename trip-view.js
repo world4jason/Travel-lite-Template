@@ -263,7 +263,7 @@
       </section>
       <section class="trip-overview-days trip-overview-compact-days" aria-label="${escapeAttr(localized("每日總覽", "Daily overview"))}">${days.map(overviewDayCard).join("")}</section>
       ${window.TravelLitePlanB?.(state.data.pocketPicks, localized("口袋清單", "Pocket picks")) || ""}
-      ${highlights.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">Flexible</p><h2>Highlights & activities</h2></div><span>${highlights.length}</span></div><div class="trip-highlight-grid">${highlights.map(highlightCard).join("")}</div></section>` : ""}
+      ${highlights.length ? `<details class="trip-overview-section trip-overview-extras"><summary class="trip-overview-extra-toggle"><strong>${localized("備選活動與提醒", "Optional activities & notes")}</strong><span class="trip-overview-extra-count">${highlights.length}</span><span class="trip-overview-extra-indicator" aria-hidden="true">＋</span></summary><div class="trip-highlight-grid">${highlights.map(highlightCard).join("")}</div></details>` : ""}
       ${openDecisions.length ? `<section class="trip-overview-section"><div class="trip-section-heading"><div><p class="eyebrow">TBD</p><h2>Open decisions</h2></div><span>${openDecisions.length}</span></div><div class="trip-open-decisions">${openDecisions.map(({ day, item }) => `<button type="button" class="trip-open-decision composition-narrative" data-trip-day="${escapeAttr(day.date)}"><span>${prettyDate(day.date, { weekday: "short" })}</span><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.decision?.prompt || "Decide on the day")}</p><small>View day →</small></button>`).join("")}</div></section>` : ""}
     </div>`;
 
