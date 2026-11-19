@@ -12,6 +12,7 @@
 ## 2. Information architecture and content economy
 
 - Above the fold: context (date / day / section) → primary answer or action → necessary time, status, source. Long notes, alternate trains, background research and optional Plan B belong in accessible progressive disclosure. Never hide the whole Trip Day timeline.
+- **Quiet publication status (P1.14):** no repeated draft/not-run acceptance banner or boilerplate booking disclaimer on any tab or subview. Retain publication metadata unchanged and display source-backed, item-specific operational risk where relevant; do not simply CSS-hide the banner.
 - **Do not generate redundant helper copy:** no generic eyebrow, slogan, filler subtitle, duplicate category label, repeated footer summary, repeated instructions, or page-by-page recitation of the product contract. Examples to remove from the visible UI: “依實走順序串起交通與遊覽” and “依時間排列：景點、交通、餐飲皆為獨立時段”. Keep specific disruptions, ticket constraints, checked dates and genuinely decision-critical warnings.
 - Avoid repeating a title as a location, a walking duration as a second explanatory sentence, or the same weather/route text in both title and helper label. Preserve original source fields; deduplicate **rendered presentation only**.
 - Every control must have a real, discoverable purpose. Do not use a “More” or collapsible group as a dumping ground for essential current information; do not turn every secondary reference URL into a primary-sized button.
