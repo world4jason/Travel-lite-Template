@@ -49,7 +49,7 @@
     const images = resolve(data, style);
     if (!images.length) return "";
     const label = /^zh/i.test(data.ui?.locale || "") ? "旅程主視覺" : "Trip artwork";
-    return '<section class="trip-overview-artwork" aria-label="' + escape(label) + '" data-overview-artwork>' +
+    return '<section class="trip-overview-artwork" aria-label="' + escape(label) + '" data-count="' + images.length + '" data-overview-artwork>' +
       images.map((item, index) =>
         '<figure class="trip-overview-art-frame" data-artwork-fit="' + item.fit +
           '" data-artwork-position="' + item.focalPoint + '">' +
