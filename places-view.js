@@ -137,10 +137,8 @@
     root.innerHTML = `<div class="places-view view-stack">
       ${itemIdentityWarningHtml()}
       <header class="places-heading">
-        <p class="eyebrow">${label("已安排景點與活動", "YOUR PLANNED PLACES")}</p>
         <h2>${label("景點指南", "Places")}</h2>
-        <p>${label("查看這趟旅程已安排的地點、入場事項與背景介紹。", "Find the places in this itinerary, entry details and source-backed context.")}</p>
-        <span class="places-count">${all.length} ${label("個地點", "places")}</span>
+        <span class="places-count">${all.length} ${label("個景點", "places")}</span>
       </header>
       ${picker}
       <div class="places-grid">${selected.length ? selected.map(cardHtml).join("") :
@@ -243,8 +241,8 @@
   root.addEventListener("error", (event) => {
     const img=event.target;
     if (img?.matches?.(".places-photo, .places-card-photo")) {
-      if(img.closest(".places-photo-figure")) img.closest(".places-photo-figure").remove();
-      else img.remove();
+      // Retain the licensed image-source citation even if the photo fails.
+      img.remove();
     }
   }, true);
   root.addEventListener("click", (event) => {
