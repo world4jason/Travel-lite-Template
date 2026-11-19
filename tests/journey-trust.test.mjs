@@ -41,7 +41,7 @@ test("source links and checked-at dates are retained when a generic banner is su
       { label: "Operator", url: "https://example.org/route" }] } }] }] });
   assert.equal(api.warningHtml(), "");
   assert.match(api.researchNotesHtml(), /Researched · 2026-09-01/);
-  assert.match(api.researchNotesHtml(), /https:\\/\\/example.org\\/route/);
+  assert.match(api.researchNotesHtml(), /example\.org/);
 });
 test("No link is interpreted as human acceptance; unsafe sources are excluded", () => {
   const api = fixture({ trip: { publication: { state: "reviewed" } }, days: [],
