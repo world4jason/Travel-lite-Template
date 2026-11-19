@@ -91,3 +91,27 @@ test("only one Light/Dark appearance selector exists; default is Light", async (
   await page.locator("[data-style-reset]").click();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 });
+
+test("optional highlights stay collapsed and free of generic stickers in all illustrated styles", async ({page}) => {
+  const count = Array.isArray(data.highlights) ? data.highlights.length : 0;
+  test.skip(count === 0, "The published trip has no optional highlights");
+  for (const style of ["doodle-memory-grid", "storybook", "vintage-watercolor"]) {
+    await inspect(page, style, 390);
+    const disclosure = page.locator(".trip-overview-extras");
+    await expect(disclosure).toHaveCount(1);
+    await expect(disclosure).not.toHaveAttribute("open", /.+/);
+    await expect(disclosure.locator("summary")).toContainText(String(count));
+    await expect(page.locator(".trip-highlight-card").first()).not.toBeVisible();
+    await disclosure.locator("summary").click();
+    await expect(page.locator(".trip-highlight-card")).toHaveCount(count);
+    await expect(page.locator(".trip-highlight-card").first()).toBeVisible();
+    const card = await page.locator(".trip-highlight-card").first().evaluate(el => ({
+      art: getComputedStyle(el, "::after").content,
+      height: el.getBoundingClientRect().height,
+      overflow: document.documentElement.scrollWidth - innerWidth
+    }));
+    expect(card.art, style + " must not show sticker art").toBe("none");
+    expect(card.height, style + " keeps optional details compact").toBeLessThan(220);
+    expect(card.overflow, style + " must not cause page overflow").toBeLessThanOrEqual(2);
+  }
+});
