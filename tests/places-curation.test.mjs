@@ -66,3 +66,10 @@ test("published Place detail uses source-backed guide and never uses schedule no
  assert.match(placesSource,/imageLicense/);
  assert.match(placesSource,/addEventListener\("error"/);
 });
+
+test("Places uses an explicit venueName and never turns scheduled action copy into the venue heading",()=>{
+  assert.match(placesSource,/function displayPlaceName\(item\)/);
+  assert.match(placesSource,/typeof item\?\.venueName === "string"/);
+  assert.match(placesSource,/escapeHtml\(displayPlaceName\(item\)\)/);
+  assert.doesNotMatch(placesSource,/<span class="places-card-title">\$\{escapeHtml\(item\.title\)\}/);
+});
