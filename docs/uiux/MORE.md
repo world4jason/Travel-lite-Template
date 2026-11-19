@@ -4,6 +4,7 @@
 
 ## 1. Information hierarchy and section ownership
 
+- **Publication metadata is not a More-page banner (P1.14):** do not place the repeated `Draft / Human Gate NOT RUN` notice above the preparation cards. The persisted publishing status remains in trip source data; optional Research Notes and concrete operator warnings remain available without a generic disclaimer card.
 - Show **only populated sections**, in a clear scan order: traveller's checklists / current preparation tasks; source-backed ticket/admission or reference cards where supported; optional **Travel Essentials**; existing guide/links or saved references; personal appearance and device preferences. Do not fabricate an empty “travel guide” just because the template has a slot.
 - Checklist is the canonical existing More destination (`#check` remains a supported legacy deep link). Respect device-local checked state; never imply it is shared across travellers or completed on their behalf.
 - Travel Essentials are optional, read-only, collapsible **reusable** instructions: airport arrival, ticket usage, regional transit, intercity boarding. Require source-backed `title` and useful content; optional `category`, `dayDate`, `checkedAt` and `sourceLinks`. Day-specific risks belong to Trip/Now, A→B transitions to Transport/Trip, optional route alternatives to Plan B, not duplicated here.
