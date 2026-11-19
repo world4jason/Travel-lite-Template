@@ -13,7 +13,7 @@
     "test:packs": "node --test tests/pack-manifests.test.mjs tests/four-pack-manifests.test.mjs tests/second-batch-manifests.test.mjs",
     "test:style-parity": "node scripts/verify-style-parity.mjs",
     "test:timeline": "node --test tests/chronological-timeline.test.mjs && node scripts/check-chronological-timeline.mjs trip.json",
-    "test:uiux": "node --test tests/uiux-contract.test.mjs tests/overview-contract.test.mjs",
+    "test:uiux": "node --test tests/uiux-contract.test.mjs tests/overview-contract.test.mjs tests/journey-trust.test.mjs",
     "test:contracts": "npm run lint:uiux && npm run test:uiux && npm run test:timeline && npm run test:journey && npm run test:trip-layout && npm run test:overview && npm run test:places-curation",
     "test:trip-widgets": "node --test tests/date-weather-flight.test.mjs",
     "lint:uiux": "node --test tests/uiux-lint.test.mjs && node scripts/lint-uiux.mjs && npm run lint:map-insets",
@@ -27,7 +27,8 @@
     "test:places-curation": "node --test tests/places-curation.test.mjs",
     "test:places-curation:browser": "playwright test tests/places-curation.spec.mjs --project=chromium",
     "test:overview": "node --test tests/overview-contract.test.mjs",
-    "test:overview:browser": "playwright test tests/overview-compact.spec.mjs --project=chromium"
+    "test:overview:browser": "playwright test tests/overview-compact.spec.mjs --project=chromium",
+    "test:trust": "node --test tests/journey-trust.test.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
