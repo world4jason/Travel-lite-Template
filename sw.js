@@ -3,7 +3,7 @@
 // shell/runtime, and activating one cannot delete the other's cache.
 const CACHE_PREFIX = "travel-lite:" + new URL(self.registration.scope).pathname
   .replace(/[^a-z0-9]/gi, "-") + ":";
-const CACHE = CACHE_PREFIX + "shell-v60-compact-overview-light";
+const CACHE = CACHE_PREFIX + "shell-v61-compact-overview-light";
 const RUNTIME_CACHE = CACHE_PREFIX + "runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -49,17 +49,17 @@ const CORE = [
   "./item-identity.js",
   "./ui-icons.js?v=20261118-journey-v1",
   "./journey-groups.js?v=20261118-journey-v1",
-  "./app.js?v=20261118-icons-v1",
-  "./trip-view.js?v=20261119-trip-grid-v2",
+  "./app.js?v=20261119-light-picker-v1",
+  "./trip-view.js?v=20261119-overview-compact-v1",
   "./runtime-providers.js?v=20261118-history-v2",
   "./runtime-features.js?v=20261118-icons-v1",
   "./runtime-handoff.js",
   "./places-view.js?v=20261119-places-v1",
   "./transport-overview.js",
   "./runtime-google.js",
-  "./theme-shell.js",
+  "./theme-shell.js?v=20261119-single-style-v1",
   "./responsive-shell.js",
-  "./companion-ux.js",
+  "./companion-ux.js?v=20261119-overview-compact-v1",
   "./timezone.js",
   "./long-trip-nav.js",
   "./date-navigation.js?v=20261119-trip-grid-v2",

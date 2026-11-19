@@ -26,7 +26,8 @@
       "map",
       "places",
       "more"
-    ]
+    ],
+    "visualStyle": "editorial"
   },
   "providers": {
     "mapStyle": "https://tiles.openfreemap.org/styles/liberty",

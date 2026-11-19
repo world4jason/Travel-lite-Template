@@ -100,7 +100,7 @@ Website `vintage-watercolor` is a released, bounded, optional built-in Style Pac
 ```json
 {
   "defaultView": "now",
-  "theme": "system",
+  "theme": "light",
   "visualStyle": "editorial",
   "locale": "zh-TW",
   "labels": {
