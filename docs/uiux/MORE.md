@@ -8,7 +8,7 @@
 - Checklist is the canonical existing More destination (`#check` remains a supported legacy deep link). Respect device-local checked state; never imply it is shared across travellers or completed on their behalf.
 - Travel Essentials are optional, read-only, collapsible **reusable** instructions: airport arrival, ticket usage, regional transit, intercity boarding. Require source-backed `title` and useful content; optional `category`, `dayDate`, `checkedAt` and `sourceLinks`. Day-specific risks belong to Trip/Now, A→B transitions to Transport/Trip, optional route alternatives to Plan B, not duplicated here.
 - Tickets, reservations and admission data link via **explicit stable `itemId` / `itemIds`** to the actual item when the schema supports them; never guess by title or reveal private booking tokens/QR codes on the public site.
-- Settings/Appearance: respect system/light/dark and installed, reviewed Style Packs, the publisher's trip default, and explicit temporary preview controls. Do not accept arbitrary CSS/remote style packs from `trip.json`. Changes affect this device only and do not alter source itinerary data.
+- **Appearance (P1.13):** use exactly one Style Picker with Editorial Light and Editorial Dark alongside reviewed Style Packs. Never show a second System/Dark/Light Theme panel or a separate header colour toggle; the new Template defaults to Editorial Light (`ui.theme: light`). Respect the publisher's default, per-trip device-only override, existing saved preference and temporary preview URLs. “Follow trip default” resets the device override. No arbitrary CSS/remote style packs from `trip.json`. Keep an independent motion preference only when the active animated pack needs it.
 
 ## 2. Interaction and visual standards
 
@@ -25,4 +25,4 @@
 ## 4. Acceptance
 
 - Run `npm run test:uiux` and relevant local-state, checklist, styling, PWA/deep-link and 320/390/1100/1920px (200% text) browser tests.
-- Exercise `#check` legacy path, checklists after reload, per-trip style override / “Follow trip default”, missing Essentials, offline reading and unsupported URL fallback. State **NOT RUN** when a browser suite was not executed.
+- Exercise `#check` legacy path, checklists after reload, one visible appearance picker (no System/Dark/Light panel), Light default, Dark selection persistence after reload, per-trip style override / “Follow trip default”, missing Essentials, offline reading and unsupported URL fallback. Run `npm run test:overview` and `npm run test:overview:browser` for shared appearance regression coverage. State **NOT RUN** when a browser suite was not executed.
