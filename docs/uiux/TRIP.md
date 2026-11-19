@@ -38,3 +38,7 @@
 
 - `npm run test:timeline`, `npm run test:journey`, `npm run test:trip-layout`, `npm run test:uiux`; with UI/style changes also `npm run test:journey:browser`, `npm run test:trip-layout:browser` and `npm run test:uiux:geometry`.
 - Test a multi-leg Japan rail transfer, walk-only Journey, back-to-back separate Journeys, event/break in-between, unknown leg time, cross-border flight, long Japanese stations, Storybook 200% and desktop clipping. Verify A→B Maps URL and per-leg disclosure are accurate.
+
+## Optional trip Overview artwork (owner selection)
+
+The offline publisher may choose one to six actual source item IDs (including `event` and `break`, not only curated Places) and request one to three images via `tools/overview-artwork-picker.html`. **This is an editorial/export-time selection, not a live traveler edit or runtime AI generator.** Only reviewed images linked in `trip.overviewArtwork.images` render in Trip Overview below the compact identity header; a style-specific image only appears under its matching installed Style Pack, otherwise an optional style-neutral photo may appear. Missing/broken images collapse without changing Overview/Timeline or the per-trip appearance picker. Each image is capped at 178 CSS px to preserve P1.12. Use the same source provenance/rights checks as Places.
