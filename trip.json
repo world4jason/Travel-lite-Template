@@ -119,6 +119,15 @@
             "label": "Transfer",
             "mode": "Train / walk",
             "summary": "Head to Ebisu when ready for dinner."
+          },
+          "infoCard": {
+            "summary": "Shibuya is Tokyo's fashion and youth-culture hub, best known for its scramble crossing, Hachiko meeting spot, shopping streets and cafés. This scheduled walk explores the district rather than a single attraction.",
+            "sourceLinks": [
+              {
+                "label": "Tokyo Official Tourism Guide — Shibuya",
+                "url": "https://www.gotokyo.org/en/destinations/western-tokyo/shibuya/index.html"
+              }
+            ]
           }
         },
         {
@@ -235,7 +244,16 @@
           "type": "place",
           "location": "Ueno Park, Tokyo",
           "lat": 35.7148,
-          "lng": 139.7731
+          "lng": 139.7731,
+          "infoCard": {
+            "summary": "Ueno Park is one of Tokyo's major cultural areas, with museums including the Tokyo National Museum and the National Museum of Nature and Science, along with a pond, shrines and seasonal gardens. Check individual museum exhibitions separately.",
+            "sourceLinks": [
+              {
+                "label": "Tokyo Official Tourism Guide — Ueno",
+                "url": "https://www.gotokyo.org/en/destinations/northern-tokyo/ueno/index.html"
+              }
+            ]
+          }
         }
       ]
     },
