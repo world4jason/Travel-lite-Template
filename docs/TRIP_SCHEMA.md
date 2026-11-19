@@ -227,6 +227,20 @@ Every known-time source transport **leg**, visit, meal or event has its own `day
 - Source Leg `from` and `to` (or `route: {from,to}`) should be verified place names. The UI may read an unambiguous published `A → B` title. For a complete Journey with verified endpoints, form `https://www.google.com/maps/dir/?api=1&origin=...&destination=...&travelmode=transit|walking|driving` using URL encoding. No GPS coordinates or API key required. No inferred via-points or live ETA.
 - All original Leg IDs, order, times, notes and source URLs remain in the expandable transport detail. No duplicate canonical `mobility.legs` timetable.
 
+### Optional curated venue name (Places only)
+
+A planned visit's chronological `title` may describe an activity (e.g., `伏見稻荷大社參拜`); Places should instead display a concise researched location name. For independently researched `type: place|attraction|museum|landmark|nature|sight` items, an optional **source-authored** `venueName` stores that place name. `places-view.js` uses `venueName || title` for the Places index/detail headings, but the complete Trip Timeline preserves `title` (including actions), stable ID and timing. Do not invent a venue name from unverified itinerary text or remove words heuristically.
+
+```json
+{
+  "id": "visit-shrine",
+  "type": "place",
+  "title": "伏見稻荷大社參拜、等候祭事",
+  "venueName": "伏見稻荷大社",
+  "infoCard": { "summary": "...", "sourceLinks": [] }
+}
+```
+
 ## Itinerary item
 
 A timed item:
