@@ -29,6 +29,10 @@ jobs:
         run: npm run test:journey
       - name: Desktop Journey browser reflow
         run: npm run test:journey:browser
+      - name: Compact Trip Overview static contract
+        run: npm run test:overview
+      - name: Compact Overview browser regression across visual styles
+        run: npm run test:overview:browser
       - name: Storybook layout and quiet-copy source contract
         run: npm run test:trip-layout
       - name: Render Storybook trip cards across phone/desktop widths
