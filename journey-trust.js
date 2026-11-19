@@ -22,30 +22,10 @@
     const humanGate = ["passed", "not-run", "waived"].includes(raw?.humanGate) ? raw.humanGate : "";
     return { status, humanGate };
   }
-  function warningHtml(onlyWarnings = false) {
-    const { status, humanGate } = publication();
-    if (!status && !humanGate) return "";
-    const showWarning = status === "draft" || humanGate === "waived" || humanGate === "not-run";
-    if (onlyWarnings && !showWarning) return "";
-    const names = {
-      draft: localized("草案", "Draft"),
-      reviewed: localized("已人工審閱", "Reviewed"),
-      final: localized("已發佈版本", "Final")
-    };
-    const gate = humanGate === "passed" ? localized("人工驗收已登記", "Human review recorded") :
-      humanGate === "waived" ? localized("人工驗收未執行（已豁免）", "Human Gate NOT RUN / waived") :
-      humanGate === "not-run" ? localized("人工驗收尚未執行", "Human Gate NOT RUN") : "";
-    return '<aside class="trip-trust-notice" role="note">' +
-      '<strong>' + escapeHtml(names[status] || localized("行程版本狀態", "Trip publication")) +
-      (gate ? ' · ' + escapeHtml(gate) : "") + '</strong>' +
-      (showWarning ? '<p>' + localized(
-        "行程草案／未完成驗收不代表訂票或預約完成；班次、路況與營業請向業者即時確認。",
-        "Draft or unreviewed plans do not confirm tickets or reservations. Confirm live schedules, disruptions and opening with providers."
-      ) + '</p>' : '<p>' + localized(
-        "發佈狀態不代表交通、訂位或營業資訊即時有效。",
-        "Publication status does not confirm live transit, bookings or opening."
-      ) + '</p>') + '</aside>';
-  }
+  // The publisher's publication/humanGate metadata remains available, but
+  // blanket draft/NOT RUN notices must not interrupt the traveller on every tab.
+  // Keep the legacy callable API so existing integrations do not break.
+  function warningHtml() { return ""; }
   function sourceRows() {
     const rows = [];
     const asList = (raw) => Array.isArray(raw) ? raw : [];
@@ -121,39 +101,16 @@
         links + '</div>');
     });
   }
-  function attachNotice() {
-    const html = warningHtml(true);
-    if (!html || root.querySelector(".trip-trust-notice")) return;
-    const tabs = root.querySelector(".trip-v2-tabs");
-    if (tabs) tabs.insertAdjacentHTML("afterend", html);
-    else {
-      const stack = root.querySelector(".view-stack");
-      if (stack) stack.insertAdjacentHTML("afterbegin", html);
-      else root.insertAdjacentHTML("afterbegin", html);
-    }
-  }
-
   const originalTrip = renderTrip;
   renderTrip = function renderTrustedTrip() {
     originalTrip();
     annotateTransfers();
-    attachNotice();
   };
-  const originalNow = renderNow;
-  renderNow = function renderTrustedNow() { originalNow(); attachNotice(); };
-  const originalMap = renderMap;
-  renderMap = function renderTrustedMap() { originalMap(); attachNotice(); };
-  const originalCheck = renderCheck;
-  renderCheck = function renderTrustedCheck() { originalCheck(); attachNotice(); };
   const originalMore = renderMore;
   renderMore = function renderTrustedMore() {
     originalMore();
     const stack = root.querySelector(".view-stack");
-    if (stack) {
-      stack.insertAdjacentHTML("beforeend", researchNotesHtml());
-      const publicationNote = warningHtml(false);
-      if (publicationNote) stack.insertAdjacentHTML("afterbegin", publicationNote);
-    }
+    if (stack) stack.insertAdjacentHTML("beforeend", researchNotesHtml());
   };
-  window.TravelLiteTrust = Object.freeze({ warningHtml, researchNotesHtml, sourceRows });
+  window.TravelLiteTrust = Object.freeze({ publication, warningHtml, researchNotesHtml, sourceRows });
 })();
