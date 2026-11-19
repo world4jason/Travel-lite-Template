@@ -191,10 +191,15 @@
             ],
             "sourceLinks": [
               {
+                "label": "Senso-ji Temple — Official Website",
+                "url": "https://www.senso-ji.jp/english/"
+              },
+              {
                 "label": "Wikipedia",
                 "url": "https://en.wikipedia.org/wiki/Sens%C5%8D-ji"
               }
-            ]
+            ],
+            "officialSite": "https://www.senso-ji.jp/english/"
           }
         },
         {
