@@ -43,7 +43,7 @@
 - Published GitHub Pages content is public. No booking reference, QR ticket, passport, traveller identity or other private data in public `trip.json`, markup or images.
 - The weather/date strip is governed by [WEATHER.md](./WEATHER.md). It is a shared component on Trip / Transport / Places, **not** a separate page.
 
-## 6. Mandatory acceptance / change checklist
+## 6. Mandatory Acceptance / 驗收清單
 
 1. Read `AGENTS.md` → full `docs/UIUX.md` → this file → changed page's specification → `WEATHER.md` when touching dates/weather → relevant Schema/Timeline/Surface contract. Kansai-specific changes additionally read `docs/UIUX_KANSAI.md`.
 2. Verify date deep links and browser history; prove that pages project source data without inventing values.
