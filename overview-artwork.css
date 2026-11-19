@@ -40,6 +40,9 @@
 .trip-overview-art-frame[data-artwork-position="right"] img { object-position: right center; }
 @container (max-width: 520px) {
   .trip-overview-view .trip-overview-art-frame { height: clamp(92px, 28cqw, 142px); }
+  .trip-overview-view .trip-overview-artwork:has(.trip-overview-art-frame:only-child) .trip-overview-art-frame {
+    height: clamp(130px, 45cqw, 170px);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .trip-overview-art-frame img { transition: none; animation: none; }
