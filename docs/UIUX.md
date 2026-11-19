@@ -156,6 +156,14 @@ Places 是**真正可介紹的景點／場域目錄**，不是所有有座標或
 
 **更多 → 外觀只有一個樣式選擇入口。** Editorial Light / Editorial Dark 已在同一個 Style Picker 內，不能再顯示第二個 `System / Dark / Light` Theme Switcher，**也不在頂部再放獨立的 Quick Theme Toggle**，避免兩套設定互相覆蓋。主題切換後的地圖配色與瀏覽器工具列仍應同步，但不另建立顏色控制。動態偏好僅在動畫主題確實需要時獨立提供，不是第二組顏色控制。新的 Template 預設 Editorial Light（`ui.visualStyle: editorial`、`ui.theme: light`）；舊裝置已儲存的偏好不應被改版任意清掉，選擇「跟隨行程預設」會清除本機覆蓋並回到發布者預設。新旅程可在 `trip.json` 顯式選擇其他主題，但不得偷偷由作業系統深色模式改變發布者的 Light 預設。瀏覽器載入前的 `html[data-theme]` 也要採 Light，避免初始閃爍。必須測試深色選項可切換、重整後能保留、回預設可恢復。
 
+### P1.14 Quiet publication metadata, without recurring disclaimer banners
+
+**網站前台不得自動顯示泛用的「草案 · 人工驗收尚未執行」或「行程草案／未完成驗收不代表訂票或預約完成」橫幅**，無論處於 Now、Trip（Overview／Day）、Transport、Places、More 或任何 Style Pack，都不應重複插入發布狀態說明、免責聲明、預設註腳或以折疊卡取代。這類發布／驗收狀態屬於資料來源與維護流程，不是旅途中需要反覆閱讀的行程內容。
+
+- **保留正確事實：** `trip.publication.state` / `humanGate` 的原始值不得因移除提示而修改，也不得把草案宣稱為已審閱、已驗收、票券已購或預約已確認。保留官方來源、核對日期與供內部／發布者檢視的資料，避免無意的承諾。
+- **保留真正重要的提醒：** 個別班次、接駁期限、天候風險、營業時間或需現場確認的預約條件，仍應出現在對應的行程項目／操作附近；缺值標為 TBD，不得假造完成狀態。已發布的 `researchNotes` 仍可在 More 展開。
+- **程式與測試：** `journey-trust.js` 可繼續提供資料來源／`publication()` 供查詢，但不得插入 `.trip-trust-notice` 或其他全站狀態 Banner。新版測試覆蓋 draft / not-run / waived / reviewed，驗證沒有通用提示、狀態未遭改寫，並確保來源連結和具體風險保持有效。不要僅用 CSS 隱藏現存 DOM。
+
 ## P2 — Flexible visual direction
 
 Style Pack 可選字體、色彩、圖像、色塊、裝飾性網格、卡片圓角、框線、陰影、微動畫及日概覽呈現手法。這些是**材料與排版選擇**，不得改變 P0 Timeline／五分頁／資料來源、P1 易讀性或操作順序。旅行專屬 UI 可在額外的 `docs/UIUX_<TRIP>.md` 中補充，但不得降低本文件要求。
