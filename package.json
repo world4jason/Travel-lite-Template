@@ -37,7 +37,8 @@
     "artwork:verify:legacy": "python3 tools/artwork/verify-covers.py --legacy-trip-images --report artwork/quality/legacy-verification-report.json",
     "artwork:publish": "node tools/artwork/publish-approved-covers.mjs",
     "test:artwork-verify": "python3 -m unittest discover -s tests -p test_cover_verifier.py",
-    "artwork:verify:browser": "playwright test tests/overview-artwork-visual.spec.mjs --project=chromium"
+    "artwork:verify:browser": "playwright test tests/overview-artwork-visual.spec.mjs --project=chromium",
+    "artwork:stage": "node tools/artwork/stage-cover-assets.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
