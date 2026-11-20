@@ -42,3 +42,7 @@
 ## Optional trip Overview artwork (owner selection)
 
 The offline publisher may choose one to six actual source item IDs (including `event` and `break`, not only curated Places) and request one to three images via `tools/overview-artwork-picker.html`. **This is an editorial/export-time selection, not a live traveler edit or runtime AI generator.** Only reviewed images linked in `trip.overviewArtwork.images` render in Trip Overview below the compact identity header; a style-specific image only appears under its matching installed Style Pack, otherwise an optional style-neutral photo may appear. Missing/broken images collapse without changing Overview/Timeline or the per-trip appearance picker. Each image is capped at 178 CSS px to preserve P1.12. Use the same source provenance/rights checks as Places.
+
+### Independent artwork release gate
+
+Owner-selected source items stay unchanged. Every Style Pack preview cover has separately versioned medium, composition and quality rubric. `qaStatus=pending` is preview-only (`?previewArtwork=1`); only `tools/artwork/publish-approved-covers.mjs` may promote individually generated 1536×864 sources after independent verification and human approval. An atlas crop is not independent output. The absence of approved images must preserve the clean compact Overview and every day's navigation.
