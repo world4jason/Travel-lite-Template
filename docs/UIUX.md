@@ -108,6 +108,8 @@ Trip、Transport、Places 使用**同一個**可橫向捲動的日期卡列（D 
 地鐵／火車／纜車／公車／Google Maps 連結／景點／票券等控制圖示，只能使用本地固定白名單 `ui-icons.js` 的語意 SVG：地鐵與火車圖像須不同；地圖使用通用定位針。**不得**以易缺字或意義不明的 `⌖`、`◫`、`≋`、`📍` 字型符號當操作圖示。使用語意 label / aria-label；不仿製第三方品牌商標。
 
 **雙重驗收：** (1) `npm run lint:uiux` 靜態檢查 icon whitelist、禁止 glyph、PWA 引用、必需的安全內距與文件；(2) `npm run test:uiux:geometry` 在 Chromium 中以 getBoundingClientRect 量測真正渲染的卡片與文字距離，覆蓋 320/390/1100px、200% 字體與支援的 Style Packs。兩者缺一不可。靜態 PASS 不等於視覺 PASS；CI FAIL 時不應宣稱完成。
+**Icon Catalog 與反例驗收：** 所有地圖定位、路線、雙腳印、火車／地鐵／纜車／公車等功能圖示，必須使用 `ui-icons.js` 固定白名單，並遵守 [Icon System](ICON_SYSTEM.md) 的 21 個語意角色與 accessible-label 要求。Style Pack 只能改色彩／筆觸材料，不能改動 icon 的辨識語意。任何新增／修改 icon，至少執行 `npm run verify:icons`、`npm run test:icons`，瀏覽器另跑 `npm run test:icons:browser` 的 15 風格檢視。Icon 無法載入時不得用奇怪的 Unicode 字型符號自動替代。GitHub Actions 已移除，改以明確的人工 QA 紀錄，未執行不能標記 PASS。
+
 ### P1.8 Desktop clipping and walking icon
 
 桌面 **1024／1280／1440／1920px** 及 200% 文字縮放必須驗證 Trip 完整 Journey、Transport 地圖與轉乘站點、日期導覽；不得用 `overflow:hidden` 直接裁切文字掩飾問題，需讓 Grid/Flex 使用 `min-width:0`、可換行文字與足夠框內距。**步行 icon 使用雙腳印 `footprints` SVG**，不使用奔跑人形。`npm run test:journey:browser` 驗證無水平溢出、長站名與 A→B 路線連結。
