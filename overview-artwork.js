@@ -26,7 +26,7 @@
     const selected = Array.isArray(raw.subjectIds) ? raw.subjectIds : [];
     if (!selected.length || selected.length > 6 || new Set(selected).size !== selected.length ||
         selected.some(id => typeof id !== "string" || !sourceIds.has(id))) return [];
-    if (!Array.isArray(raw.images) || raw.images.length > 3) return [];
+    if (!Array.isArray(raw.images) || raw.images.length > 48) return [];
     const valid = raw.images.flatMap(entry => {
       if (!entry || typeof entry !== "object") return [];
       const src = safeMediaUrl(entry.src);
@@ -39,8 +39,8 @@
         focalPoint: POSITION.has(entry.focalPoint) ? entry.focalPoint : "center",
       }];
     });
-    // One site-specific artwork variant may replace the photo fallback. Do not
-    // mix a watercolor illustration into an unrelated Style Pack.
+    // Up to three images per active pack; allow many reviewed pack variants
+    // in the manifest without showing them all or mixing art styles.
     const styled = valid.filter(image => image.styleId === activeStyle);
     return (styled.length ? styled : valid.filter(image => !image.styleId)).slice(0, 3);
   }
