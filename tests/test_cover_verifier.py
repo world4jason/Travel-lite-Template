@@ -78,6 +78,16 @@ class CoverVerifierSafetyTests(unittest.TestCase):
  def test_missing_human_is_pending_not_pass(self):
   bad=copy.deepcopy(self.variants);bad[7]['humanReview']='missing.json'
   self.assertEqual(self.check(bad)['styles'][7]['status'],'PENDING')
+ def test_unapproved_human_template_remains_pending_not_fail(self):
+  file=self.root/'human'/'candy.json';original=file.read_text()
+  try:
+   pending=json.loads(original);pending.update({'approved':False,'reviewer':None,'reviewedAt':None,'sourceRightsChecked':False})
+   file.write_text(json.dumps(pending))
+   entry=self.check()['styles'][2]
+   self.assertEqual(entry['status'],'PENDING')
+   self.assertIn('P_HUMAN_NOT_APPROVED',entry['pending'])
+  finally:file.write_text(original)
+
  def test_stale_human_review_is_rejected(self):
   bad=copy.deepcopy(self.variants);bad[7]['sourceSHA256']='0'*64
   self.assertIn('E_NATIVE_HASH_MISMATCH',self.check(bad)['styles'][7]['failures'])
