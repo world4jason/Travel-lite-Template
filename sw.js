@@ -3,7 +3,7 @@
 // shell/runtime, and activating one cannot delete the other's cache.
 const CACHE_PREFIX = "travel-lite:" + new URL(self.registration.scope).pathname
   .replace(/[^a-z0-9]/gi, "-") + ":";
-const CACHE = CACHE_PREFIX + "shell-v65-overview-artwork";
+const CACHE = CACHE_PREFIX + "shell-v66-icon-catalog";
 const RUNTIME_CACHE = CACHE_PREFIX + "runtime-v1";
 const scopeUrl = (path) => new URL(path, self.registration.scope).href;
 const INDEX = scopeUrl("./index.html");
@@ -49,6 +49,8 @@ const CORE = [
   "./storage.js",
   "./item-identity.js",
   "./ui-icons.js?v=20261118-journey-v1",
+  "./assets/icons/semantic-catalog.v1.json",
+  "./tools/icon-review.html",
   "./journey-groups.js?v=20261118-journey-v1",
   "./app.js?v=20261119-light-picker-v1",
   "./overview-artwork.js?v=20261120-v1",
