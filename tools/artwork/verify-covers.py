@@ -77,6 +77,10 @@ def inspect(root, trip, recipes, variants, jobs=None):
     if recipes.get('version')!='cover-recipes-v1' or len(expected)!=15 or len(set(expected))!=15:
         globalErrors.append('E_RECIPES_NOT_LOCKED')
     job_map={j['styleId']:j for j in (jobs or {}).get('jobs',[])}
+    if jobs and jobs.get('generationMethod') != 'one-independent-request-per-style':
+        globalErrors.append('E_JOBS_NOT_INDEPENDENT')
+    if jobs and (len(jobs.get('jobs',[])) != len(job_map) or len(job_map) != 15):
+        globalErrors.append('E_JOBS_MISSING_OR_DUPLICATED')
     allsha=[]; per=[]
     for v in variants:
         if not isinstance(v,dict):continue
@@ -116,6 +120,17 @@ def inspect(root, trip, recipes, variants, jobs=None):
                 for prop in ['promptSHA256','requestSHA256','recipeSHA256','model']:
                     if receipt.get(prop)!=j.get(prop):err.append('E_JOB_RECEIPT_'+prop.upper())
                 if j.get('sourceType')!='independent-generation':err.append('E_INVALID_JOB_ORIGIN')
+                # Recompute recipe/request/prompt hashes WITHOUT importing the publisher JS.
+                compact=lambda o: json.dumps(o, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
+                if sty in recipe_map and j.get('recipeSHA256') != h(compact(recipe_map[sty])):
+                    err.append('E_RECIPE_HASH_NOT_VERIFIED')
+                req=j.get('request') or {}
+                if j.get('promptSHA256') != h(str(req.get('prompt','')).encode('utf-8')):
+                    err.append('E_PROMPT_HASH_NOT_VERIFIED')
+                if j.get('requestSHA256') != h(compact(req)):
+                    err.append('E_REQUEST_HASH_NOT_VERIFIED')
+                if j.get('subjectIds') != selected:
+                    err.append('E_JOB_SELECTED_SUBJECTS_DRIFT')
         if sty not in job_map:pending.append('P_LOCKED_GENERATION_JOB_UNAVAILABLE')
         # Independent judge must not reuse the image generator's assessment.
         judge={}
