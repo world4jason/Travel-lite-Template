@@ -18,7 +18,7 @@ Use the existing published Style Pack art direction (material, geometry, palette
 
 A combined memory montage is illustration, not a documentary photograph. Never imply fireworks, pilgrimage and hot springs happened at the same time/place. Require a human review of scene identity, attribution, aspect ratio, typography absence and safe source licensing.
 
-Place accepted art in the **specific trip repository**, for example `assets/overview/my-trip.webp`. More than 1–3 assets per trip is optional but **not** part of this contract.
+Place accepted art in the **specific trip repository**, for example `assets/overview/my-trip.webp`. Multiple pack-specific alternatives may be produced, up to 48 bounded image entries; only 1–3 for the currently active pack are displayed. The default site does not generate art.
 
 ## 3. Connect the selected artwork to the published trip
 
@@ -41,6 +41,6 @@ Put this inside `trip` in `trip.json`, **not** in `ui` or `days[].items[]`. Subj
 
 Keep the 178px image height cap and Compact Overview P1.12. The 1–3 images must not reclassify events or breaks as Places, alter the chronological timeline, add template slogans, or mask the day list.
 
-## 4. QA / release gate
+For multi-pack travel artwork, package 15 equally sized cover images into one 5×3 local AVIF atlas when useful and use the optional `atlasSlice` integer 0–14 in each style-specific image. This saves downloads and makes offline availability easier; verify the artwork crop under all appearances. Individual full-resolution files may still be kept as downloadable source assets for redesign or human selection.\n\n## 4. QA / release gate
 
-Run `npm run test:overview-artwork`, `npm run test:overview`, `npm run test:uiux`, `npm run test:timeline`, `npm run lint:uiux`, `npm run test:overview:browser`, and relevant responsive/Style Pack checks. Review 320/390/1100/1920px with 200% text and missing/failed media; verify visible content after switching styles, browser history, PWA offline and asset delivery. **Do not merge** when required runner/browser tests fail or are not run. Separate PASS/FAIL/NOT RUN; manual aesthetic/subject review remains explicit.
+Run `npm run test:overview-artwork`, `npm run test:overview`, `npm run test:uiux`, `npm run test:timeline`, `npm run lint:uiux`, `npm run test:overview:browser`, and relevant responsive/Style Pack checks. Review 320/390/1100/1920px with 200% text and missing/failed media; verify visible content after switching styles, browser history, PWA offline and asset delivery. GitHub Actions workflows were intentionally removed by publisher request; run the available Node and browser checks manually where a browser is available. **Do not claim full release QA** when these checks are not run. Separate PASS/FAIL/NOT RUN; manual aesthetic/subject review remains explicit.
