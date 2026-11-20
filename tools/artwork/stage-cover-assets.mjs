@@ -1,6 +1,7 @@
 /** Stage each independently generated source as a publishable asset. No API. */
 import { readFile, writeFile, mkdir, copyFile, access } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { constants } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root=path.resolve(fileURLToPath(new URL('../..',import.meta.url)));
@@ -34,7 +35,7 @@ async function main(){
  const report=file('artwork/quality/cover-output-manifest.json');
  try{await access(report);throw Error('Output manifest already exists, refusing overwrite');}catch(e){if(e.code!=='ENOENT')throw e;}
  for(const v of variants){
-  const dest=file(v.publishedImage);await mkdir(path.dirname(dest),{recursive:true});await copyFile(file(v.sourceImage),dest);
+  const dest=file(v.publishedImage);await mkdir(path.dirname(dest),{recursive:true});await copyFile(file(v.sourceImage),dest,constants.COPYFILE_EXCL);
   const human=file(v.humanReview);await mkdir(path.dirname(human),{recursive:true});
   const pending={schema:'human-cover-review-v1',styleId:v.styleId,approved:false,reviewer:null,
    imageSHA256:v.sourceSHA256,reviewedAt:null,sourceRightsChecked:false,notes:'Review the full-resolution original and independent judge evidence before signing.'};
