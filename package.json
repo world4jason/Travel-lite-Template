@@ -41,7 +41,8 @@
     "artwork:stage": "node tools/artwork/stage-cover-assets.mjs",
     "verify:icons": "node scripts/verify-icon-catalog.mjs",
     "test:icons": "node --test tests/icon-semantic.test.mjs",
-    "test:icons:browser": "playwright test tests/icon-semantic.spec.mjs --project=chromium"
+    "test:icons:browser": "playwright test tests/icon-semantic.spec.mjs --project=chromium",
+    "test:artwork-negative": "python3 -m unittest discover -s tests -p test_cover_verifier.py -k counterexample -v"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
