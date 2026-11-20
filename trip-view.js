@@ -261,6 +261,7 @@
         <h2>${escapeHtml(state.data.trip.title)}</h2>
         <div class="trip-overview-stats trip-overview-compact-stats"><span><strong>${days.length}</strong> ${localized("天", "days")}</span><span><strong>${stopCount}</strong> ${localized("行程項目", "itinerary items")}</span>${openDecisions.length ? `<span><strong>${openDecisions.length}</strong> ${localized("項待確認", "open choices")}</span>` : ""}</div>
       </section>
+      ${window.TravelLiteOverviewArtwork?.render(state.data, state.visualStyle) || ""}
       <section class="trip-overview-days trip-overview-compact-days" aria-label="${escapeAttr(localized("每日總覽", "Daily overview"))}">${days.map(overviewDayCard).join("")}</section>
       ${window.TravelLitePlanB?.(state.data.pocketPicks, localized("口袋清單", "Pocket picks")) || ""}
       ${highlights.length ? `<details class="trip-overview-section trip-overview-extras"><summary class="trip-overview-extra-toggle"><strong>${localized("備選活動與提醒", "Optional activities & notes")}</strong><span class="trip-overview-extra-count">${highlights.length}</span><span class="trip-overview-extra-indicator" aria-hidden="true">＋</span></summary><div class="trip-highlight-grid">${highlights.map(highlightCard).join("")}</div></details>` : ""}
@@ -268,6 +269,7 @@
     </div>`;
 
     attachOverviewHandlers();
+    window.TravelLiteOverviewArtwork?.bind(root);
   }
 
   function tripTabs() {

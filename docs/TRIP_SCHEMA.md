@@ -81,6 +81,38 @@ Rules:
 
 Do not accept arbitrary style names, URL-driven custom CSS, or styles inferred from a destination or `trip.type`.
 
+### Optional curated Trip Overview artwork (publisher selection)
+
+A person creating a trip may select **one to six actual itinerary source item IDs** as representative moments, including `event`, `place`, or `break`. Selection is not inferred from location popularity, city names or Places-only items. The publisher may attach **one to three reviewed images per active Style Pack**. Multiple reviewed variants may coexist in a bounded manifest:
+
+```json
+{
+  "trip": {
+    "overviewArtwork": {
+      "subjectIds": ["d-fireworks", "d-yokai", "d-kumano", "d-onsen"],
+      "images": [
+        {
+          "src": "./assets/overview/my-trip-cover.webp",
+          "alt": "Illustrated travel montage of fireworks, yokai parade, forest trail and sea-facing cave bath",
+          "styleId": "vintage-watercolor",
+          "fit": "contain",
+          "focalPoint": "center"
+        }
+      ]
+    }
+  }
+}
+```
+
+- An optional **publisher-only** picker at [tools/overview-artwork-picker.html](../tools/overview-artwork-picker.html) reads the trip's true item IDs and exports a JSON *generation brief*, not a live edit, downloadable image or automatic image-model call.
+- `subjectIds`: 1–6 unique IDs that already occur under `days[].items[]`. An invalid/missing subject causes the optional artwork to disappear, never a guessed place or a modified Timeline item.
+- `qaStatus`: optional `pending | approved`. **Only `approved` artwork renders in the normal site**; `?previewArtwork=1` explicitly allows reviewer-only inspection of pending artwork. A publisher must not set `approved` manually: use the independent verifier and `tools/artwork/publish-approved-covers.mjs` (which additionally records `qaReportSHA256`). No cover remains the canonical fallback.
+- `images`: 0–48 verified candidate entries across all Style Packs, **but only 1–3 matching the active pack are shown**; zero means no artwork. `src` and `alt` use the same safe URL and meaningful-text rules as `trip.cover`. Art should be local for offline reliability; same-origin paths recommended.
+- `styleId` is optional: a matching installed Style Pack shows this variant; otherwise the website displays only a style-neutral image if supplied, or a no-image Overview. The viewer's style choice still changes the site's appearance, **not** the selected itinerary subjects.
+- Optional `atlasSlice`: integer 0–14, choosing one of a fixed 5×3 atlas's tiles; this is for efficient publisher-assembled variants, not arbitrary CSS or runtime cropping prompts. When absent, render a normal complete image. The atlas must contain exactly 5 columns and 3 rows of equally sized tiles.\n- `fit`: `cover` (default) or `contain`. `focalPoint`: `center` (default), `top`, `bottom`, `left` or `right`. Never accept CSS, executable URLs, arbitrary style names or HTML from these fields.
+- The compact Overview uses the existing source-led hierarchy and caps images at 178 CSS px. It does **not** change `trip.cover` in the shell, create a giant Hero, or duplicate the chronological itinerary. An image load failure must leave all real travel information accessible.
+- Generate offline, verify truthfulness/rights, then publish images and JSON together. A montage illustrates selected memories, **not** a documentary photo of events occurring together.
+
 ### Publication state and research provenance (Issue #92)
 
 Source existence, research date and publication/human acceptance are three separate concepts. No browser feature infers any of them from updatedAt, successful automated tests or a source URL.

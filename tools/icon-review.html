@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-Hant" data-theme="light" data-visual-style="editorial">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Travel Lite — UI Icon Review</title>
+<link rel="stylesheet" href="../styles.css">
+<style>
+  :root{color-scheme:light}
+  body{margin:0;min-height:100vh;background:var(--surface, #f8f8f5);color:var(--ink,#26342f);font:16px/1.5 system-ui,sans-serif}
+  .icon-proof{max-width:1050px;padding:24px 16px 64px;margin:auto}
+  .icon-proof h1{font-size:1.55rem;margin:0 0 10px}
+  .icon-proof p{margin:0 0 16px}
+  .icon-proof label{display:flex;gap:10px;align-items:center;margin:18px 0 24px;flex-wrap:wrap}
+  .icon-proof select{min-height:44px;padding:8px 12px;background:white;color:#222;border:1px solid #69756d;border-radius:8px}
+  .icon-proof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+  .icon-proof-tile{min-width:0;background:var(--surface-2,#fff);border:1px solid #b8c1b9;border-radius:12px;padding:14px;overflow-wrap:anywhere}
+  .icon-proof-mark{display:flex;align-items:center;gap:14px;min-height:46px;color:var(--accent,#355a49)}
+  .icon-proof-mark .tl-ui-icon{width:28px;height:28px;flex:none}
+  .icon-proof-key{font:12px ui-monospace,monospace;color:var(--muted,#52625b)}
+  .icon-proof-tile strong{display:block;font-size:14px}
+  .icon-proof-tile small{font-size:12px;color:var(--muted,#52625b)}
+  .icon-proof .example{display:inline-flex;align-items:center;gap:8px;padding:9px 12px;min-height:44px;border-radius:8px;border:1px solid currentColor; margin:12px 0}
+  .icon-proof .example .tl-ui-icon{width:20px;height:20px}
+</style>
+<script defer src="../ui-icons.js"></script>
+</head>
+<body>
+<main class="icon-proof">
+  <h1>功能性 Icon 檢查板</h1>
+  <p>地圖定位、雙腳印、火車／地鐵／纜車必須保持不同的語意輪廓。主題只改變色彩與容器，不替換功能性符號。</p>
+  <label for="theme">目前外觀
+    <select id="theme" aria-label="Style Pack">
+      <option value="editorial">Editorial</option>
+      <option value="storybook">Storybook</option>
+      <option value="candy">Candy</option>
+      <option value="risograph">Risograph</option>
+      <option value="paper-collage">Paper Collage</option>
+      <option value="naive-city">Naive City</option>
+      <option value="taiwan-poster">Taiwan Poster</option>
+      <option value="field-stamp">Field Stamp</option>
+      <option value="quiet-linocut">Quiet Linocut</option>
+      <option value="doodle-memory-grid">Doodle Memory Grid</option>
+      <option value="crayon-journal">Crayon Journal</option>
+      <option value="painterly-editorial">Painterly Editorial</option>
+      <option value="geometric-print">Geometric Print</option>
+      <option value="quiet-acrylic">Quiet Acrylic</option>
+      <option value="vintage-watercolor">Vintage Watercolor</option>
+    </select>
+  </label>
+  <section aria-label="功能 Icon 清單" id="icons" class="icon-proof-grid" aria-live="polite"></section>
+  <section aria-label="實際按鈕範例">
+    <h2>操作標籤範例</h2>
+    <div id="example" class="example" aria-label="開啟地圖"></div>
+    <p>Icon 的 SVG 在含有可讀標籤的控制內使用 <code>aria-hidden</code>，不讓螢幕閱讀器重複朗讀。請另外檢查縮放 200%、鍵盤和深淺背景對比。</p>
+  </section>
+</main>
+<script>
+window.addEventListener("DOMContentLoaded",async()=>{
+  const themes=["storybook-theme.css","candy-theme.css","risograph-theme.css","paper-collage-theme.css",
+    "naive-city-theme.css","taiwan-poster-theme.css","field-stamp-theme.css","quiet-linocut-theme.css",
+    "doodle-memory-grid-theme.css","crayon-journal-theme.css","painterly-editorial-theme.css",
+    "geometric-print-theme.css","quiet-acrylic-theme.css","vintage-watercolor-theme.css"];
+  const sheets=themes.map(name=>{const link=document.createElement("link");link.rel="stylesheet";link.href="../"+name;link.disabled=true;document.head.append(link);return link});
+  const styleSheet = name=>name==="editorial"?[]:name==="storybook"?["storybook-theme.css"]:
+    ["candy","paper-collage","naive-city","taiwan-poster","field-stamp","quiet-linocut",
+     "doodle-memory-grid","crayon-journal","painterly-editorial","geometric-print",
+     "quiet-acrylic","vintage-watercolor"].includes(name)?["storybook-theme.css",name+"-theme.css"]:[name+"-theme.css"];
+  const choose=value=>{document.documentElement.dataset.visualStyle=value;
+    const selected=new Set(styleSheet(value));sheets.forEach(link=>link.disabled=!selected.has(link.href.split("/").at(-1)))};
+  document.getElementById("theme").addEventListener("change",e=>choose(e.target.value));
+  choose("editorial");
+  const root=document.getElementById("icons");
+  try{
+    const response=await fetch("../assets/icons/semantic-catalog.v1.json");
+    if(!response.ok)throw new Error("Catalog not available");
+    const catalog=await response.json();
+    const api=window.TravelLiteIcons;
+    if(!api||catalog.requiredIcons.length!==21)throw new Error("Icon set incomplete");
+    for(const icon of catalog.requiredIcons){
+      const tile=document.createElement("article");tile.className="icon-proof-tile";
+      const mark=document.createElement("div");mark.className="icon-proof-mark";
+      mark.innerHTML=api.svg(icon.name); // fixed allowlisted local SVG only
+      const title=document.createElement("strong");title.textContent=icon.label.zhTW;
+      const key=document.createElement("div");key.className="icon-proof-key";key.textContent=icon.name;
+      const caption=document.createElement("small");caption.textContent=icon.label.en;
+      tile.append(mark,title,key,caption);root.append(tile);
+    }
+    document.getElementById("example").innerHTML=api.svg("map-pin")+"<span>開啟 Google Maps</span>";
+  }catch(error){root.textContent="Icon QA 無法載入："+error.message;}
+});
+</script>
+</body>
+</html>

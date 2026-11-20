@@ -1,0 +1,170 @@
+"""Negative controls for independent verifier (synthetic pixels, NOT visual acceptance)."""
+import copy
+import hashlib
+import importlib.util
+import json
+import tempfile
+import unittest
+from datetime import datetime, timezone
+from pathlib import Path
+from PIL import Image
+
+SOURCE=Path(__file__).resolve().parents[1]/'tools/artwork/verify-covers.py'
+spec=importlib.util.spec_from_file_location('cover_verifier',SOURCE)
+V=importlib.util.module_from_spec(spec);spec.loader.exec_module(V)
+RECIPES=json.loads((Path(__file__).resolve().parents[1]/'artwork/quality/cover-recipes.v1.json').read_text())
+
+class CoverVerifierSafetyTests(unittest.TestCase):
+ @classmethod
+ def setUpClass(cls):
+  cls.tmp=tempfile.TemporaryDirectory();cls.root=Path(cls.tmp.name)
+  cls.trip={'trip':{'overviewArtwork':{'subjectIds':['fireworks','yokai','kumano','onsen']}},
+   'days':[{'items':[{'id':'fireworks','type':'event'},{'id':'yokai','type':'event'},
+     {'id':'kumano','type':'place'},{'id':'onsen','type':'place'}]}]}
+  cls.variants=[];cls.jobs={'generationMethod':'one-independent-request-per-style','jobs':[]}
+  dt='2026-11-20T00:00:00+08:00'
+  for i,rec in enumerate(RECIPES['recipes']):
+   style=rec['id'];src=f'native/{style}.jpg';pub=f'published/{style}.webp'
+   (cls.root/'native').mkdir(exist_ok=True);(cls.root/'published').mkdir(exist_ok=True)
+   image=Image.new('RGB',(1536,864),((i*13)%255,(i*33)%255,(i*67)%255));image.save(cls.root/src,quality=90)
+   image.resize((960,405)).save(cls.root/pub,format='WEBP',quality=85)
+   a=V.h((cls.root/src).read_bytes());b=V.h((cls.root/pub).read_bytes())
+   rcpt={'version':1,'styleId':style,'sourceType':'independent-generation','imageSHA256':a,
+    'promptSHA256':'a'*64,'requestSHA256':'b'*64,'recipeSHA256':'c'*64,'model':'gpt-image-2.5-sunburst-2026-09-08','createdAt':dt}
+   judge={'styleId':style,'imageSHA256':a,'model':'gpt-6.2-astra','responseId':'resp_unit_fixture','assessedAt':dt,
+    'scores':{'styleMatch':5,'composition':5,'sceneClarity':5,'sceneFidelity':5},
+    'subjectCoverage':{x:True for x in ['fireworks','yokai','kumano','onsen']},'inventedText':False,'misleadingDocumentary':False}
+   human={'imageSHA256':a,'reviewer':'synthetic-fixture','reviewedAt':dt,'approved':True,'sourceRightsChecked':True}
+   for folder,payload in [('receipt',rcpt),('judge',judge),('human',human)]:
+    (cls.root/folder).mkdir(exist_ok=True)
+    (cls.root/f'{folder}/{style}.json').write_text(json.dumps(payload))
+   cls.variants.append({'styleId':style,'sourceImage':src,'publishedImage':pub,'sourceSHA256':a,'publishedSHA256':b,
+    'generationMode':'individual-request','generationReceipt':f'receipt/{style}.json',
+    'judgeReport':f'judge/{style}.json','humanReview':f'human/{style}.json'})
+   request={'prompt':V.reconstruct_locked_prompt(rec,[{'id':'fireworks','date':None,'title':None,'type':'event'},{'id':'yokai','date':None,'title':None,'type':'event'},{'id':'kumano','date':None,'title':None,'type':'place'},{'id':'onsen','date':None,'title':None,'type':'place'}],RECIPES),'model':rcpt['model'],'n':1,'size':'1536x864','quality':'high','output_format':'webp'}
+   compact=lambda o: json.dumps(o,ensure_ascii=False,separators=(',',':')).encode('utf-8')
+   ph=V.h(request['prompt'].encode());rh=V.h(compact(request));c=V.h(compact(rec))
+   rcpt.update({'promptSHA256':ph,'requestSHA256':rh,'recipeSHA256':c})
+   (cls.root/f'receipt/{style}.json').write_text(json.dumps(rcpt))
+   cls.jobs['jobs'].append({'styleId':style,'sourceType':'independent-generation',
+    'subjectIds':['fireworks','yokai','kumano','onsen'],
+    'request':request,'promptSHA256':ph,'requestSHA256':rh,'recipeSHA256':c,'model':rcpt['model']})
+
+ @classmethod
+ def tearDownClass(cls):cls.tmp.cleanup()
+ def check(self, variants=None,trip=None,jobs=None):
+  return V.inspect(self.root,trip or self.trip,self.RECIPES if hasattr(self,'RECIPES') else RECIPES,
+                   variants if variants is not None else self.variants,jobs if jobs is not None else self.jobs)
+ def test_protocol_fixture_passes_only_when_all_external_attestations_exist(self):
+  # This synthetic fixture tests parser/gates, not real artistic quality.
+  self.assertEqual(self.check()['status'],'PASS')
+ def test_independence_atlas_crop_is_rejected(self):
+  bad=copy.deepcopy(self.variants);bad[1]['atlasSlice']=1;bad[1]['derivedFromAtlas']=True
+  result=self.check(bad);self.assertEqual(result['status'],'FAIL')
+  self.assertIn('E_ATLAS_CROP_NOT_INDEPENDENT',result['styles'][1]['failures'])
+ def test_low_native_resolution_is_rejected_even_with_large_published_file(self):
+  bad=copy.deepcopy(self.variants);bad[2]['sourceImage']=bad[2]['publishedImage'];bad[2]['sourceSHA256']=bad[2]['publishedSHA256']
+  result=self.check(bad)
+  self.assertIn('E_NATIVE_RESOLUTION',result['styles'][2]['failures'])
+ def test_missing_generation_receipt_cannot_pass(self):
+  bad=copy.deepcopy(self.variants);bad[3]['generationReceipt']='missing.json'
+  self.assertIn('E_GENERATION_RECEIPT_MISSING',self.check(bad)['styles'][3]['failures'])
+ def test_duplicate_native_files_are_rejected(self):
+  bad=copy.deepcopy(self.variants);bad[3]['sourceImage']=bad[4]['sourceImage'];bad[3]['sourceSHA256']=bad[4]['sourceSHA256']
+  self.assertIn('E_DUPLICATE_NATIVE_ASSETS',self.check(bad)['globalErrors'])
+ def test_missing_judge_is_pending_not_pass(self):
+  bad=copy.deepcopy(self.variants);bad[6]['judgeReport']='missing.json'
+  self.assertEqual(self.check(bad)['styles'][6]['status'],'PENDING')
+ def test_missing_human_is_pending_not_pass(self):
+  bad=copy.deepcopy(self.variants);bad[7]['humanReview']='missing.json'
+  self.assertEqual(self.check(bad)['styles'][7]['status'],'PENDING')
+ def test_unapproved_human_template_remains_pending_not_fail(self):
+  file=self.root/'human'/'candy.json';original=file.read_text()
+  try:
+   pending=json.loads(original);pending.update({'approved':False,'reviewer':None,'reviewedAt':None,'sourceRightsChecked':False})
+   file.write_text(json.dumps(pending))
+   entry=self.check()['styles'][2]
+   self.assertEqual(entry['status'],'PENDING')
+   self.assertIn('P_HUMAN_NOT_APPROVED',entry['pending'])
+  finally:file.write_text(original)
+
+ def test_stale_human_review_is_rejected(self):
+  bad=copy.deepcopy(self.variants);bad[7]['sourceSHA256']='0'*64
+  self.assertIn('E_NATIVE_HASH_MISMATCH',self.check(bad)['styles'][7]['failures'])
+ def test_invalid_source_id_fails_global(self):
+  t=copy.deepcopy(self.trip);t['trip']['overviewArtwork']['subjectIds']=['unknown']
+  self.assertIn('E_SELECTED_SUBJECT_IDS',self.check(trip=t)['globalErrors'])
+ def test_all_styles_required(self):
+  bad=copy.deepcopy(self.variants);bad.pop()
+  self.assertIn('E_STYLE_COVERAGE',self.check(bad)['globalErrors'])
+ def test_no_generation_job_is_hard_failure(self):
+  self.assertEqual(self.check(jobs={'generationMethod':'one-independent-request-per-style','jobs':[]})['status'],'FAIL')
+
+ def test_model_judge_low_style_score_is_hard_failure(self):
+  file=self.root/'judge'/'candy.json';original=file.read_text()
+  try:
+   verdict=json.loads(original);verdict['scores']['styleMatch']=2
+   file.write_text(json.dumps(verdict))
+   entry=self.check()['styles'][2]
+   self.assertIn('E_JUDGE_LOW_STYLEMATCH',entry['failures'])
+  finally:file.write_text(original)
+ def test_model_judge_missing_required_theme_fails(self):
+  file=self.root/'judge'/'candy.json';original=file.read_text()
+  try:
+   verdict=json.loads(original);verdict['subjectCoverage']['onsen']=False
+   file.write_text(json.dumps(verdict))
+   entry=self.check()['styles'][2]
+   self.assertIn('E_SUBJECT_MISSING',entry['failures'])
+  finally:file.write_text(original)
+
+ def test_job_prompt_hash_tamper_rejected(self):
+  bad=copy.deepcopy(self.jobs);bad['jobs'][0]['request']['prompt']='tampered'
+  self.assertIn('E_PROMPT_HASH_NOT_VERIFIED', self.check(jobs=bad)['styles'][0]['failures'])
+
+ def test_counterexample_01_image_declared_but_never_generated(self):
+  bad=copy.deepcopy(self.variants);bad[0]['sourceImage']='native/NEVER_GENERATED.webp'
+  evidence=self.check(bad)
+  self.assertEqual(evidence['status'],'FAIL')
+  self.assertIn('E_NATIVE_FILE_MISSING',evidence['styles'][0]['failures'])
+
+ def test_counterexample_02_substituted_prompt_even_with_reforged_hashes(self):
+  # A malicious builder changes BOTH the prompt and its job/receipt hashes.
+  # Job+receipt self-consistency is insufficient; lock to the Style Recipe.
+  bad=copy.deepcopy(self.jobs)
+  original=self.root/'receipt'/'editorial.json'; before=original.read_text()
+  try:
+   job=bad['jobs'][0];job['request']['prompt']='Draw a generic Nakanoshima skyline instead.'
+   compact=lambda o: json.dumps(o,ensure_ascii=False,separators=(',',':')).encode()
+   job['promptSHA256']=V.h(job['request']['prompt'].encode())
+   job['requestSHA256']=V.h(compact(job['request']))
+   receipt=json.loads(before);receipt['promptSHA256']=job['promptSHA256'];receipt['requestSHA256']=job['requestSHA256']
+   original.write_text(json.dumps(receipt))
+   result=self.check(jobs=bad)
+   self.assertIn('E_PROMPT_NOT_DERIVED_FROM_RECIPE',result['styles'][0]['failures'])
+  finally:original.write_text(before)
+
+ def test_counterexample_03_reused_contact_sheet_crop(self):
+  bad=copy.deepcopy(self.variants)
+  bad[2]['atlasSlice']=2;bad[2]['derivedFromAtlas']=True
+  result=self.check(bad)
+  self.assertIn('E_ATLAS_CROP_NOT_INDEPENDENT',result['styles'][2]['failures'])
+
+ def test_counterexample_04_wrong_art_style_or_missing_travel_memory(self):
+  fname=self.root/'judge'/'candy.json';before=fname.read_text()
+  try:
+   report=json.loads(before);report['scores']['styleMatch']=2;report['subjectCoverage']['yokai']=False
+   fname.write_text(json.dumps(report))
+   result=self.check()
+   self.assertIn('E_JUDGE_LOW_STYLEMATCH',result['styles'][2]['failures'])
+   self.assertIn('E_SUBJECT_MISSING',result['styles'][2]['failures'])
+  finally:fname.write_text(before)
+
+ def test_counterexample_05_stale_approval_for_replaced_artwork(self):
+  # Uploaded pixels and manifest SHA differ from the old human/judge record.
+  bad=copy.deepcopy(self.variants)
+  bad[4]['sourceImage']=bad[5]['sourceImage'];bad[4]['sourceSHA256']=bad[5]['sourceSHA256']
+  result=self.check(bad)
+  self.assertIn('E_HUMAN_REVIEW_STALE_IMAGE',result['styles'][4]['failures'])
+  self.assertIn('E_JUDGE_STALE_IMAGE',result['styles'][4]['failures'])
+
+if __name__=='__main__':unittest.main()
