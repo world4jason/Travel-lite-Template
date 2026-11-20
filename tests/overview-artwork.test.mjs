@@ -29,7 +29,9 @@ const fixture = () => ({
 });
 
 test("without owner choice there is no generic artwork or empty hero", () => {
-  assert.equal(artwork.render(trip, "editorial"), "");
+  const noArt = structuredClone(trip);
+  delete noArt.trip.overviewArtwork;
+  assert.equal(artwork.render(noArt, "editorial"), "");
 });
 
 test("real event/place/break IDs drive art; selected style chooses only matching image", () => {
@@ -61,7 +63,8 @@ test("rejects dangerous URLs and missing alt; never injects markup", () => {
     {src:"http://evil.example/image.jpg",alt:"bad"},
     {src:"https://example.com/good.webp",alt:'<img onerror="alert(1)">',fit:"giant"}
   ];
-  assert.equal(artwork.render(d,"editorial"),""); // more than three is not accepted
+  const first=artwork.render(d,"editorial");
+  assert.match(first,/good\.webp/); // Up to 48 candidates may be stored; unsafe URLs are filtered.
   d.trip.overviewArtwork.images.pop();
   assert.equal(artwork.render(d,"editorial"),"");
   d.trip.overviewArtwork.images=[{src:"./safe.webp",alt:'<img onerror="alert(1)">'}];
@@ -70,12 +73,41 @@ test("rejects dangerous URLs and missing alt; never injects markup", () => {
   assert.doesNotMatch(safe,/alt="<img/);
 });
 
-test("one-to-three images only; styles do not trigger runtime AI generation", () => {
+test("one-to-three *displayed* images, many Style Pack variants, and no runtime generation", () => {
   const d=fixture();
   d.trip.overviewArtwork.images=[{src:"./a.webp",alt:"A"},{src:"./b.webp",alt:"B"},{src:"./c.webp",alt:"C"}];
   const rendered=artwork.render(d,"editorial");
   assert.equal((rendered.match(/<figure/g)||[]).length,3);
   assert.doesNotMatch(source,/api\.openai\.com|OPENAI_API_KEY|\bfetch\s*\(/);
+});
+
+test("15 pack-specific artwork variants safely select exactly one scene", () => {
+  const d=fixture();
+  const styles=["editorial","storybook","candy","risograph","paper-collage","naive-city",
+    "taiwan-poster","field-stamp","quiet-linocut","doodle-memory-grid","crayon-journal",
+    "painterly-editorial","geometric-print","quiet-acrylic","vintage-watercolor"];
+  d.trip.overviewArtwork.images=styles.map((styleId,atlasSlice)=>({
+    styleId,atlasSlice,src:"./assets/overview/atlas.avif",alt:"illustration of selected memories"
+  }));
+  for(let i=0;i<styles.length;i++){
+    const html=artwork.render(d,styles[i]);
+    assert.equal((html.match(/<figure/g)||[]).length,1);
+    assert.match(html,new RegExp('data-atlas-slice="'+i+'"'));
+    assert.match(html,/data-count="1"/);
+  }
+  d.trip.overviewArtwork.images=Array.from({length:4},(_,i)=>({
+    src:"./same-"+i+".avif",alt:"same style",styleId:"editorial",atlasSlice:i
+  }));
+  assert.equal((artwork.render(d,"editorial").match(/<figure/g)||[]).length,3);
+  d.trip.overviewArtwork.images=Array.from({length:49},(_,i)=>({src:"./"+i+".avif",alt:"safe"}));
+  assert.equal(artwork.render(d,"editorial"),"");
+});
+
+test("out-of-range sprite indices do not pass as style-controlled CSS", () => {
+  const d=fixture();
+  d.trip.overviewArtwork.images=[{src:"./atlas.avif",alt:"Safe",styleId:"editorial",atlasSlice:999}];
+  assert.doesNotMatch(artwork.render(d,"editorial"),/data-atlas-slice/);
+  assert.match(css,/data-atlas-slice="14"/);
 });
 
 test("publisher picker handles actual event and break types without mutating trip data", () => {
