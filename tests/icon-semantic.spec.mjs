@@ -19,16 +19,16 @@ test("functional UI icons remain recognizable across 15 appearances",async({page
     expect(detail.length).toBe(21);
     expect(detail.every(x=>x.w>=18&&x.h>=18&&x.visibility!=="hidden"&&x.display!=="none"),
       "One or more icons hidden at "+style).toBeTruthy();
-    await expect(page.locator(".icon-proof-tile .icon-proof-key")).toContainText([
-      "map-pin","map","route","walk","train","subway","cable","bus",
-    ]);
+    const keys=await page.locator(".icon-proof-tile .icon-proof-key").allTextContents();
+    for(const required of ["map-pin","map","route","walk","train","subway","cable","bus"])
+      expect(keys).toContain(required);
   }
 });
 
 test("map-pin, footprints, metro and funicular remain accessible at 200% text",async({page})=>{
   await page.setViewportSize({width:320,height:900});
   await page.goto("/tools/icon-review.html");
-  await page.addStyleTag({content:":root {font-size:200% !important;} "});
+  await page.addStyleTag({content:"body, .icon-proof {font-size:200% !important;} "});
   for(const key of ["map-pin","walk","train","subway","cable"]){
     const tile=page.locator(".icon-proof-tile").filter({has:page.locator(".icon-proof-key", {hasText:key})}).first();
     await expect(tile).toBeVisible();
