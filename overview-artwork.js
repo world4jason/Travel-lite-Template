@@ -35,6 +35,7 @@
       const styleId = typeof entry.styleId === "string" ? entry.styleId : "";
       return [{
         src, alt, styleId,
+        atlasSlice: Number.isInteger(entry.atlasSlice) && entry.atlasSlice >= 0 && entry.atlasSlice <= 14 ? entry.atlasSlice : null,
         fit: FIT.has(entry.fit) ? entry.fit : "cover",
         focalPoint: POSITION.has(entry.focalPoint) ? entry.focalPoint : "center",
       }];
@@ -52,7 +53,8 @@
     return '<section class="trip-overview-artwork" aria-label="' + escape(label) + '" data-count="' + images.length + '" data-overview-artwork>' +
       images.map((item, index) =>
         '<figure class="trip-overview-art-frame" data-artwork-fit="' + item.fit +
-          '" data-artwork-position="' + item.focalPoint + '">' +
+          '" data-artwork-position="' + item.focalPoint + '"' +
+          (item.atlasSlice === null ? "" : ' data-atlas-slice="' + item.atlasSlice + '"') + '>' +
           '<img src="' + escape(item.src) + '" alt="' + escape(item.alt) +
           '" loading="' + (index ? "lazy" : "eager") + '" decoding="async"></figure>'
       ).join("") + '</section>';
