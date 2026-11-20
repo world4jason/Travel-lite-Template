@@ -41,7 +41,7 @@ class CoverVerifierSafetyTests(unittest.TestCase):
    cls.variants.append({'styleId':style,'sourceImage':src,'publishedImage':pub,'sourceSHA256':a,'publishedSHA256':b,
     'generationMode':'individual-request','generationReceipt':f'receipt/{style}.json',
     'judgeReport':f'judge/{style}.json','humanReview':f'human/{style}.json'})
-   request={'prompt':'scene '+style,'model':rcpt['model'],'n':1}
+   request={'prompt':V.reconstruct_locked_prompt(rec,[{'id':'fireworks','date':None,'title':None,'type':'event'},{'id':'yokai','date':None,'title':None,'type':'event'},{'id':'kumano','date':None,'title':None,'type':'place'},{'id':'onsen','date':None,'title':None,'type':'place'}],RECIPES),'model':rcpt['model'],'n':1,'size':'1536x864','quality':'high','output_format':'webp'}
    compact=lambda o: json.dumps(o,ensure_ascii=False,separators=(',',':')).encode('utf-8')
    ph=V.h(request['prompt'].encode());rh=V.h(compact(request));c=V.h(compact(rec))
    rcpt.update({'promptSHA256':ph,'requestSHA256':rh,'recipeSHA256':c})
@@ -120,5 +120,51 @@ class CoverVerifierSafetyTests(unittest.TestCase):
  def test_job_prompt_hash_tamper_rejected(self):
   bad=copy.deepcopy(self.jobs);bad['jobs'][0]['request']['prompt']='tampered'
   self.assertIn('E_PROMPT_HASH_NOT_VERIFIED', self.check(jobs=bad)['styles'][0]['failures'])
+
+ def test_counterexample_01_image_declared_but_never_generated(self):
+  bad=copy.deepcopy(self.variants);bad[0]['sourceImage']='native/NEVER_GENERATED.webp'
+  evidence=self.check(bad)
+  self.assertEqual(evidence['status'],'FAIL')
+  self.assertIn('E_NATIVE_FILE_MISSING',evidence['styles'][0]['failures'])
+
+ def test_counterexample_02_substituted_prompt_even_with_reforged_hashes(self):
+  # A malicious builder changes BOTH the prompt and its job/receipt hashes.
+  # Job+receipt self-consistency is insufficient; lock to the Style Recipe.
+  bad=copy.deepcopy(self.jobs)
+  original=self.root/'receipt'/'editorial.json'; before=original.read_text()
+  try:
+   job=bad['jobs'][0];job['request']['prompt']='Draw a generic Nakanoshima skyline instead.'
+   compact=lambda o: json.dumps(o,ensure_ascii=False,separators=(',',':')).encode()
+   job['promptSHA256']=V.h(job['request']['prompt'].encode())
+   job['requestSHA256']=V.h(compact(job['request']))
+   receipt=json.loads(before);receipt['promptSHA256']=job['promptSHA256'];receipt['requestSHA256']=job['requestSHA256']
+   original.write_text(json.dumps(receipt))
+   result=self.check(jobs=bad)
+   self.assertIn('E_PROMPT_NOT_DERIVED_FROM_RECIPE',result['styles'][0]['failures'])
+  finally:original.write_text(before)
+
+ def test_counterexample_03_reused_contact_sheet_crop(self):
+  bad=copy.deepcopy(self.variants)
+  bad[2]['atlasSlice']=2;bad[2]['derivedFromAtlas']=True
+  result=self.check(bad)
+  self.assertIn('E_ATLAS_CROP_NOT_INDEPENDENT',result['styles'][2]['failures'])
+
+ def test_counterexample_04_wrong_art_style_or_missing_travel_memory(self):
+  fname=self.root/'judge'/'candy.json';before=fname.read_text()
+  try:
+   report=json.loads(before);report['scores']['styleMatch']=2;report['subjectCoverage']['yokai']=False
+   fname.write_text(json.dumps(report))
+   result=self.check()
+   self.assertIn('E_JUDGE_LOW_STYLEMATCH',result['styles'][2]['failures'])
+   self.assertIn('E_SUBJECT_MISSING',result['styles'][2]['failures'])
+  finally:fname.write_text(before)
+
+ def test_counterexample_05_stale_approval_for_replaced_artwork(self):
+  # Uploaded pixels and manifest SHA differ from the old human/judge record.
+  bad=copy.deepcopy(self.variants)
+  bad[4]['sourceImage']=bad[5]['sourceImage'];bad[4]['sourceSHA256']=bad[5]['sourceSHA256']
+  result=self.check(bad)
+  self.assertIn('E_HUMAN_REVIEW_STALE_IMAGE',result['styles'][4]['failures'])
+  self.assertIn('E_JUDGE_STALE_IMAGE',result['styles'][4]['failures'])
 
 if __name__=='__main__':unittest.main()
