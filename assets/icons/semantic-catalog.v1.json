@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "sourceFile": "ui-icons.js",
+  "scope": "functional UI icons shared across all 15 Style Packs, not generated travel artwork",
+  "colorPolicy": "currentColor, safe at 20/24/32 px, inline SVG allowlist; decorative icons must never replace navigational semantics",
+  "accessibility": "SVG aria-hidden=true and focusable=false inside labelled controls; meaningful standalone SVG must have a readable name",
+  "license": {
+    "name": "Project inline SVGs; verify each third-party-derived icon license before reuse",
+    "lucideReference": "https://lucide.dev/license",
+    "w3cAccessibility": "https://design-system.w3.org/styles/svg-icons.html"
+  },
+  "requiredIcons": [
+    {
+      "name": "map-pin",
+      "semantic": "mapLocation",
+      "label": {
+        "zhTW": "地圖定位",
+        "en": "Map location"
+      },
+      "meaning": "Pinned destination and Maps handoff"
+    },
+    {
+      "name": "map",
+      "semantic": "mapView",
+      "label": {
+        "zhTW": "地圖",
+        "en": "Map"
+      },
+      "meaning": "Open/read the map workspace"
+    },
+    {
+      "name": "route",
+      "semantic": "routePath",
+      "label": {
+        "zhTW": "路線",
+        "en": "Route"
+      },
+      "meaning": "Door-to-door route or transfer"
+    },
+    {
+      "name": "walk",
+      "semantic": "footprints",
+      "label": {
+        "zhTW": "步行",
+        "en": "Walking"
+      },
+      "meaning": "Literal two-footprint silhouette, not a running person"
+    },
+    {
+      "name": "train",
+      "semantic": "railTrain",
+      "label": {
+        "zhTW": "火車",
+        "en": "Train"
+      },
+      "meaning": "Regional/intercity train, not metro"
+    },
+    {
+      "name": "subway",
+      "semantic": "metro",
+      "label": {
+        "zhTW": "地鐵",
+        "en": "Metro"
+      },
+      "meaning": "Distinct front-facing metro train"
+    },
+    {
+      "name": "cable",
+      "semantic": "funicular",
+      "label": {
+        "zhTW": "纜車",
+        "en": "Funicular"
+      },
+      "meaning": "Cable/funicular mode, different from bus/train"
+    },
+    {
+      "name": "bus",
+      "semantic": "bus",
+      "label": {
+        "zhTW": "公車",
+        "en": "Bus"
+      },
+      "meaning": "Bus travel"
+    },
+    {
+      "name": "boat",
+      "semantic": "boat",
+      "label": {
+        "zhTW": "搭船",
+        "en": "Boat"
+      },
+      "meaning": "Boat/ferry transport"
+    },
+    {
+      "name": "flight",
+      "semantic": "airplane",
+      "label": {
+        "zhTW": "飛機",
+        "en": "Flight"
+      },
+      "meaning": "Air travel"
+    },
+    {
+      "name": "drive",
+      "semantic": "car",
+      "label": {
+        "zhTW": "開車",
+        "en": "Driving"
+      },
+      "meaning": "Driving/car transport"
+    },
+    {
+      "name": "museum",
+      "semantic": "museum",
+      "label": {
+        "zhTW": "博物館",
+        "en": "Museum"
+      },
+      "meaning": "Museum/heritage attraction"
+    },
+    {
+      "name": "ticket",
+      "semantic": "ticket",
+      "label": {
+        "zhTW": "票券",
+        "en": "Ticket"
+      },
+      "meaning": "Admission or linked ticket"
+    },
+    {
+      "name": "stay",
+      "semantic": "hotel",
+      "label": {
+        "zhTW": "住宿",
+        "en": "Stay"
+      },
+      "meaning": "Lodging"
+    },
+    {
+      "name": "event",
+      "semantic": "event",
+      "label": {
+        "zhTW": "活動",
+        "en": "Event"
+      },
+      "meaning": "Scheduled event (not a Places entry)"
+    },
+    {
+      "name": "clock",
+      "semantic": "time",
+      "label": {
+        "zhTW": "時間",
+        "en": "Time"
+      },
+      "meaning": "Clock/time status"
+    },
+    {
+      "name": "check",
+      "semantic": "check",
+      "label": {
+        "zhTW": "完成",
+        "en": "Check"
+      },
+      "meaning": "Checklist confirmed status"
+    },
+    {
+      "name": "list",
+      "semantic": "list",
+      "label": {
+        "zhTW": "清單",
+        "en": "List"
+      },
+      "meaning": "Checklist/list"
+    },
+    {
+      "name": "more",
+      "semantic": "more",
+      "label": {
+        "zhTW": "更多",
+        "en": "More"
+      },
+      "meaning": "Overflow/menu"
+    },
+    {
+      "name": "task",
+      "semantic": "task",
+      "label": {
+        "zhTW": "待辦",
+        "en": "Task"
+      },
+      "meaning": "Task/checklist"
+    },
+    {
+      "name": "sparkles",
+      "semantic": "sparkles",
+      "label": {
+        "zhTW": "亮點",
+        "en": "Highlight"
+      },
+      "meaning": "Non-functional decorative highlights only"
+    }
+  ]
+}
