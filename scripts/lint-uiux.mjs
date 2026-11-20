@@ -6,8 +6,7 @@ import {pathToFileURL} from "node:url";
 
 const required = ["ui-icons.js","uiux-guard.css","journey-groups.js","journey-groups.css","trip-view.js","app.js",
   "places-view.js","runtime-features.js","index.html","sw.js","trip.json",
-  "AGENTS.md","docs/UIUX.md","package.json","playwright.config.mjs",
-  ".github/workflows/chronological-timeline.yml"];
+  "AGENTS.md","docs/UIUX.md","package.json","playwright.config.mjs"];
 const names=["train","subway","cable","bus","flight","drive","boat","walk",
   "route","map-pin","museum","ticket","sparkles"];
 export function auditUIUX(files) {
@@ -106,9 +105,14 @@ export function auditUIUX(files) {
   }catch{errors.push("package.json must be valid JSON")}
   check(get("playwright.config.mjs").includes("uiux-safe-inset.spec.mjs"),
     "Playwright must include rendered geometry specs");
-  check(get(".github/workflows/chronological-timeline.yml").includes("npm run lint:uiux")&&
-    get(".github/workflows/chronological-timeline.yml").includes("npm run test:uiux:geometry"),
-    "CI must run static lint AND browser geometry");
+  // GitHub Actions was intentionally removed. Keep static and browser checks
+  // directly runnable through npm; never require a deleted workflow file.
+  try {
+    const pkg=JSON.parse(get("package.json"));
+    check(typeof pkg.scripts?.["lint:uiux"] === "string" &&
+      typeof pkg.scripts?.["test:uiux:geometry"] === "string",
+      "Manual static and browser geometry commands must remain available");
+  } catch { errors.push("package.json must be valid JSON") }
   return errors;
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href){
@@ -118,5 +122,5 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   const errors=auditUIUX(files);
   errors.forEach(reason=>console.error("UIUX LINT FAIL: "+reason));
   if(errors.length)process.exitCode=1;
-  else console.log("PASS UIUX static lint: SVG allowlist, glyphs, insets, PWA and CI");
+  else console.log("PASS UIUX static lint: SVG allowlist, glyphs, insets and PWA (manual browser QA separate)");
 }
