@@ -161,7 +161,8 @@ def inspect(root, trip, recipes, variants, jobs=None):
         else:
             if human.get('approved') is not True:pending.append('P_HUMAN_NOT_APPROVED')
             if human.get('imageSHA256')!=(src or {}).get('sha256'):err.append('E_HUMAN_REVIEW_STALE_IMAGE')
-            if not human.get('reviewer') or not parse_iso(human.get('reviewedAt')):err.append('E_HUMAN_REVIEW_INCOMPLETE')
+            if human.get('approved') is True and (not human.get('reviewer') or not parse_iso(human.get('reviewedAt'))):
+                err.append('E_HUMAN_REVIEW_INCOMPLETE')
             if human.get('sourceRightsChecked') is not True:pending.append('P_SOURCE_RIGHTS_NOT_CHECKED')
         status='FAIL' if err else 'PENDING' if pending else 'PASS'
         per.append({'styleId':sty,'status':status,'failures':err,'pending':pending,'native':src,'published':published})
