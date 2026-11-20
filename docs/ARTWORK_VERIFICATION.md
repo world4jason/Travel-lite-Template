@@ -24,6 +24,10 @@ The sample CLI uses OpenAI's documented Image API generation endpoint. To actual
 
 No API key in GitHub or GitHub Pages. The API stores original full-resolution `artwork/generated/<style>.webp` and `artwork/generation/receipts/<style>.json`. Keep source images and receipts available to independent verifiers, even if public images are optimized separately.
 
+### 2.5 Stage one standalone source file per style (no atlas)
+
+After the fifteen generation receipts exist, execute `node tools/artwork/stage-cover-assets.mjs --execute`. This offline publisher command checks each receipt's output checksum and copies the **native individual WebP** to `assets/overview/<style>.webp`; it creates `artwork/quality/cover-output-manifest.json` and one **unapproved** human review template per style. It refuses to overwrite existing originals, staged assets or a previous manifest. A separate response + file is required per Style Pack. The staging command never marks any image approved.
+
 ### 3. Independently judge actual pixels
 
 The separately implemented `tools/artwork/judge-covers.mjs` reads the **image, fixed style rubric and scene facts**, but **not** generation prompts or generator self-scores. It uses a separately configured vision model and strict JSON output. Invoke with explicit consent to the API cost:
