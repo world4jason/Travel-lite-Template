@@ -29,7 +29,14 @@
     "test:overview": "node --test tests/overview-contract.test.mjs",
     "test:overview:browser": "playwright test tests/overview-compact.spec.mjs --project=chromium",
     "test:trust": "node --test tests/journey-trust.test.mjs",
-    "test:overview-artwork": "node --test tests/overview-artwork.test.mjs"
+    "test:overview-artwork": "node --test tests/overview-artwork.test.mjs",
+    "artwork:prepare": "node tools/artwork/prepare-cover-jobs.mjs",
+    "artwork:generate": "node tools/artwork/generate-covers.mjs",
+    "artwork:judge": "node tools/artwork/judge-covers.mjs",
+    "artwork:verify": "python3 tools/artwork/verify-covers.py",
+    "artwork:verify:legacy": "python3 tools/artwork/verify-covers.py --legacy-trip-images --report artwork/quality/legacy-verification-report.json",
+    "artwork:publish": "node tools/artwork/publish-approved-covers.mjs",
+    "test:artwork-verify": "python3 -m unittest discover -s tests -p test_cover_verifier.py"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
