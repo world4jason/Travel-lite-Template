@@ -18,7 +18,7 @@ async function loadFixture(page,style) {
       await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(modified)});
     });
   }
-  await page.goto('/?previewStyle='+encodeURIComponent(style)+'#trip/overview');
+  await page.goto('/?previewArtwork=1&previewStyle='+encodeURIComponent(style)+'#trip/overview');
   await expect(page.locator('.trip-overview-compact-hero')).toBeVisible();
 }
 
