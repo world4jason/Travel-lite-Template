@@ -71,3 +71,17 @@ Unapproved or legacy artwork has `trip.overviewArtwork.qaStatus: "pending"` and 
 `npm run test:artwork-verify` runs synthetic tests for deliberate problems: atlas crop, low native resolution, duplicate images, missing generation receipt, stale reviews, absent/low judge evidence, missing human approval, invalid source item IDs, and fewer than fifteen styles. These fixture results are *tests of the verifier*, not a claim that the actual travel covers passed. Reviewers can rerun the verification tool with a different machine or model; no trusted generator state is required.
 
 Reference documentation: [OpenAI Image API](https://developers.openai.com/api/docs/guides/image-generation), [Vision inputs](https://developers.openai.com/api/docs/guides/images-vision), [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs), and [Evaluation best practices](https://developers.openai.com/api/docs/guides/evaluation-best-practices).
+
+## Adversarial regression set (N1–N5) — 2026-11-20
+
+Five additional named negative controls are required before any artwork release; see [Icon System and Counterexamples](ICON_SYSTEM.md).
+
+1. **N1 NO IMAGE:** A generated image is claimed in the manifest, but its native file path does not exist. Must fail as E_NATIVE_FILE_MISSING.
+2. **N2 PROMPT BYPASS:** The job request is changed to a generic unrelated scene; both prompt hash and request hash are regenerated and the receipt is altered to match. The independent verifier must reconstruct the expected Prompt from the user's explicitly selected real source items and the locked Style Recipe, then flag E_PROMPT_NOT_DERIVED_FROM_RECIPE.
+3. **N3 CONTACT SHEET CROP:** A 3x5 overview grid slice is claimed as a separately generated native image. Must fail as E_ATLAS_CROP_NOT_INDEPENDENT.
+4. **N4 OFF-STYLE / MISSING MEMORY:** Independent visual judgment finds a wrong material (e.g., candy rendered as photorealism) or the yokai subject absent. Must fail as E_JUDGE_LOW_STYLEMATCH and/or E_SUBJECT_MISSING.
+5. **N5 STALE APPROVAL:** Image bytes are replaced after independent model and human approval. Must fail as E_JUDGE_STALE_IMAGE / E_HUMAN_REVIEW_STALE_IMAGE.
+
+The fixture run in an isolated Python/Pillow environment (2026-11-20) passed **20/20 tests**: 15 original controls plus these five. These are *tests of rejection behavior using synthetic images and synthetic verdicts*, NOT independent acceptance of the live 15-cover artwork. Source files on GitHub were updated in this Draft PR. The entire repo Node/Chromium visual matrix has not been executed in GitHub.
+
+Prompt reconstruction is an important integrity check but does **not** cryptographically prove the provider used the expected prompt. Retain an auditable provider request/response trace when available, independently review actual pixels, and maintain explicit human acceptance. Never treat local self-reported SHA hashes alone as external attestation.
