@@ -155,6 +155,9 @@ Places 是**真正可介紹的景點／場域目錄**，不是所有有座標或
 
 **可選的旅程主視覺（Owner-curated）：** 只有建立行程的人明確選擇真實 `days[].items[]` 的代表時刻，並提供已審核、具合法使用權的本地圖片後，Trip Overview 才能在緊湊標題區後顯示 **1～3 張、單圖高度不超過 178px** 的圖片。代表時刻允許原始 `event`、`place`、`break` 等來源 ID；選材不會修改其原始 `type` 或把煙火／泡湯變成 Places 景點。沒有審核圖片、風格不匹配或載入失敗時，無圖版型照常運作。此功能不可新增通用裝飾 Hero、額外導航、編造場景，或使總覽與 Timeline 的閱讀效率退化。
 
+
+**獨立封面驗收：** 針對全部 Style Pack 產製的封面，必須各自有原生圖檔與可追溯生成紀錄；多風格九宮格裁切素材只能當預覽，不可冒充獨立高品質封面。`trip.overviewArtwork.qaStatus: pending` 時正式版不得顯示，僅限 `?previewArtwork=1` 預覽；必須由離線獨立驗證器（原始像素、雜湊、來源、獨立視覺模型、人工審核）全部合格才可設為 `approved`。GitHub Actions 取消不等於免除手動驗收。
+
 ### P1.13 One appearance selector, light by default
 
 **更多 → 外觀只有一個樣式選擇入口。** Editorial Light / Editorial Dark 已在同一個 Style Picker 內，不能再顯示第二個 `System / Dark / Light` Theme Switcher，**也不在頂部再放獨立的 Quick Theme Toggle**，避免兩套設定互相覆蓋。主題切換後的地圖配色與瀏覽器工具列仍應同步，但不另建立顏色控制。動態偏好僅在動畫主題確實需要時獨立提供，不是第二組顏色控制。新的 Template 預設 Editorial Light（`ui.visualStyle: editorial`、`ui.theme: light`）；舊裝置已儲存的偏好不應被改版任意清掉，選擇「跟隨行程預設」會清除本機覆蓋並回到發布者預設。新旅程可在 `trip.json` 顯式選擇其他主題，但不得偷偷由作業系統深色模式改變發布者的 Light 預設。瀏覽器載入前的 `html[data-theme]` 也要採 Light，避免初始閃爍。必須測試深色選項可切換、重整後能保留、回預設可恢復。
