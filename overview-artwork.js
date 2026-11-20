@@ -22,6 +22,9 @@
   function resolve(data, activeStyle) {
     const raw = data?.trip?.overviewArtwork;
     if (!raw || typeof raw !== "object" || Array.isArray(raw)) return [];
+    // Unreviewed artwork can be previewed deliberately, but cannot appear as released cover.
+    const previewMode = typeof location.search === "string" && /[?&]previewArtwork=1(?:&|$)/.test(location.search);
+    if (raw.qaStatus !== "approved" && !previewMode) return [];
     const sourceIds = new Set((data.days || []).flatMap(day => (day.items || []).map(item => item.id)).filter(Boolean));
     const selected = Array.isArray(raw.subjectIds) ? raw.subjectIds : [];
     if (!selected.length || selected.length > 6 || new Set(selected).size !== selected.length ||
