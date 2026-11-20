@@ -21,7 +21,7 @@ class CoverVerifierSafetyTests(unittest.TestCase):
   cls.trip={'trip':{'overviewArtwork':{'subjectIds':['fireworks','yokai','kumano','onsen']}},
    'days':[{'items':[{'id':'fireworks','type':'event'},{'id':'yokai','type':'event'},
      {'id':'kumano','type':'place'},{'id':'onsen','type':'place'}]}]}
-  cls.variants=[];cls.jobs={'jobs':[]}
+  cls.variants=[];cls.jobs={'generationMethod':'one-independent-request-per-style','jobs':[]}
   dt='2026-11-20T00:00:00+08:00'
   for i,rec in enumerate(RECIPES['recipes']):
    style=rec['id'];src=f'native/{style}.jpg';pub=f'published/{style}.webp'
@@ -41,8 +41,14 @@ class CoverVerifierSafetyTests(unittest.TestCase):
    cls.variants.append({'styleId':style,'sourceImage':src,'publishedImage':pub,'sourceSHA256':a,'publishedSHA256':b,
     'generationMode':'individual-request','generationReceipt':f'receipt/{style}.json',
     'judgeReport':f'judge/{style}.json','humanReview':f'human/{style}.json'})
+   request={'prompt':'scene '+style,'model':rcpt['model'],'n':1}
+   compact=lambda o: json.dumps(o,ensure_ascii=False,separators=(',',':')).encode('utf-8')
+   ph=V.h(request['prompt'].encode());rh=V.h(compact(request));c=V.h(compact(rec))
+   rcpt.update({'promptSHA256':ph,'requestSHA256':rh,'recipeSHA256':c})
+   (cls.root/f'receipt/{style}.json').write_text(json.dumps(rcpt))
    cls.jobs['jobs'].append({'styleId':style,'sourceType':'independent-generation',
-    'promptSHA256':'a'*64,'requestSHA256':'b'*64,'recipeSHA256':'c'*64,'model':rcpt['model']})
+    'subjectIds':['fireworks','yokai','kumano','onsen'],
+    'request':request,'promptSHA256':ph,'requestSHA256':rh,'recipeSHA256':c,'model':rcpt['model']})
 
  @classmethod
  def tearDownClass(cls):cls.tmp.cleanup()
@@ -81,7 +87,28 @@ class CoverVerifierSafetyTests(unittest.TestCase):
  def test_all_styles_required(self):
   bad=copy.deepcopy(self.variants);bad.pop()
   self.assertIn('E_STYLE_COVERAGE',self.check(bad)['globalErrors'])
- def test_no_generation_job_means_pending(self):
-  self.assertEqual(self.check(jobs={'jobs':[]})['status'],'PENDING')
+ def test_no_generation_job_is_hard_failure(self):
+  self.assertEqual(self.check(jobs={'generationMethod':'one-independent-request-per-style','jobs':[]})['status'],'FAIL')
+
+ def test_model_judge_low_style_score_is_hard_failure(self):
+  file=self.root/'judge'/'candy.json';original=file.read_text()
+  try:
+   verdict=json.loads(original);verdict['scores']['styleMatch']=2
+   file.write_text(json.dumps(verdict))
+   entry=self.check()['styles'][2]
+   self.assertIn('E_JUDGE_LOW_STYLEMATCH',entry['failures'])
+  finally:file.write_text(original)
+ def test_model_judge_missing_required_theme_fails(self):
+  file=self.root/'judge'/'candy.json';original=file.read_text()
+  try:
+   verdict=json.loads(original);verdict['subjectCoverage']['onsen']=False
+   file.write_text(json.dumps(verdict))
+   entry=self.check()['styles'][2]
+   self.assertIn('E_SUBJECT_MISSING',entry['failures'])
+  finally:file.write_text(original)
+
+ def test_job_prompt_hash_tamper_rejected(self):
+  bad=copy.deepcopy(self.jobs);bad['jobs'][0]['request']['prompt']='tampered'
+  self.assertIn('E_PROMPT_HASH_NOT_VERIFIED', self.check(jobs=bad)['styles'][0]['failures'])
 
 if __name__=='__main__':unittest.main()
