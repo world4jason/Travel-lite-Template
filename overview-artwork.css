@@ -44,6 +44,37 @@
     height: clamp(130px, 45cqw, 170px);
   }
 }
+
+/* Fixed 5 x 3 sprite atlas — safe enumerated slice indices, no CSS from trip data.
+   Each 640? x 270? tile matches the card's aspect. 15 thematic art variants
+   share one small offline asset. Atlas dimension ratio must be (5 * 420):(3 * 178). */
+.trip-overview-art-frame[data-atlas-slice] { position: relative; }
+.trip-overview-art-frame[data-atlas-slice] img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  max-width: none;
+  width: 500%;
+  height: 300%;
+  object-fit: fill;
+  transform: translate(calc(-20% * var(--atlas-col)), calc(-33.33333333% * var(--atlas-row)));
+}
+.trip-overview-art-frame[data-atlas-slice="0"] { --atlas-col: 0; --atlas-row: 0; }
+.trip-overview-art-frame[data-atlas-slice="1"] { --atlas-col: 1; --atlas-row: 0; }
+.trip-overview-art-frame[data-atlas-slice="2"] { --atlas-col: 2; --atlas-row: 0; }
+.trip-overview-art-frame[data-atlas-slice="3"] { --atlas-col: 3; --atlas-row: 0; }
+.trip-overview-art-frame[data-atlas-slice="4"] { --atlas-col: 4; --atlas-row: 0; }
+.trip-overview-art-frame[data-atlas-slice="5"] { --atlas-col: 0; --atlas-row: 1; }
+.trip-overview-art-frame[data-atlas-slice="6"] { --atlas-col: 1; --atlas-row: 1; }
+.trip-overview-art-frame[data-atlas-slice="7"] { --atlas-col: 2; --atlas-row: 1; }
+.trip-overview-art-frame[data-atlas-slice="8"] { --atlas-col: 3; --atlas-row: 1; }
+.trip-overview-art-frame[data-atlas-slice="9"] { --atlas-col: 4; --atlas-row: 1; }
+.trip-overview-art-frame[data-atlas-slice="10"] { --atlas-col: 0; --atlas-row: 2; }
+.trip-overview-art-frame[data-atlas-slice="11"] { --atlas-col: 1; --atlas-row: 2; }
+.trip-overview-art-frame[data-atlas-slice="12"] { --atlas-col: 2; --atlas-row: 2; }
+.trip-overview-art-frame[data-atlas-slice="13"] { --atlas-col: 3; --atlas-row: 2; }
+.trip-overview-art-frame[data-atlas-slice="14"] { --atlas-col: 4; --atlas-row: 2; }
 @media (prefers-reduced-motion: reduce) {
   .trip-overview-art-frame img { transition: none; animation: none; }
 }
