@@ -29,6 +29,8 @@ async function main(){
   process.stdout.write(JSON.stringify({mode:'DRY_RUN_VERIFIED',releaseAllowed:true,images:images.length,notice:'Add --execute to actually update trip.json'},null,2)+'\n');return;
  }
  trip.trip.overviewArtwork.images=images;
+ trip.trip.overviewArtwork.qaStatus='approved';
+ trip.trip.overviewArtwork.qaReportSHA256=(await import('node:crypto')).createHash('sha256').update(await readFile(file(report))).digest('hex');
  const revision=arg('revision',null);
  if(!revision)throw Error('Explicit --revision required when publishing. Rerun with --revision <new-version>');
  trip.trip.revision=revision;trip.trip.updatedAt=new Date().toISOString();
