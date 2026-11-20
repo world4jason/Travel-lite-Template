@@ -16,7 +16,7 @@ const browser = { window: {}, document: { baseURI: "https://example.com/trip/ind
 vm.runInNewContext(source, browser);
 const artwork = browser.window.TravelLiteOverviewArtwork;
 const fixture = () => ({
-  trip: { overviewArtwork: {
+  trip: { overviewArtwork: { qaStatus: "approved",
     subjectIds: ["fireworks", "parade", "pilgrimage", "onsen"],
     images: [
       { src: "./assets/overview/watercolor.webp", alt: "Watercolor travel art", styleId: "vintage-watercolor", fit: "contain" },
@@ -44,6 +44,14 @@ test("real event/place/break IDs drive art; selected style chooses only matching
   const fallback=artwork.render(d,"risograph");
   assert.doesNotMatch(fallback,/watercolor\.webp/);
   assert.match(fallback,/photo\.webp/);
+});
+
+test("unapproved artwork is blocked unless deliberately previewed", () => {
+  const d=fixture();d.trip.overviewArtwork.qaStatus="pending";
+  assert.equal(artwork.render(d,"vintage-watercolor"),"");
+  browser.location.search="?previewArtwork=1";
+  assert.match(artwork.render(d,"vintage-watercolor"),/watercolor\\.webp/);
+  browser.location.search="";
 });
 
 test("refuses unknown subject IDs, duplicate IDs, and more than six selections", () => {
