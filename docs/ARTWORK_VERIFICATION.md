@@ -58,6 +58,10 @@ That is **expected to fail**: 13 of 15 were extracted from a 3×5 contact sheet;
 
 It atomically updates the published `trip.overviewArtwork.images` only with the independently verified individual assets. Never release merely because the publisher script or display-time JS says the image is present. Commit source recipes, job hashes, receipts, approved images, separate review records and JSON report together (the original image artifacts may be held in a private/provenance location if too large, but then provide independently resolvable hashes and references). **No GitHub Actions are required; manual release still requires a human.**
 
+## Preview mode vs release mode
+
+Unapproved or legacy artwork has `trip.overviewArtwork.qaStatus: "pending"` and **must not appear as released artwork**. Publishers/reviewers can inspect candidates only with `?previewArtwork=1` (including `?previewStyle=<pack-id>` to switch styles). The release command independently verifies all 15, writes the 15 approved standalone paths, sets `qaStatus: "approved"`, and records `qaReportSHA256` for auditing. The runtime status is a display guard, **not proof by itself**; only the independent report, file hashes, judge and human signatures authorize publication. Existing card/itinerary content remains usable without any illustration.
+
 ## Evidence audit and negative control tests
 
 `npm run test:artwork-verify` runs synthetic tests for deliberate problems: atlas crop, low native resolution, duplicate images, missing generation receipt, stale reviews, absent/low judge evidence, missing human approval, invalid source item IDs, and fewer than fifteen styles. These fixture results are *tests of the verifier*, not a claim that the actual travel covers passed. Reviewers can rerun the verification tool with a different machine or model; no trusted generator state is required.
