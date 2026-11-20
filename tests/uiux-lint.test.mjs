@@ -6,7 +6,7 @@ import {auditUIUX} from "../scripts/lint-uiux.mjs";
 const paths=["ui-icons.js","uiux-guard.css","journey-groups.js","journey-groups.css","trip-view.js","app.js",
   "places-view.js","runtime-features.js","index.html","sw.js","trip.json",
   "AGENTS.md","docs/UIUX.md","package.json","playwright.config.mjs",
-  ".github/workflows/chronological-timeline.yml","journey-board.js"];
+  "journey-board.js"];
 const files=Object.fromEntries(paths.filter(path=>existsSync(new URL("../"+path,import.meta.url)))
   .map(path=>[path,readFileSync(new URL("../"+path,import.meta.url),"utf8")]));
 test("checked-in UI files obey SVG + inset + dual-gate lint",()=>{
@@ -39,4 +39,10 @@ test("reject reintroducing the shared three-column Journey override",()=>{
   const bad=files["journey-groups.css"]+
     "\n.trip-v2-timeline .trip-v2-item { grid-template-columns: minmax(0,105px) 18px minmax(0,1fr); }";
   assert.match(auditUIUX({...files,"journey-groups.css":bad}).join(" "),/universal 3-column/);
+});
+
+test("manual UIUX validation does not require deleted GitHub Actions workflow",()=>{
+  const lint=readFileSync(new URL("../scripts/lint-uiux.mjs",import.meta.url),"utf8");
+  assert.doesNotMatch(lint,/\.github\/workflows\/chronological-timeline\.yml/);
+  assert.match(lint,/Manual static and browser geometry commands must remain available/);
 });
