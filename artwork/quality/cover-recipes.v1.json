@@ -1,0 +1,33 @@
+{
+  "version": "cover-recipes-v1",
+  "requiredSubjects": [
+    {"id": "fireworks", "label": "豬名川花火", "visualEvidence": "riverside fireworks and reflections", "kind": "event"},
+    {"id": "yokai", "label": "太秦百鬼夜行", "visualEvidence": "recognizable lantern-lit folklore procession / yokai motif", "kind": "event"},
+    {"id": "kumano", "label": "熊野古道中邊路", "visualEvidence": "mossy cedar pilgrimage trail and stone footpath", "kind": "place"},
+    {"id": "onsen", "label": "浦島飯店洞窟溫泉", "visualEvidence": "sea-facing rock cave with thermal bathing water", "kind": "place"}
+  ],
+  "scenePolicy": [
+    "The cover is an artistic memory montage, not a claim that four events happened together.",
+    "Never assert accurate costumes, actual fireworks patterns, cave structure, or other details without real reference photographs.",
+    "Use only source-backed subjects explicitly selected by the trip owner.",
+    "Keep typography, labels, brands, maps and imaginary travel stops out of generated art.",
+    "Never claim photo fidelity without attributable rights-cleared reference photos."
+  ],
+  "recipes": [
+    {"id":"editorial","medium":"photographic editorial composite","composition":"balanced editorial photographic montage with clearly discernible memory layers","must":["realistic lighting and sharp photographic textures","credible photo-composite boundaries","full landscape image"],"avoid":["watercolor","illustrated linework","misleading documentary fusion"]},
+    {"id":"storybook","medium":"hand-inked storybook illustration","composition":"recognizable four-scene storytelling with soft paper-white background","must":["confident rounded ink outlines","hand-filled gentle colors","clear scenes"],"avoid":["photorealism","print halftone","sharp hard-edge geometry"]},
+    {"id":"candy","medium":"flat five-fill rounded sticker art","composition":"rounded identifiable motifs with clean airy separation","must":["five subdued candy fills","rounded sticker-like objects","simple forms"],"avoid":["photo shadows","rough engraving","many unrelated colors"]},
+    {"id":"risograph","medium":"spot-ink risograph editorial print","composition":"layered flat ink fields with strong graphic hierarchy","must":["indigo-or-warm ink halftone","visible print grain","one restrained accent"],"avoid":["airbrushed gradients","photorealism","glossy 3D"]},
+    {"id":"paper-collage","medium":"layered matte cardstock collage","composition":"foreground, middle and background paper-cut layers that preserve four memories","must":["distinct cut paper silhouettes","subtle contact shadows","paper fibers"],"avoid":["photo filter","flat single-plane stickers","glass-like surfaces"]},
+    {"id":"naive-city","medium":"naive city gouache with hand-wobbled ink","composition":"imperfect whimsical street-and-landscape vignette","must":["deliberately wobbly ink","flat matte gouache","generous sky-paper negative space"],"avoid":["perfect vector straight edges","photographic texture","slick gradients"]},
+    {"id":"taiwan-poster","medium":"midcentury inspired screenprinted travel poster","composition":"screenprint-style strong landmark silhouettes with editorial negative space","must":["honey ochre and indigo planes","bold limited-color poster graphic","vermilion accent"],"avoid":["invented old typography or brands","photo collage","multi-layer watercolor"]},
+    {"id":"field-stamp","medium":"hand-carved block stamp ink print","composition":"four memories as marks from one travel field notebook","must":["dry engraved broken ink","2-4 spot colors","imperfect stamped impression"],"avoid":["precise camera shading","smooth vector fills","fabricated stamps or dates"]},
+    {"id":"quiet-linocut","medium":"quiet two-to-three-color linocut","composition":"small carved motif off-center toward lower right with spacious paper","must":["rough carved strokes","limited ink colors","large quiet whitespace"],"avoid":["busy full-bleed scenery","watercolor washes","photographic montage"]},
+    {"id":"doodle-memory-grid","medium":"nine-cell pencil doodle memory grid","composition":"3 x 3 delicate scrapbook cells of real themes or neutral abstract marks, not nine invented stops","must":["exactly nine rough small cells","pencil/crayon line texture","visible hand wobble"],"avoid":["pretending nine places were visited","photographic scenes","rigid technical grid"]},
+    {"id":"crayon-journal","medium":"grainy wax-crayon travel journal","composition":"2-5 small horizontal memory objects, representing four actual subjects","must":["waxy hatching","loose outlines","paper grain and whitespace"],"avoid":["nine-grid","soft watercolor","glossy vector shapes"]},
+    {"id":"painterly-editorial","medium":"airy pastel gouache/acrylic editorial painting","composition":"cohesive full-width painterly scene with soft brush hierarchy","must":["dry brush edges","cool pastel gouache","uncluttered composition"],"avoid":["photo filter","outlined stickers","hard-edge polygons"]},
+    {"id":"geometric-print","medium":"flat polygonal hard-edge print","composition":"four themes represented by clear abstract interlocking hard-edge forms","must":["crisp color planes","no outlines or drop shadows","five or six muted ink colors"],"avoid":["soft watercolor","crayon texture","3D shading"]},
+    {"id":"quiet-acrylic","medium":"fine-line sparse acrylic on handmade paper","composition":"10-20% tiny visual focal area with generous 80% paper whitespace; subtle four-memory symbols","must":["very small subject","thin wavering linework","minimal acrylic fills"],"avoid":["large full-bleed travel montage","heavy watercolor","dense crayon"]},
+    {"id":"vintage-watercolor","medium":"archival translucent watercolor illustration","composition":"elegant flowing montage on warm heritage paper, without decorative website frames inside the image","must":["translucent washes","pigment granulation","muted forest and sea colors"],"avoid":["photographic filter","fake textual captions","uniform plastic vectors"]}
+  ]
+}
