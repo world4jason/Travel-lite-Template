@@ -56,6 +56,30 @@ def image_info(root, source, min_dimensions, errors, prefix):
         errors.append(prefix+'_UNREADABLE'); return {'error':str(exc)[:200]}
 
 
+def reconstruct_locked_prompt(style, selected, recipes):
+    """Independent specification of the publisher prompt contract.
+
+    This intentionally does not import the JS generator. An attacker cannot
+    bypass the Style Recipe simply by recomputing request and receipt hashes.
+    Note: consistency is not cryptographic proof of the provider's actual call.
+    """
+    lines = [
+        'Independent high-resolution TRIP COVER image. Generate one complete image in THIS single call; never create grids, contact sheets or atlas crops.',
+        'Trip owner explicitly chose the following scheduled experiences (not an automatic ranking):',
+        *[f"- {i['date']}: {i['title']} [{i['type']}, ID={i['id']}]" for i in selected],
+        'Visual subject constraints:',
+        *[f"- {i['label']}: {i['visualEvidence']}" for i in recipes['requiredSubjects']],
+        'Visual medium: ' + style['medium'],
+        'Composition: ' + style['composition'],
+        'MUST express:', *[' - ' + item for item in style['must']],
+        'MUST avoid:', *[' - ' + item for item in style['avoid']],
+        'Scene and truth requirements:', *[' - ' + item for item in recipes['scenePolicy']],
+        'Deliverable: exactly ONE 1536x864 landscape frame, no text, no borders, no logos, no CSS, no sprite grid.',
+        'Match the specified material and composition, not merely its colors. This is travel MEMORY artwork and not a documentary photo.',
+    ]
+    return '\n'.join(lines)
+
+
 def parse_iso(value):
     try:
         dt=datetime.fromisoformat(value.replace('Z','+00:00'))
@@ -68,6 +92,9 @@ def inspect(root, trip, recipes, variants, jobs=None):
     recipe_map={x['id']:x for x in recipes['recipes']}
     selected=trip.get('trip',{}).get('overviewArtwork',{}).get('subjectIds',[])
     sourceIds={i.get('id') for d in trip.get('days',[]) for i in d.get('items',[])}
+    by_id={i.get('id'): {'id': i.get('id'), 'date': d.get('date'),
+                           'title': i.get('title'), 'type': i.get('type')}
+           for d in trip.get('days',[]) for i in d.get('items',[])}
     globalErrors=[]
     if not isinstance(selected,list) or not (1<=len(selected)<=6) or len(set(selected))!=len(selected) or any(x not in sourceIds for x in selected):
         globalErrors.append('E_SELECTED_SUBJECT_IDS')
@@ -125,6 +152,15 @@ def inspect(root, trip, recipes, variants, jobs=None):
                 if sty in recipe_map and j.get('recipeSHA256') != h(compact(recipe_map[sty])):
                     err.append('E_RECIPE_HASH_NOT_VERIFIED')
                 req=j.get('request') or {}
+                # Rebuild from selected factual items and versioned Style Recipe.
+                # Rehashing a substituted prompt and receipt MUST NOT pass.
+                if sty in recipe_map and all(i in by_id for i in selected):
+                    expected_prompt=reconstruct_locked_prompt(recipe_map[sty],
+                        [by_id[i] for i in selected], recipes)
+                    if req.get('prompt') != expected_prompt:
+                        err.append('E_PROMPT_NOT_DERIVED_FROM_RECIPE')
+                if (req.get('size'), req.get('n'), req.get('quality'), req.get('output_format')) != ('1536x864', 1, 'high', 'webp'):
+                    err.append('E_GENERATION_REQUEST_CONTRACT')
                 if j.get('promptSHA256') != h(str(req.get('prompt','')).encode('utf-8')):
                     err.append('E_PROMPT_HASH_NOT_VERIFIED')
                 if j.get('requestSHA256') != h(compact(req)):
