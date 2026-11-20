@@ -30,3 +30,15 @@ Required before merge: diagnose CI, run the actual Node + Playwright suites in a
 - Template now stores up to 48 audited image variants, shows max three for active Style Pack; safe 5×3 atlas slice added.
 - The complete generated artwork ZIP and 15-style visual contact sheet were delivered in the ChatGPT conversation; the repo stores a compressed AVIF atlas for web use. The atlas is a derived raster preview, not fifteen independent source-photo edits.
 - Required manual Node/Chromium/browser and human visual acceptance remain **NOT RUN/PENDING**, not PASS. Removing CI is not equivalent to passing QA; direct source checks are a narrower gate.
+
+
+## Incremental QA: explicit N1–N5 + functional icon system (2026-11-20)
+
+- **Python independent-cover verifier unit suite:** 20/20 PASS in an isolated local Python/Pillow environment; includes five newly named negative controls for no image, fully rehashed Prompt substitution, contact-sheet crop, off-style/missing yokai, and stale approval. Synthetic tests demonstrate rejection logic; they are not an approval of existing Osaka artwork.
+- **Static GitHub source audit:** 12/12 PASS for 21 catalog IDs, map pin/map/route separation, two footprints, distinct rail/metro/cable/bus SVG sources, local PWA catalog/gallery, 15 preview options and manual scripts.
+- **Icon unit suite:** 8 tests added, including adversarial map removal, walking glyph replacement, train/subway collision, missing SVG accessibility, Unicode map glyph injection, unknown icon injection, and missing PWA cache entry. Actual node test runner **NOT RUN** against an installed GitHub repo.
+- **Playwright icon visual matrix:** tests added to the explicit testMatch whitelist and configured for 15 Style Packs plus 320px/200% text. Actual Chromium run **NOT RUN**.
+- **Ghost CI dependency fixed:** main branch and this PR branch no longer requires the deleted chronological-timeline workflow file in the static UIUX linter. This was applied to Template, Osaka, and Xinjiang main branches.
+- **Provider prompt limitation:** rederived Prompt catches forged *local job/receipt hashes*, but does not prove the remote provider executed that request. Hold release until real provider-call evidence and independent image review exist. Content provenance cannot identify prompt text.
+
+Outcome: verification tooling and negative tests are ready for independent execution, but published artwork remains unapproved. No GitHub Actions are reinstated.
